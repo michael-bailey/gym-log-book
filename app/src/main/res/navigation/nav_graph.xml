@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:id="@+id/nav_graph"
+	app:startDestination="@id/exercise_frag_nav">
+
+	<action
+		android:id="@+id/action_global_exercise_frag_nav"
+		app:destination="@id/exercise_frag_nav"
+		app:launchSingleTop="true"
+		app:popUpTo="@id/nav_graph"
+		app:popUpToInclusive="true" />
+
+	<action
+		android:id="@+id/action_global_weight_frag_nav"
+		app:destination="@id/weight_frag_nav"
+		app:launchSingleTop="true"
+		app:popUpTo="@id/nav_graph"
+		app:popUpToInclusive="true" />
+	<fragment
+		android:id="@+id/exercise_frag_nav"
+		android:name="io.github.michael_bailey.gym_log_book.main_activity.ExerciseListFragment"
+		android:label="@string/exercise_fragment_label"
+		tools:layout="@layout/exercise_fragment"></fragment>
+	<fragment
+		android:id="@+id/weight_frag_nav"
+		android:name="io.github.michael_bailey.gym_log_book.main_activity.WeightListFragment"
+		android:label="@string/weight_fragment_label"
+		tools:layout="@layout/weight_fragment" />
+</navigation>
