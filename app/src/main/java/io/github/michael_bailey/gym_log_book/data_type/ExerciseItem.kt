@@ -7,8 +7,8 @@ import java.time.LocalDate
 data class ExerciseItem(
 	override val id: Long,
 	val date: LocalDate,
-	val exercise: String,
-	val setNumber: Long,
-	val weight: Long,
-	val reps: Long,
+	var exercise: String,
+	var setNumber: Long,
+	var weight: Long,
+	var reps: Long,
 ) : Identifiable()

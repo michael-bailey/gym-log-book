@@ -1,8 +1,8 @@
 package io.github.michael_bailey.gym_log_book
 
 import android.app.Application
-import io.github.michael_bailey.gym_log_book.data_manager.ExerciseTable
-import io.github.michael_bailey.gym_log_book.data_manager.WeightTable
+import io.github.michael_bailey.gym_log_book.table.ExerciseTable
+import io.github.michael_bailey.gym_log_book.table.WeightTable
 
 class App : Application() {
 	companion object {

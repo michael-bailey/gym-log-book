@@ -1,4 +1,4 @@
-package io.github.michael_bailey.gym_log_book.data_manager
+package io.github.michael_bailey.gym_log_book.table
 
 import android.content.Context
 import androidx.recyclerview.widget.RecyclerView

@@ -1,4 +1,4 @@
-package io.github.michael_bailey.gym_log_book.data_manager
+package io.github.michael_bailey.gym_log_book.table
 
 import android.content.Context
 import androidx.recyclerview.widget.RecyclerView
@@ -39,5 +39,3 @@ class ExerciseTable(val context: Context) : CSVTable<ExerciseItem>(context) {
 		return entry.let { "${it.id}, ${it.date}, ${it.exercise}, ${it.setNumber}, ${it.weight}, ${it.reps}" }
 	}
 }
-
-private operator fun <E> List<E>.component6(): E = get(5)

@@ -6,7 +6,7 @@ import java.io.FileNotFoundException
 
 abstract class CSVTable<T : Identifiable>(
 	private val ctx: Context
-) : AdapterTable<T>() {
+) : BaseTable<T>() {
 	protected abstract fun formatHeader(): String
 	protected abstract fun formatEntry(entry: T): String
 	protected abstract fun decodeEntry(entry: String): T

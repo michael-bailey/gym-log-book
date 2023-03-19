@@ -6,8 +6,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import io.github.michael_bailey.gym_log_book.R
-import io.github.michael_bailey.gym_log_book.data_manager.WeightTable
 import io.github.michael_bailey.gym_log_book.data_type.WeightItem
+import io.github.michael_bailey.gym_log_book.table.WeightTable
 
 /// an adapter that will handle the display of a exercise
 /// in a recycler view

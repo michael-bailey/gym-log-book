@@ -11,6 +11,7 @@ abstract class BaseTable<T> : Loggable(), ITable<T> {
 	override fun appendRow(item: T) {
 		log("appending item")
 		store.add(item)
+		adapter.notifyDataSetChanged()
 		save()
 	}
 }
