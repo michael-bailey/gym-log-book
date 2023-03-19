@@ -5,7 +5,7 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:fitsSystemWindows="true"
-	tools:context="io.github.michael_bailey.gym_log_book.AddWeightActivity">
+	tools:context="io.github.michael_bailey.gym_log_book.add_weight_activity.AddWeightActivity">
 
 
 	<Button

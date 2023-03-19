@@ -1,4 +1,4 @@
-package io.github.michael_bailey.gym_log_book
+package io.github.michael_bailey.gym_log_book.add_weight_activity
 
 import android.os.Bundle
 import android.view.View

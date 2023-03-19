@@ -8,9 +8,9 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
-import io.github.michael_bailey.gym_log_book.AddWeightActivity
 import io.github.michael_bailey.gym_log_book.R
 import io.github.michael_bailey.gym_log_book.add_exercise_activity.AddExerciseSetActivity
+import io.github.michael_bailey.gym_log_book.add_weight_activity.AddWeightActivity
 import io.github.michael_bailey.gym_log_book.databinding.ActivityMainBinding
 
 

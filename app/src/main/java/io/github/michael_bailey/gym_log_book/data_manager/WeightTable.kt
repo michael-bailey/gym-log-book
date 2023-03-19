@@ -24,7 +24,7 @@ class WeightTable(val context: Context) : CSVTable<WeightItem>(context) {
 
 	override fun decodeEntry(entry: String): WeightItem = entry.let {
 		log("decoding: $it ")
-		val (id, date, Weight) = it.split(", ", ignoreCase = false, limit = 2)
+		val (id, date, Weight) = it.split(", ", ignoreCase = false, limit = 3)
 		WeightItem(id.toLong(), LocalDate.parse(date), Weight.toLong())
 	}
 
