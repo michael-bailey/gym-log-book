@@ -1,6 +1,7 @@
 package io.github.michael_bailey.gym_log_book
 
 import android.app.Application
+import com.google.android.material.color.DynamicColors
 import io.github.michael_bailey.gym_log_book.table.ExerciseTable
 import io.github.michael_bailey.gym_log_book.table.WeightTable
 
@@ -15,6 +16,8 @@ class App : Application() {
 
 	override fun onCreate() {
 		super.onCreate()
+		DynamicColors.applyToActivitiesIfAvailable(this)
+
 
 		exerciseTable = ExerciseTable(applicationContext)
 		weightTable = WeightTable(applicationContext)

@@ -16,7 +16,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_alignParentBottom="true"
-			android:background="?attr/colorSecondary"
+
 			app:menu="@menu/menu_main" />
 
 		<com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -42,15 +42,12 @@
 	<com.google.android.material.appbar.AppBarLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:theme="@style/Theme.Gym_Log_Book.AppBarOverlay">
+		>
 
 		<androidx.appcompat.widget.Toolbar
 			android:id="@+id/toolbar"
 			android:layout_width="match_parent"
-			android:layout_height="?attr/actionBarSize"
-			android:background="?attr/colorPrimary"
-			app:popupTheme="@style/Theme.Gym_Log_Book.PopupOverlay"
-			app:titleTextColor="@color/black" />
+			android:layout_height="?attr/actionBarSize" />
 
 	</com.google.android.material.appbar.AppBarLayout>
 

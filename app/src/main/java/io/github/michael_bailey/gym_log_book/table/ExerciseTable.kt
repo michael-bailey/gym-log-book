@@ -39,3 +39,5 @@ class ExerciseTable(val context: Context) : CSVTable<ExerciseItem>(context) {
 		return entry.let { "${it.id}, ${it.date}, ${it.exercise}, ${it.setNumber}, ${it.weight}, ${it.reps}" }
 	}
 }
+
+private operator fun <E : Any> List<E>.component6() = get(5)
