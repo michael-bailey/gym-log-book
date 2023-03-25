@@ -9,10 +9,13 @@ import java.time.LocalDate
 
 class ExerciseTable(val context: Context) : CSVTable<ExerciseItem>(context) {
 
-	override val adapter: RecyclerView.Adapter<*>
-		get() = ExerciseRecyclerAdapter(this) {
+//	val state = store.to()
+
+	override val adapter: RecyclerView.Adapter<*> =
+		ExerciseRecyclerAdapter(this) {
 			log("adapter clicked")
 		}
+
 	override val tableName: String
 		get() = "exercise"
 
@@ -29,9 +32,9 @@ class ExerciseTable(val context: Context) : CSVTable<ExerciseItem>(context) {
 			id.toLong(),
 			LocalDate.parse(date),
 			exercise,
-			setNumber.toLong(),
-			Weight.toLong(),
-			Reps.toLong()
+			setNumber.toInt(),
+			Weight.toInt(),
+			Reps.toInt()
 		)
 	}
 

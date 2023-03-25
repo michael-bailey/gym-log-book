@@ -1,4 +1,4 @@
-package io.github.michael_bailey.gym_log_book.exercise_set_guide_activity.ui.theme
+package io.github.michael_bailey.gym_log_book.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

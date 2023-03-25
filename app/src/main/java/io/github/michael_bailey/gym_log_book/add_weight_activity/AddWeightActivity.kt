@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.navigation.ui.AppBarConfiguration
 import io.github.michael_bailey.gym_log_book.databinding.ActivityAddWeightBinding
-import io.github.michael_bailey.gym_log_book.view_model.AddWeightViewModel
 
 class AddWeightActivity : AppCompatActivity() {
 

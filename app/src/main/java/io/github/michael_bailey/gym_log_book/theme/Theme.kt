@@ -1,4 +1,4 @@
-package io.github.michael_bailey.gym_log_book.exercise_set_guide_activity.ui.theme
+package io.github.michael_bailey.gym_log_book.theme
 
 import android.app.Activity
 import android.os.Build
@@ -10,6 +10,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.ViewCompat
+import com.google.android.material.elevation.SurfaceColors
 
 private val DarkColorScheme = darkColorScheme(
 	primary = Purple80,
@@ -38,6 +39,7 @@ fun Gym_Log_BookTheme(
 	darkTheme: Boolean = isSystemInDarkTheme(),
 	// Dynamic color is available on Android 12+
 	dynamicColor: Boolean = true,
+	colourNavBar: Boolean = false,
 	content: @Composable () -> Unit
 ) {
 	val colorScheme = when {
@@ -56,9 +58,14 @@ fun Gym_Log_BookTheme(
 	if (!view.isInEditMode) {
 		SideEffect {
 			(view.context as Activity).window.statusBarColor =
-				colorScheme.primary.toArgb()
+				colorScheme.background.toArgb()
+			(view.context as Activity).window.navigationBarColor = if (colourNavBar) {
+				SurfaceColors.SURFACE_2.getColor(view.context)
+			} else {
+				colorScheme.surface.toArgb()
+			}
 			ViewCompat.getWindowInsetsController(view)?.isAppearanceLightStatusBars =
-				darkTheme
+				!darkTheme
 		}
 	}
 

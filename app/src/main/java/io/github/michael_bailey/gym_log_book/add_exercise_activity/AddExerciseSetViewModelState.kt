@@ -1,4 +1,4 @@
-package io.github.michael_bailey.gym_log_book.view_model
+package io.github.michael_bailey.gym_log_book.add_exercise_activity
 
 data class AddExerciseSetViewModelState(
 	var exercise: String = "",

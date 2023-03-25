@@ -1,4 +1,4 @@
-package io.github.michael_bailey.gym_log_book.view_model
+package io.github.michael_bailey.gym_log_book.add_exercise_activity
 
 import android.app.Application
 import android.text.Editable
@@ -139,9 +139,9 @@ class AddExerciseSetViewModel(application: Application) :
 				table.nextId(),
 				LocalDate.now(),
 				v.exercise,
-				v.setNumber,
-				v.weight,
-				v.reps
+				v.setNumber.toInt(),
+				v.weight.toInt(),
+				v.reps.toInt()
 			)
 		)
 	}

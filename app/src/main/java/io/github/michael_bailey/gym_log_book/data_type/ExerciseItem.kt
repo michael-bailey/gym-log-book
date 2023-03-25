@@ -8,7 +8,7 @@ data class ExerciseItem(
 	override val id: Long,
 	val date: LocalDate,
 	var exercise: String,
-	var setNumber: Long,
-	var weight: Long,
-	var reps: Long,
+	var setNumber: Int,
+	var weight: Int,
+	var reps: Int,
 ) : Identifiable()

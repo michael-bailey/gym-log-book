@@ -9,9 +9,9 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import io.github.michael_bailey.gym_log_book.R
-import io.github.michael_bailey.gym_log_book.add_exercise_activity.AddExerciseSetActivity
 import io.github.michael_bailey.gym_log_book.add_weight_activity.AddWeightActivity
 import io.github.michael_bailey.gym_log_book.databinding.ActivityMainBinding
+import io.github.michael_bailey.gym_log_book.exercise_set_guide_activity.ExerciseSetGuideActivity
 
 
 class MainActivity : AppCompatActivity() {
@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
 
 		binding.fab.setOnClickListener { view ->
 			var intent =
-				Intent(applicationContext, AddExerciseSetActivity::class.java)
+				Intent(applicationContext, ExerciseSetGuideActivity::class.java)
 			startActivity(intent)
 		}
 
@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
 						startActivity(
 							Intent(
 								applicationContext,
-								AddExerciseSetActivity::class.java
+								ExerciseSetGuideActivity::class.java
 							)
 						)
 					}

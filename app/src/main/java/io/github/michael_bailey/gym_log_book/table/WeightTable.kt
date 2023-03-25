@@ -12,8 +12,8 @@ class WeightTable(val context: Context) : CSVTable<WeightItem>(context) {
 	override val tableName: String
 		get() = "Weight"
 
-	override val adapter: RecyclerView.Adapter<*>
-		get() = WeightRecyclerAdapter(this) {
+	override val adapter: RecyclerView.Adapter<*> =
+		WeightRecyclerAdapter(this) {
 			log("adapter clicked")
 		}
 

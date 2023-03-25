@@ -7,7 +7,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import io.github.michael_bailey.gym_log_book.R
 import io.github.michael_bailey.gym_log_book.databinding.ActivityAddExerciseSetBinding
-import io.github.michael_bailey.gym_log_book.view_model.AddExerciseSetViewModel
 import kotlinx.coroutines.InternalCoroutinesApi
 
 class AddExerciseSetActivity : AppCompatActivity() {
