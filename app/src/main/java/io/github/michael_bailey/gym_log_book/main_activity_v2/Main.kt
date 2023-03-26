@@ -22,6 +22,7 @@ fun Main(vm: MainActivityV2ViewModel) {
 	val items = listOf(
 		MainActivityPage.ExercisePage,
 		MainActivityPage.WeightPage,
+		MainActivityPage.ExerciseTypePage,
 	)
 	val nav = rememberNavController()
 	Scaffold(
@@ -39,6 +40,9 @@ fun Main(vm: MainActivityV2ViewModel) {
 					}
 					composable(MainActivityPage.WeightPage.route) {
 						WeightListPage(vm)
+					}
+					composable(MainActivityPage.ExerciseTypePage.route) {
+						ExerciseTypeListPage(vm)
 					}
 				}
 			}

@@ -10,12 +10,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun ExerciseListPage(vm: MainActivityV2ViewModel) {
+fun ExerciseTypeListPage(vm: MainActivityV2ViewModel) {
 	Column(
 		modifier = Modifier.fillMaxSize(),
 		verticalArrangement = Arrangement.SpaceEvenly,
 		horizontalAlignment = Alignment.CenterHorizontally
 	) {
-		Text("ExerciseListPage", fontSize = 36.sp)
+		Text("ExerciseTypeListPage", fontSize = 36.sp)
 	}
 }

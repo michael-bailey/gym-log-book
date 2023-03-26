@@ -9,8 +9,9 @@
 
 	<!-- used for MainActivityV2 -->
 	<string name="title_activity_main_v2">Gym Log Book (V2)</string>
-	<string name="exercise_fragment_nav_button_label">Exercises</string>
-	<string name="weight_fragment_nav_button_label">Weight</string>
+	<string name="exercise_page_nav_button_label">Exercises</string>
+	<string name="weight_page_nav_button_label">Weight</string>
+	<string name="exercise_type_page_nav_button_label">Types</string>
 
 	<!-- used for AddWeightActivity -->
 	<string name="title_activity_add_exercise">AddWeightActivity</string>

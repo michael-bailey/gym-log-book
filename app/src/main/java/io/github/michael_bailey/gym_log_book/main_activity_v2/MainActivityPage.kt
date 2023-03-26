@@ -9,11 +9,16 @@ sealed class MainActivityPage(
 ) {
 	object ExercisePage : MainActivityPage(
 		"exercise_page",
-		R.string.activity_exercise_set_guide_start_screen_nav_text
+		R.string.exercise_page_nav_button_label
 	)
 
 	object WeightPage : MainActivityPage(
 		"weight_page",
-		R.string.activity_exercise_set_guide_set_screen_nav_text
+		R.string.weight_page_nav_button_label
+	)
+
+	object ExerciseTypePage : MainActivityPage(
+		"exercise_type_page",
+		R.string.exercise_type_page_nav_button_label
 	)
 }
