@@ -1,12 +1,15 @@
 package io.github.michael_bailey.gym_log_book.main_activity_v2
 
+import android.app.Activity
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -19,6 +22,7 @@ import io.github.michael_bailey.gym_log_book.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Main(vm: MainActivityV2ViewModel) {
+	val activity = LocalContext.current as Activity
 	val items = listOf(
 		MainActivityPage.ExercisePage,
 		MainActivityPage.WeightPage,
@@ -45,6 +49,21 @@ fun Main(vm: MainActivityV2ViewModel) {
 						ExerciseTypeListPage(vm)
 					}
 				}
+			}
+		},
+		floatingActionButton = {
+			ExtendedFloatingActionButton(
+				onClick = {
+					MainActivityUtils.openSetGuideActivity(
+						activity
+					)
+				},
+			) {
+				Icon(
+					imageVector = Icons.Filled.Add,
+					contentDescription = "Add Set Button"
+				)
+				Text(text = "Add Sets")
 			}
 		},
 		bottomBar = {
