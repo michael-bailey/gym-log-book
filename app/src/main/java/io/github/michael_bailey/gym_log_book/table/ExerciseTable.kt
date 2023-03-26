@@ -1,6 +1,7 @@
 package io.github.michael_bailey.gym_log_book.table
 
 import android.content.Context
+import androidx.compose.runtime.toMutableStateList
 import androidx.recyclerview.widget.RecyclerView
 import io.github.michael_bailey.gym_log_book.data_type.ExerciseItem
 import io.github.michael_bailey.gym_log_book.lib.table.CSVTable
@@ -9,7 +10,7 @@ import java.time.LocalDate
 
 class ExerciseTable(val context: Context) : CSVTable<ExerciseItem>(context) {
 
-//	val state = store.to()
+	val listState = store.toMutableStateList()
 
 	override val adapter: RecyclerView.Adapter<*> =
 		ExerciseRecyclerAdapter(this) {

@@ -17,5 +17,6 @@ fun ExerciseTypeListPage(vm: MainActivityV2ViewModel) {
 		horizontalAlignment = Alignment.CenterHorizontally
 	) {
 		Text("ExerciseTypeListPage", fontSize = 36.sp)
+
 	}
 }
