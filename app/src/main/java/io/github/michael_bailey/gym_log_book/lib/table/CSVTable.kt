@@ -37,16 +37,17 @@ abstract class CSVTable<T : Identifiable>(
 			val nonEmpty = reader.lineSequence()
 				.filter { it.isNotBlank() }
 				.toList()
-			store = nonEmpty.withIndex().map {
+			val tmpStore = nonEmpty.withIndex().map {
 				if (it.index == 0) return@map null
 				decodeEntry(it.value)
-			}.filterNotNull().toMutableList()
-			store.sortBy {
-				it.id
-			}
+			}.filterNotNull().sortedBy { it.id }.toMutableList()
+			store = tmpStore
+			listState.value = store
+
 		} catch (e: FileNotFoundException) {
 			log("file not found when loading")
 			store = mutableListOf()
+			listState.value = store
 		}
 	}
 }

@@ -4,7 +4,7 @@ import io.github.michael_bailey.gym_log_book.lib.Identifiable
 import java.time.LocalDate
 
 data class WeightItem(
-	override val id: Long,
+	override val id: Int,
 	val date: LocalDate,
-	val weight: Long,
+	val weight: Double,
 ) : Identifiable()

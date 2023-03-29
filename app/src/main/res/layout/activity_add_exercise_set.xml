@@ -4,7 +4,7 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	tools:context="io.github.michael_bailey.gym_log_book.add_exercise_activity.AddExerciseSetActivity">
+	tools:context="io.github.michael_bailey.gym_log_book.activity.add_exercise_activity.AddExerciseSetActivity">
 
 	<Button
 		android:id="@+id/SubmitButton"

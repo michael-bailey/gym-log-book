@@ -1,21 +1,25 @@
 package io.github.michael_bailey.gym_log_book.table
 
 import android.content.Context
-import androidx.compose.runtime.toMutableStateList
 import androidx.recyclerview.widget.RecyclerView
+import io.github.michael_bailey.gym_log_book.activity.main_activity.ExerciseRecyclerAdapter
 import io.github.michael_bailey.gym_log_book.data_type.ExerciseItem
 import io.github.michael_bailey.gym_log_book.lib.table.CSVTable
-import io.github.michael_bailey.gym_log_book.main_activity.ExerciseRecyclerAdapter
 import java.time.LocalDate
 
 class ExerciseTable(val context: Context) : CSVTable<ExerciseItem>(context) {
-
-	val listState = store.toMutableStateList()
-
 	override val adapter: RecyclerView.Adapter<*> =
 		ExerciseRecyclerAdapter(this) {
 			log("adapter clicked")
 		}
+
+	override fun getRows(): List<ExerciseItem> {
+		return store
+	}
+
+	override fun removeRow() {
+		TODO("Not yet implemented")
+	}
 
 	override val tableName: String
 		get() = "exercise"
@@ -30,11 +34,11 @@ class ExerciseTable(val context: Context) : CSVTable<ExerciseItem>(context) {
 			limit = 6
 		)
 		return ExerciseItem(
-			id.toLong(),
+			id.toInt(),
 			LocalDate.parse(date),
 			exercise,
 			setNumber.toInt(),
-			Weight.toInt(),
+			Weight.toDouble(),
 			Reps.toInt()
 		)
 	}

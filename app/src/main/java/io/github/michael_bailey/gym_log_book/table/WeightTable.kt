@@ -2,9 +2,9 @@ package io.github.michael_bailey.gym_log_book.table
 
 import android.content.Context
 import androidx.recyclerview.widget.RecyclerView
+import io.github.michael_bailey.gym_log_book.activity.main_activity.WeightRecyclerAdapter
 import io.github.michael_bailey.gym_log_book.data_type.WeightItem
 import io.github.michael_bailey.gym_log_book.lib.table.CSVTable
-import io.github.michael_bailey.gym_log_book.main_activity.WeightRecyclerAdapter
 import java.time.LocalDate
 
 class WeightTable(val context: Context) : CSVTable<WeightItem>(context) {
@@ -17,6 +17,14 @@ class WeightTable(val context: Context) : CSVTable<WeightItem>(context) {
 			log("adapter clicked")
 		}
 
+	override fun getRows(): List<WeightItem> {
+		return store
+	}
+
+	override fun removeRow() {
+		TODO("Not yet implemented")
+	}
+
 	override fun formatHeader(): String {
 		log("called format header")
 		return "'ID', 'Date', 'Weight'"
@@ -25,7 +33,7 @@ class WeightTable(val context: Context) : CSVTable<WeightItem>(context) {
 	override fun decodeEntry(entry: String): WeightItem = entry.let {
 		log("decoding: $it ")
 		val (id, date, Weight) = it.split(", ", ignoreCase = false, limit = 3)
-		WeightItem(id.toLong(), LocalDate.parse(date), Weight.toLong())
+		WeightItem(id.toInt(), LocalDate.parse(date), Weight.toDouble())
 	}
 
 	override fun formatEntry(entry: WeightItem): String {

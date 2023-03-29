@@ -42,6 +42,9 @@ fun Gym_Log_BookTheme(
 	colourNavBar: Boolean = false,
 	content: @Composable () -> Unit
 ) {
+	// debug colours and nav bar
+
+
 	val colorScheme = when {
 		dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
 			val context = LocalContext.current
