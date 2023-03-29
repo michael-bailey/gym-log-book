@@ -1,4 +1,4 @@
-package io.github.michael_bailey.gym_log_book.activity.main_activity_v2.exercise_page
+package io.github.michael_bailey.gym_log_book.activity.main_activity_v2.weight_page
 
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.*
@@ -16,12 +16,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import io.github.michael_bailey.gym_log_book.data_type.ExerciseItem
+import io.github.michael_bailey.gym_log_book.data_type.WeightItem
 import kotlin.math.roundToInt
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
-fun ExerciseItemView(item: ExerciseItem) {
+fun WeightItemView(item: WeightItem) {
 
 	val width = 96.dp
 	val squareSize = 250.dp
@@ -48,25 +48,10 @@ fun ExerciseItemView(item: ExerciseItem) {
 					.padding(16.dp)
 			) {
 				Text(
-					text = "${item.exercise}",
+					text = "${item.weight} KG",
 					fontSize = 18.sp,
 					fontWeight = FontWeight(500)
 				)
-
-				Row(
-					Modifier.fillMaxSize(1f),
-					horizontalArrangement = Arrangement.SpaceEvenly
-				) {
-					Text(text = "Set: ${item.setNumber}")
-					Text(text = "${item.weight} KG")
-				}
-
-				Row(
-					Modifier.fillMaxSize(1f),
-					horizontalArrangement = Arrangement.SpaceEvenly
-				) {
-					Text(text = "${item.reps} reps")
-				}
 			}
 		}
 	}

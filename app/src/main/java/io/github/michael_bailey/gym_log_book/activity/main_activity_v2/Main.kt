@@ -1,6 +1,9 @@
 package io.github.michael_bailey.gym_log_book.activity.main_activity_v2
 
 import android.app.Activity
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -11,6 +14,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
@@ -18,8 +22,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import io.github.michael_bailey.gym_log_book.R
+import io.github.michael_bailey.gym_log_book.activity.main_activity_v2.exercise_page.ExerciseListPage
+import io.github.michael_bailey.gym_log_book.activity.main_activity_v2.weight_page.WeightListPage
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
 @Composable
 fun Main(vm: MainActivityV2ViewModel) {
 	val activity = LocalContext.current as Activity
@@ -29,6 +35,8 @@ fun Main(vm: MainActivityV2ViewModel) {
 		MainActivityPage.ExerciseTypePage,
 	)
 	val nav = rememberNavController()
+	val navBackStackEntry by nav.currentBackStackEntryAsState()
+
 	Scaffold(
 		topBar = {
 			SmallTopAppBar({ Text(text = stringResource(R.string.app_name)) })
@@ -52,23 +60,27 @@ fun Main(vm: MainActivityV2ViewModel) {
 			}
 		},
 		floatingActionButton = {
-			ExtendedFloatingActionButton(
-				onClick = {
-					MainActivityUtils.openSetGuideActivity(
-						activity
+			AnimatedContent(navBackStackEntry, Modifier.animateContentSize()) {
+				ExtendedFloatingActionButton(
+					onClick = {
+						MainActivityUtils.openSetGuideActivity(
+							activity
+						)
+					},
+				) {
+					Icon(
+						imageVector = Icons.Filled.Add,
+						contentDescription = "Add Set Button"
 					)
-				},
-			) {
-				Icon(
-					imageVector = Icons.Filled.Add,
-					contentDescription = "Add Set Button"
-				)
-				Text(text = "Add Sets")
+
+					Text(text = navBackStackEntry?.let { getOnClickText(backStack = it) }
+						?: "ERR")
+
+				}
 			}
 		},
 		bottomBar = {
 			NavigationBar {
-				val navBackStackEntry by nav.currentBackStackEntryAsState()
 				val currentDestination = navBackStackEntry?.destination
 				items.forEach { page ->
 					NavigationBarItem(
@@ -100,4 +112,15 @@ fun Main(vm: MainActivityV2ViewModel) {
 			}
 		}
 	)
+}
+
+fun getOnClickText(backStack: NavBackStackEntry): String {
+	return when (backStack.destination.route) {
+		MainActivityPage.ExercisePage.route -> "Add Set"
+		MainActivityPage.WeightPage.route -> "Add Weight"
+		MainActivityPage.ExerciseTypePage.route -> "Add type"
+		else -> {
+			"ERR"
+		}
+	}
 }

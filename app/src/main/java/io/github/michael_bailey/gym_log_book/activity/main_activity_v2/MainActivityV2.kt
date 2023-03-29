@@ -28,39 +28,13 @@ class MainActivityV2 : ComponentActivity() {
 		log("onLowMemory")
 	}
 
-	override fun onStart() {
-		super.onStart()
-		log("onStart")
-	}
-
-	override fun onRestart() {
-		super.onRestart()
-		log("onRestart")
-	}
-
 	override fun onResume() {
 		super.onResume()
 		log("onResume")
 		val vm: MainActivityV2ViewModel by viewModels {
 			MainActivityV2ViewModelFactory(application = application as App)
 		}
-
 		vm.forceUpdate()
-	}
-
-	override fun onPause() {
-		super.onPause()
-		log("onPause")
-	}
-
-	override fun onStop() {
-		super.onStop()
-		log("onStop")
-	}
-
-	override fun onDestroy() {
-		super.onDestroy()
-		log("onDestroy")
 	}
 }
 
