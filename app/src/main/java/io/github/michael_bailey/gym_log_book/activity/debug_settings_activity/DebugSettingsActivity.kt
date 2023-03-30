@@ -4,12 +4,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.ui.Modifier
+import androidx.compose.runtime.livedata.observeAsState
 import io.github.michael_bailey.gym_log_book.App
-import io.github.michael_bailey.gym_log_book.extension.component_activity.isDebugEnabled
 import io.github.michael_bailey.gym_log_book.theme.Gym_Log_BookTheme
 
 class DebugSettingsActivity : ComponentActivity() {
@@ -20,17 +16,13 @@ class DebugSettingsActivity : ComponentActivity() {
 			DebugSettingsViewModelFactory(application = application as App)
 		}
 
-		val debug = application.isDebugEnabled()
-
 		setContent {
-			Gym_Log_BookTheme(colourNavBar = debug) {
+			val isDebugEnabled = vm.isDebugEnabled.observeAsState(false)
+			Gym_Log_BookTheme(colourNavBar = isDebugEnabled.value) {
 				// A surface container using the 'background' color from the theme
-				Surface(
-					modifier = Modifier.fillMaxSize(),
-					color = MaterialTheme.colorScheme.background
-				) {
-					Main(vm)
-				}
+
+				Main(vm)
+
 			}
 		}
 	}
