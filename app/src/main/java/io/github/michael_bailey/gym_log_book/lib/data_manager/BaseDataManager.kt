@@ -21,7 +21,7 @@ abstract class BaseDataManager<T>(
 	}
 
 	private fun updateLiveData() {
-		val items = table.getRows()
+		val items = table.getRows().toList()
 		mutableLiveData.postValue(items)
 	}
 
