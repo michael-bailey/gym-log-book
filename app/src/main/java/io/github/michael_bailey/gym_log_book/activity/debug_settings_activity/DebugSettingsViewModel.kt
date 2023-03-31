@@ -21,17 +21,17 @@ class DebugSettingsViewModel(
 		get() = _isDebugEnabled
 
 	val _isBottomNavEnabled: MutableLiveData<Boolean> =
-		MutableLiveData(application.isDebugEnabled())
+		MutableLiveData(application.isDebugBottomNavBarEnabled())
 	val isBottomNavEnabled: LiveData<Boolean>
 		get() = _isBottomNavEnabled
 
 	val _isStatusColourEnabled: MutableLiveData<Boolean> =
-		MutableLiveData(application.isDebugEnabled())
+		MutableLiveData(application.isDebugStatusBarColourEnabled())
 	val isStatusColourEnabled: LiveData<Boolean>
 		get() = _isStatusColourEnabled
 
 	val _isNavbarColourEnabled: MutableLiveData<Boolean> =
-		MutableLiveData(application.isDebugEnabled())
+		MutableLiveData(application.isDebugNavBarColourEnabled())
 	val isNavbarColourEnabled: LiveData<Boolean>
 		get() = _isNavbarColourEnabled
 

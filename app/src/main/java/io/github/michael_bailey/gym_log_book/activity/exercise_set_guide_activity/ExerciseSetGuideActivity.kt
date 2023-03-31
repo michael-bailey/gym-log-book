@@ -23,7 +23,7 @@ class ExerciseSetGuideActivity : ComponentActivity() {
 
 		setContent {
 			Gym_Log_BookTheme(colourNavBar = isDebugEnabled) {
-				Main(vm = vm, this::finish, debug = isDebugEnabled)
+				Main(vm = vm, this::finish)
 			}
 		}
 	}

@@ -7,6 +7,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -14,14 +15,15 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import io.github.michael_bailey.gym_log_book.App
 import io.github.michael_bailey.gym_log_book.R
+import io.github.michael_bailey.gym_log_book.extension.component_activity.isDebugBottomNavBarEnabled
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Main(
 	vm: SetGuideViewModel,
 	onFinished: () -> Unit,
-	debug: Boolean = false
 ) {
 	val items = listOf(
 		ExerciseSetGuideActivityPage.Start,
@@ -30,24 +32,27 @@ fun Main(
 		ExerciseSetGuideActivityPage.AskExtraSet,
 	)
 	val nav = rememberNavController()
+	val debugBottomBar = (
+		LocalContext.current.applicationContext as App
+		).isDebugBottomNavBarEnabled()
 
 	// A surface container using the 'background' color from the theme
 	Scaffold(
-			topBar = {
-				SmallTopAppBar({ Text(text = stringResource(R.string.title_activity_exercise_set_guide)) })
-			},
-			bottomBar = {
-				if (debug) {
-					NavigationBar {
-						val navBackStackEntry by nav.currentBackStackEntryAsState()
-						val currentDestination = navBackStackEntry?.destination
-						items.forEach { page ->
-							NavigationBarItem(
-								icon = {
-									Icon(
-										Icons.Filled.Settings,
-										contentDescription = null
-									)
+		topBar = {
+			SmallTopAppBar({ Text(text = stringResource(R.string.title_activity_exercise_set_guide)) })
+		},
+		bottomBar = {
+			if (debugBottomBar) {
+				NavigationBar {
+					val navBackStackEntry by nav.currentBackStackEntryAsState()
+					val currentDestination = navBackStackEntry?.destination
+					items.forEach { page ->
+						NavigationBarItem(
+							icon = {
+								Icon(
+									Icons.Filled.Settings,
+									contentDescription = null
+								)
 								},
 								label = { Text(stringResource(page.resourceId)) },
 								selected = currentDestination?.hierarchy?.any { it.route == page.route } == true,

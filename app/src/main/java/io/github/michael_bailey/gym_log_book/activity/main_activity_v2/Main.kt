@@ -2,9 +2,9 @@ package io.github.michael_bailey.gym_log_book.activity.main_activity_v2
 
 import android.app.Activity
 import android.content.Intent
-import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -12,6 +12,7 @@ import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -38,6 +39,8 @@ fun Main(vm: MainActivityV2ViewModel) {
 	)
 	val nav = rememberNavController()
 	val navBackStackEntry by nav.currentBackStackEntryAsState()
+
+	val fabExpanded by remember { mutableStateOf(true) }
 
 	var dropDownDisplayed by remember { mutableStateOf(false) }
 
@@ -76,35 +79,47 @@ fun Main(vm: MainActivityV2ViewModel) {
 					startDestination = MainActivityPage.ExercisePage.route
 				) {
 					composable(MainActivityPage.ExercisePage.route) {
-						ExerciseListPage(vm)
+						Column(
+							Modifier.fillMaxWidth(),
+							horizontalAlignment = Alignment.CenterHorizontally
+						) {
+							ExerciseListPage(vm)
+						}
 					}
 					composable(MainActivityPage.WeightPage.route) {
-						WeightListPage(vm)
+						Column(
+							Modifier.fillMaxWidth(),
+							horizontalAlignment = Alignment.CenterHorizontally
+						) {
+							WeightListPage(vm)
+						}
 					}
 					composable(MainActivityPage.ExerciseTypePage.route) {
-						ExerciseTypeListPage(vm)
+						Column(
+							Modifier.fillMaxWidth(),
+							horizontalAlignment = Alignment.CenterHorizontally
+						) {
+							ExerciseTypeListPage(vm)
+						}
 					}
 				}
 			}
 		},
 		floatingActionButton = {
-			AnimatedContent(navBackStackEntry, Modifier.animateContentSize()) {
-				ExtendedFloatingActionButton(
-					onClick = {
-						MainActivityUtils.openSetGuideActivity(
-							activity
-						)
-					},
-				) {
-					Icon(
-						imageVector = Icons.Filled.Add,
-						contentDescription = "Add Set Button"
+			ExtendedFloatingActionButton(
+				onClick = {
+					MainActivityUtils.openSetGuideActivity(
+						activity
 					)
+				},
+			) {
+				Icon(
+					imageVector = Icons.Filled.Add,
+					contentDescription = "Add Set Button"
+				)
+				Text(text = navBackStackEntry?.let { getOnClickText(backStack = it) }
+					?: "ERR")
 
-					Text(text = navBackStackEntry?.let { getOnClickText(backStack = it) }
-						?: "ERR")
-
-				}
 			}
 		},
 		bottomBar = {

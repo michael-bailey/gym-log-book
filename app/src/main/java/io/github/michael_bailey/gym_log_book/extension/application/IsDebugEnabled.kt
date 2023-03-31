@@ -12,7 +12,7 @@ inline fun Application.setIsDebugEnabled(value: Boolean) = preferences().let {
 }
 
 inline fun Application.isDebugBottomNavBarEnabled() = preferences().let {
-	it.getBoolean("debug_bottom_nav_bar_enabled", false)
+	it.getBoolean("debug_bottom_nav_bar_enabled", false) && isDebugEnabled()
 }
 
 inline fun Application.setIsDebugBottomNavBarEnabled(value: Boolean) =
@@ -21,7 +21,7 @@ inline fun Application.setIsDebugBottomNavBarEnabled(value: Boolean) =
 	}
 
 inline fun Application.isDebugStatusBarColourEnabled() = preferences().let {
-	it.getBoolean("debug_status_bar_colour_enabled", false)
+	it.getBoolean("debug_status_bar_colour_enabled", false) && isDebugEnabled()
 }
 
 inline fun Application.setIsDebugStatusBarColourEnabled(value: Boolean) =
@@ -30,7 +30,7 @@ inline fun Application.setIsDebugStatusBarColourEnabled(value: Boolean) =
 	}
 
 inline fun Application.isDebugNavBarColourEnabled() = preferences().let {
-	it.getBoolean("debug_nav_bar_colour_enabled", false)
+	it.getBoolean("debug_nav_bar_colour_enabled", false) && isDebugEnabled()
 }
 
 inline fun Application.setIsDebugNavBarColourEnabled(value: Boolean) =
