@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import io.github.michael_bailey.gym_log_book.extension.component_activity.isDebugEnabled
 import io.github.michael_bailey.gym_log_book.theme.Gym_Log_BookTheme
 
 class ExerciseSetGuideActivity : ComponentActivity() {
@@ -18,11 +17,9 @@ class ExerciseSetGuideActivity : ComponentActivity() {
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		val vm: SetGuideViewModel by viewModels()
-		val isDebugEnabled = application.isDebugEnabled()
-
 
 		setContent {
-			Gym_Log_BookTheme(colourNavBar = isDebugEnabled) {
+			Gym_Log_BookTheme(colourNavBar = false) {
 				Main(vm = vm, this::finish)
 			}
 		}

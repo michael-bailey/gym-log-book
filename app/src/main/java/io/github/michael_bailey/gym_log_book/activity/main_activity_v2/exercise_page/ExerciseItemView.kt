@@ -54,7 +54,6 @@ fun ExerciseItemView(item: ExerciseItem) {
 					fontSize = 14.sp,
 					fontWeight = FontWeight(400)
 				)
-
 				Row(
 					Modifier
 						.wrapContentHeight()

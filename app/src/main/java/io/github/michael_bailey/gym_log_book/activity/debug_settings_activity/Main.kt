@@ -28,7 +28,6 @@ fun Main(vm: DebugSettingsViewModel) {
 			)
 		},
 		content = {
-
 			Surface(
 				modifier = Modifier.padding(it)
 			) {
@@ -80,7 +79,7 @@ fun Main(vm: DebugSettingsViewModel) {
 			}
 		},
 		bottomBar = {
-			if (isDebugEnabled.value) {
+			if (isBottomNavEnabled.value) {
 				NavigationBar {
 					Text("This is to be iomplemented")
 				}
