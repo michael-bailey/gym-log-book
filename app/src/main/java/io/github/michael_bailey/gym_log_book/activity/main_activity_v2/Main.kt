@@ -6,6 +6,7 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.MoreVert
@@ -27,6 +28,7 @@ import io.github.michael_bailey.gym_log_book.R
 import io.github.michael_bailey.gym_log_book.activity.debug_settings_activity.DebugSettingsActivity
 import io.github.michael_bailey.gym_log_book.activity.main_activity_v2.exercise_page.ExerciseListPage
 import io.github.michael_bailey.gym_log_book.activity.main_activity_v2.weight_page.WeightListPage
+import io.github.michael_bailey.gym_log_book.extension.any.log
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
 @Composable
@@ -37,24 +39,50 @@ fun Main(vm: MainActivityV2ViewModel) {
 		MainActivityPage.WeightPage,
 		MainActivityPage.ExerciseTypePage,
 	)
+
 	val nav = rememberNavController()
+	val listState = rememberLazyListState()
+
+	var (dropDownDisplayed, setDropDownDisplayed) = remember {
+		mutableStateOf(
+			false
+		)
+	}
+	val (fabAction, setFabAction) = remember {
+		mutableStateOf<Activity.() -> Unit>(
+			{ log("Fab has no action") })
+	}
+
+
 	val navBackStackEntry by nav.currentBackStackEntryAsState()
 
-	val fabExpanded by remember { mutableStateOf(true) }
+	val fabVisibility by derivedStateOf {
+		listState.firstVisibleItemIndex == 0
+	}
 
-	var dropDownDisplayed by remember { mutableStateOf(false) }
+
+
+
+
+
+
+
+
+
+
+
 
 	Scaffold(
 		topBar = {
 			SmallTopAppBar(
 				{ Text(text = stringResource(R.string.app_name)) },
 				actions = {
-					IconButton(onClick = { dropDownDisplayed = !dropDownDisplayed }) {
+					IconButton(onClick = { setDropDownDisplayed(!dropDownDisplayed) }) {
 						Icon(Icons.Default.MoreVert, "content")
 					}
 					DropdownMenu(
 						expanded = dropDownDisplayed,
-						onDismissRequest = { dropDownDisplayed = false }
+						onDismissRequest = { setDropDownDisplayed(false) }
 					) {
 						DropdownMenuItem(
 							text = { Text(text = "Settings") },
@@ -79,11 +107,12 @@ fun Main(vm: MainActivityV2ViewModel) {
 					startDestination = MainActivityPage.ExercisePage.route
 				) {
 					composable(MainActivityPage.ExercisePage.route) {
+
 						Column(
 							Modifier.fillMaxWidth(),
 							horizontalAlignment = Alignment.CenterHorizontally
 						) {
-							ExerciseListPage(vm)
+							ExerciseListPage(vm, listState)
 						}
 					}
 					composable(MainActivityPage.WeightPage.route) {
@@ -91,7 +120,7 @@ fun Main(vm: MainActivityV2ViewModel) {
 							Modifier.fillMaxWidth(),
 							horizontalAlignment = Alignment.CenterHorizontally
 						) {
-							WeightListPage(vm)
+							WeightListPage(vm, listState)
 						}
 					}
 					composable(MainActivityPage.ExerciseTypePage.route) {
@@ -107,19 +136,16 @@ fun Main(vm: MainActivityV2ViewModel) {
 		},
 		floatingActionButton = {
 			ExtendedFloatingActionButton(
-				onClick = {
-					MainActivityUtils.openSetGuideActivity(
-						activity
-					)
-				},
+				onClick = { activity.fabAction() },
 			) {
 				Icon(
 					imageVector = Icons.Filled.Add,
 					contentDescription = "Add Set Button"
 				)
-				Text(text = navBackStackEntry?.let { getOnClickText(backStack = it) }
-					?: "ERR")
-
+				if (fabVisibility) {
+					Text(text = navBackStackEntry?.let { getOnClickText(backStack = it) }
+						?: "ERR")
+				}
 			}
 		},
 		bottomBar = {
@@ -137,17 +163,12 @@ fun Main(vm: MainActivityV2ViewModel) {
 						selected = currentDestination?.hierarchy?.any { it.route == page.route } == true,
 						onClick = {
 							nav.navigate(page.route) {
-								// Pop up to the start destination of the graph to
-								// avoid building up a large stack of destinations
-								// on the back stack as users select items
 								popUpTo(nav.graph.findStartDestination().id) {
 									saveState = true
 								}
-								// Avoid multiple copies of the same destination when
-								// reselecting the same item
 								launchSingleTop = true
-								// Restore state when reselecting a previously selected item
 								restoreState = true
+								setFabAction(page.fabAction ?: { log("Fab has no action") })
 							}
 						}
 					)
