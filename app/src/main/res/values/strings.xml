@@ -26,5 +26,6 @@
 	<string name="activity_exercise_set_guide_pause_screen_nav_text">Pause</string>
 	<string name="activity_exercise_set_guide_ask_extra_set_screen_nav_text">Extra Set</string>
 	<string name="title_activity_debug_settings">DebugSettingsActivity</string>
+	<string name="title_activity_amend_exercise">AmendExerciseActivity</string>
 
 </resources>

@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.recyclerview.widget.RecyclerView
 import io.github.michael_bailey.gym_log_book.activity.main_activity.WeightRecyclerAdapter
 import io.github.michael_bailey.gym_log_book.data_type.WeightItem
+import io.github.michael_bailey.gym_log_book.extension.any.log
 import io.github.michael_bailey.gym_log_book.lib.table.CSVTable
 import java.time.LocalDate
 
@@ -16,14 +17,6 @@ class WeightTable(val context: Context) : CSVTable<WeightItem>(context) {
 		WeightRecyclerAdapter(this) {
 			log("adapter clicked")
 		}
-
-	override fun getRows(): List<WeightItem> {
-		return store
-	}
-
-	override fun removeRow() {
-		TODO("Not yet implemented")
-	}
 
 	override fun formatHeader(): String {
 		log("called format header")

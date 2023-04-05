@@ -33,7 +33,7 @@ class ExerciseRecyclerAdapter(
 
 		// Get element from your dataset at this position and replace the
 		// contents of the view with that element
-		viewHolder.setData(table.store[position])
+		viewHolder.setData(table.liveData.value!![position])
 	}
 
 	// Return the size of your dataset (invoked by the layout manager)

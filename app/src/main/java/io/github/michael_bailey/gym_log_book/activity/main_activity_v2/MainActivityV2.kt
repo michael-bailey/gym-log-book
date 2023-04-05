@@ -5,7 +5,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import io.github.michael_bailey.gym_log_book.App
-import io.github.michael_bailey.gym_log_book.extension.any.log
 import io.github.michael_bailey.gym_log_book.lib.view_model.ListViewModel
 import io.github.michael_bailey.gym_log_book.theme.Gym_Log_BookTheme
 
@@ -25,19 +24,6 @@ class MainActivityV2 : ComponentActivity() {
 				Main(vm = vm)
 			}
 		}
-	}
-
-	override fun onLowMemory() {
-		log("onLowMemory")
-	}
-
-	override fun onResume() {
-		super.onResume()
-		log("onResume")
-		val vm: MainActivityV2ViewModel by viewModels {
-			MainActivityV2ViewModelFactory(application = application as App)
-		}
-		vm.forceUpdate()
 	}
 }
 

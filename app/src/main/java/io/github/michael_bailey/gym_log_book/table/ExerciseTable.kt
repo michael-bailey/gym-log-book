@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.recyclerview.widget.RecyclerView
 import io.github.michael_bailey.gym_log_book.activity.main_activity.ExerciseRecyclerAdapter
 import io.github.michael_bailey.gym_log_book.data_type.ExerciseItem
+import io.github.michael_bailey.gym_log_book.extension.any.log
 import io.github.michael_bailey.gym_log_book.lib.table.CSVTable
 import java.time.LocalDate
 
@@ -12,14 +13,6 @@ class ExerciseTable(val context: Context) : CSVTable<ExerciseItem>(context) {
 		ExerciseRecyclerAdapter(this) {
 			log("adapter clicked")
 		}
-
-	override fun getRows(): List<ExerciseItem> {
-		return store
-	}
-
-	override fun removeRow() {
-		TODO("Not yet implemented")
-	}
 
 	override val tableName: String
 		get() = "exercise"

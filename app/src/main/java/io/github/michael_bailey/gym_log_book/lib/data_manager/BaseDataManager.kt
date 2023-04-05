@@ -1,7 +1,6 @@
 package io.github.michael_bailey.gym_log_book.lib.data_manager
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.MediatorLiveData
 import io.github.michael_bailey.gym_log_book.lib.table.ITable
 
 /**
@@ -13,16 +12,15 @@ abstract class BaseDataManager<T>(
 	protected val table: ITable<T>
 ) {
 
-	private val mutableLiveData: MutableLiveData<List<T>> = MutableLiveData()
-	val liveData: LiveData<List<T>> get() = mutableLiveData
+	val liveData: MediatorLiveData<List<T>> = MediatorLiveData<List<T>>()
 
 	init {
-		updateLiveData()
-	}
-
-	private fun updateLiveData() {
-		val items = table.getRows().toList()
-		mutableLiveData.postValue(items)
+		liveData.apply {
+			addSource(table.liveData) {
+				this.value = it
+			}
+			value = table.liveData.value
+		}
 	}
 
 	/**
@@ -31,25 +29,17 @@ abstract class BaseDataManager<T>(
 	fun append(
 		factory: (Int) -> T
 	) {
-		table.appendRow(factory(table.getRowCount()))
-		updateLiveData()
+		table.addRow(factory(table.getRowCount()))
 	}
 
 	fun update(
 		id: Int,
-		updater: T.() -> T
+		updater: T.() -> Unit
 	) {
-		val item = table.getRow(id)
-		item.updater()
-		updateLiveData()
+		table.updateRow(id, updater)
 	}
 
-	fun deleteLast() {
-		table.removeRow()
-		updateLiveData()
-	}
-
-	fun forceUpdate() {
-		updateLiveData()
+	fun delete(id: Int) {
+		table.removeRow(id)
 	}
 }

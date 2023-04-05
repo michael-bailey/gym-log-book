@@ -54,19 +54,17 @@ class SetGuideViewModel(application: Application) :
 	}
 
 	fun finalise(ctx: Context) {
-		getApplication<App>().weightDataManager.apply {
-			getApplication<App>().exerciseDataManager.apply {
-				val vm = this@SetGuideViewModel
-				append { id ->
-					ExerciseItem(
-						id,
-						LocalDate.now(),
-						vm.currentExercise.value,
-						vm.setNumber.value,
-						vm.nextWeight.value,
-						vm.nextReps.value
-					)
-				}
+		getApplication<App>().exerciseDataManager.apply {
+			val vm = this@SetGuideViewModel
+			append { id ->
+				ExerciseItem(
+					id,
+					LocalDate.now(),
+					vm.currentExercise.value,
+					vm.setNumber.value,
+					vm.nextWeight.value,
+					vm.nextReps.value
+				)
 			}
 		}
 	}

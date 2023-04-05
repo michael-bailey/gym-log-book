@@ -10,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -22,10 +23,12 @@ import io.github.michael_bailey.gym_log_book.activity.main_activity_v2.MainActiv
 fun ExerciseListPage(vm: MainActivityV2ViewModel, listState: LazyListState) {
 
 	val state by vm.exerciseListState.observeAsState(initial = listOf())
-	val groups = state.reversed()
-		.groupBy { it.date }
-		.toList()
-		.sortedByDescending { it.first }
+	val groups = remember(state) {
+		state.reversed()
+			.groupBy { it.date }
+			.toList()
+			.sortedByDescending { it.first }
+	}
 
 	LazyColumn(
 		Modifier.fillMaxWidth(0.91f),
@@ -50,7 +53,7 @@ fun ExerciseListPage(vm: MainActivityV2ViewModel, listState: LazyListState) {
 				Text("${it.first}", fontSize = 24.sp, fontWeight = FontWeight(500))
 			}
 			items(it.second) { item ->
-				ExerciseItemView(item = item)
+				ExerciseItemView(vm, item = item)
 			}
 		}
 	}

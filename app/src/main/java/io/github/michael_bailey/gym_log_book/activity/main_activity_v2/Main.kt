@@ -49,8 +49,11 @@ fun Main(vm: MainActivityV2ViewModel) {
 		)
 	}
 	val (fabAction, setFabAction) = remember {
-		mutableStateOf<Activity.() -> Unit>(
-			{ log("Fab has no action") })
+		mutableStateOf(
+			MainActivityPage.ExercisePage.fabAction ?: {
+				log("Fab has no action")
+			}
+		)
 	}
 
 
@@ -59,18 +62,6 @@ fun Main(vm: MainActivityV2ViewModel) {
 	val fabVisibility by derivedStateOf {
 		listState.firstVisibleItemIndex == 0
 	}
-
-
-
-
-
-
-
-
-
-
-
-
 
 	Scaffold(
 		topBar = {

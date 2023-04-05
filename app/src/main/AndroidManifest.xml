@@ -12,7 +12,11 @@
 		android:supportsRtl="true"
 		android:theme="@style/Theme.Gym_Log_Book"
 		tools:targetApi="31">
-
+		<activity
+			android:name=".activity.amend_exercise_activity.AmendExerciseActivity"
+			android:exported="true"
+			android:label="@string/title_activity_amend_exercise"
+			android:theme="@style/Theme.Gym_Log_Book" />
 		<activity
 			android:name=".activity.main_activity_v2.MainActivityV2"
 			android:exported="true"
@@ -21,6 +25,7 @@
 			android:theme="@style/Theme.Gym_Log_Book">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
+
 				<category android:name="android.intent.category.DEFAULT" />
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
@@ -38,26 +43,22 @@
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
-
 		<activity
 			android:name=".activity.add_weight_activity.AddWeightActivity"
 			android:exported="false"
 			android:label="@string/title_activity_add_weight"
 			android:theme="@style/Theme.Gym_Log_Book.NoActionBar" />
-
 		<activity
 			android:name=".activity.add_exercise_activity.AddExerciseSetActivity"
 			android:exported="false"
 			android:screenOrientation="portrait"
 			android:theme="@style/Theme.Gym_Log_Book.NoActionBar" />
-
 		<activity
 			android:name=".activity.exercise_set_guide_activity.ExerciseSetGuideActivity"
 			android:exported="true"
 			android:label="@string/title_activity_exercise_set_guide"
 			android:launchMode="singleInstancePerTask"
 			android:theme="@style/Theme.Gym_Log_Book" />
-
 		<activity
 			android:name=".activity.debug_settings_activity.DebugSettingsActivity"
 			android:exported="true"

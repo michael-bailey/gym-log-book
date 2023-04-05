@@ -20,7 +20,6 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
-import io.github.michael_bailey.gym_log_book.extension.any.log
 import kotlin.math.roundToInt
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
@@ -31,9 +30,11 @@ fun CardWithSwipeActions(
 ) {
 	val context = rememberCompositionContext()
 	val swipeableState = rememberSwipeableState(0)
-	val (actionsSize, setActionSize) = remember { mutableStateOf(IntSize(2, 2)) }
+	val (actionsSize, setActionSize) = remember {
+		mutableStateOf(IntSize(2, 2))
+	}
 	val size = actionsSize.width.toFloat()
-	context.log("sizePx:$size")
+//	context.log("sizePx:$size")
 	val anchors = mapOf(
 		0f to 0,
 		size to 1,

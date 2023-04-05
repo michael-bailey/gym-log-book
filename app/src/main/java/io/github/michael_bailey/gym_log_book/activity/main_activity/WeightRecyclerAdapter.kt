@@ -33,26 +33,22 @@ class WeightRecyclerAdapter(
 
 		// Get element from your dataset at this position and replace the
 		// contents of the view with that element
-		viewHolder.setData(table.store[position])
+		viewHolder.setData(table.liveData.value!![position])
 	}
 
 	// Return the size of your dataset (invoked by the layout manager)
-	override fun getItemCount() = table.store.size
+	override fun getItemCount() = table.liveData.value!!.size
 
 	class ViewHolder(view: View, val onClick: (WeightItem) -> Unit) :
 		RecyclerView.ViewHolder(view) {
 		val exerciseWeigntView: TextView
 
 		init {
-
 			exerciseWeigntView = view.findViewById(R.id.weight_item_weight)
-
 		}
 
 		fun setData(item: WeightItem) {
-
 			exerciseWeigntView.text = item.weight.toString()
-
 		}
 	}
 }
