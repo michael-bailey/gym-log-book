@@ -1,73 +1,131 @@
 package io.github.michael_bailey.gym_log_book.activity.exercise_set_guide_activity
 
 import android.app.Application
-import android.content.Context
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
 import io.github.michael_bailey.gym_log_book.App
 import io.github.michael_bailey.gym_log_book.data_type.ExerciseItem
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import io.github.michael_bailey.gym_log_book.lib.ExerciseVerficationUtils
 import java.time.LocalDate
 
 /**
- * Vierw model for
+ * View model for guide activity
  */
-class SetGuideViewModel(application: Application) :
-	AndroidViewModel(application) {
+class SetGuideViewModel(
+	application: Application,
 
-	private var _exercise = MutableStateFlow("")
-	val currentExercise = _exercise.asStateFlow()
+	// UI state
+	private val _stringName: MutableLiveData<String> = MutableLiveData<String>(""),
+	private val _stringWeight: MutableLiveData<String> = MutableLiveData<String>(""),
+	private val _stringReps: MutableLiveData<String> = MutableLiveData<String>(""),
 
-	private var _nextWeight = MutableStateFlow(0.0)
-	val nextWeight = _nextWeight.asStateFlow()
+	// Internal state
+	private val set: MutableLiveData<Int> = MutableLiveData<Int>(1),
+) : AndroidViewModel(application) {
 
-	private var _nextReps = MutableStateFlow(0)
-	val nextReps = _nextReps.asStateFlow()
+	// exposed state
+	val exercise: LiveData<String> = _stringName
+	val nextWeight: LiveData<String> = _stringWeight
+	val nextReps: LiveData<String> = _stringReps
+	val setNumber: LiveData<Int> = set
 
-	private var _setNumber = MutableStateFlow(1)
-	val setNumber = _setNumber.asStateFlow()
+	val startEnabled = MediatorLiveData<Boolean>().apply {
+		value = false
+		addSource(exercise) {
+			value = ExerciseVerficationUtils.verifyString(it).isSuccess
+		}
+	}
 
+	val submitSetEnabled = MediatorLiveData<Boolean>().apply {
+		initWeightAndReps(nextWeight, nextReps)
+	}
+
+	val weight = MediatorLiveData<Double>().apply {
+		addSource(_stringWeight) {
+			value = getWeight()
+		}
+	}
+
+	private fun getWeight(): Double? {
+		ExerciseVerficationUtils
+			.verifyFloat(_stringWeight.value!!)
+			.onSuccess {
+				return@getWeight _stringWeight.value!!.toDouble()
+			}
+		return null
+	}
+
+	private fun getReps(): Int? {
+		ExerciseVerficationUtils
+			.verifyFloat(_stringReps.value!!)
+			.onSuccess {
+				return@getReps _stringReps.value!!.toInt()
+			}
+		return null
+	}
 
 	fun setReps(reps: String) {
-		if (reps == "") {
-			_nextReps.value = 0
-		} else {
-			_nextReps.value = reps.toInt()
-		}
+		_stringReps.value = reps
 	}
 
 	fun setWeight(weight: String) {
-		if (weight == "") {
-			_nextWeight.value = 0.0
-		} else {
-			_nextWeight.value = weight.toDouble()
-		}
+		_stringWeight.postValue(weight)
 	}
 
 	fun updateCurrentExercise(exercise: String) {
-		_exercise.value = exercise
+		_stringName.value = exercise
 	}
 
 	fun completeSet() {
-		_setNumber.value += 1
-		_nextReps.value = 0
+		set.value = set.value!!.plus(1)
+		_stringReps.value = ""
 	}
 
-	fun finalise(ctx: Context) {
-		getApplication<App>().exerciseDataManager.apply {
-			val vm = this@SetGuideViewModel
-			append { id ->
-				ExerciseItem(
-					id,
-					LocalDate.now(),
-					vm.currentExercise.value,
-					vm.setNumber.value,
-					vm.nextWeight.value,
-					vm.nextReps.value
-				)
-			}
+	fun finalise() {
+
+		val a = exercise.value
+		val b = setNumber.value
+		val w = getWeight()
+		val r = getReps()
+
+		if (
+			exercise.value == null ||
+			setNumber.value == null ||
+			w == null ||
+			r == null
+		) {
+			return
+		}
+
+		getApplication<App>().exerciseDataManager.append {
+			ExerciseItem(
+				it,
+				LocalDate.now(),
+				exercise.value!!,
+				setNumber.value!!,
+				w,
+				r,
+			)
 		}
 	}
 }
 
+fun MediatorLiveData<Boolean>.initWeightAndReps(
+	weight: LiveData<String>,
+	reps: LiveData<String>,
+	onVerification: (() -> Unit)? = null
+) {
+	value = false
 
+	val check = { str: String ->
+		value = ExerciseVerficationUtils.verifyFloat(weight.value!!).isSuccess &&
+			ExerciseVerficationUtils.verifyFloat(reps.value!!).isSuccess
+	}
+
+	addSource(weight, check)
+	addSource(reps, check)
+
+
+}

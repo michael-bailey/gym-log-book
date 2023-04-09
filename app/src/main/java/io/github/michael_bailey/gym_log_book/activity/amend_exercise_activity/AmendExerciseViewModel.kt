@@ -26,7 +26,7 @@ class AmendExerciseViewModel(
 		MediatorLiveData<String>()
 			.apply {
 				addSource(_name) { new ->
-					ExerciseVerficationUtils.verifyExerciseName(
+					ExerciseVerficationUtils.verifyString(
 						new,
 					).onFailure {
 						this.value = it.message
@@ -40,7 +40,7 @@ class AmendExerciseViewModel(
 		MediatorLiveData<String>()
 			.apply {
 				addSource(_set) { new ->
-					ExerciseVerficationUtils.verifySet(
+					ExerciseVerficationUtils.verifyNumber(
 						new,
 					).onFailure {
 						this.value = it.message
@@ -54,7 +54,7 @@ class AmendExerciseViewModel(
 		MediatorLiveData<String>()
 			.apply {
 				addSource(_weight) { new ->
-					ExerciseVerficationUtils.verifyWeight(
+					ExerciseVerficationUtils.verifyFloat(
 						new,
 					).onFailure {
 						this.value = it.message
@@ -68,7 +68,7 @@ class AmendExerciseViewModel(
 		MediatorLiveData<String>()
 			.apply {
 				addSource(_reps) { new ->
-					ExerciseVerficationUtils.verifyReps(
+					ExerciseVerficationUtils.verifyNumber(
 						new,
 					).onFailure {
 						this.value = it.message

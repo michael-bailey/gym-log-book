@@ -4,17 +4,17 @@ import android.app.Activity
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.sp
+import io.github.michael_bailey.gym_log_book.lib.Validator
+import io.github.michael_bailey.gym_log_book.lib.componenets.ValidatorTextField
 
 @Composable
 fun Main(vm: AmendExerciseViewModel) {
@@ -53,45 +53,33 @@ fun Main(vm: AmendExerciseViewModel) {
 			Text(text = "ID ${exerciseId.value}", fontSize = 24.sp)
 		}
 		Column {
-			OutlinedTextField(
-				value = name.value,
-				onValueChange = vm::setName,
-				singleLine = true,
-				isError = nameError.value != "",
-				label = { Text("Name...") }
+			ValidatorTextField(
+				state = name,
+				validator = Validator.StringNameValidator,
+				onChange = vm::setName,
+				placeholder = "Exercise"
 			)
-			Text(nameError.value, color = Color.Red)
 
-			OutlinedTextField(
-				value = set.value,
-				onValueChange = vm::setSet,
-				label = { Text("Set Number...") },
-				singleLine = true,
-				isError = setError.value != "",
-				keyboardOptions = numberKeyboard
+			ValidatorTextField(
+				state = set,
+				validator = Validator.NumberValidator,
+				onChange = vm::setSet,
+				placeholder = "Set Number"
 			)
-			Text(setError.value, color = Color.Red)
 
-			OutlinedTextField(
-				value = weight.value,
-				onValueChange = vm::setWeight,
-				placeholder = { Text("Weight...") },
-				singleLine = true,
-				isError = weightError.value != "",
-				keyboardOptions = numberKeyboard
+			ValidatorTextField(
+				state = weight,
+				validator = Validator.FloatValidator,
+				onChange = vm::setWeight,
+				placeholder = "Weight"
 			)
-			Text(weightError.value, color = Color.Red)
 
-			OutlinedTextField(
-				value = reps.value,
-				onValueChange = vm::setReps,
-				placeholder = { Text("Reps...") },
-				singleLine = true,
-				isError = repsError.value != "",
-				keyboardOptions = numberKeyboard
+			ValidatorTextField(
+				state = reps,
+				validator = Validator.NumberValidator,
+				onChange = vm::setReps,
+				placeholder = "Reps"
 			)
-			Text(repsError.value, color = Color.Red)
-
 		}
 		Column(Modifier.fillMaxWidth(0.9f)) {
 			Row(

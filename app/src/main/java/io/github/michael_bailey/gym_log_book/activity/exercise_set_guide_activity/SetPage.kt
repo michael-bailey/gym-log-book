@@ -2,15 +2,15 @@ package io.github.michael_bailey.gym_log_book.activity.exercise_set_guide_activi
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import io.github.michael_bailey.gym_log_book.lib.Validator
+import io.github.michael_bailey.gym_log_book.lib.componenets.ValidatorTextField
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -18,13 +18,16 @@ import androidx.navigation.NavHostController
 fun SetPage(
 	nav: NavHostController,
 	vm: SetGuideViewModel,
-	modifier: Modifier? = null
 ) {
 
-	val weight = vm.nextWeight.collectAsState()
-	val reps = vm.nextReps.collectAsState()
+	val weight = vm.nextWeight.observeAsState("")
+	val reps = vm.nextReps.observeAsState("")
+	val set = vm.setNumber.observeAsState(1)
 
-	val context = LocalContext.current
+	val enabled = vm.submitSetEnabled.observeAsState(initial = false)
+
+	val test = vm.weight.observeAsState(0.0)
+	val test1 = test.value
 
 	Column(
 		modifier = Modifier.fillMaxSize(),
@@ -35,47 +38,37 @@ fun SetPage(
 		Column(
 			modifier = Modifier
 				.fillMaxWidth(0.9f)
-				.fillMaxHeight(0.2f),
+				.wrapContentHeight(),
 			verticalArrangement = Arrangement.SpaceAround,
 			horizontalAlignment = Alignment.CenterHorizontally
 		) {
-			OutlinedTextField(
-				value = weight.value.let {
-					if (it == 0.0) {
-						""
-					} else {
-						it.toString()
-					}
-				},
-				onValueChange = vm::setWeight,
-				placeholder = { Text(text = "Enter Weight") },
-				keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-				singleLine = true
+
+			ValidatorTextField(
+				state = weight,
+				validator = Validator.FloatValidator,
+				placeholder = "Weight",
+				onChange = vm::setWeight
 			)
 
-			OutlinedTextField(
-				value = reps.value.let {
-					if (it == 0) {
-						""
-					} else {
-						it.toString()
-					}
-				},
-				onValueChange = vm::setReps,
-				placeholder = { Text(text = "Enter Reps") },
-				singleLine = true,
-				keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+			ValidatorTextField(
+				state = reps,
+				validator = Validator.NumberValidator,
+				placeholder = "Reps",
+				onChange = vm::setReps
 			)
 		}
-		Button(onClick = {
-			vm.finalise(context)
-			if (vm.setNumber.value >= 3) {
-				Utils.navigateAskExtraSet(nav)
-			} else {
-				Utils.navigatePause(nav)
+		Button(
+			enabled = enabled.value,
+			onClick = {
+				vm.finalise()
+				if (set.value >= 3) {
+					Utils.navigateAskExtraSet(nav)
+				} else {
+					Utils.navigatePause(nav)
+				}
+				vm.completeSet()
 			}
-			vm.completeSet()
-		}) {
+		) {
 			Text(text = "Submit set ${vm.setNumber.value}", fontSize = 18.sp)
 		}
 	}
