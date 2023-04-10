@@ -17,6 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.michael_bailey.gym_log_book.activity.main_activity_v2.MainActivityV2ViewModel
+import io.github.michael_bailey.gym_log_book.theme.Title
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
@@ -44,7 +45,7 @@ fun ExerciseListPage(vm: MainActivityV2ViewModel, listState: LazyListState) {
 				verticalArrangement = Arrangement.Center,
 				horizontalAlignment = Alignment.CenterHorizontally
 			) {
-				Text("Hello There!", fontSize = 32.sp)
+				Text("Hello There!", fontSize = Title)
 			}
 		}
 

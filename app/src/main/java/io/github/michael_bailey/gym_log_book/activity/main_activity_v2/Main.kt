@@ -56,7 +56,6 @@ fun Main(vm: MainActivityV2ViewModel) {
 		)
 	}
 
-
 	val navBackStackEntry by nav.currentBackStackEntryAsState()
 
 	val fabVisibility by derivedStateOf {
@@ -87,7 +86,6 @@ fun Main(vm: MainActivityV2ViewModel) {
 							}
 						)
 					}
-
 				}
 			)
 		},
@@ -119,7 +117,7 @@ fun Main(vm: MainActivityV2ViewModel) {
 							Modifier.fillMaxWidth(),
 							horizontalAlignment = Alignment.CenterHorizontally
 						) {
-							ExerciseTypeListPage(vm)
+							ExerciseTypeListPage(vm, listState)
 						}
 					}
 				}

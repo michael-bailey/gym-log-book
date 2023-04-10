@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import androidx.annotation.StringRes
 import io.github.michael_bailey.gym_log_book.R
+import io.github.michael_bailey.gym_log_book.activity.add_exercise_type_activity.AddExerciseTypeActivity
 import io.github.michael_bailey.gym_log_book.activity.add_weight_activity.AddWeightActivity
 import io.github.michael_bailey.gym_log_book.activity.exercise_set_guide_activity.ExerciseSetGuideActivity
 
@@ -34,5 +35,13 @@ sealed class MainActivityPage(
 	object ExerciseTypePage : MainActivityPage(
 		"exercise_type_page",
 		R.string.exercise_type_page_nav_button_label,
+		{
+			startActivity(
+				Intent(
+					applicationContext,
+					AddExerciseTypeActivity::class.java
+				)
+			)
+		},
 	)
 }

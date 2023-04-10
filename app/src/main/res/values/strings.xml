@@ -27,5 +27,7 @@
 	<string name="activity_exercise_set_guide_ask_extra_set_screen_nav_text">Extra Set</string>
 	<string name="title_activity_debug_settings">DebugSettingsActivity</string>
 	<string name="title_activity_amend_exercise">AmendExerciseActivity</string>
+	<string name="title_activity_add_exercise_type">AddExerciseTypeActivity
+	</string>
 
 </resources>

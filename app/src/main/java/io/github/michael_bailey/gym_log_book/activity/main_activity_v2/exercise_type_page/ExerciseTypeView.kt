@@ -1,12 +1,10 @@
-package io.github.michael_bailey.gym_log_book.activity.main_activity_v2.exercise_page
+package io.github.michael_bailey.gym_log_book.activity.main_activity_v2.exercise_type_page
 
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -17,13 +15,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.michael_bailey.gym_log_book.activity.amend_exercise_activity.AmendExerciseActivity
 import io.github.michael_bailey.gym_log_book.activity.main_activity_v2.MainActivityV2ViewModel
-import io.github.michael_bailey.gym_log_book.data_type.ExerciseItem
+import io.github.michael_bailey.gym_log_book.data_type.ExerciseType
 import io.github.michael_bailey.gym_log_book.lib.componenets.CardWithSwipeActions
-import java.time.LocalDate
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
-fun ExerciseItemView(vm: MainActivityV2ViewModel?, item: ExerciseItem) {
+fun ExerciseTypeView(vm: MainActivityV2ViewModel?, item: ExerciseType) {
 	val activity = LocalContext.current as Activity
 
 	val submitIntent = Intent(
@@ -34,11 +30,8 @@ fun ExerciseItemView(vm: MainActivityV2ViewModel?, item: ExerciseItem) {
 	}
 
 	CardWithSwipeActions(actions = {
-		Button(onClick = { vm?.deleteExercise(item.id) }) {
+		Button(onClick = { vm?.deleteExerciseType(item.id) }) {
 			Text("Delete")
-		}
-		Button(onClick = { activity.startActivity(submitIntent) }) {
-			Text("Modify")
 		}
 	}) {
 		Column(
@@ -48,8 +41,8 @@ fun ExerciseItemView(vm: MainActivityV2ViewModel?, item: ExerciseItem) {
 				.padding(16.dp)
 		) {
 			Text(
-				text = "${item.exercise}",
-				fontSize = 14.sp,
+				text = item.name,
+				fontSize = 22.sp,
 				fontWeight = FontWeight(400)
 			)
 			Row(
@@ -58,21 +51,21 @@ fun ExerciseItemView(vm: MainActivityV2ViewModel?, item: ExerciseItem) {
 					.fillMaxWidth(),
 				horizontalArrangement = Arrangement.SpaceBetween
 			) {
-				Text(
-					text = "Set: ${item.setNumber}",
-					fontSize = 22.sp,
-					fontWeight = FontWeight(500)
-				)
-				Text(
-					text = "${item.weight} KG",
-					fontSize = 22.sp,
-					fontWeight = FontWeight(500)
-				)
-				Text(
-					text = "${item.reps} reps",
-					fontSize = 22.sp,
-					fontWeight = FontWeight(500)
-				)
+				if (item.isUsingUserWeight) {
+					Text(
+						text = "Uses Your Weight",
+						fontSize = 14.sp,
+						fontWeight = FontWeight(500)
+					)
+				} else {
+					Text(
+						text = "Does not use Your Weight",
+						fontSize = 14.sp,
+						fontWeight = FontWeight(500)
+					)
+				}
+
+
 			}
 		}
 	}
@@ -81,15 +74,9 @@ fun ExerciseItemView(vm: MainActivityV2ViewModel?, item: ExerciseItem) {
 @Preview
 @Composable
 fun ExerciseItemViewPreview() {
-	ExerciseItemView(
+	ExerciseTypeView(
 		null,
-		ExerciseItem(
-			1,
-			LocalDate.now(),
-			"Test exercise",
-			1,
-			70.0,
-			8
-		)
+		ExerciseType(1, "Test Exercise", false)
+
 	)
 }

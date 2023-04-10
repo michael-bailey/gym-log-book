@@ -9,7 +9,7 @@ import io.github.michael_bailey.gym_log_book.lib.table.CSVTable
 import java.time.LocalDate
 
 class ExerciseTable(val context: Context) : CSVTable<ExerciseItem>(context) {
-	override val adapter: RecyclerView.Adapter<*> =
+	val adapter: RecyclerView.Adapter<*> =
 		ExerciseRecyclerAdapter(this) {
 			log("adapter clicked")
 		}
