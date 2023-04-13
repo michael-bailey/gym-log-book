@@ -5,6 +5,7 @@ import com.google.android.material.color.DynamicColors
 import io.github.michael_bailey.gym_log_book.data_manager.ExerciseDataManager
 import io.github.michael_bailey.gym_log_book.data_manager.ExerciseTypeDataManager
 import io.github.michael_bailey.gym_log_book.data_manager.WeightDataManager
+import io.github.michael_bailey.gym_log_book.lib.AppNotificationManager
 import io.github.michael_bailey.gym_log_book.table.ExerciseTable
 import io.github.michael_bailey.gym_log_book.table.WeightTable
 
@@ -12,6 +13,8 @@ class App : Application() {
 	companion object {
 		val TAG = "App"
 	}
+
+	internal lateinit var appNotificationManager: AppNotificationManager
 
 	internal lateinit var exerciseTypeDataManager: ExerciseTypeDataManager
 	internal lateinit var exerciseDataManager: ExerciseDataManager
@@ -31,5 +34,9 @@ class App : Application() {
 
 		exerciseTable = ExerciseTable(applicationContext)
 		weightTable = WeightTable(applicationContext)
+
+
+		appNotificationManager = AppNotificationManager(this)
+
 	}
 }

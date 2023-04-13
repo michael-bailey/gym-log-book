@@ -18,6 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.michael_bailey.gym_log_book.activity.main_activity_v2.MainActivityV2ViewModel
+import io.github.michael_bailey.gym_log_book.lib.PeriodGroup.Companion.getPeriodGroup
 import io.github.michael_bailey.gym_log_book.theme.Title
 import java.time.LocalDate
 import java.time.Period
@@ -26,16 +27,19 @@ import java.time.Period
 @Composable
 fun ExerciseListPage(vm: MainActivityV2ViewModel, listState: LazyListState) {
 
-	val state by vm.exerciseListState.observeAsState(initial = listOf())
-	val groups = remember(state) {
-		state.reversed()
-			.groupBy { it.date }
+	val exerciseItemList by vm.exerciseListState.observeAsState(listOf())
+
+	val exerciseTypeState by vm.exerciseTypeListState.observeAsState(listOf())
+
+	val groups = remember(exerciseItemList) {
+		exerciseItemList.reversed()
+			.groupBy { getPeriodGroup(Period.between(it.date, LocalDate.now())) }
 			.toList()
-			.sortedByDescending { it.first }
+			.sortedBy { it.first }
 	}
 
 	val arrangement = derivedStateOf {
-		if (state.isNotEmpty()) {
+		if (exerciseItemList.isNotEmpty()) {
 			Arrangement.Top
 		} else {
 			Arrangement.Center
@@ -54,7 +58,7 @@ fun ExerciseListPage(vm: MainActivityV2ViewModel, listState: LazyListState) {
 			verticalArrangement = Arrangement.spacedBy(8.dp)
 		) {
 
-			if (state.isEmpty()) {
+			if (exerciseItemList.isEmpty()) {
 
 			} else {
 				item {
@@ -72,39 +76,17 @@ fun ExerciseListPage(vm: MainActivityV2ViewModel, listState: LazyListState) {
 				groups.forEach {
 					stickyHeader {
 						Text(
-							"${getDurationPeriodString(it.first, LocalDate.now())}",
+							"${it.first}",
 							fontSize = 24.sp,
 							fontWeight = FontWeight(500)
 						)
 					}
+
 					items(it.second) { item ->
 						ExerciseItemView(vm, item = item)
 					}
 				}
 			}
 		}
-	}
-}
-
-
-fun getDurationPeriodString(l1: LocalDate, l2: LocalDate): String {
-	val d = Period.between(l1, l2)
-
-	if (d.years > 0) {
-		return "${d.years} Years ago"
-	}
-
-	if (d.months > 0) {
-		return "${d.months} Months ago"
-	}
-
-	if (d.days > 7) {
-		return "${kotlin.math.abs(d.days / 4)} Weeks ago"
-	}
-
-	return when (d.days) {
-		0 -> "Today"
-		1 -> "Yesterday"
-		else -> "${d.days} Days ago"
 	}
 }
