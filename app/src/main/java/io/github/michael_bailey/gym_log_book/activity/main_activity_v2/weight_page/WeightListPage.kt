@@ -35,6 +35,7 @@ fun WeightListPage(vm: MainActivityV2ViewModel, listState: LazyListState) {
 	) {
 
 		LazyColumn(
+			Modifier.fillMaxWidth(0.91f),
 			contentPadding = PaddingValues(top = 8.dp, bottom = 8.dp),
 			verticalArrangement = Arrangement.spacedBy(8.dp),
 			state = listState
@@ -42,7 +43,9 @@ fun WeightListPage(vm: MainActivityV2ViewModel, listState: LazyListState) {
 			if (state.isEmpty()) {
 				item {
 					Column(
-						Modifier.fillMaxHeight(),
+						Modifier
+							.fillMaxHeight()
+							.height(250.dp),
 						verticalArrangement = Arrangement.Center,
 						horizontalAlignment = Alignment.CenterHorizontally
 					) {

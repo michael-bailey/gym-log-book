@@ -53,9 +53,9 @@ fun ExerciseListPage(vm: MainActivityV2ViewModel, listState: LazyListState) {
 	) {
 		LazyColumn(
 			Modifier.fillMaxWidth(0.91f),
-			state = listState,
 			contentPadding = PaddingValues(top = 8.dp, bottom = 8.dp),
-			verticalArrangement = Arrangement.spacedBy(8.dp)
+			verticalArrangement = Arrangement.spacedBy(8.dp),
+			state = listState,
 		) {
 
 			if (exerciseItemList.isEmpty()) {

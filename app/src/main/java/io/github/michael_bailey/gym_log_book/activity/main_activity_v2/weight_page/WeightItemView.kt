@@ -1,8 +1,9 @@
 package io.github.michael_bailey.gym_log_book.activity.main_activity_v2.weight_page
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -28,7 +29,8 @@ fun WeightItemView(item: WeightItem) {
 	}) {
 		Column(
 			Modifier
-				.fillMaxSize(0.9f)
+				.fillMaxWidth()
+				.wrapContentHeight()
 				.padding(16.dp)
 		) {
 			Text(

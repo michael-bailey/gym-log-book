@@ -34,7 +34,13 @@ fun PausePage(
 			delay(1.seconds)
 			count -= 1
 		}
-		(activity.application as App).appNotificationManager.postTimerNotification()
+		(activity.application as App)
+			.appNotificationManager.postTimerNotification(
+				activity,
+				vm.exercise.value!!,
+				vm.setNumber.value!!.toString(),
+				vm.weight.value!!.toString(),
+			)
 		navigate(nav)
 
 	}

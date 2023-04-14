@@ -82,7 +82,15 @@ fun Main(vm: DebugSettingsViewModel) {
 					}
 
 					item {
-						Button(onClick = { (activity.application as App).appNotificationManager.postTimerNotification() }) {
+						Button(onClick = {
+							(activity.application as App)
+								.appNotificationManager.postTimerNotification(
+									activity,
+									"Test",
+									"10",
+									"10"
+								)
+						}) {
 							Text("Post Timer Notification")
 						}
 					}
