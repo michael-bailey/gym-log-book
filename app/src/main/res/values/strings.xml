@@ -29,5 +29,6 @@
 	<string name="title_activity_amend_exercise">AmendExerciseActivity</string>
 	<string name="title_activity_add_exercise_type">AddExerciseTypeActivity
 	</string>
+	<string name="title_activity_onboarding">OnboardingActivity</string>
 
 </resources>

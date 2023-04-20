@@ -1,5 +1,6 @@
 package io.github.michael_bailey.gym_log_book.activity.exercise_set_guide_activity
 
+import CountrySelection
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,6 +15,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import io.github.michael_bailey.gym_log_book.lib.Validator
 import io.github.michael_bailey.gym_log_book.lib.componenets.ValidatorTextField
+import io.github.michael_bailey.gym_log_book.lib.gatekeeper.Gatekeeper
 
 
 @Composable
@@ -31,13 +33,18 @@ fun StartPage(
 		verticalArrangement = Arrangement.SpaceEvenly,
 		horizontalAlignment = Alignment.CenterHorizontally
 	) {
-		Text("What Exercise?", fontSize = 36.sp)
-		ValidatorTextField(
-			state = currentExercise,
-			validator = Validator.StringNameValidator as Validator,
-			onChange = vm::updateCurrentExercise,
-			placeholder = "Exercise Name"
-		)
+
+		if (Gatekeeper.eval("new_exercise_selector")) {
+			CountrySelection()
+		} else {
+			Text("What Exercise?", fontSize = 36.sp)
+			ValidatorTextField(
+				state = currentExercise,
+				validator = Validator.StringNameValidator as Validator,
+				onChange = vm::updateCurrentExercise,
+				placeholder = "Exercise Name"
+			)
+		}
 		Button(
 			onClick = {
 				nav.navigate(ExerciseSetGuideActivityPage.Set.route) {

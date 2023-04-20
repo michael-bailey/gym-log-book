@@ -6,14 +6,24 @@ import io.github.michael_bailey.gym_log_book.data_manager.ExerciseDataManager
 import io.github.michael_bailey.gym_log_book.data_manager.ExerciseTypeDataManager
 import io.github.michael_bailey.gym_log_book.data_manager.WeightDataManager
 import io.github.michael_bailey.gym_log_book.lib.AppNotificationManager
+import io.github.michael_bailey.gym_log_book.lib.DebugPreferencesManager
+import io.github.michael_bailey.gym_log_book.lib.PreferencesManager
 import io.github.michael_bailey.gym_log_book.table.ExerciseTable
 import io.github.michael_bailey.gym_log_book.table.WeightTable
 
 class App : Application() {
 	companion object {
 		val TAG = "App"
+
+		private lateinit var instance: App
+
+		fun getInstance(): App {
+			return instance
+		}
 	}
 
+	internal lateinit var appPreferencesManager: PreferencesManager
+	internal lateinit var appDebugPreferencesManager: DebugPreferencesManager
 	internal lateinit var appNotificationManager: AppNotificationManager
 
 	internal lateinit var exerciseTypeDataManager: ExerciseTypeDataManager
@@ -26,6 +36,9 @@ class App : Application() {
 
 	override fun onCreate() {
 		super.onCreate()
+
+		instance = this
+
 		DynamicColors.applyToActivitiesIfAvailable(this)
 
 		exerciseTypeDataManager = ExerciseTypeDataManager(applicationContext)
@@ -35,6 +48,8 @@ class App : Application() {
 		exerciseTable = ExerciseTable(applicationContext)
 		weightTable = WeightTable(applicationContext)
 
+		appDebugPreferencesManager = DebugPreferencesManager(this)
+		appPreferencesManager = PreferencesManager(this)
 
 		appNotificationManager = AppNotificationManager(this)
 

@@ -3,9 +3,16 @@ package io.github.michael_bailey.gym_log_book.theme
 import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material3.*
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.dynamicDarkColorScheme
+import androidx.compose.material3.dynamicLightColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
@@ -13,8 +20,6 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.ViewCompat
 import com.google.android.material.elevation.SurfaceColors
 import io.github.michael_bailey.gym_log_book.App
-import io.github.michael_bailey.gym_log_book.extension.component_activity.isDebugNavBarColourEnabled
-import io.github.michael_bailey.gym_log_book.extension.component_activity.isDebugStatusBarColourEnabled
 
 private val DarkColorScheme = darkColorScheme(
 	primary = Purple80,
@@ -49,6 +54,11 @@ fun Gym_Log_BookTheme(
 	// debug colours and nav bar
 	val app = LocalContext.current.applicationContext as App
 
+	val debugStatusBarEnabled by app.appDebugPreferencesManager
+		.isDebugStatusBarColourEnabled.observeAsState()
+
+	val debugNavBarEnabled by app.appDebugPreferencesManager
+		.isDebugNavBarColourEnabled.observeAsState()
 
 	val colorScheme = when {
 		dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
@@ -59,26 +69,33 @@ fun Gym_Log_BookTheme(
 				context
 			)
 		}
+
 		darkTheme -> DarkColorScheme
 		else -> LightColorScheme
 	}
+
 	val view = LocalView.current
+
+	LaunchedEffect(debugNavBarEnabled, debugStatusBarEnabled) {
+		(view.context as Activity).window.statusBarColor =
+			if (debugStatusBarEnabled == true) {
+				Color.Red.toArgb()
+			} else {
+				colorScheme.background.toArgb()
+			}
+
+		(view.context as Activity).window.navigationBarColor =
+			if (debugNavBarEnabled == true) {
+				Color.Red.toArgb()
+			} else if (colourNavBar) {
+				SurfaceColors.SURFACE_2.getColor(view.context)
+			} else {
+				colorScheme.surface.toArgb()
+			}
+	}
+
 	if (!view.isInEditMode) {
 		SideEffect {
-			(view.context as Activity).window.statusBarColor =
-				if (!app.isDebugStatusBarColourEnabled()) {
-					colorScheme.background.toArgb()
-				} else {
-					Color.Red.toArgb()
-				}
-			(view.context as Activity).window.navigationBarColor =
-				if (app.isDebugNavBarColourEnabled()) {
-					Color.Red.toArgb()
-				} else if (colourNavBar) {
-					SurfaceColors.SURFACE_2.getColor(view.context)
-				} else {
-					colorScheme.surface.toArgb()
-				}
 			ViewCompat.getWindowInsetsController(view)?.isAppearanceLightStatusBars =
 				!darkTheme
 		}

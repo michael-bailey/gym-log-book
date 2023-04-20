@@ -17,10 +17,9 @@ class ExerciseSetGuideActivity : ComponentActivity() {
 	)
 
 	override fun onCreate(savedInstanceState: Bundle?) {
-
+		super.onCreate(savedInstanceState)
 		log("${intent.data}")
 
-		super.onCreate(savedInstanceState)
 		val vm: SetGuideViewModel by viewModels(
 			factoryProducer = {
 				ExerciseSetGuideViewModelFactory(
