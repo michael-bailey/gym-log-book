@@ -28,6 +28,8 @@ object Gatekeeper {
 		gatekeeperMap[name]?.value = value
 	}
 
+	fun getGatekeeperNames(): List<String> = this.gatekeeperMap.keys.toList()
+
 	private fun getDefaults() = gatekeeperList
 		.map { it.first to MutableLiveData(it.second) }
 		.toMap() as MutableMap<String, MutableLiveData<Boolean>>

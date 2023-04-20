@@ -1,7 +1,12 @@
 package io.github.michael_bailey.gym_log_book.activity.main_activity_v2.exercise_page
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
@@ -16,9 +21,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import io.github.michael_bailey.gym_log_book.activity.main_activity_v2.MainActivityV2ViewModel
 import io.github.michael_bailey.gym_log_book.lib.PeriodGroup.Companion.getPeriodGroup
+import io.github.michael_bailey.gym_log_book.theme.StickyHeader
 import io.github.michael_bailey.gym_log_book.theme.Title
 import java.time.LocalDate
 import java.time.Period
@@ -77,7 +82,7 @@ fun ExerciseListPage(vm: MainActivityV2ViewModel, listState: LazyListState) {
 					stickyHeader {
 						Text(
 							"${it.first}",
-							fontSize = 24.sp,
+							fontSize = StickyHeader,
 							fontWeight = FontWeight(500)
 						)
 					}

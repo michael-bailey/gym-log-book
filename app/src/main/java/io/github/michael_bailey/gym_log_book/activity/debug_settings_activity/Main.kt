@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.NavigationBar
@@ -20,6 +21,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import io.github.michael_bailey.gym_log_book.App
 import io.github.michael_bailey.gym_log_book.activity.debug_settings_activity.setting_widget.SettingsToggleWidget
+import io.github.michael_bailey.gym_log_book.lib.gatekeeper.Gatekeeper
+import io.github.michael_bailey.gym_log_book.theme.StickyHeader
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
@@ -33,6 +36,10 @@ fun Main(vm: DebugSettingsViewModel) {
 		vm.isDebugStatusBarColourEnabled.observeAsState(false)
 	val isNavbarColourEnabled =
 		vm.isDebugNavBarColourEnabled.observeAsState(false)
+
+	val gatekeepers = Gatekeeper.gatekeeperList.map {
+		it.first to Gatekeeper.evalState(it.first)?.observeAsState()
+	}.toMap()
 
 	Scaffold(
 		topBar = {
@@ -51,7 +58,7 @@ fun Main(vm: DebugSettingsViewModel) {
 					horizontalAlignment = Alignment.Start
 				) {
 					stickyHeader {
-						Text("Debug Toggles")
+						Text("Debug Toggles", fontSize = StickyHeader)
 					}
 
 					item {
@@ -89,6 +96,10 @@ fun Main(vm: DebugSettingsViewModel) {
 						)
 					}
 
+					stickyHeader {
+						Text("Timer Notification", fontSize = StickyHeader)
+					}
+
 					item {
 						Button(onClick = {
 							(activity.application as App)
@@ -108,6 +119,20 @@ fun Main(vm: DebugSettingsViewModel) {
 							Text("Cancel Timer Notification")
 						}
 					}
+
+					stickyHeader {
+						Text("Gatekeepers", fontSize = StickyHeader)
+					}
+
+					items(gatekeepers.keys.toList()) { str ->
+						SettingsToggleWidget(
+							name = str,
+							state = gatekeepers[str]?.value == true
+						) {
+							Gatekeeper.setGatekeeper(str, it)
+						}
+					}
+
 				}
 			}
 		},
