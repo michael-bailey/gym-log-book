@@ -1,6 +1,7 @@
 package io.github.michael_bailey.gym_log_book.lib.componenets
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -16,6 +17,7 @@ enum class FieldType {
 	Float
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ValidatorTextField(
 	state: State<String>,

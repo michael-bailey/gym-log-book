@@ -1,10 +1,12 @@
 package io.github.michael_bailey.gym_log_book
 
 import android.app.Application
+import androidx.room.Room
 import com.google.android.material.color.DynamicColors
 import io.github.michael_bailey.gym_log_book.data_manager.ExerciseDataManager
 import io.github.michael_bailey.gym_log_book.data_manager.ExerciseTypeDataManager
 import io.github.michael_bailey.gym_log_book.data_manager.WeightDataManager
+import io.github.michael_bailey.gym_log_book.database.AppDatabase
 import io.github.michael_bailey.gym_log_book.lib.AppNotificationManager
 import io.github.michael_bailey.gym_log_book.lib.DebugPreferencesManager
 import io.github.michael_bailey.gym_log_book.lib.PreferencesManager
@@ -13,10 +15,7 @@ import io.github.michael_bailey.gym_log_book.table.WeightTable
 
 class App : Application() {
 	companion object {
-		val TAG = "App"
-
 		private lateinit var instance: App
-
 		fun getInstance(): App {
 			return instance
 		}
@@ -32,6 +31,8 @@ class App : Application() {
 
 	lateinit var exerciseTable: ExerciseTable
 	lateinit var weightTable: WeightTable
+
+	lateinit var db: AppDatabase
 
 
 	override fun onCreate() {
@@ -53,5 +54,10 @@ class App : Application() {
 
 		appNotificationManager = AppNotificationManager(this)
 
+		db = Room.databaseBuilder(
+			applicationContext,
+			AppDatabase::class.java,
+			"gym_log_book_db"
+		).build()
 	}
 }

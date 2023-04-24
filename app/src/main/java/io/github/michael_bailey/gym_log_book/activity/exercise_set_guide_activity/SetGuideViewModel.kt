@@ -7,6 +7,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import io.github.michael_bailey.gym_log_book.App
 import io.github.michael_bailey.gym_log_book.data_type.ExerciseItem
+import io.github.michael_bailey.gym_log_book.data_type.ExerciseType
 import io.github.michael_bailey.gym_log_book.lib.ExerciseVerficationUtils
 import java.time.LocalDate
 
@@ -17,9 +18,15 @@ class SetGuideViewModel(
 	application: Application,
 
 	// UI state
-	private val _stringName: MutableLiveData<String> = MutableLiveData<String>(""),
-	private val _stringWeight: MutableLiveData<String> = MutableLiveData<String>(""),
-	private val _stringReps: MutableLiveData<String> = MutableLiveData<String>(""),
+	private val _stringName: MutableLiveData<String> =
+		MutableLiveData<String>(""),
+
+	private val _stringWeight: MutableLiveData<String> =
+		MutableLiveData<String>(""),
+
+	private val _stringReps: MutableLiveData<String> =
+		MutableLiveData<String>(""),
+
 
 	// Internal state
 	private val set: MutableLiveData<Int> = MutableLiveData<Int>(1),
@@ -30,6 +37,8 @@ class SetGuideViewModel(
 	val nextWeight: LiveData<String> = _stringWeight
 	val nextReps: LiveData<String> = _stringReps
 	val setNumber: LiveData<Int> = set
+	val exerciseTypes: LiveData<List<ExerciseType>> = App.getInstance()
+		.exerciseTypeDataManager.liveData
 
 	val startEnabled = MediatorLiveData<Boolean>().apply {
 		value = false

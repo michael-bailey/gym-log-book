@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -11,8 +12,23 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -28,6 +44,7 @@ import io.github.michael_bailey.gym_log_book.R
 import io.github.michael_bailey.gym_log_book.activity.debug_settings_activity.DebugSettingsActivity
 import io.github.michael_bailey.gym_log_book.activity.main_activity_v2.exercise_page.ExerciseListPage
 import io.github.michael_bailey.gym_log_book.activity.main_activity_v2.weight_page.WeightListPage
+import io.github.michael_bailey.gym_log_book.activity.tasks_activity.TaskActivity
 import io.github.michael_bailey.gym_log_book.extension.any.log
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
@@ -58,15 +75,16 @@ fun Main(vm: MainActivityV2ViewModel) {
 
 	val navBackStackEntry by nav.currentBackStackEntryAsState()
 
-	val fabVisibility by derivedStateOf {
-		listState.firstVisibleItemIndex == 0
+	val fabVisibility by remember {
+		derivedStateOf {
+			listState.firstVisibleItemIndex == 0
+		}
 	}
 
 	Scaffold(
 		topBar = {
-			SmallTopAppBar(
-				{ Text(text = stringResource(R.string.app_name)) },
-				actions = {
+			TopAppBar({ Text(text = stringResource(R.string.app_name)) },
+				actions = fun RowScope.() {
 					IconButton(onClick = { setDropDownDisplayed(!dropDownDisplayed) }) {
 						Icon(Icons.Default.MoreVert, "content")
 					}
@@ -75,7 +93,7 @@ fun Main(vm: MainActivityV2ViewModel) {
 						onDismissRequest = { setDropDownDisplayed(false) }
 					) {
 						DropdownMenuItem(
-							text = { Text(text = "Settings") },
+							text = { Text(text = "Debug Settings") },
 							onClick = {
 								activity.startActivity(
 									Intent(
@@ -85,9 +103,19 @@ fun Main(vm: MainActivityV2ViewModel) {
 								)
 							}
 						)
+						DropdownMenuItem(
+							text = { Text(text = "Tasks") },
+							onClick = {
+								activity.startActivity(
+									Intent(
+										activity.applicationContext,
+										TaskActivity::class.java
+									)
+								)
+							}
+						)
 					}
-				}
-			)
+				})
 		},
 		content = {
 			Surface(Modifier.padding(it)) {

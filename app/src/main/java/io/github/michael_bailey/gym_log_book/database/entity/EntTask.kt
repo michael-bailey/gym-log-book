@@ -8,17 +8,15 @@ import java.time.LocalTime
 import java.util.UUID
 
 @Entity(
-	"exercise_items",
-	indices = [Index(value = ["createdDate", "createdTime", "exercise"])]
+	"tasks",
+	indices = [Index(value = ["createdDate", "createdTime", "isComplete"])]
 )
-data class EntExerciseEntry(
+data class EntTask(
 	@PrimaryKey() val id: UUID = UUID.randomUUID(),
 
-	val createdDate: LocalDate,
-	val createdTime: LocalTime,
+	val createdDate: LocalDate = LocalDate.now(),
+	val createdTime: LocalTime = LocalTime.now(),
 
-	var exercise: String,
-	var setNumber: Int,
-	var weight: Double,
-	var reps: Int,
+	val text: String,
+	val isComplete: Boolean
 )

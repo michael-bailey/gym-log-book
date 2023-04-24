@@ -1,6 +1,6 @@
 package io.github.michael_bailey.gym_log_book.activity.exercise_set_guide_activity
 
-import CountrySelection
+import Spinner
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,7 +26,10 @@ fun StartPage(
 ) {
 
 	val currentExercise = vm.exercise.observeAsState("")
+
 	val startEnabled = vm.startEnabled.observeAsState(true)
+
+	val exerciseTypes = vm.exerciseTypes.observeAsState(initial = listOf())
 
 	Column(
 		modifier = Modifier.fillMaxSize(),
@@ -35,7 +38,10 @@ fun StartPage(
 	) {
 
 		if (Gatekeeper.eval("new_exercise_selector")) {
-			CountrySelection()
+			Spinner(
+				list = exerciseTypes.value.map { it.name },
+				onSelect = vm::updateCurrentExercise
+			)
 		} else {
 			Text("What Exercise?", fontSize = 36.sp)
 			ValidatorTextField(

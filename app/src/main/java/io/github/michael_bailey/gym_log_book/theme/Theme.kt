@@ -51,15 +51,8 @@ fun Gym_Log_BookTheme(
 	colourNavBar: Boolean = false,
 	content: @Composable () -> Unit
 ) {
-	// debug colours and nav bar
-	val app = LocalContext.current.applicationContext as App
-
-	val debugStatusBarEnabled by app.appDebugPreferencesManager
-		.isDebugStatusBarColourEnabled.observeAsState()
-
-	val debugNavBarEnabled by app.appDebugPreferencesManager
-		.isDebugNavBarColourEnabled.observeAsState()
-
+	val app = LocalContext.current.applicationContext
+	val view = LocalView.current
 	val colorScheme = when {
 		dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
 			val context = LocalContext.current
@@ -74,24 +67,30 @@ fun Gym_Log_BookTheme(
 		else -> LightColorScheme
 	}
 
-	val view = LocalView.current
+	if (app is App) {
+		val debugStatusBarEnabled by app.appDebugPreferencesManager
+			.isDebugStatusBarColourEnabled.observeAsState()
 
-	LaunchedEffect(debugNavBarEnabled, debugStatusBarEnabled) {
-		(view.context as Activity).window.statusBarColor =
-			if (debugStatusBarEnabled == true) {
-				Color.Red.toArgb()
-			} else {
-				colorScheme.background.toArgb()
-			}
+		val debugNavBarEnabled by app.appDebugPreferencesManager
+			.isDebugNavBarColourEnabled.observeAsState()
 
-		(view.context as Activity).window.navigationBarColor =
-			if (debugNavBarEnabled == true) {
-				Color.Red.toArgb()
-			} else if (colourNavBar) {
-				SurfaceColors.SURFACE_2.getColor(view.context)
-			} else {
-				colorScheme.surface.toArgb()
-			}
+		LaunchedEffect(debugNavBarEnabled, debugStatusBarEnabled) {
+			(view.context as Activity).window.statusBarColor =
+				if (debugStatusBarEnabled == true) {
+					Color.Red.toArgb()
+				} else {
+					colorScheme.background.toArgb()
+				}
+
+			(view.context as Activity).window.navigationBarColor =
+				if (debugNavBarEnabled == true) {
+					Color.Red.toArgb()
+				} else if (colourNavBar) {
+					SurfaceColors.SURFACE_2.getColor(view.context)
+				} else {
+					colorScheme.surface.toArgb()
+				}
+		}
 	}
 
 	if (!view.isInEditMode) {

@@ -2,10 +2,13 @@ package io.github.michael_bailey.gym_log_book.activity.debug_settings_activity.s
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -13,13 +16,14 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun SettingsToggleWidget(
+	modifier: Modifier? = null,
 	name: String,
 	state: Boolean,
 	enabled: Boolean = true,
 	onChange: (Boolean) -> Unit,
 ) {
 	Row(
-		Modifier.fillMaxSize(),
+		modifier ?: Modifier,
 		verticalAlignment = Alignment.CenterVertically,
 		horizontalArrangement = Arrangement.SpaceBetween
 	) {
@@ -32,5 +36,5 @@ fun SettingsToggleWidget(
 @Composable
 fun SettingsToggleWidgetPreview() {
 	var state by remember { mutableStateOf(true) }
-	SettingsToggleWidget("Preview Widget", state) { state = it }
+	SettingsToggleWidget(name = "Preview Widget", state = state) { state = it }
 }
