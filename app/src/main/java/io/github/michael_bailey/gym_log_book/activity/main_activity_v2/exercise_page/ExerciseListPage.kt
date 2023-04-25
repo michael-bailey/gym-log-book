@@ -23,6 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import io.github.michael_bailey.gym_log_book.activity.main_activity_v2.MainActivityV2ViewModel
 import io.github.michael_bailey.gym_log_book.lib.PeriodGroup.Companion.getPeriodGroup
+import io.github.michael_bailey.gym_log_book.lib.gatekeeper.Gatekeeper
 import io.github.michael_bailey.gym_log_book.theme.StickyHeader
 import io.github.michael_bailey.gym_log_book.theme.Title
 import java.time.LocalDate
@@ -32,22 +33,25 @@ import java.time.Period
 @Composable
 fun ExerciseListPage(vm: MainActivityV2ViewModel, listState: LazyListState) {
 
-	val exerciseItemList by vm.exerciseListState.observeAsState(listOf())
+	val exerciseEntryList by vm.exerciseEntryList.observeAsState(initial = listOf())
 
+	val exerciseItemList by vm.exerciseListState.observeAsState(listOf())
 	val exerciseTypeState by vm.exerciseTypeListState.observeAsState(listOf())
 
 	val groups = remember(exerciseItemList) {
-		exerciseItemList.reversed()
+		exerciseItemList.sortedBy { it.id }.reversed()
 			.groupBy { getPeriodGroup(Period.between(it.date, LocalDate.now())) }
 			.toList()
 			.sortedBy { it.first }
 	}
 
-	val arrangement = derivedStateOf {
-		if (exerciseItemList.isNotEmpty()) {
-			Arrangement.Top
-		} else {
-			Arrangement.Center
+	val arrangement = remember {
+		derivedStateOf {
+			if (exerciseItemList.isNotEmpty()) {
+				Arrangement.Top
+			} else {
+				Arrangement.Center
+			}
 		}
 	}
 
@@ -87,8 +91,14 @@ fun ExerciseListPage(vm: MainActivityV2ViewModel, listState: LazyListState) {
 						)
 					}
 
-					items(it.second) { item ->
-						ExerciseItemView(vm, item = item)
+					if (Gatekeeper.eval("database_exercise_item_view")) {
+						items(it.second) { item ->
+							ExerciseItemView(vm, item = item)
+						}
+					} else {
+						items(it.second) { item ->
+							ExerciseItemView(vm, item = item)
+						}
 					}
 				}
 			}

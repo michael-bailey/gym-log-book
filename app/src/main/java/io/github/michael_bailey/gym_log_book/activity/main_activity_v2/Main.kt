@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -84,7 +83,7 @@ fun Main(vm: MainActivityV2ViewModel) {
 	Scaffold(
 		topBar = {
 			TopAppBar({ Text(text = stringResource(R.string.app_name)) },
-				actions = fun RowScope.() {
+				actions = {
 					IconButton(onClick = { setDropDownDisplayed(!dropDownDisplayed) }) {
 						Icon(Icons.Default.MoreVert, "content")
 					}

@@ -16,7 +16,7 @@ interface WeightItemDao {
 			SELECT * FROM weight_items
 		"""
 	)
-	fun queryAllExercise(): LiveData<List<EntWeightEntry>>
+	fun queryAllWeight(): LiveData<List<EntWeightEntry>>
 
 	@Query(
 		"""

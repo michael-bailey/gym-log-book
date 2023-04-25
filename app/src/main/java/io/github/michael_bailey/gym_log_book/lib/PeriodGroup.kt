@@ -18,12 +18,12 @@ sealed class PeriodGroup(
 				return Years(period.years)
 			}
 
-			if (period.months >= 1) {
+			if (period.months >= 1 || period.days >= 28) {
 				return Months(period.months)
 			}
 
-			if (period.days > 7) {
-				val weeks: Int = period.days / 4
+			if (period.days >= 7) {
+				val weeks: Int = period.days / 7
 				return Weeks(weeks)
 			}
 
@@ -73,7 +73,7 @@ sealed class PeriodGroup(
 
 			is Years -> when (this.count) {
 				1 -> "Last Year"
-				else -> "${this.count} Year Ago"
+				else -> "${this.count} Years Ago"
 			}
 		}
 	}

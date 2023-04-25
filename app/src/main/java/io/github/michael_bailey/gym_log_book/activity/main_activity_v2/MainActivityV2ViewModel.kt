@@ -7,9 +7,22 @@ import io.github.michael_bailey.gym_log_book.App
 import io.github.michael_bailey.gym_log_book.data_type.ExerciseItem
 import io.github.michael_bailey.gym_log_book.data_type.ExerciseType
 import io.github.michael_bailey.gym_log_book.data_type.WeightItem
+import io.github.michael_bailey.gym_log_book.database.dao.ExerciseEntryDao
+import io.github.michael_bailey.gym_log_book.database.dao.ExerciseTypeDao
+import io.github.michael_bailey.gym_log_book.database.dao.WeightItemDao
 
 class MainActivityV2ViewModel(
 	application: App,
+
+	private val exerciseEntryDao: ExerciseEntryDao =
+		application.db.exerciseEntryDao(),
+
+	private val exerciseTypeDao: ExerciseTypeDao =
+		application.db.exerciseTypeDao(),
+
+	private val WeightEntryDao: WeightItemDao =
+		application.db.WeightItemDao(),
+
 	private val _exerciseTypeListState: MediatorLiveData<List<ExerciseType>> =
 		MediatorLiveData<List<ExerciseType>>().apply {
 			addSource(application.exerciseTypeDataManager.liveData) {
@@ -37,6 +50,10 @@ class MainActivityV2ViewModel(
 	val exerciseTypeListState: LiveData<List<ExerciseType>> get() = _exerciseTypeListState
 	val exerciseListState: LiveData<List<ExerciseItem>> get() = _exerciseListState
 	val weightListState: LiveData<List<WeightItem>> get() = _weightListState
+
+	val exerciseTypeList = exerciseTypeDao.queryAllExerciseTypes()
+	val exerciseEntryList = exerciseEntryDao.queryAllExercise()
+	val weightEntryList = WeightEntryDao.queryAllWeight()
 
 	fun deleteExercise(id: Int) {
 		getApplication<App>().exerciseDataManager.delete(id)

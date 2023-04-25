@@ -16,7 +16,7 @@ interface ExerciseTypeDao {
 			SELECT * FROM exercise_types
 		"""
 	)
-	fun queryAllExercise(): LiveData<List<EntExerciseType>>
+	fun queryAllExerciseTypes(): LiveData<List<EntExerciseType>>
 
 	@Query(
 		"""
