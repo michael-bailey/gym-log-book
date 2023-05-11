@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import io.github.michael_bailey.gym_log_book.App
 import io.github.michael_bailey.gym_log_book.R
+import io.github.michael_bailey.gym_log_book.app.App
 import io.github.michael_bailey.gym_log_book.databinding.ExerciseFragmentBinding
 
 
@@ -29,7 +29,7 @@ class ExerciseListFragment : Fragment() {
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?,
 		savedInstanceState: Bundle?
-	): View? {
+	): View {
 		_binding = ExerciseFragmentBinding.inflate(inflater, container, false)
 
 		recycler = binding.root.findViewById<RecyclerView>(R.id.ExerciseRecycler)

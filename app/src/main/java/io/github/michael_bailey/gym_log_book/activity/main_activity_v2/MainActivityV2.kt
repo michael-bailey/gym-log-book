@@ -6,7 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
-import io.github.michael_bailey.gym_log_book.App
+import io.github.michael_bailey.gym_log_book.app.App
 import io.github.michael_bailey.gym_log_book.lib.view_model.ListViewModel
 import io.github.michael_bailey.gym_log_book.theme.Gym_Log_BookTheme
 

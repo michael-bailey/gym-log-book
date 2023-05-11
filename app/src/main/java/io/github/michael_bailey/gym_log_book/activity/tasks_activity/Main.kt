@@ -52,7 +52,7 @@ fun Main(vm: TaskActivityViewModel) {
 				Alignment.CenterHorizontally
 			) {
 				LazyColumn(
-					Modifier.fillMaxSize(),
+					Modifier.fillMaxSize(0.91f),
 					verticalArrangement = Arrangement.spacedBy(8.dp),
 				) {
 					items(tasks.value) { i ->

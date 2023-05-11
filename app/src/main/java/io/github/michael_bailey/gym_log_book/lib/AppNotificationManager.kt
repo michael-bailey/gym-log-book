@@ -1,14 +1,18 @@
 package io.github.michael_bailey.gym_log_book.lib
 
-import android.app.*
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.app.TaskStackBuilder
 import android.content.Context
 import android.content.Context.NOTIFICATION_SERVICE
 import android.content.Intent
 import android.net.Uri
-import io.github.michael_bailey.gym_log_book.App
 import io.github.michael_bailey.gym_log_book.R
 import io.github.michael_bailey.gym_log_book.activity.exercise_set_guide_activity.ExerciseSetGuideActivity
 import io.github.michael_bailey.gym_log_book.activity.main_activity_v2.MainActivityV2
+import io.github.michael_bailey.gym_log_book.app.App
 import io.github.michael_bailey.gym_log_book.theme.scheme
 
 class AppNotificationManager(

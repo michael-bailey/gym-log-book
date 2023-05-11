@@ -5,8 +5,8 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
-import io.github.michael_bailey.gym_log_book.App
 import io.github.michael_bailey.gym_log_book.activity.add_exercise_activity.AddExerciseSetViewModel
+import io.github.michael_bailey.gym_log_book.app.App
 import io.github.michael_bailey.gym_log_book.data_type.WeightItem
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

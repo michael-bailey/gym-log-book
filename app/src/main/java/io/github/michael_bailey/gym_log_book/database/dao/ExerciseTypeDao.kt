@@ -1,22 +1,22 @@
 package io.github.michael_bailey.gym_log_book.database.dao
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import io.github.michael_bailey.gym_log_book.database.entity.EntExerciseType
+import io.github.michael_bailey.gym_log_book.database.importer.ExportDao
 import java.util.*
 
 @Dao
 /**
  * This is a data access object for exercise entries
  */
-interface ExerciseTypeDao {
+abstract class ExerciseTypeDao : ExportDao<EntExerciseType> {
 
 	@Query(
 		"""
 			SELECT * FROM exercise_types
 		"""
 	)
-	fun queryAllExerciseTypes(): LiveData<List<EntExerciseType>>
+	abstract suspend fun queryAllExerciseTypes(): List<EntExerciseType>
 
 	@Query(
 		"""
@@ -24,14 +24,18 @@ interface ExerciseTypeDao {
 			WHERE id == :id
 		"""
 	)
-	fun queryExercise(id: UUID): LiveData<EntExerciseType>
+	abstract suspend fun queryExercise(id: UUID): EntExerciseType
 
 	@Insert
-	fun insertExercise(exercise: EntExerciseType)
+	abstract suspend fun insertExercise(exercise: EntExerciseType)
 
 	@Update
-	fun updateExercise(exercise: EntExerciseType)
+	abstract suspend fun updateExercise(exercise: EntExerciseType)
 
 	@Delete
-	fun deleteExercise(exercise: EntExerciseType)
+	abstract suspend fun deleteExercise(exercise: EntExerciseType)
+
+	@Insert
+	// required for export interface
+	abstract override fun insert(ent: EntExerciseType)
 }

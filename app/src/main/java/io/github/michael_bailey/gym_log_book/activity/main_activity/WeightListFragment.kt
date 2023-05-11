@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import io.github.michael_bailey.gym_log_book.App
+import io.github.michael_bailey.gym_log_book.app.App
 import io.github.michael_bailey.gym_log_book.databinding.WeightFragmentBinding
 
 
@@ -25,7 +25,7 @@ class WeightListFragment : Fragment() {
 	override fun onCreateView(
 		inflater: LayoutInflater, container: ViewGroup?,
 		savedInstanceState: Bundle?
-	): View? {
+	): View {
 		_binding = WeightFragmentBinding.inflate(inflater, container, false)
 
 		recycler = binding.WeightRecycler

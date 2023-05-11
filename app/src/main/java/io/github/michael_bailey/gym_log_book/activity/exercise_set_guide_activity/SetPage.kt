@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import io.github.michael_bailey.gym_log_book.App
+import io.github.michael_bailey.gym_log_book.app.App
 import io.github.michael_bailey.gym_log_book.lib.Validator
 import io.github.michael_bailey.gym_log_book.lib.componenets.ValidatorTextField
 import kotlinx.coroutines.delay

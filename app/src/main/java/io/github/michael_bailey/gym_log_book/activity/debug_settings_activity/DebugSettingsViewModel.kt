@@ -1,7 +1,7 @@
 package io.github.michael_bailey.gym_log_book.activity.debug_settings_activity
 
 import androidx.lifecycle.AndroidViewModel
-import io.github.michael_bailey.gym_log_book.App
+import io.github.michael_bailey.gym_log_book.app.App
 
 /**
  * View model for DebugSettingsActivity

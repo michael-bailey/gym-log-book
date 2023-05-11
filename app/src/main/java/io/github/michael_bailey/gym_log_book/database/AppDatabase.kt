@@ -20,7 +20,7 @@ import io.github.michael_bailey.gym_log_book.database.entity.EntWeightEntry
 		EntWeightEntry::class,
 	],
 	version = 1,
-	exportSchema = true
+	exportSchema = true,
 )
 @TypeConverters(
 	DateConverter::class,

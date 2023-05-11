@@ -19,7 +19,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.ViewCompat
 import com.google.android.material.elevation.SurfaceColors
-import io.github.michael_bailey.gym_log_book.App
+import io.github.michael_bailey.gym_log_book.app.App
 
 private val DarkColorScheme = darkColorScheme(
 	primary = Purple80,

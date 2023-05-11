@@ -2,7 +2,7 @@ package io.github.michael_bailey.gym_log_book.activity.add_exercise_type_activit
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import io.github.michael_bailey.gym_log_book.App
+import io.github.michael_bailey.gym_log_book.app.App
 
 class AddExerciseTypeActivityViewModelFactory(
 	private val application: App,

@@ -15,8 +15,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import io.github.michael_bailey.gym_log_book.App
 import io.github.michael_bailey.gym_log_book.R
+import io.github.michael_bailey.gym_log_book.app.App
 import io.github.michael_bailey.gym_log_book.extension.component_activity.isDebugBottomNavBarEnabled
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -39,7 +39,7 @@ fun Main(
 	// A surface container using the 'background' color from the theme
 	Scaffold(
 		topBar = {
-			SmallTopAppBar({ Text(text = stringResource(R.string.title_activity_exercise_set_guide)) })
+			TopAppBar({ Text(text = stringResource(R.string.title_activity_exercise_set_guide)) })
 		},
 		bottomBar = {
 			if (debugBottomBar) {
