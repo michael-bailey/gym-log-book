@@ -18,7 +18,7 @@ sealed class PeriodGroup(
 				return Years(period.years)
 			}
 
-			if (period.months >= 1 || period.days >= 28) {
+			if (period.months >= 1) {
 				return Months(period.months)
 			}
 
@@ -55,10 +55,9 @@ sealed class PeriodGroup(
 
 	override fun toString(): String {
 		return when (this) {
-			is Days -> when (this.count) {
-				0 -> "Today"
-				1 -> "Yesterday"
-				else -> "${this.count} Days ago"
+			is Years -> when (this.count) {
+				1 -> "Last Year"
+				else -> "${this.count} Years Ago"
 			}
 
 			is Months -> when (this.count) {
@@ -71,9 +70,10 @@ sealed class PeriodGroup(
 				else -> "${this.count} Weeks ago"
 			}
 
-			is Years -> when (this.count) {
-				1 -> "Last Year"
-				else -> "${this.count} Years Ago"
+			is Days -> when (this.count) {
+				0 -> "Today"
+				1 -> "Yesterday"
+				else -> "${this.count} Days ago"
 			}
 		}
 	}

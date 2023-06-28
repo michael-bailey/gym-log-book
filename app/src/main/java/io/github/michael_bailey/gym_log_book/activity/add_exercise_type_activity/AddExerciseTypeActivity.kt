@@ -8,16 +8,18 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import io.github.michael_bailey.gym_log_book.app.App
+import dagger.hilt.android.AndroidEntryPoint
 import io.github.michael_bailey.gym_log_book.theme.Gym_Log_BookTheme
 
+@AndroidEntryPoint
 class AddExerciseTypeActivity : ComponentActivity() {
+
+	val vm: AddExerciseTypeActivityViewModel by viewModels()
+
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 
-		val vm by viewModels<AddExerciseTypeActivityViewModel> {
-			AddExerciseTypeActivityViewModelFactory(application as App)
-		}
+
 
 		setContent {
 			Gym_Log_BookTheme {

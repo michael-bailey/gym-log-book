@@ -1,8 +1,6 @@
 package io.github.michael_bailey.gym_log_book.table
 
 import android.content.Context
-import androidx.recyclerview.widget.RecyclerView
-import io.github.michael_bailey.gym_log_book.activity.main_activity.WeightRecyclerAdapter
 import io.github.michael_bailey.gym_log_book.data_type.WeightItem
 import io.github.michael_bailey.gym_log_book.extension.any.log
 import io.github.michael_bailey.gym_log_book.lib.table.CSVTable
@@ -12,11 +10,6 @@ class WeightTable(val context: Context) : CSVTable<WeightItem>(context) {
 
 	override val tableName: String
 		get() = "Weight"
-
-	val adapter: RecyclerView.Adapter<*> =
-		WeightRecyclerAdapter(this) {
-			log("adapter clicked")
-		}
 
 	override fun formatHeader(): String {
 		log("called format header")

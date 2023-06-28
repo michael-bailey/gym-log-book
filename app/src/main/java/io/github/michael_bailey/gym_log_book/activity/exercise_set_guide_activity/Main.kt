@@ -22,7 +22,7 @@ import io.github.michael_bailey.gym_log_book.extension.component_activity.isDebu
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Main(
-	vm: SetGuideViewModel,
+	vm: SetGuideViewModelV2,
 	onFinished: () -> Unit,
 ) {
 	val items = listOf(

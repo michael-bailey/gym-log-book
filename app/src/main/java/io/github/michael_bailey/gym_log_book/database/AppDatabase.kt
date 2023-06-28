@@ -8,7 +8,7 @@ import io.github.michael_bailey.gym_log_book.database.converter.TimeConverter
 import io.github.michael_bailey.gym_log_book.database.converter.UUIDConverter
 import io.github.michael_bailey.gym_log_book.database.dao.ExerciseEntryDao
 import io.github.michael_bailey.gym_log_book.database.dao.ExerciseTypeDao
-import io.github.michael_bailey.gym_log_book.database.dao.WeightItemDao
+import io.github.michael_bailey.gym_log_book.database.dao.WeightEntryDao
 import io.github.michael_bailey.gym_log_book.database.entity.EntExerciseEntry
 import io.github.michael_bailey.gym_log_book.database.entity.EntExerciseType
 import io.github.michael_bailey.gym_log_book.database.entity.EntWeightEntry
@@ -30,5 +30,5 @@ import io.github.michael_bailey.gym_log_book.database.entity.EntWeightEntry
 abstract class AppDatabase : RoomDatabase() {
 	abstract fun exerciseEntryDao(): ExerciseEntryDao
 	abstract fun exerciseTypeDao(): ExerciseTypeDao
-	abstract fun WeightItemDao(): WeightItemDao
+	abstract fun weightEntryDao(): WeightEntryDao
 }

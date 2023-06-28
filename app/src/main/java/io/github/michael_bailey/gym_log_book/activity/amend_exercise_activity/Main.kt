@@ -1,13 +1,19 @@
 package io.github.michael_bailey.gym_log_book.activity.amend_exercise_activity
 
 import android.app.Activity
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -25,22 +31,24 @@ fun Main(vm: AmendExerciseViewModel) {
 		KeyboardType.Number
 	)
 
-	val exerciseId = vm.id.observeAsState("")
-	val name = vm.exerciseName.observeAsState("")
-	val set = vm.set.observeAsState("")
-	val weight = vm.weight.observeAsState("")
-	val reps = vm.reps.observeAsState("")
+	val exerciseId by vm.id.observeAsState("")
+	val name by vm.exerciseName.observeAsState("")
+	val set by vm.set.observeAsState("")
+	val weight by vm.weight.observeAsState("")
+	val reps by vm.reps.observeAsState("")
 
-	val nameError = vm.nameError.observeAsState("")
-	val setError = vm.setError.observeAsState("")
-	val weightError = vm.weightError.observeAsState("")
-	val repsError = vm.repsError.observeAsState("")
+	val nameError by vm.nameError.observeAsState("")
+	val setError by vm.setError.observeAsState("")
+	val weightError by vm.weightError.observeAsState("")
+	val repsError by vm.repsError.observeAsState("")
 
-	val submitable = derivedStateOf {
-		nameError.value == "" &&
-			setError.value == "" &&
-			weightError.value == "" &&
-			repsError.value == ""
+	val submitable by remember {
+		derivedStateOf {
+			nameError == "" &&
+				setError == "" &&
+				weightError == "" &&
+				repsError == ""
+		}
 	}
 
 	Column(
@@ -50,7 +58,7 @@ fun Main(vm: AmendExerciseViewModel) {
 	) {
 		Column(horizontalAlignment = Alignment.CenterHorizontally) {
 			Text(text = "Amend Exercise", fontSize = 32.sp)
-			Text(text = "ID ${exerciseId.value}", fontSize = 24.sp)
+			Text(text = "ID $exerciseId", fontSize = 24.sp)
 		}
 		Column {
 			ValidatorTextField(
@@ -94,7 +102,7 @@ fun Main(vm: AmendExerciseViewModel) {
 				}
 				Button(
 					onClick = { vm.finalise(); activity.finish() },
-					enabled = submitable.value
+					enabled = submitable
 				) {
 					Text("Amend")
 				}

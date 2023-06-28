@@ -31,5 +31,7 @@
 	</string>
 	<string name="title_activity_onboarding">OnboardingActivity</string>
 	<string name="title_activity_task">TaskActivity</string>
+	<string name="title_activity_amend_exercise_type">AmendExerciseTypeActivity
+	</string>
 
 </resources>

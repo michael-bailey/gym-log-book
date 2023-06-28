@@ -40,10 +40,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import io.github.michael_bailey.gym_log_book.R
-import io.github.michael_bailey.gym_log_book.activity.debug_settings_activity.DebugSettingsActivity
+import io.github.michael_bailey.gym_log_book.activity.internal.debug_settings_activity.DebugSettingsActivity
+import io.github.michael_bailey.gym_log_book.activity.internal.tasks_activity.TaskActivity
 import io.github.michael_bailey.gym_log_book.activity.main_activity_v2.exercise_page.ExerciseListPage
 import io.github.michael_bailey.gym_log_book.activity.main_activity_v2.weight_page.WeightListPage
-import io.github.michael_bailey.gym_log_book.activity.tasks_activity.TaskActivity
 import io.github.michael_bailey.gym_log_book.extension.any.log
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)

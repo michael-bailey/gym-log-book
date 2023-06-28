@@ -13,6 +13,7 @@ abstract class BaseDataManager<T>(
 ) {
 
 	val liveData: MediatorLiveData<List<T>> = MediatorLiveData<List<T>>()
+	val rawData = table.getRows().toList()
 
 	init {
 		liveData.apply {

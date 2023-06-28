@@ -14,8 +14,8 @@ import java.util.UUID
 data class EntWeightEntry(
 	@PrimaryKey() val id: UUID = UUID.randomUUID(),
 
-	val createdDate: LocalDate,
-	val createdTime: LocalTime,
+	val createdDate: LocalDate = LocalDate.now(),
+	val createdTime: LocalTime = LocalTime.now(),
 
 	val value: Double
 )

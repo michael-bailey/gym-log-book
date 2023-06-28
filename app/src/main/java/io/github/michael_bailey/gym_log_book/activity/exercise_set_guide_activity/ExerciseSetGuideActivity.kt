@@ -4,10 +4,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import io.github.michael_bailey.gym_log_book.app.App
+import dagger.hilt.android.AndroidEntryPoint
 import io.github.michael_bailey.gym_log_book.extension.any.log
 import io.github.michael_bailey.gym_log_book.theme.Gym_Log_BookTheme
 
+@AndroidEntryPoint
 class ExerciseSetGuideActivity : ComponentActivity() {
 
 	val items = listOf(
@@ -16,17 +17,11 @@ class ExerciseSetGuideActivity : ComponentActivity() {
 		ExerciseSetGuideActivityPage.Pause,
 	)
 
+	val vm: SetGuideViewModelV2 by viewModels()
+
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		log("${intent.data}")
-
-		val vm: SetGuideViewModel by viewModels(
-			factoryProducer = {
-				ExerciseSetGuideViewModelFactory(
-					applicationContext as App,
-				)
-			}
-		)
 
 		setContent {
 			Gym_Log_BookTheme(colourNavBar = false) {
@@ -35,39 +30,9 @@ class ExerciseSetGuideActivity : ComponentActivity() {
 		}
 	}
 
-	override fun onPause() {
-		super.onPause()
-		log("[onPause]")
-	}
-
-	override fun onResume() {
-		super.onResume()
-		log("[onResume]")
-	}
-
-	override fun onLowMemory() {
-		log("[onLowMemory]")
-		super.onLowMemory()
-	}
-
-	override fun onStart() {
-		super.onStart()
-		log("[onStart]")
-	}
-
-	override fun onStop() {
-		super.onStop()
-		log("[onStop]")
-	}
-
-	override fun onDestroy() {
-		super.onDestroy()
-		log("[onDestroy]")
-	}
-
 	override fun onRestart() {
 		super.onRestart()
 		log("[onRestart]: canceling notification")
-		(application as App).appNotificationManager.cancelTimerNotification()
+		vm.cancelTimerNotification()
 	}
 }

@@ -22,32 +22,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import io.github.michael_bailey.gym_log_book.activity.main_activity_v2.MainActivityV2ViewModel
-import io.github.michael_bailey.gym_log_book.lib.PeriodGroup.Companion.getPeriodGroup
-import io.github.michael_bailey.gym_log_book.lib.gatekeeper.Gatekeeper
 import io.github.michael_bailey.gym_log_book.theme.StickyHeader
 import io.github.michael_bailey.gym_log_book.theme.Title
-import java.time.LocalDate
-import java.time.Period
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun ExerciseListPage(vm: MainActivityV2ViewModel, listState: LazyListState) {
 
-	val exerciseEntryList by vm.exerciseEntryList.observeAsState(initial = listOf())
-
-	val exerciseItemList by vm.exerciseListState.observeAsState(listOf())
-	val exerciseTypeState by vm.exerciseTypeListState.observeAsState(listOf())
-
-	val groups = remember(exerciseItemList) {
-		exerciseItemList.sortedBy { it.id }.reversed()
-			.groupBy { getPeriodGroup(Period.between(it.date, LocalDate.now())) }
-			.toList()
-			.sortedBy { it.first }
-	}
+	val exerciseEntryMap by vm.timeExerciseGroupedList.observeAsState(initial = mapOf())
+	val isEmpty by vm.isExercisesEmpty.observeAsState(true)
 
 	val arrangement = remember {
 		derivedStateOf {
-			if (exerciseItemList.isNotEmpty()) {
+			if (exerciseEntryMap.isNotEmpty()) {
 				Arrangement.Top
 			} else {
 				Arrangement.Center
@@ -66,9 +53,19 @@ fun ExerciseListPage(vm: MainActivityV2ViewModel, listState: LazyListState) {
 			verticalArrangement = Arrangement.spacedBy(8.dp),
 			state = listState,
 		) {
-
-			if (exerciseItemList.isEmpty()) {
-
+			if (isEmpty) {
+				item {
+					Column(
+						Modifier
+							.fillMaxWidth()
+							.height(250.dp),
+						verticalArrangement = Arrangement.Center,
+						horizontalAlignment = Alignment.CenterHorizontally
+					) {
+						Text(text = "You Haven't added any exercise entries")
+						Text(text = "Click the 'Add Set' button to add one")
+					}
+				}
 			} else {
 				item {
 					Column(
@@ -78,27 +75,21 @@ fun ExerciseListPage(vm: MainActivityV2ViewModel, listState: LazyListState) {
 						verticalArrangement = Arrangement.Center,
 						horizontalAlignment = Alignment.CenterHorizontally
 					) {
-						Text("Exercises", fontSize = Title)
+						Text("Exercises (DB)", fontSize = Title)
 					}
 				}
 
-				groups.forEach {
+				exerciseEntryMap.forEach {
 					stickyHeader {
 						Text(
-							"${it.first}",
+							it.key,
 							fontSize = StickyHeader,
 							fontWeight = FontWeight(500)
 						)
 					}
 
-					if (Gatekeeper.eval("database_exercise_item_view")) {
-						items(it.second) { item ->
-							ExerciseItemView(vm, item = item)
-						}
-					} else {
-						items(it.second) { item ->
-							ExerciseItemView(vm, item = item)
-						}
+					items(it.value) { item ->
+						ExerciseEntryView(vm, item = item)
 					}
 				}
 			}

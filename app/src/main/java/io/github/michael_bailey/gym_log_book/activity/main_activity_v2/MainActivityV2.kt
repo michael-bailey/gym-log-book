@@ -6,18 +6,16 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
-import io.github.michael_bailey.gym_log_book.app.App
+import dagger.hilt.android.AndroidEntryPoint
 import io.github.michael_bailey.gym_log_book.lib.view_model.ListViewModel
 import io.github.michael_bailey.gym_log_book.theme.Gym_Log_BookTheme
 
-
+@AndroidEntryPoint
 class MainActivityV2 : ComponentActivity() {
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 
-		val vm: MainActivityV2ViewModel by viewModels {
-			MainActivityV2ViewModelFactory(application = application as App)
-		}
+		val vm: MainActivityV2ViewModel by viewModels()
 
 		ActivityCompat.requestPermissions(
 			this,

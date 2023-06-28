@@ -12,7 +12,7 @@ abstract class CSVTable<T : Identifiable>(
 	protected abstract fun formatEntry(entry: T): String
 	protected abstract fun decodeEntry(entry: String): T
 
-	fun nextId(): Int = kotlin.runCatching {
+	fun nextId(): Int = runCatching {
 		liveData.value!!
 			.sortedBy { it.id }.last().id + 1
 	}.getOrNull() ?: 0

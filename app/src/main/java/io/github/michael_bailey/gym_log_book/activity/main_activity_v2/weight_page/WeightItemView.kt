@@ -13,17 +13,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import io.github.michael_bailey.gym_log_book.data_type.WeightItem
+import io.github.michael_bailey.gym_log_book.database.entity.EntWeightEntry
 import io.github.michael_bailey.gym_log_book.lib.componenets.CardWithSwipeActions
+import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
-fun WeightItemView(item: WeightItem) {
+fun WeightItemView(
+	item: EntWeightEntry,
+	onModify: (UUID) -> Unit,
+	onDelete: (UUID) -> Unit
+) {
 	CardWithSwipeActions(actions = {
-		Button(onClick = { /*TODO*/ }) {
+		Button(onClick = { onDelete(item.id) }) {
 			Text("Delete")
 		}
-		Button(onClick = { /*TODO*/ }) {
+		Button(onClick = { onModify(item.id) }) {
 			Text("Modify")
 		}
 	}) {
@@ -31,10 +36,10 @@ fun WeightItemView(item: WeightItem) {
 			Modifier
 				.fillMaxWidth()
 				.wrapContentHeight()
-				.padding(16.dp)
+				.padding(16.dp),
 		) {
 			Text(
-				text = "${item.weight} KG",
+				text = "${item.value} KG",
 				fontSize = 18.sp,
 				fontWeight = FontWeight(500)
 			)

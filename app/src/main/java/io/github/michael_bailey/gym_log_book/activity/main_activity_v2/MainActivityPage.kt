@@ -1,12 +1,11 @@
 package io.github.michael_bailey.gym_log_book.activity.main_activity_v2
 
 import android.app.Activity
-import android.content.Intent
 import androidx.annotation.StringRes
 import io.github.michael_bailey.gym_log_book.R
-import io.github.michael_bailey.gym_log_book.activity.add_exercise_type_activity.AddExerciseTypeActivity
-import io.github.michael_bailey.gym_log_book.activity.add_weight_activity.AddWeightActivity
-import io.github.michael_bailey.gym_log_book.activity.exercise_set_guide_activity.ExerciseSetGuideActivity
+import io.github.michael_bailey.gym_log_book.activity.add_exercise_type_activity.AddExerciseTypeActivityIntentUtils
+import io.github.michael_bailey.gym_log_book.activity.add_weight_activity.AddWeightActivityIntentUtils
+import io.github.michael_bailey.gym_log_book.activity.exercise_set_guide_activity.ExerciseSetGuideActivityIntentUtils
 
 sealed class MainActivityPage(
 	val route: String,
@@ -16,32 +15,18 @@ sealed class MainActivityPage(
 	object ExercisePage : MainActivityPage(
 		"exercise_page",
 		R.string.exercise_page_nav_button_label,
-		{
-			startActivity(
-				Intent(
-					applicationContext,
-					ExerciseSetGuideActivity::class.java
-				)
-			)
-		},
+		{ ExerciseSetGuideActivityIntentUtils.startExerciseSetGuideActivity(this) }
 	)
 
 	object WeightPage : MainActivityPage(
 		"weight_page",
 		R.string.weight_page_nav_button_label,
-		{ startActivity(Intent(applicationContext, AddWeightActivity::class.java)) }
+		{ AddWeightActivityIntentUtils.startAddWeightActivity(this) }
 	)
 
 	object ExerciseTypePage : MainActivityPage(
 		"exercise_type_page",
 		R.string.exercise_type_page_nav_button_label,
-		{
-			startActivity(
-				Intent(
-					applicationContext,
-					AddExerciseTypeActivity::class.java
-				)
-			)
-		},
+		{ AddExerciseTypeActivityIntentUtils.startAddExerciseTypeActivity(this) }
 	)
 }

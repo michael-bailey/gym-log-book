@@ -1,0 +1,31 @@
+package io.github.michael_bailey.gym_log_book.repository
+
+import io.github.michael_bailey.gym_log_book.database.dao.WeightEntryDao
+import io.github.michael_bailey.gym_log_book.database.entity.EntWeightEntry
+import java.time.LocalDate
+import javax.inject.Inject
+
+/**
+ * Repository for managing weight data
+ */
+class WeightEntryRepository @Inject constructor(
+	var weightEntryDao: WeightEntryDao
+) {
+
+	val weightEntryList = weightEntryDao.queryAllWeight()
+
+	suspend fun import(createdDate: LocalDate, weight: Double) {
+		weightEntryDao.insertWeight(
+			EntWeightEntry(
+				createdDate = createdDate,
+				value = weight,
+			)
+		)
+	}
+
+	suspend fun create(weight: Double) {
+		weightEntryDao.create(weight = weight)
+	}
+
+
+}

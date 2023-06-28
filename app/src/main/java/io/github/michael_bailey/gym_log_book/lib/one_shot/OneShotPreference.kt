@@ -3,37 +3,39 @@ package io.github.michael_bailey.gym_log_book.lib.one_shot
 import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import io.github.michael_bailey.gym_log_book.app.App
-import io.github.michael_bailey.gym_log_book.extension.application.preferences
+import io.github.michael_bailey.gym_log_book.lib.interfaces.IResettable
+import javax.inject.Inject
 
-class OneShotPreference private constructor(
-	name: String,
+class OneShotPreference @Inject constructor(
+	private val name: String,
 	private val _isConsumed: MutableLiveData<Boolean> = MutableLiveData<Boolean>(
 		false
-	)
-) : SharedPreferences.OnSharedPreferenceChangeListener {
+	),
 
-	private val preferenceName: String
+	) : SharedPreferences.OnSharedPreferenceChangeListener, IResettable,
+	IOneShotPreference {
 
-	val application: App by lazy { App.getInstance() }
+	@Inject
+	lateinit var preferences: SharedPreferences
 
 	init {
-		preferenceName = "oneshot_$name"
 		_isConsumed.value =
-			application.preferences().getBoolean(preferenceName, false)
+			preferences.getBoolean(getPreferenceName(), false)
 	}
 
-	fun data(): LiveData<Boolean> = _isConsumed
-	fun isConsumed(): Boolean = _isConsumed.value!!
-	fun consume() =
-		application.preferences().edit().putBoolean(preferenceName, true)
+	override fun getPreferenceName() = "oneshot_$name"
+
+	override fun data(): LiveData<Boolean> = _isConsumed
+	override fun isConsumed(): Boolean = _isConsumed.value!!
+	override fun consume() =
+		preferences.edit().putBoolean(getPreferenceName(), true).apply()
 
 	override fun onSharedPreferenceChanged(
 		sharedPreferences: SharedPreferences?,
 		key: String?
 	) {
 		when (key) {
-			preferenceName -> {
+			getPreferenceName() -> {
 				_isConsumed.value = sharedPreferences?.getBoolean(key, false)
 			}
 		}
@@ -49,5 +51,12 @@ class OneShotPreference private constructor(
 			}
 			return oneShot
 		}
+
+		fun getAll(): Map<String, OneShotPreference> = store
+	}
+
+	override fun reset() {
+		_isConsumed.value = false
+		preferences.edit().putBoolean(getPreferenceName(), false).apply()
 	}
 }

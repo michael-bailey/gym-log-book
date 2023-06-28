@@ -11,7 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import io.github.michael_bailey.gym_log_book.app.App
 import io.github.michael_bailey.gym_log_book.lib.Validator
 import io.github.michael_bailey.gym_log_book.lib.componenets.ValidatorTextField
 import kotlinx.coroutines.delay
@@ -22,24 +21,23 @@ import kotlin.time.Duration
 @Composable
 fun SetPage(
 	nav: NavHostController,
-	vm: SetGuideViewModel,
+	vm: SetGuideViewModelV2,
 ) {
 
 	val activity = LocalContext.current as Activity
 
 	LaunchedEffect(Unit) {
 		delay(Duration.parse("3s"))
-		(activity.application as App).appNotificationManager.cancelTimerNotification()
+		vm.cancelTimerNotification()
 	}
 
-	val weight = vm.nextWeight.observeAsState("")
-	val reps = vm.nextReps.observeAsState("")
-	val set = vm.setNumber.observeAsState(1)
+	val setNumber by vm.exerciseSet.observeAsState(initial = 0)
+	val weight by vm.weight.observeAsState("")
+	val reps by vm.reps.observeAsState("")
 
-	val enabled = vm.submitSetEnabled.observeAsState(initial = false)
+	val enabled by vm.canSubmit.observeAsState(initial = false)
 
-	val test = vm.weight.observeAsState(0.0)
-	val test1 = test.value
+	val test by vm.weight.observeAsState(0.0)
 
 	Column(
 		modifier = Modifier.fillMaxSize(),
@@ -70,18 +68,17 @@ fun SetPage(
 			)
 		}
 		Button(
-			enabled = enabled.value,
+			enabled = enabled,
 			onClick = {
 				vm.finalise()
-				if (set.value >= 3) {
+				if (setNumber >= 3) {
 					Utils.navigateAskExtraSet(nav)
 				} else {
 					Utils.navigatePause(nav)
 				}
-				vm.completeSet()
 			}
 		) {
-			Text(text = "Submit set ${vm.setNumber.value}", fontSize = 18.sp)
+			Text(text = "Submit set $setNumber", fontSize = 18.sp)
 		}
 	}
 }

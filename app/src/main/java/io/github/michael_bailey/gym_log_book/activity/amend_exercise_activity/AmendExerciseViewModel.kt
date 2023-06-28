@@ -1,25 +1,32 @@
 package io.github.michael_bailey.gym_log_book.activity.amend_exercise_activity
 
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
-import io.github.michael_bailey.gym_log_book.app.App
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import io.github.michael_bailey.gym_log_book.data_manager.ExerciseDataManager
 import io.github.michael_bailey.gym_log_book.lib.ExerciseVerficationUtils
+import javax.inject.Inject
 
 /**
  * View model that contains the state, when modifying a exercise set
  */
-class AmendExerciseViewModel(
-	application: App,
-	val exerciseId: Int?,
+@HiltViewModel
+class AmendExerciseViewModel @Inject constructor(
+	private val exerciseDataManager: ExerciseDataManager,
+	savedStateHandle: SavedStateHandle
+) : ViewModel() {
+
+	val exerciseId: Int? = savedStateHandle.get<Int>("exercise_id")
 
 	// Field state
-	private val _id: MutableLiveData<String> = MutableLiveData<String>(),
-	private val _name: MutableLiveData<String> = MutableLiveData<String>(),
-	private val _set: MutableLiveData<String> = MutableLiveData<String>(),
-	private val _weight: MutableLiveData<String> = MutableLiveData<String>(),
-	private val _reps: MutableLiveData<String> = MutableLiveData<String>(),
+	private val _id: MutableLiveData<String> = MutableLiveData<String>()
+	private val _name: MutableLiveData<String> = MutableLiveData<String>()
+	private val _set: MutableLiveData<String> = MutableLiveData<String>()
+	private val _weight: MutableLiveData<String> = MutableLiveData<String>()
+	private val _reps: MutableLiveData<String> = MutableLiveData<String>()
 
 	// Error messages
 	val nameError: MutableLiveData<String> =
@@ -34,7 +41,7 @@ class AmendExerciseViewModel(
 						this.value = ""
 					}
 				}
-			},
+			}
 
 	val setError: MutableLiveData<String> =
 		MediatorLiveData<String>()
@@ -48,7 +55,7 @@ class AmendExerciseViewModel(
 						this.value = ""
 					}
 				}
-			},
+			}
 
 	val weightError: MutableLiveData<String> =
 		MediatorLiveData<String>()
@@ -62,7 +69,7 @@ class AmendExerciseViewModel(
 						this.value = ""
 					}
 				}
-			},
+			}
 
 	val repsError: MutableLiveData<String> =
 		MediatorLiveData<String>()
@@ -76,11 +83,7 @@ class AmendExerciseViewModel(
 						this.value = ""
 					}
 				}
-			},
-
-	) : AndroidViewModel(
-	application
-) {
+			}
 
 	// expose non-mutable live data Fields
 	val id: LiveData<String> get() = _id
@@ -91,7 +94,7 @@ class AmendExerciseViewModel(
 
 	val item =
 		kotlin.runCatching {
-			getApplication<App>().exerciseDataManager.liveData.value?.first { it.id == exerciseId }
+			exerciseDataManager.liveData.value?.first { it.id == exerciseId }
 		}.getOrNull()
 
 	init {
@@ -126,7 +129,7 @@ class AmendExerciseViewModel(
 	}
 
 	fun finalise() {
-		getApplication<App>().exerciseDataManager.apply {
+		exerciseDataManager.apply {
 			exerciseId?.let {
 				update(it) {
 					this.exercise =

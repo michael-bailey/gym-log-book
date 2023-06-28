@@ -1,68 +1,128 @@
 package io.github.michael_bailey.gym_log_book.activity.main_activity_v2
 
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
+import android.app.Activity
+import android.util.Log
+import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import io.github.michael_bailey.gym_log_book.app.App
-import io.github.michael_bailey.gym_log_book.data_type.ExerciseItem
-import io.github.michael_bailey.gym_log_book.data_type.ExerciseType
-import io.github.michael_bailey.gym_log_book.data_type.WeightItem
-import io.github.michael_bailey.gym_log_book.database.dao.ExerciseEntryDao
-import io.github.michael_bailey.gym_log_book.database.dao.ExerciseTypeDao
-import io.github.michael_bailey.gym_log_book.database.dao.WeightItemDao
+import dagger.hilt.android.lifecycle.HiltViewModel
+import io.github.michael_bailey.gym_log_book.activity.amend_exercise_activity_v2.AmendExerciseActivityV2IntentUtils
+import io.github.michael_bailey.gym_log_book.data_manager.ExerciseDataManager
+import io.github.michael_bailey.gym_log_book.data_manager.ExerciseTypeDataManager
+import io.github.michael_bailey.gym_log_book.data_manager.WeightDataManager
+import io.github.michael_bailey.gym_log_book.database.entity.EntExerciseEntry
+import io.github.michael_bailey.gym_log_book.lib.PeriodGroup
+import io.github.michael_bailey.gym_log_book.lib.gatekeeper.Gatekeeper
+import io.github.michael_bailey.gym_log_book.repository.ExerciseEntryRepository
+import io.github.michael_bailey.gym_log_book.repository.ExerciseTypeRepository
+import io.github.michael_bailey.gym_log_book.repository.WeightEntryRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.util.UUID
+import javax.inject.Inject
 
-class MainActivityV2ViewModel(
-	application: App,
+@HiltViewModel
+class MainActivityV2ViewModel @Inject constructor(
+	private val exerciseTypeDataManager: ExerciseTypeDataManager,
+	private val exerciseDataManager: ExerciseDataManager,
+	private val weightDataManager: WeightDataManager,
 
-	private val exerciseEntryDao: ExerciseEntryDao =
-		application.db.exerciseEntryDao(),
+	private val exerciseTypeRepository: ExerciseTypeRepository,
+	private val exerciseEntryRepository: ExerciseEntryRepository,
+	private val weightEntryRepository: WeightEntryRepository,
 
-	private val exerciseTypeDao: ExerciseTypeDao =
-		application.db.exerciseTypeDao(),
+	val gatekeeper: Gatekeeper
 
-	private val WeightEntryDao: WeightItemDao =
-		application.db.WeightItemDao(),
+) : ViewModel() {
 
-	private val _exerciseTypeListState: MediatorLiveData<List<ExerciseType>> =
-		MediatorLiveData<List<ExerciseType>>().apply {
-			addSource(application.exerciseTypeDataManager.liveData) {
-				this.value = it
+	var removedID = mutableStateOf<UUID?>(null)
+	var selectedReplacementType = mutableStateOf<UUID?>(null)
+
+	val isExercisesEmpty = exerciseEntryRepository.isEmpty.asLiveData()
+	val isExerciseTypeDatabaseViewEnabled = gatekeeper
+		.evalState("database_exercise_type_view")
+		.onEach { Log.d("Michael", "got value $it") }
+		.asLiveData()
+
+	val timeExerciseGroupedList =
+		exerciseEntryRepository.timeExerciseGroupedList.map {
+			var output = mutableMapOf<String, List<EntExerciseEntry>>()
+
+			val sortedList = it.toList().sortedByDescending { it.first }.toMap()
+
+			for (date in sortedList.keys) {
+				val group =
+					PeriodGroup.getPeriodGroup(period = date.until(LocalDate.now()))
+						.toString()
+				val list = output[group]
+				if (list == null) {
+					output[group] =
+						sortedList[date]!!.toList().sortedByDescending { it.createdTime }
+				} else {
+					output[group] =
+						(list + sortedList[date]!!.toList()).sortedByDescending { it.createdTime }
+				}
 			}
-		},
 
-	private val _exerciseListState: MediatorLiveData<List<ExerciseItem>> =
-		MediatorLiveData<List<ExerciseItem>>().apply {
-			addSource(application.exerciseDataManager.liveData) {
-				this.value = it
-			}
-		},
+			output
+		}.asLiveData()
 
-	private val _weightListState: MediatorLiveData<List<WeightItem>> =
-		MediatorLiveData<List<WeightItem>>().apply {
-			addSource(application.weightDataManager.liveData) {
-				this.value = it
-			}
-		},
-) : AndroidViewModel(
-	application
-) {
-
-	val exerciseTypeListState: LiveData<List<ExerciseType>> get() = _exerciseTypeListState
-	val exerciseListState: LiveData<List<ExerciseItem>> get() = _exerciseListState
-	val weightListState: LiveData<List<WeightItem>> get() = _weightListState
-
-	val exerciseTypeList =
-		viewModelScope.launch { exerciseTypeDao.queryAllExerciseTypes() }
-	val exerciseEntryList = exerciseEntryDao.queryAllExercise()
-	val weightEntryList = WeightEntryDao.queryAllWeight()
+	private val exerciseTypeListFlow = exerciseTypeRepository.exerciseTypes
+	val exerciseTypeList = exerciseTypeListFlow.asLiveData()
+	val weightEntryList = weightEntryRepository.weightEntryList.asLiveData()
+	val isExerciseTypeListEmpty = exerciseTypeRepository.isEmpty.asLiveData()
 
 	fun deleteExercise(id: Int) {
-		getApplication<App>().exerciseDataManager.delete(id)
+		exerciseDataManager.delete(id)
 	}
 
-	fun deleteExerciseType(id: Int) {
-		getApplication<App>().exerciseTypeDataManager.delete(id)
+	@Deprecated("This uses data manager remove this where necessary")
+	fun initiateExerciseTypeDeletion(id: Int) {
+		exerciseTypeDataManager.delete(id)
+	}
+
+	fun amendExerciseType(id: UUID) = viewModelScope.launch {
+	}
+
+	fun setSelectedReplacementType(id: UUID) {
+		selectedReplacementType.value = id
+	}
+
+	fun initiateExerciseTypeDeletion(id: UUID) =
+		viewModelScope.launch(Dispatchers.IO) {
+			removedID.value = id
+		}
+
+	fun clearExerciseTypeDeletion() {
+		removedID.value = null
+		selectedReplacementType.value = null
+	}
+
+	fun finaliseExerciseRemoval() = viewModelScope.launch(Dispatchers.IO) {
+		val removedID = removedID.value
+		val selectedType = selectedReplacementType.value
+
+		if (removedID == null || selectedType == null) {
+			return@launch
+		}
+
+		exerciseEntryRepository.removeAndReplaceType(removedID, selectedType)
+
+		this@MainActivityV2ViewModel.selectedReplacementType.value = null
+		this@MainActivityV2ViewModel.removedID.value = null
+
+	}
+
+	fun amendExerciseEntry(activity: Activity, uuid: UUID) =
+		AmendExerciseActivityV2IntentUtils.startAmendActivity(activity, uuid)
+
+	fun deleteExerciseEntry(uuid: UUID) = viewModelScope.launch(Dispatchers.IO) {
+		exerciseEntryRepository.delete(
+			uuid
+		)
 	}
 }

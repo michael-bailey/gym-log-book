@@ -3,7 +3,12 @@ package io.github.michael_bailey.gym_log_book.activity.main_activity_v2.exercise
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,7 +35,7 @@ fun ExerciseTypeView(vm: MainActivityV2ViewModel?, item: ExerciseType) {
 	}
 
 	CardWithSwipeActions(actions = {
-		Button(onClick = { vm?.deleteExerciseType(item.id) }) {
+		Button(onClick = { vm?.initiateExerciseTypeDeletion(item.id) }) {
 			Text("Delete")
 		}
 	}) {
@@ -64,8 +69,6 @@ fun ExerciseTypeView(vm: MainActivityV2ViewModel?, item: ExerciseType) {
 						fontWeight = FontWeight(500)
 					)
 				}
-
-
 			}
 		}
 	}

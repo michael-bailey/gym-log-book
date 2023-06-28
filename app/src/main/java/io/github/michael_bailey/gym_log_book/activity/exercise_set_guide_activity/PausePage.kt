@@ -18,7 +18,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
-import io.github.michael_bailey.gym_log_book.app.App
 import kotlinx.coroutines.delay
 import kotlin.time.Duration.Companion.seconds
 
@@ -26,7 +25,7 @@ import kotlin.time.Duration.Companion.seconds
 @Composable
 fun PausePage(
 	nav: NavHostController,
-	vm: SetGuideViewModel,
+	vm: SetGuideViewModelV2,
 	modifier: Modifier? = null
 ) {
 	var count by remember { mutableStateOf(60) }
@@ -39,13 +38,7 @@ fun PausePage(
 			delay(1.seconds)
 			count -= 1
 		}
-		(activity.application as App)
-			.appNotificationManager.postTimerNotification(
-				activity,
-				vm.exercise.value!!,
-				vm.setNumber.value!!.toString(),
-				vm.weight.value!!.toString(),
-			)
+		vm.postTimerNotification()
 		navigate(nav)
 
 	}

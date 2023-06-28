@@ -2,21 +2,27 @@ package io.github.michael_bailey.gym_log_book.database.dao
 
 import androidx.room.*
 import io.github.michael_bailey.gym_log_book.database.entity.EntExerciseType
-import io.github.michael_bailey.gym_log_book.database.importer.ExportDao
+import kotlinx.coroutines.flow.Flow
 import java.util.*
 
 @Dao
 /**
  * This is a data access object for exercise entries
  */
-abstract class ExerciseTypeDao : ExportDao<EntExerciseType> {
-
+abstract class ExerciseTypeDao {
 	@Query(
 		"""
 			SELECT * FROM exercise_types
 		"""
 	)
-	abstract suspend fun queryAllExerciseTypes(): List<EntExerciseType>
+	abstract fun queryAllExerciseTypeFlow(): Flow<List<EntExerciseType>>
+
+	@Query(
+		"""
+			SELECT id FROM exercise_types
+		"""
+	)
+	abstract fun queryAllExerciseTypeIdFlow(): Flow<List<UUID>>
 
 	@Query(
 		"""
@@ -24,18 +30,38 @@ abstract class ExerciseTypeDao : ExportDao<EntExerciseType> {
 			WHERE id == :id
 		"""
 	)
-	abstract suspend fun queryExercise(id: UUID): EntExerciseType
+	abstract fun queryExerciseTypeFlow(id: UUID): Flow<EntExerciseType>
+
+	@Query(
+		"""
+			SELECT * FROM exercise_types
+			WHERE id == :id
+		"""
+	)
+	abstract suspend fun queryExercise(id: UUID): EntExerciseType?
+
+	@Query(
+		"""
+			SELECT * FROM exercise_types
+			WHERE name == :name
+		"""
+	)
+	abstract suspend fun queryByName(name: String): EntExerciseType?
 
 	@Insert
-	abstract suspend fun insertExercise(exercise: EntExerciseType)
+	abstract suspend fun insertExercise(exerciseType: EntExerciseType)
 
 	@Update
-	abstract suspend fun updateExercise(exercise: EntExerciseType)
+	abstract suspend fun updateExercise(exerciseType: EntExerciseType)
 
 	@Delete
-	abstract suspend fun deleteExercise(exercise: EntExerciseType)
+	abstract suspend fun deleteExercise(exerciseType: EntExerciseType)
 
-	@Insert
-	// required for export interface
-	abstract override fun insert(ent: EntExerciseType)
+	@Query(
+		"""
+			SELECT COUNT(id)
+			FROM exercise_types
+		"""
+	)
+	abstract fun exerciseTypeCount(): Flow<Int>
 }

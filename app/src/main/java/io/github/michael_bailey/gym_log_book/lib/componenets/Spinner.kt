@@ -11,8 +11,10 @@ import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Text
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,8 +30,8 @@ fun Spinner(
 	onSelect: (String) -> Unit,
 ) {
 
-	val text = remember { mutableStateOf("") } // initial value
-	val isOpen = remember { mutableStateOf(false) } // initial value
+	var text by remember { mutableStateOf("") } // initial value
+	val isOpen by remember { mutableStateOf(false) } // initial value
 
 	val (state, setState) = remember { mutableStateOf(false) }
 
@@ -40,7 +42,7 @@ fun Spinner(
 				state = text,
 				validator = Validator.StringNameValidator,
 				placeholder = "Exercise...",
-				onChange = { text.value = it }
+				onChange = { text = it }
 			)
 //			OutlinedTextField(
 //				value = text.value,
@@ -58,7 +60,7 @@ fun Spinner(
 						modifier = Modifier.fillMaxWidth(),
 						onClick = {
 							setState(false)
-							text.value = it
+							text = it
 							onSelect(it)
 						}
 					) {

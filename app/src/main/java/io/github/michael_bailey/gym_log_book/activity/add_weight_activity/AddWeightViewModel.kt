@@ -1,68 +1,37 @@
 package io.github.michael_bailey.gym_log_book.activity.add_weight_activity
 
-import android.app.Application
-import android.text.Editable
-import android.text.TextWatcher
-import android.util.Log
-import androidx.lifecycle.AndroidViewModel
-import io.github.michael_bailey.gym_log_book.activity.add_exercise_activity.AddExerciseSetViewModel
-import io.github.michael_bailey.gym_log_book.app.App
-import io.github.michael_bailey.gym_log_book.data_type.WeightItem
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import io.github.michael_bailey.gym_log_book.data_manager.WeightDataManager
+import io.github.michael_bailey.gym_log_book.lib.Validator
+import io.github.michael_bailey.gym_log_book.repository.WeightEntryRepository
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
-import java.time.LocalDate
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class AddWeightViewModel(application: Application) :
-	AndroidViewModel(application) {
-	companion object {
-		val TAG = "AddWeightViewModel"
+@HiltViewModel
+class AddWeightViewModel @Inject constructor(
+	private val weightDataManager: WeightDataManager,
+	private val weightEntryRepository: WeightEntryRepository
+) : ViewModel() {
+
+	private val currentWeight = MutableStateFlow("")
+
+	val weight = currentWeight.asLiveData()
+
+	val isSubmitEnabled = currentWeight.map {
+		Validator.FloatValidator.validator(it).isSuccess
+	}.asLiveData()
+
+
+	fun setWeight(weight: String) = viewModelScope.launch {
+		currentWeight.emit(weight)
 	}
 
-	val WeightWatcher = object : TextWatcher {
-		override fun beforeTextChanged(
-			answer: CharSequence,
-			i: Int,
-			i1: Int,
-			i2: Int
-		) {
-			Log.i(AddExerciseSetViewModel.TAG, "before text changed ${answer}")
-		}
-
-		override fun onTextChanged(answer: CharSequence, i: Int, i1: Int, i2: Int) {
-			Log.i(AddExerciseSetViewModel.TAG, "text changed ${answer}")
-			if (answer.toString() != "")
-				setWeight(answer.toString().toDouble())
-		}
-
-		override fun afterTextChanged(editable: Editable) {
-//			if (editable.toString() === "")
-//			editable.set(0,0,"0")
-		}
-	}
-
-	private val _uiState = MutableStateFlow(AddWeightViewModelState())
-	val uiState: StateFlow<AddWeightViewModelState> = _uiState.asStateFlow()
-
-	fun setWeight(weight: Double) {
-		_uiState.update {
-			it.copy(
-				weight = weight,
-			)
-		}
-	}
-
-	fun finalise() {
-		getApplication<App>().weightDataManager.apply {
-			val v = this@AddWeightViewModel.uiState.value
-			append { id ->
-				WeightItem(
-					id,
-					LocalDate.now(),
-					v.weight,
-				)
-			}
-		}
+	fun finalise() = viewModelScope.launch {
+		weightEntryRepository.create(weight = currentWeight.value.toDouble())
 	}
 }

@@ -5,9 +5,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import io.github.michael_bailey.gym_log_book.lib.Validator
 
@@ -20,33 +17,30 @@ enum class FieldType {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ValidatorTextField(
-	state: State<String>,
+	state: String,
 	validator: Validator,
 	placeholder: String,
 	onChange: (String) -> Unit,
 ) {
 
-	val errorState = remember {
-		derivedStateOf {
-			validator.validator(state.value).let {
-				if (it.isSuccess) {
-					state.value to ""
-				} else {
-					state.value to it.exceptionOrNull()!!.message!!
-				}
-			}
+	val errorState = validator.validator(state).let {
+		if (it.isSuccess) {
+			state to ""
+		} else {
+			state to it.exceptionOrNull()!!.message!!
 		}
 	}
 
+
 	Column {
 		OutlinedTextField(
-			value = errorState.value.first,
+			value = errorState.first,
 			onValueChange = onChange,
 			label = { Text(placeholder) },
 			singleLine = true,
-			isError = errorState.value.second != "",
+			isError = errorState.second != "",
 			keyboardOptions = validator.keyboardOptions
 		)
-		Text(errorState.value.second, color = Color.Red)
+		Text(errorState.second, color = Color.Red)
 	}
 }

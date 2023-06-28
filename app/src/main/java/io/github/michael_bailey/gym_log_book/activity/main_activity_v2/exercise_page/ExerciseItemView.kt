@@ -3,7 +3,12 @@ package io.github.michael_bailey.gym_log_book.activity.main_activity_v2.exercise
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -12,18 +17,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.github.michael_bailey.gym_log_book.activity.amend_exercise_activity.AmendExerciseActivity
+import io.github.michael_bailey.gym_log_book.activity.amend_exercise_activity.AmendExerciseActivityIntentUtils
 import io.github.michael_bailey.gym_log_book.activity.main_activity_v2.MainActivityV2ViewModel
 import io.github.michael_bailey.gym_log_book.data_type.ExerciseItem
 import io.github.michael_bailey.gym_log_book.lib.componenets.CardWithSwipeActions
-import java.time.LocalDate
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
-fun ExerciseItemView(vm: MainActivityV2ViewModel?, item: ExerciseItem) {
+fun ExerciseItemView(vm: MainActivityV2ViewModel, item: ExerciseItem) {
 	val activity = LocalContext.current as Activity
 
 	val submitIntent = Intent(
@@ -34,10 +38,15 @@ fun ExerciseItemView(vm: MainActivityV2ViewModel?, item: ExerciseItem) {
 	}
 
 	CardWithSwipeActions(actions = {
-		Button(onClick = { vm?.deleteExercise(item.id) }) {
+		Button(onClick = { vm.deleteExercise(item.id) }) {
 			Text("Delete")
 		}
-		Button(onClick = { activity.startActivity(submitIntent) }) {
+		Button(onClick = {
+			AmendExerciseActivityIntentUtils.startAmendActivity(
+				activity,
+				item.id
+			)
+		}) {
 			Text("Modify")
 		}
 	}) {
@@ -76,20 +85,4 @@ fun ExerciseItemView(vm: MainActivityV2ViewModel?, item: ExerciseItem) {
 			}
 		}
 	}
-}
-
-@Preview
-@Composable
-fun ExerciseItemViewPreview() {
-	ExerciseItemView(
-		null,
-		ExerciseItem(
-			1,
-			LocalDate.now(),
-			"Test exercise",
-			1,
-			70.0,
-			8
-		)
-	)
 }

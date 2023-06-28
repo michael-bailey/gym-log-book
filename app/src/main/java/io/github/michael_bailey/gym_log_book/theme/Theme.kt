@@ -1,6 +1,7 @@
 package io.github.michael_bailey.gym_log_book.theme
 
 import android.app.Activity
+import android.app.Application
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -20,6 +21,7 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.ViewCompat
 import com.google.android.material.elevation.SurfaceColors
 import io.github.michael_bailey.gym_log_book.app.App
+import io.github.michael_bailey.gym_log_book.lib.DebugPreferencesManager
 
 private val DarkColorScheme = darkColorScheme(
 	primary = Purple80,
@@ -31,16 +33,6 @@ private val LightColorScheme = lightColorScheme(
 	primary = Purple40,
 	secondary = PurpleGrey40,
 	tertiary = Pink40
-
-	/* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
 )
 
 @Composable
@@ -67,11 +59,14 @@ fun Gym_Log_BookTheme(
 		else -> LightColorScheme
 	}
 
+
+	val appDebugPreferencesManager = DebugPreferencesManager(app as Application)
+
 	if (app is App) {
-		val debugStatusBarEnabled by app.appDebugPreferencesManager
+		val debugStatusBarEnabled by appDebugPreferencesManager
 			.isDebugStatusBarColourEnabled.observeAsState()
 
-		val debugNavBarEnabled by app.appDebugPreferencesManager
+		val debugNavBarEnabled by appDebugPreferencesManager
 			.isDebugNavBarColourEnabled.observeAsState()
 
 		LaunchedEffect(debugNavBarEnabled, debugStatusBarEnabled) {

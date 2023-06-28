@@ -19,6 +19,4 @@ data class EntExerciseType(
 
 	val name: String,
 	val usesUserWeight: Boolean
-
-
 )

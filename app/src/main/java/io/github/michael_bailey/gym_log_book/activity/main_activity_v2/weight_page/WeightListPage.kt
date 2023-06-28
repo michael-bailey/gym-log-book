@@ -1,6 +1,11 @@
 package io.github.michael_bailey.gym_log_book.activity.main_activity_v2.weight_page
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
@@ -9,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -17,14 +23,15 @@ import io.github.michael_bailey.gym_log_book.theme.Title
 
 @Composable
 fun WeightListPage(vm: MainActivityV2ViewModel, listState: LazyListState) {
-	val state by vm.weightListState.observeAsState(initial = listOf())
+	val weightList by vm.weightEntryList.observeAsState(initial = listOf())
 
-
-	val arrangement = derivedStateOf {
-		if (state.isNotEmpty()) {
-			Arrangement.Top
-		} else {
-			Arrangement.Center
+	val arrangement = remember {
+		derivedStateOf {
+			if (weightList.isNotEmpty()) {
+				Arrangement.Top
+			} else {
+				Arrangement.Center
+			}
 		}
 	}
 
@@ -40,11 +47,11 @@ fun WeightListPage(vm: MainActivityV2ViewModel, listState: LazyListState) {
 			verticalArrangement = Arrangement.spacedBy(8.dp),
 			state = listState
 		) {
-			if (state.isEmpty()) {
+			if (weightList.isEmpty()) {
 				item {
 					Column(
 						Modifier
-							.fillMaxHeight()
+							.fillMaxWidth()
 							.height(250.dp),
 						verticalArrangement = Arrangement.Center,
 						horizontalAlignment = Alignment.CenterHorizontally
@@ -67,8 +74,12 @@ fun WeightListPage(vm: MainActivityV2ViewModel, listState: LazyListState) {
 					}
 				}
 
-				items(state) { item ->
-					WeightItemView(item)
+				items(weightList) { item ->
+					WeightItemView(
+						item = item,
+						onModify = {/* TODO */ },
+						onDelete = {/* TODO */ },
+					)
 				}
 			}
 		}

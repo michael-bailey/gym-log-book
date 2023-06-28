@@ -1,36 +1,37 @@
 package io.github.michael_bailey.gym_log_book.lib
 
+import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
-import io.github.michael_bailey.gym_log_book.app.App
 import io.github.michael_bailey.gym_log_book.extension.application.preferences
+import javax.inject.Inject
 
 
-class DebugPreferencesManager(
-	private val app: App,
+class DebugPreferencesManager @Inject constructor(
+	private val app: Application
+) {
 
 	private val _debugEnabled: MutableLiveData<Boolean> = MutableLiveData(
 		app.preferences().getBoolean("debug_enabled", false)
-	),
+	)
 	private val _debugBottomNavBarEnabled: MutableLiveData<Boolean> =
 		MutableLiveData(
 			app.preferences()
 				.getBoolean("debug_bottom_nav_bar_enabled", false)
-		),
+		)
 
 	private val _debugStatusBarColourEnabled: MutableLiveData<Boolean> =
 		MutableLiveData(
 			app.preferences()
 				.getBoolean("debug_status_bar_colour_enabled", false)
-		),
+		)
 
 	private val _debugNavBarColourEnabled: MutableLiveData<Boolean> =
 		MutableLiveData(
 			app.preferences()
 				.getBoolean("debug_nav_bar_colour_enabled", false)
-		),
-) {
+		)
 
 	val isDebugEnabled: LiveData<Boolean> = _debugEnabled
 

@@ -1,40 +1,37 @@
 package io.github.michael_bailey.gym_log_book.activity.add_exercise_type_activity
 
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.MutableLiveData
-import io.github.michael_bailey.gym_log_book.app.App
-import io.github.michael_bailey.gym_log_book.data_type.ExerciseType
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import io.github.michael_bailey.gym_log_book.repository.ExerciseTypeRepository
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class AddExerciseTypeActivityViewModel(
-	application: App,
+@HiltViewModel
+class AddExerciseTypeActivityViewModel @Inject constructor(
+	private val exerciseTypeRepository: ExerciseTypeRepository
+) : ViewModel() {
 
-	private val _exerciseName: MutableLiveData<String> = MutableLiveData(""),
-	private val _isUsingUserWeight: MutableLiveData<Boolean> = MutableLiveData(
-		false
-	)
+	private val currentExerciseName = MutableStateFlow("")
+	private val currentUsesUserWeight = MutableStateFlow(false)
 
-) : AndroidViewModel(
-	application
-) {
+	val exerciseName = currentExerciseName.asLiveData()
+	val isUsingUserWeight = currentUsesUserWeight.asLiveData()
 
-	val exerciseName get() = _exerciseName
-	val isUsingUserWeight get() = _isUsingUserWeight
-
-	fun setExerciseName(value: String) {
-		_exerciseName.value = value
+	fun setExerciseName(value: String) = viewModelScope.launch {
+		currentExerciseName.emit(value)
 	}
 
-	fun setIsUsingUserWeight(value: Boolean) {
-		_isUsingUserWeight.value = value
+	fun setIsUsingUserWeight(value: Boolean) = viewModelScope.launch {
+		currentUsesUserWeight.emit(value)
 	}
 
-	fun finalise() {
-		getApplication<App>().exerciseTypeDataManager.append {
-			ExerciseType(
-				it,
-				exerciseName.value!!,
-				isUsingUserWeight.value!!
-			)
-		}
+	fun finalise() = viewModelScope.launch {
+		exerciseTypeRepository.create(
+			currentExerciseName.value,
+			currentUsesUserWeight.value
+		)
 	}
 }

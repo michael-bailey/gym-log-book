@@ -1,35 +1,32 @@
 package io.github.michael_bailey.gym_log_book.activity.exercise_set_guide_activity
 
-import Spinner
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
-import io.github.michael_bailey.gym_log_book.lib.Validator
-import io.github.michael_bailey.gym_log_book.lib.componenets.ValidatorTextField
-import io.github.michael_bailey.gym_log_book.lib.gatekeeper.Gatekeeper
+import io.github.michael_bailey.gym_log_book.activity.amend_exercise_activity_v2.components.ExerciseTypeDropdownSelector
 
 
 @Composable
 fun StartPage(
 	nav: NavHostController,
-	vm: SetGuideViewModel,
+	vm: SetGuideViewModelV2,
 	modifier: Modifier? = null
 ) {
+	val exerciseMap by vm.exerciseNameMap.observeAsState(initial = mapOf())
+	val currentExercise by vm.selectedExerciseType.observeAsState()
+	val startEnabled by vm.isStartEnabled.observeAsState(false)
 
-	val currentExercise = vm.exercise.observeAsState("")
 
-	val startEnabled = vm.startEnabled.observeAsState(true)
-
-	val exerciseTypes = vm.exerciseTypes.observeAsState(initial = listOf())
 
 	Column(
 		modifier = Modifier.fillMaxSize(),
@@ -37,20 +34,11 @@ fun StartPage(
 		horizontalAlignment = Alignment.CenterHorizontally
 	) {
 
-		if (Gatekeeper.eval("new_exercise_selector")) {
-			Spinner(
-				list = exerciseTypes.value.map { it.name },
-				onSelect = vm::updateCurrentExercise
-			)
-		} else {
-			Text("What Exercise?", fontSize = 36.sp)
-			ValidatorTextField(
-				state = currentExercise,
-				validator = Validator.StringNameValidator as Validator,
-				onChange = vm::updateCurrentExercise,
-				placeholder = "Exercise Name"
-			)
-		}
+		ExerciseTypeDropdownSelector(
+			exercises = exerciseMap,
+			selectedType = currentExercise,
+			setExercise = { vm.setExerciseType(it) }
+		)
 		Button(
 			onClick = {
 				nav.navigate(ExerciseSetGuideActivityPage.Set.route) {
@@ -67,7 +55,7 @@ fun StartPage(
 					restoreState = true
 				}
 			},
-			enabled = startEnabled.value
+			enabled = startEnabled
 		) {
 			Text(text = "Start", fontSize = 18.sp)
 		}
