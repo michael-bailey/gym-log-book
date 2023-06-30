@@ -12,7 +12,7 @@ import android.net.Uri
 import io.github.michael_bailey.gym_log_book.R
 import io.github.michael_bailey.gym_log_book.activity.exercise_set_guide_activity.ExerciseSetGuideActivity
 import io.github.michael_bailey.gym_log_book.activity.exercise_set_guide_activity.ExerciseSetGuideActivityIntentUtils
-import io.github.michael_bailey.gym_log_book.activity.main_activity_v2.MainActivityV2
+import io.github.michael_bailey.gym_log_book.activity.main_activity.MainActivity
 import io.github.michael_bailey.gym_log_book.theme.scheme
 import java.util.UUID
 import javax.inject.Inject
@@ -77,7 +77,7 @@ class AppNotificationManager @Inject constructor(
 				weight
 			)
 
-		val mainActivityIntent = Intent(application, MainActivityV2::class.java)
+		val mainActivityIntent = Intent(application, MainActivity::class.java)
 
 		val notificationIntent: PendingIntent? =
 			TaskStackBuilder.create(application).run {
@@ -117,7 +117,7 @@ class AppNotificationManager @Inject constructor(
 				build()
 			}
 
-			val mainActivityintent = Intent(application, MainActivityV2::class.java)
+			val mainActivityintent = Intent(application, MainActivity::class.java)
 			val setGuideIntent =
 				Intent(application, ExerciseSetGuideActivity::class.java).apply {
 					data = guideData

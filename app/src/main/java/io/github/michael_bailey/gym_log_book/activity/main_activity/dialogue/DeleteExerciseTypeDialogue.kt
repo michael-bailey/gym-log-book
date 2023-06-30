@@ -1,4 +1,4 @@
-package io.github.michael_bailey.gym_log_book.activity.main_activity_v2.dialogue
+package io.github.michael_bailey.gym_log_book.activity.main_activity.dialogue
 
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button

@@ -1,6 +1,5 @@
 package io.github.michael_bailey.gym_log_book.activity.exercise_set_guide_activity
 
-import android.app.Activity
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,7 +13,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -26,12 +24,8 @@ import kotlin.time.Duration.Companion.seconds
 fun PausePage(
 	nav: NavHostController,
 	vm: SetGuideViewModelV2,
-	modifier: Modifier? = null
 ) {
 	var count by remember { mutableStateOf(60) }
-
-	val activity = LocalContext.current as Activity
-
 
 	LaunchedEffect(Unit) {
 		while (count != 0) {
@@ -55,7 +49,7 @@ fun PausePage(
 	}
 }
 
-inline fun navigate(nav: NavHostController) {
+fun navigate(nav: NavHostController) {
 	nav.navigate(ExerciseSetGuideActivityPage.Set.route) {
 		popUpTo(nav.graph.findStartDestination().id) {
 			saveState = true

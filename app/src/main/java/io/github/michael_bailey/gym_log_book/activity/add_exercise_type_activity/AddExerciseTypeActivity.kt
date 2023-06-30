@@ -19,8 +19,6 @@ class AddExerciseTypeActivity : ComponentActivity() {
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 
-
-
 		setContent {
 			Gym_Log_BookTheme {
 				// A surface container using the 'background' color from the theme

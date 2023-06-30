@@ -1,8 +1,5 @@
-package io.github.michael_bailey.gym_log_book.activity.main_activity_v2.exercise_type_page
+package io.github.michael_bailey.gym_log_book.activity.main_activity.exercise_type_page
 
-import android.app.Activity
-import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,27 +10,15 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import io.github.michael_bailey.gym_log_book.activity.amend_exercise_activity.AmendExerciseActivity
-import io.github.michael_bailey.gym_log_book.activity.main_activity_v2.MainActivityV2ViewModel
-import io.github.michael_bailey.gym_log_book.data_type.ExerciseType
+import io.github.michael_bailey.gym_log_book.activity.main_activity.MainActivityViewModel
+import io.github.michael_bailey.gym_log_book.database.entity.EntExerciseType
 import io.github.michael_bailey.gym_log_book.lib.componenets.CardWithSwipeActions
 
 @Composable
-fun ExerciseTypeView(vm: MainActivityV2ViewModel?, item: ExerciseType) {
-	val activity = LocalContext.current as Activity
-
-	val submitIntent = Intent(
-		activity.applicationContext,
-		AmendExerciseActivity::class.java
-	).apply {
-		data = Uri.parse("GymLogBook://exercise/${item.id}")
-	}
-
+fun ExerciseTypeView(vm: MainActivityViewModel?, item: EntExerciseType) {
 	CardWithSwipeActions(actions = {
 		Button(onClick = { vm?.initiateExerciseTypeDeletion(item.id) }) {
 			Text("Delete")
@@ -56,7 +41,7 @@ fun ExerciseTypeView(vm: MainActivityV2ViewModel?, item: ExerciseType) {
 					.fillMaxWidth(),
 				horizontalArrangement = Arrangement.SpaceBetween
 			) {
-				if (item.isUsingUserWeight) {
+				if (item.usesUserWeight) {
 					Text(
 						text = "Uses Your Weight",
 						fontSize = 14.sp,
@@ -72,14 +57,4 @@ fun ExerciseTypeView(vm: MainActivityV2ViewModel?, item: ExerciseType) {
 			}
 		}
 	}
-}
-
-@Preview
-@Composable
-fun ExerciseItemViewPreview() {
-	ExerciseTypeView(
-		null,
-		ExerciseType(1, "Test Exercise", false)
-
-	)
 }

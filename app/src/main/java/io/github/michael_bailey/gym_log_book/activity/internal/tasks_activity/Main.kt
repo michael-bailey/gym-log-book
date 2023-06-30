@@ -35,8 +35,6 @@ fun Main(vm: TaskActivityViewModel) {
 
 	val tasks = vm.tasks.observeAsState(listOf())
 
-	val a = (1..10).toList()
-
 	Scaffold(
 		topBar = {
 			TopAppBar(
@@ -57,7 +55,7 @@ fun Main(vm: TaskActivityViewModel) {
 				) {
 					items(tasks.value) { i ->
 						CardWithSwipeActions(actions = {
-							Button(onClick = { vm.deleteTask(i) }) {
+							Button(onClick = { vm.deleteTask(i.id) }) {
 								Text("Delete")
 							}
 						}) {

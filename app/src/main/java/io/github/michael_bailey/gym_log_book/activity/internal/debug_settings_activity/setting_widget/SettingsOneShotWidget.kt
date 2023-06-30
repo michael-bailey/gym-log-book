@@ -12,7 +12,7 @@ import io.github.michael_bailey.gym_log_book.lib.one_shot.OneShotPreference
 
 @Composable
 fun SettingsOneShotWidget(
-	modifier: Modifier? = null,
+	modifier: Modifier? = Modifier,
 	oneShot: OneShotPreference,
 ) {
 	Row(

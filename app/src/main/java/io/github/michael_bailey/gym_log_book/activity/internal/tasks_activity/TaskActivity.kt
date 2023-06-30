@@ -8,26 +8,18 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import androidx.room.Room
-import io.github.michael_bailey.gym_log_book.database.InternalDatabase
+import dagger.hilt.android.AndroidEntryPoint
 import io.github.michael_bailey.gym_log_book.theme.Gym_Log_BookTheme
 
+@AndroidEntryPoint
 class TaskActivity : ComponentActivity() {
 
-	lateinit var db: InternalDatabase
+	private val vm: TaskActivityViewModel by viewModels()
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 
-		db = Room.databaseBuilder(
-			applicationContext,
-			InternalDatabase::class.java,
-			"gym_log_book_debug_db"
-		).allowMainThreadQueries().build()
 
-		val vm: TaskActivityViewModel by viewModels {
-			TaskActivityViewModelFactory(db.taskDao())
-		}
 
 		setContent {
 			Gym_Log_BookTheme(colourNavBar = true) {

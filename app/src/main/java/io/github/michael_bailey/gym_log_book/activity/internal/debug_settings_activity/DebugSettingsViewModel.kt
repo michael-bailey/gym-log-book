@@ -1,13 +1,11 @@
 package io.github.michael_bailey.gym_log_book.activity.internal.debug_settings_activity
 
-import android.content.Context
+import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
-import io.github.michael_bailey.gym_log_book.lib.AppNotificationManager
 import io.github.michael_bailey.gym_log_book.lib.DebugPreferencesManager
 import io.github.michael_bailey.gym_log_book.lib.gatekeeper.Gatekeeper
 import io.github.michael_bailey.gym_log_book.service.ServiceUtils
@@ -19,8 +17,7 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class DebugSettingsViewModel @Inject constructor(
-	@ApplicationContext private val context: Context,
-	private val appNotificationManager: AppNotificationManager,
+	private val applicationContext: Application,
 	private val appDebugPreferencesManager: DebugPreferencesManager,
 	private val gatekeeper: Gatekeeper,
 ) : ViewModel() {
@@ -66,7 +63,7 @@ class DebugSettingsViewModel @Inject constructor(
 	}
 
 	fun runDataMigration() {
-		ServiceUtils.startMigrationIntent(context = context)
+		ServiceUtils.startMigrationIntent(context = applicationContext)
 	}
 }
 

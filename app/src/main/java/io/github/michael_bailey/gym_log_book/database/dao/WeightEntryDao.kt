@@ -27,6 +27,14 @@ interface WeightEntryDao {
 	)
 	fun queryWeight(id: UUID): LiveData<EntWeightEntry>
 
+	@Query(
+		"""
+			SELECT * FROM weight_items
+			WHERE id == :id
+		"""
+	)
+	suspend fun getWeight(id: UUID): EntWeightEntry
+
 	@Insert
 	suspend fun insertWeight(weight: EntWeightEntry)
 
@@ -42,4 +50,6 @@ interface WeightEntryDao {
 			)
 		)
 	}
+
+
 }

@@ -1,4 +1,4 @@
-package io.github.michael_bailey.gym_log_book.activity.main_activity_v2.exercise_page
+package io.github.michael_bailey.gym_log_book.activity.main_activity.exercise_page
 
 import android.app.Activity
 import androidx.compose.foundation.layout.Arrangement
@@ -19,12 +19,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import io.github.michael_bailey.gym_log_book.activity.main_activity_v2.MainActivityV2ViewModel
+import io.github.michael_bailey.gym_log_book.activity.main_activity.MainActivityViewModel
 import io.github.michael_bailey.gym_log_book.database.entity.EntExerciseEntry
 import io.github.michael_bailey.gym_log_book.lib.componenets.CardWithSwipeActions
 
 @Composable
-fun ExerciseEntryView(vm: MainActivityV2ViewModel, item: EntExerciseEntry) {
+fun ExerciseEntryView(vm: MainActivityViewModel, item: EntExerciseEntry) {
 	val activity = LocalContext.current as Activity
 
 	val exerciseTypes by vm.exerciseTypeList.observeAsState(listOf())

@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.github.michael_bailey.gym_log_book.data_manager.WeightDataManager
 import io.github.michael_bailey.gym_log_book.lib.Validator
 import io.github.michael_bailey.gym_log_book.repository.WeightEntryRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +13,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddWeightViewModel @Inject constructor(
-	private val weightDataManager: WeightDataManager,
 	private val weightEntryRepository: WeightEntryRepository
 ) : ViewModel() {
 

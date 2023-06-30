@@ -20,13 +20,10 @@ import io.github.michael_bailey.gym_log_book.activity.amend_exercise_activity_v2
 fun StartPage(
 	nav: NavHostController,
 	vm: SetGuideViewModelV2,
-	modifier: Modifier? = null
 ) {
 	val exerciseMap by vm.exerciseNameMap.observeAsState(initial = mapOf())
 	val currentExercise by vm.selectedExerciseType.observeAsState()
 	val startEnabled by vm.isStartEnabled.observeAsState(false)
-
-
 
 	Column(
 		modifier = Modifier.fillMaxSize(),

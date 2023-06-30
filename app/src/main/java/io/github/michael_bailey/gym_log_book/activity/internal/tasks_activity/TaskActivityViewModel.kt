@@ -4,33 +4,39 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import io.github.michael_bailey.gym_log_book.database.dao.TaskDao
-import io.github.michael_bailey.gym_log_book.database.entity.EntTask
+import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import io.github.michael_bailey.gym_log_book.repository.TaskRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.util.UUID
+import javax.inject.Inject
 
-class TaskActivityViewModel(
-	private val taskDao: TaskDao,
-	private val _currentTaskString: MutableState<String> = mutableStateOf("")
+@HiltViewModel
+class TaskActivityViewModel @Inject constructor(
+	private val taskRepository: TaskRepository,
 ) : ViewModel() {
 
+	private val _currentTaskString: MutableState<String> = mutableStateOf("")
+
 	val currentTaskString: State<String> = _currentTaskString
-	val tasks = taskDao.queryTasks()
+	val tasks = taskRepository.tasks.asLiveData()
+
 
 	fun setTaskString(text: String) {
 		_currentTaskString.value = text
 	}
 
-	fun addTask() {
-		taskDao.insertTask(
-			EntTask(
-				text = currentTaskString.value,
-				isComplete = false
-			)
+	fun addTask() = viewModelScope.launch(Dispatchers.IO) {
+		taskRepository.addTask(
+			task = currentTaskString.value,
 		)
 		_currentTaskString.value = ""
 	}
 
-	fun deleteTask(task: EntTask) {
-		taskDao.deleteTask(task)
+	fun deleteTask(id: UUID) = viewModelScope.launch(Dispatchers.IO) {
+		taskRepository.deleteTask(id)
 	}
 
 }

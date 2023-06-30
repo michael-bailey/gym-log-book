@@ -3,7 +3,9 @@ package io.github.michael_bailey.gym_log_book.theme
 import android.app.Activity
 import android.app.Application
 import android.os.Build
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
@@ -35,15 +37,19 @@ private val LightColorScheme = lightColorScheme(
 	tertiary = Pink40
 )
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Gym_Log_BookTheme(
 	darkTheme: Boolean = isSystemInDarkTheme(),
 	// Dynamic color is available on Android 12+
 	dynamicColor: Boolean = true,
 	colourNavBar: Boolean = false,
-	content: @Composable () -> Unit
+	content: @Composable () -> Unit,
+	scrollState: ScrollState? = null
 ) {
 	val app = LocalContext.current.applicationContext
+	val activity = LocalContext.current as Activity
+	val window = activity.window
 	val view = LocalView.current
 	val colorScheme = when {
 		dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
@@ -58,8 +64,7 @@ fun Gym_Log_BookTheme(
 		darkTheme -> DarkColorScheme
 		else -> LightColorScheme
 	}
-
-
+	
 	val appDebugPreferencesManager = DebugPreferencesManager(app as Application)
 
 	if (app is App) {

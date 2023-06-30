@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun SettingsToggleWidget(
-	modifier: Modifier? = null,
+	modifier: Modifier? = Modifier,
 	name: String,
 	state: Boolean,
 	enabled: Boolean = true,

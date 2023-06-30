@@ -3,6 +3,7 @@ package io.github.michael_bailey.gym_log_book.repository
 import io.github.michael_bailey.gym_log_book.database.dao.WeightEntryDao
 import io.github.michael_bailey.gym_log_book.database.entity.EntWeightEntry
 import java.time.LocalDate
+import java.util.UUID
 import javax.inject.Inject
 
 /**
@@ -25,6 +26,10 @@ class WeightEntryRepository @Inject constructor(
 
 	suspend fun create(weight: Double) {
 		weightEntryDao.create(weight = weight)
+	}
+
+	suspend fun delete(uuid: UUID) {
+		weightEntryDao.deleteWeight(weightEntryDao.getWeight(uuid))
 	}
 
 

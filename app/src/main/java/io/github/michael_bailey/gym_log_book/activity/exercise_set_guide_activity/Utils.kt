@@ -4,7 +4,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 
 object Utils {
-	inline fun navigateAskExtraSet(nav: NavHostController) {
+	fun navigateAskExtraSet(nav: NavHostController) {
 		nav.navigate(ExerciseSetGuideActivityPage.AskExtraSet.route) {
 			popUpTo(nav.graph.findStartDestination().id) {
 				saveState = true
@@ -17,7 +17,7 @@ object Utils {
 		}
 	}
 
-	inline fun navigatePause(nav: NavHostController) {
+	fun navigatePause(nav: NavHostController) {
 		nav.navigate(ExerciseSetGuideActivityPage.Pause.route) {
 			popUpTo(nav.graph.findStartDestination().id) {
 				saveState = true

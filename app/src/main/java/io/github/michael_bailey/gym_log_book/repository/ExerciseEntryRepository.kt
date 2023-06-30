@@ -104,14 +104,5 @@ class ExerciseEntryRepository @Inject constructor(
 		)
 	}
 
-	suspend fun removeAndReplaceType(removedType: UUID, replacementType: UUID) {
-		val exercises = exerciseEntryDao.getExercisesByType(removedType)
 
-		val updatedExercises =
-			exercises.map { it.copy(exerciseTypeId = replacementType) }
-
-		exerciseEntryDao.updateExercises(updatedExercises)
-
-		exerciseTypeDao.deleteExercise(exerciseTypeDao.queryExercise(removedType)!!)
-	}
 }

@@ -19,11 +19,9 @@ import io.github.michael_bailey.gym_log_book.theme.Title
 fun Main(vm: AddExerciseTypeActivityViewModel) {
 
 	val activity = runCatching { LocalContext.current as Activity }.getOrNull()
-//	val nav = rememberNavController()
 
 	val exerciseName by vm.exerciseName.observeAsState("")
 	val isUsingUserWeight = vm.isUsingUserWeight.observeAsState(false)
-
 
 	Scaffold(
 		topBar = {

@@ -134,7 +134,7 @@ fun Main(vm: DebugSettingsViewModel) {
 
 						spacer()
 
-						spacedStickyHeader("Gatekeepers")
+						spacedStickyHeader("Beta Features")
 
 						items(gatekeepers) { name ->
 							SettingsGatekeeperWidget(vm = vm, gatekeeperName = name)

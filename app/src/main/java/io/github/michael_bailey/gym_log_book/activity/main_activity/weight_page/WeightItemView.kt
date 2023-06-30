@@ -1,4 +1,4 @@
-package io.github.michael_bailey.gym_log_book.activity.main_activity_v2.weight_page
+package io.github.michael_bailey.gym_log_book.activity.main_activity.weight_page
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth

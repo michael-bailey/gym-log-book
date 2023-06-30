@@ -1,4 +1,4 @@
-package io.github.michael_bailey.gym_log_book.activity.main_activity_v2
+package io.github.michael_bailey.gym_log_book.activity.main_activity
 
 import android.app.Activity
 import android.util.Log
@@ -8,9 +8,6 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.michael_bailey.gym_log_book.activity.amend_exercise_activity_v2.AmendExerciseActivityV2IntentUtils
-import io.github.michael_bailey.gym_log_book.data_manager.ExerciseDataManager
-import io.github.michael_bailey.gym_log_book.data_manager.ExerciseTypeDataManager
-import io.github.michael_bailey.gym_log_book.data_manager.WeightDataManager
 import io.github.michael_bailey.gym_log_book.database.entity.EntExerciseEntry
 import io.github.michael_bailey.gym_log_book.lib.PeriodGroup
 import io.github.michael_bailey.gym_log_book.lib.gatekeeper.Gatekeeper
@@ -26,17 +23,12 @@ import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
-class MainActivityV2ViewModel @Inject constructor(
-	private val exerciseTypeDataManager: ExerciseTypeDataManager,
-	private val exerciseDataManager: ExerciseDataManager,
-	private val weightDataManager: WeightDataManager,
-
+class MainActivityViewModel @Inject constructor(
 	private val exerciseTypeRepository: ExerciseTypeRepository,
 	private val exerciseEntryRepository: ExerciseEntryRepository,
 	private val weightEntryRepository: WeightEntryRepository,
 
 	val gatekeeper: Gatekeeper
-
 ) : ViewModel() {
 
 	var removedID = mutableStateOf<UUID?>(null)
@@ -50,7 +42,7 @@ class MainActivityV2ViewModel @Inject constructor(
 
 	val timeExerciseGroupedList =
 		exerciseEntryRepository.timeExerciseGroupedList.map {
-			var output = mutableMapOf<String, List<EntExerciseEntry>>()
+			val output = mutableMapOf<String, List<EntExerciseEntry>>()
 
 			val sortedList = it.toList().sortedByDescending { it.first }.toMap()
 
@@ -76,18 +68,6 @@ class MainActivityV2ViewModel @Inject constructor(
 	val weightEntryList = weightEntryRepository.weightEntryList.asLiveData()
 	val isExerciseTypeListEmpty = exerciseTypeRepository.isEmpty.asLiveData()
 
-	fun deleteExercise(id: Int) {
-		exerciseDataManager.delete(id)
-	}
-
-	@Deprecated("This uses data manager remove this where necessary")
-	fun initiateExerciseTypeDeletion(id: Int) {
-		exerciseTypeDataManager.delete(id)
-	}
-
-	fun amendExerciseType(id: UUID) = viewModelScope.launch {
-	}
-
 	fun setSelectedReplacementType(id: UUID) {
 		selectedReplacementType.value = id
 	}
@@ -110,10 +90,10 @@ class MainActivityV2ViewModel @Inject constructor(
 			return@launch
 		}
 
-		exerciseEntryRepository.removeAndReplaceType(removedID, selectedType)
+		exerciseTypeRepository.removeAndReplaceType(removedID, selectedType)
 
-		this@MainActivityV2ViewModel.selectedReplacementType.value = null
-		this@MainActivityV2ViewModel.removedID.value = null
+		this@MainActivityViewModel.selectedReplacementType.value = null
+		this@MainActivityViewModel.removedID.value = null
 
 	}
 
@@ -124,5 +104,9 @@ class MainActivityV2ViewModel @Inject constructor(
 		exerciseEntryRepository.delete(
 			uuid
 		)
+	}
+
+	fun deleteWeightEntry(uuid: UUID) = viewModelScope.launch(Dispatchers.IO) {
+		weightEntryRepository.delete(uuid)
 	}
 }

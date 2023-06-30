@@ -1,4 +1,4 @@
-package io.github.michael_bailey.gym_log_book.activity.main_activity_v2
+package io.github.michael_bailey.gym_log_book.activity.main_activity
 
 import android.app.Activity
 import androidx.annotation.StringRes

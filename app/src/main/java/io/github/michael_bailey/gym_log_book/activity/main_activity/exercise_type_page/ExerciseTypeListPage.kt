@@ -1,4 +1,4 @@
-package io.github.michael_bailey.gym_log_book.activity.main_activity_v2
+package io.github.michael_bailey.gym_log_book.activity.main_activity
 
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -16,14 +16,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import io.github.michael_bailey.gym_log_book.activity.main_activity_v2.dialogue.DeleteExerciseTypeDialogue
-import io.github.michael_bailey.gym_log_book.activity.main_activity_v2.exercise_type_page.ExerciseTypeView
+import io.github.michael_bailey.gym_log_book.activity.main_activity.dialogue.DeleteExerciseTypeDialogue
+import io.github.michael_bailey.gym_log_book.activity.main_activity.exercise_type_page.ExerciseTypeView
 import io.github.michael_bailey.gym_log_book.theme.Title
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ExerciseTypeListPage(
-	vm: MainActivityV2ViewModel,
+	vm: MainActivityViewModel,
 	listState: LazyListState
 ) {
 
