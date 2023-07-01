@@ -11,8 +11,6 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import io.github.michael_bailey.gym_log_book.lib.Validator
 import io.github.michael_bailey.gym_log_book.lib.componenets.ValidatorTextField
-import kotlinx.coroutines.delay
-import kotlin.time.Duration
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
@@ -21,8 +19,7 @@ fun SetPage(
 	vm: SetGuideViewModelV2,
 ) {
 	LaunchedEffect(Unit) {
-		delay(Duration.parse("3s"))
-		vm.cancelTimerNotification()
+		vm.resetTimer()
 	}
 
 	val setNumber by vm.exerciseSet.observeAsState(initial = 0)

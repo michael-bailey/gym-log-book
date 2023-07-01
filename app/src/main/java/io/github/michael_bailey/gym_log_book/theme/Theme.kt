@@ -3,7 +3,6 @@ package io.github.michael_bailey.gym_log_book.theme
 import android.app.Activity
 import android.app.Application
 import android.os.Build
-import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -45,7 +44,7 @@ fun Gym_Log_BookTheme(
 	dynamicColor: Boolean = true,
 	colourNavBar: Boolean = false,
 	content: @Composable () -> Unit,
-	scrollState: ScrollState? = null
+//	scrollState: ScrollState? = null
 ) {
 	val app = LocalContext.current.applicationContext
 	val activity = LocalContext.current as Activity
@@ -64,7 +63,7 @@ fun Gym_Log_BookTheme(
 		darkTheme -> DarkColorScheme
 		else -> LightColorScheme
 	}
-	
+
 	val appDebugPreferencesManager = DebugPreferencesManager(app as Application)
 
 	if (app is App) {

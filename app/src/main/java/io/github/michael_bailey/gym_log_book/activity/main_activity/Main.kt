@@ -22,6 +22,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -75,6 +76,9 @@ fun Main(vm: MainActivityViewModel) {
 			}
 		)
 	}
+
+	val scrollState = TopAppBarDefaults.pinnedScrollBehavior()
+
 
 	val navBackStackEntry by nav.currentBackStackEntryAsState()
 

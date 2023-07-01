@@ -5,7 +5,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import dagger.hilt.android.AndroidEntryPoint
-import io.github.michael_bailey.gym_log_book.extension.any.log
 import io.github.michael_bailey.gym_log_book.theme.Gym_Log_BookTheme
 
 @AndroidEntryPoint
@@ -21,18 +20,13 @@ class ExerciseSetGuideActivity : ComponentActivity() {
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
-		log("${intent.data}")
+
+		vm.resetTimer()
 
 		setContent {
 			Gym_Log_BookTheme(colourNavBar = false) {
 				Main(vm = vm, this::finish)
 			}
 		}
-	}
-
-	override fun onRestart() {
-		super.onRestart()
-		log("[onRestart]: canceling notification")
-		vm.cancelTimerNotification()
 	}
 }

@@ -13,11 +13,13 @@ import io.github.michael_bailey.gym_log_book.repository.ExerciseEntryRepository
 import io.github.michael_bailey.gym_log_book.repository.ExerciseTypeRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.seconds
 
 @HiltViewModel
 class SetGuideViewModelV2 @Inject constructor(
@@ -30,7 +32,9 @@ class SetGuideViewModelV2 @Inject constructor(
 	CoroutineScope(Dispatchers.IO)
 ) {
 
+
 	// field state
+	private var currentTimerValue = MutableStateFlow(60)
 	private val currentExerciseSet = MutableStateFlow(1)
 	private val currentWeight = MutableStateFlow("")
 	private val currentReps = MutableStateFlow("")
@@ -39,6 +43,7 @@ class SetGuideViewModelV2 @Inject constructor(
 	val exerciseSet = currentExerciseSet.asLiveData()
 	val weight = currentWeight.asLiveData()
 	val reps = currentReps.asLiveData()
+	val timerValue = currentTimerValue.asLiveData()
 
 	// start page state
 	val isStartEnabled = currentExerciseType.map { it != null }.asLiveData()
@@ -84,6 +89,24 @@ class SetGuideViewModelV2 @Inject constructor(
 		currentReps.emit(reps)
 	}
 
+	fun startTimer(onFinish: () -> Unit) = viewModelScope.launch {
+		while (currentTimerValue.value != 0) {
+			delay(1.seconds)
+			currentTimerValue.emit(currentTimerValue.value - 1)
+		}
+		notificationManager.postTimerNotification(
+			exerciseType = currentExerciseType.value!!,
+			set = currentExerciseSet.value,
+			weight = currentWeight.value.toDouble(),
+		)
+		onFinish()
+	}
+
+	fun resetTimer() = viewModelScope.launch {
+		currentTimerValue.emit(60)
+		notificationManager.cancelTimerNotification()
+	}
+
 	/**
 	 * gathers current state and saves it to the repository.
 	 */
@@ -105,17 +128,5 @@ class SetGuideViewModelV2 @Inject constructor(
 
 		currentReps.emit("")
 		currentExerciseSet.emit(currentExerciseSet.value + 1)
-	}
-
-	fun cancelTimerNotification() = viewModelScope.launch {
-		notificationManager.cancelTimerNotification()
-	}
-
-	fun postTimerNotification() = viewModelScope.launch {
-		notificationManager.postTimerNotification(
-			exerciseType = currentExerciseType.value!!,
-			set = currentExerciseSet.value,
-			weight = currentWeight.value.toDouble(),
-		)
 	}
 }

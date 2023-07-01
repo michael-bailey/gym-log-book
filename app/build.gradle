@@ -107,7 +107,7 @@ dependencies {
     implementation 'org.mindrot:jbcrypt:0.4'
 
     // accompanist deps
-    implementation "com.google.accompanist:accompanist-systemuicontroller:0.3.0"
+//    implementation "com.google.accompanist:accompanist-systemuicontroller:0.3.0"
 
 
     androidTestImplementation platform('androidx.compose:compose-bom:2022.10.00')
