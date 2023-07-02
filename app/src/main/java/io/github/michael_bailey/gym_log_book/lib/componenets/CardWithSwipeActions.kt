@@ -1,7 +1,14 @@
 package io.github.michael_bailey.gym_log_book.lib.componenets
 
 import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.FractionalThreshold
 import androidx.compose.material.rememberSwipeableState
@@ -25,8 +32,9 @@ import kotlin.math.roundToInt
 @OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun CardWithSwipeActions(
-	actions: @Composable RowScope.() -> Unit,
-	content: @Composable () -> Unit
+	modifier: Modifier = Modifier,
+	actions: @Composable() (RowScope.() -> Unit),
+	content: @Composable () -> Unit,
 ) {
 	val context = rememberCompositionContext()
 	val swipeableState = rememberSwipeableState(0)
@@ -41,12 +49,14 @@ fun CardWithSwipeActions(
 	)
 
 	Box(
-		Modifier.swipeable(
-			state = swipeableState,
-			anchors = anchors,
-			thresholds = { _, _ -> FractionalThreshold(0.3f) },
-			orientation = Orientation.Horizontal
-		),
+		Modifier
+			.swipeable(
+				state = swipeableState,
+				anchors = anchors,
+				thresholds = { _, _ -> FractionalThreshold(0.3f) },
+				orientation = Orientation.Horizontal
+			)
+			.fillMaxWidth(0.91f),
 		contentAlignment = Alignment.CenterStart
 	) {
 		Row(
@@ -72,11 +82,14 @@ fun CardWithSwipeActions(
 @Preview
 @Composable
 fun CardWithSwipeActionsPreview() {
-	CardWithSwipeActions({
-		Button(onClick = {}) {
-			Text("Button")
+	CardWithSwipeActions(
+		actions = {
+			Button(onClick = {}) {
+				Text("Button")
+			}
+		},
+		content = {
+			Text(text = "This is content")
 		}
-	}) {
-		Text(text = "This is content")
-	}
+	)
 }

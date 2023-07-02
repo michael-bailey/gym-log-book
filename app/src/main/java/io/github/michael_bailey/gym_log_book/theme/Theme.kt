@@ -1,8 +1,6 @@
 package io.github.michael_bailey.gym_log_book.theme
 
 import android.app.Activity
-import android.app.Application
-import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -11,18 +9,10 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalView
-import androidx.core.view.ViewCompat
-import com.google.android.material.elevation.SurfaceColors
-import io.github.michael_bailey.gym_log_book.app.App
-import io.github.michael_bailey.gym_log_book.lib.DebugPreferencesManager
+import androidx.core.view.WindowCompat
 
 private val DarkColorScheme = darkColorScheme(
 	primary = Purple80,
@@ -44,14 +34,25 @@ fun Gym_Log_BookTheme(
 	dynamicColor: Boolean = true,
 	colourNavBar: Boolean = false,
 	content: @Composable () -> Unit,
-//	scrollState: ScrollState? = null
 ) {
 	val app = LocalContext.current.applicationContext
 	val activity = LocalContext.current as Activity
 	val window = activity.window
-	val view = LocalView.current
+
+	WindowCompat.setDecorFitsSystemWindows(window, false)
+	window.statusBarColor = Color.Transparent.toArgb()
+	window.navigationBarColor = Color.Transparent.toArgb()
+	WindowCompat.getInsetsController(
+		window,
+		window.decorView
+	).isAppearanceLightStatusBars = !darkTheme
+	WindowCompat.getInsetsController(
+		window,
+		window.decorView
+	).isAppearanceLightNavigationBars = !darkTheme
+
 	val colorScheme = when {
-		dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+		dynamicColor -> {
 			val context = LocalContext.current
 			if (darkTheme) dynamicDarkColorScheme(
 				context
@@ -62,41 +63,6 @@ fun Gym_Log_BookTheme(
 
 		darkTheme -> DarkColorScheme
 		else -> LightColorScheme
-	}
-
-	val appDebugPreferencesManager = DebugPreferencesManager(app as Application)
-
-	if (app is App) {
-		val debugStatusBarEnabled by appDebugPreferencesManager
-			.isDebugStatusBarColourEnabled.observeAsState()
-
-		val debugNavBarEnabled by appDebugPreferencesManager
-			.isDebugNavBarColourEnabled.observeAsState()
-
-		LaunchedEffect(debugNavBarEnabled, debugStatusBarEnabled) {
-			(view.context as Activity).window.statusBarColor =
-				if (debugStatusBarEnabled == true) {
-					Color.Red.toArgb()
-				} else {
-					colorScheme.background.toArgb()
-				}
-
-			(view.context as Activity).window.navigationBarColor =
-				if (debugNavBarEnabled == true) {
-					Color.Red.toArgb()
-				} else if (colourNavBar) {
-					SurfaceColors.SURFACE_2.getColor(view.context)
-				} else {
-					colorScheme.surface.toArgb()
-				}
-		}
-	}
-
-	if (!view.isInEditMode) {
-		SideEffect {
-			ViewCompat.getWindowInsetsController(view)?.isAppearanceLightStatusBars =
-				!darkTheme
-		}
 	}
 
 	MaterialTheme(

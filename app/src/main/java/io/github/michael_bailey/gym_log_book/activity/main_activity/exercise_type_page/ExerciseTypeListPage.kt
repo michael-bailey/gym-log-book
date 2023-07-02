@@ -1,6 +1,5 @@
 package io.github.michael_bailey.gym_log_book.activity.main_activity
 
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -8,7 +7,6 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -32,13 +30,8 @@ fun ExerciseTypeListPage(
 
 	val state by vm.exerciseTypeList.observeAsState(initial = listOf())
 	val exerciseList by vm.exerciseTypeList.observeAsState(initial = listOf())
-	val newView by vm.isExerciseTypeDatabaseViewEnabled.observeAsState(false)
 	val isEmpty by vm.isExerciseTypeListEmpty.observeAsState(initial = true)
 	val typeList by vm.exerciseTypeList.observeAsState(initial = listOf())
-
-
-
-	SideEffect { Log.d("Michael", "got newView $newView") }
 
 	val arrangement = remember {
 		derivedStateOf {
@@ -74,10 +67,11 @@ fun ExerciseTypeListPage(
 		horizontalAlignment = Alignment.CenterHorizontally
 	) {
 		LazyColumn(
-			Modifier.fillMaxWidth(0.91f),
+			Modifier,
 			state = listState,
 			contentPadding = PaddingValues(top = 8.dp, bottom = 8.dp),
-			verticalArrangement = Arrangement.spacedBy(8.dp)
+			verticalArrangement = Arrangement.spacedBy(8.dp),
+			horizontalAlignment = Alignment.CenterHorizontally
 		) {
 			if (isEmpty) {
 				item {
@@ -107,7 +101,11 @@ fun ExerciseTypeListPage(
 				}
 
 				items(exerciseList) {
-					ExerciseTypeView(vm = vm, item = it)
+					ExerciseTypeView(
+						modifier = Modifier.fillMaxWidth(0.91f),
+						vm = vm,
+						item = it
+					)
 				}
 			}
 		}

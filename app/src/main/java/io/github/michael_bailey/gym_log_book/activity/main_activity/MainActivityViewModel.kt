@@ -1,7 +1,6 @@
 package io.github.michael_bailey.gym_log_book.activity.main_activity
 
 import android.app.Activity
-import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
@@ -16,7 +15,6 @@ import io.github.michael_bailey.gym_log_book.repository.ExerciseTypeRepository
 import io.github.michael_bailey.gym_log_book.repository.WeightEntryRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.util.UUID
@@ -35,10 +33,6 @@ class MainActivityViewModel @Inject constructor(
 	var selectedReplacementType = mutableStateOf<UUID?>(null)
 
 	val isExercisesEmpty = exerciseEntryRepository.isEmpty.asLiveData()
-	val isExerciseTypeDatabaseViewEnabled = gatekeeper
-		.evalState("database_exercise_type_view")
-		.onEach { Log.d("Michael", "got value $it") }
-		.asLiveData()
 
 	val timeExerciseGroupedList =
 		exerciseEntryRepository.timeExerciseGroupedList.map {

@@ -54,20 +54,23 @@ fun Main(vm: TaskActivityViewModel) {
 					verticalArrangement = Arrangement.spacedBy(8.dp),
 				) {
 					items(tasks.value) { i ->
-						CardWithSwipeActions(actions = {
-							Button(onClick = { vm.deleteTask(i.id) }) {
-								Text("Delete")
+						CardWithSwipeActions(
+							actions = {
+								Button(onClick = { vm.deleteTask(i.id) }) {
+									Text("Delete")
+								}
+							},
+							content = {
+								Column(
+									Modifier
+										.fillMaxWidth()
+										.wrapContentHeight()
+										.padding(16.dp)
+								) {
+									Text(text = i.text)
+								}
 							}
-						}) {
-							Column(
-								Modifier
-									.fillMaxWidth()
-									.wrapContentHeight()
-									.padding(16.dp)
-							) {
-								Text(text = i.text)
-							}
-						}
+						)
 					}
 				}
 			}

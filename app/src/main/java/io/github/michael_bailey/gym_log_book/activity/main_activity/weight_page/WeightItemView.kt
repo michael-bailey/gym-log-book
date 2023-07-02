@@ -22,27 +22,32 @@ import java.util.UUID
 fun WeightItemView(
 	item: EntWeightEntry,
 	onModify: (UUID) -> Unit,
-	onDelete: (UUID) -> Unit
+	onDelete: (UUID) -> Unit,
+	modifier: Modifier = Modifier
 ) {
-	CardWithSwipeActions(actions = {
-		Button(onClick = { onDelete(item.id) }) {
-			Text("Delete")
+	CardWithSwipeActions(
+		modifier = modifier,
+		actions = {
+			Button(onClick = { onDelete(item.id) }) {
+				Text("Delete")
+			}
+			Button(onClick = { onModify(item.id) }) {
+				Text("Modify")
+			}
+		},
+		content = {
+			Column(
+				Modifier
+					.fillMaxWidth()
+					.wrapContentHeight()
+					.padding(16.dp),
+			) {
+				Text(
+					text = "${item.value} KG",
+					fontSize = 18.sp,
+					fontWeight = FontWeight(500)
+				)
+			}
 		}
-		Button(onClick = { onModify(item.id) }) {
-			Text("Modify")
-		}
-	}) {
-		Column(
-			Modifier
-				.fillMaxWidth()
-				.wrapContentHeight()
-				.padding(16.dp),
-		) {
-			Text(
-				text = "${item.value} KG",
-				fontSize = 18.sp,
-				fontWeight = FontWeight(500)
-			)
-		}
-	}
+	)
 }

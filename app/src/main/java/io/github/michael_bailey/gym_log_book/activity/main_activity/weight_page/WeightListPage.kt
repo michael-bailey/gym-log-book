@@ -42,9 +42,10 @@ fun WeightListPage(vm: MainActivityViewModel, listState: LazyListState) {
 	) {
 
 		LazyColumn(
-			Modifier.fillMaxWidth(0.91f),
+			Modifier,
 			contentPadding = PaddingValues(top = 8.dp, bottom = 8.dp),
 			verticalArrangement = Arrangement.spacedBy(8.dp),
+			horizontalAlignment = Alignment.CenterHorizontally,
 			state = listState
 		) {
 			if (weightList.isEmpty()) {
@@ -76,8 +77,9 @@ fun WeightListPage(vm: MainActivityViewModel, listState: LazyListState) {
 
 				items(weightList) { item ->
 					WeightItemView(
+						modifier = Modifier.fillMaxWidth(0.91f),
 						item = item,
-						onModify = {/* TODO */ },
+						onModify = { /* TODO */ },
 						onDelete = { vm.deleteWeightEntry(it) },
 					)
 				}

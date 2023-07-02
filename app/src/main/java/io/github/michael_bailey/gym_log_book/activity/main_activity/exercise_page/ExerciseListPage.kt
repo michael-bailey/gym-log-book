@@ -7,20 +7,29 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionInParent
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.google.android.material.elevation.SurfaceColors
 import io.github.michael_bailey.gym_log_book.activity.main_activity.MainActivityViewModel
 import io.github.michael_bailey.gym_log_book.theme.StickyHeader
 import io.github.michael_bailey.gym_log_book.theme.Title
@@ -28,9 +37,10 @@ import io.github.michael_bailey.gym_log_book.theme.Title
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun ExerciseListPage(vm: MainActivityViewModel, listState: LazyListState) {
-
+	val context = LocalContext.current
 	val exerciseEntryMap by vm.timeExerciseGroupedList.observeAsState(initial = mapOf())
 	val isEmpty by vm.isExercisesEmpty.observeAsState(true)
+	val currentHeaderState = remember { mutableStateOf<String?>(null) }
 
 	val arrangement = remember {
 		derivedStateOf {
@@ -48,9 +58,9 @@ fun ExerciseListPage(vm: MainActivityViewModel, listState: LazyListState) {
 		horizontalAlignment = Alignment.CenterHorizontally
 	) {
 		LazyColumn(
-			Modifier.fillMaxWidth(0.91f),
 			contentPadding = PaddingValues(top = 8.dp, bottom = 8.dp),
 			verticalArrangement = Arrangement.spacedBy(8.dp),
+			horizontalAlignment = Alignment.CenterHorizontally,
 			state = listState,
 		) {
 			if (isEmpty) {
@@ -79,17 +89,31 @@ fun ExerciseListPage(vm: MainActivityViewModel, listState: LazyListState) {
 					}
 				}
 
-				exerciseEntryMap.forEach {
+				exerciseEntryMap.forEach { entry ->
 					stickyHeader {
-						Text(
-							it.key,
-							fontSize = StickyHeader,
-							fontWeight = FontWeight(500)
-						)
+						Surface(
+							modifier = Modifier
+								.fillParentMaxWidth()
+								.onGloballyPositioned {
+									if (it.positionInParent().y == 0f) {
+										currentHeaderState.value = entry.key
+									}
+								},
+							color = (if (entry.key == currentHeaderState.value && listState.firstVisibleItemIndex > 0) Color(
+								SurfaceColors.SURFACE_2.getColor(LocalContext.current)
+							) else MaterialTheme.colorScheme.background)
+						) {
+							Text(
+								modifier = Modifier.padding(18.dp, 8.dp),
+								text = entry.key,
+								fontSize = StickyHeader,
+								fontWeight = FontWeight(400)
+							)
+						}
 					}
 
-					items(it.value) { item ->
-						ExerciseEntryView(vm, item = item)
+					items(entry.value) { item ->
+						ExerciseEntryView(Modifier.fillMaxWidth(0.91F), vm, item = item)
 					}
 				}
 			}

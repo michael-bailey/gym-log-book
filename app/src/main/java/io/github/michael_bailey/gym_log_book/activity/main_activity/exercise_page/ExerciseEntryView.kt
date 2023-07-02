@@ -24,7 +24,11 @@ import io.github.michael_bailey.gym_log_book.database.entity.EntExerciseEntry
 import io.github.michael_bailey.gym_log_book.lib.componenets.CardWithSwipeActions
 
 @Composable
-fun ExerciseEntryView(vm: MainActivityViewModel, item: EntExerciseEntry) {
+fun ExerciseEntryView(
+	modifier: Modifier = Modifier,
+	vm: MainActivityViewModel,
+	item: EntExerciseEntry
+) {
 	val activity = LocalContext.current as Activity
 
 	val exerciseTypes by vm.exerciseTypeList.observeAsState(listOf())
@@ -34,14 +38,17 @@ fun ExerciseEntryView(vm: MainActivityViewModel, item: EntExerciseEntry) {
 		}
 	}
 
-	CardWithSwipeActions(actions = {
-		Button(onClick = { vm.deleteExerciseEntry(item.id) }) {
-			Text("Delete")
+	CardWithSwipeActions(
+		modifier = modifier,
+		actions = {
+			Button(onClick = { vm.deleteExerciseEntry(item.id) }) {
+				Text("Delete")
+			}
+			Button(onClick = { vm.amendExerciseEntry(activity, item.id) }) {
+				Text("Modify")
+			}
 		}
-		Button(onClick = { vm.amendExerciseEntry(activity, item.id) }) {
-			Text("Modify")
-		}
-	}) {
+	) {
 		Column(
 			Modifier
 				.fillMaxWidth()

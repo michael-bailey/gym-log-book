@@ -18,43 +18,51 @@ import io.github.michael_bailey.gym_log_book.database.entity.EntExerciseType
 import io.github.michael_bailey.gym_log_book.lib.componenets.CardWithSwipeActions
 
 @Composable
-fun ExerciseTypeView(vm: MainActivityViewModel?, item: EntExerciseType) {
-	CardWithSwipeActions(actions = {
-		Button(onClick = { vm?.initiateExerciseTypeDeletion(item.id) }) {
-			Text("Delete")
-		}
-	}) {
-		Column(
-			Modifier
-				.fillMaxWidth()
-				.wrapContentHeight()
-				.padding(16.dp)
-		) {
-			Text(
-				text = item.name,
-				fontSize = 22.sp,
-				fontWeight = FontWeight(400)
-			)
-			Row(
+fun ExerciseTypeView(
+	vm: MainActivityViewModel?,
+	item: EntExerciseType,
+	modifier: Modifier = Modifier
+) {
+	CardWithSwipeActions(
+		modifier = modifier,
+		actions = {
+			Button(onClick = { vm?.initiateExerciseTypeDeletion(item.id) }) {
+				Text("Delete")
+			}
+		},
+		content = {
+			Column(
 				Modifier
+					.fillMaxWidth()
 					.wrapContentHeight()
-					.fillMaxWidth(),
-				horizontalArrangement = Arrangement.SpaceBetween
+					.padding(16.dp)
 			) {
-				if (item.usesUserWeight) {
-					Text(
-						text = "Uses Your Weight",
-						fontSize = 14.sp,
-						fontWeight = FontWeight(500)
-					)
-				} else {
-					Text(
-						text = "Does not use Your Weight",
-						fontSize = 14.sp,
-						fontWeight = FontWeight(500)
-					)
+				Text(
+					text = item.name,
+					fontSize = 22.sp,
+					fontWeight = FontWeight(400)
+				)
+				Row(
+					Modifier
+						.wrapContentHeight()
+						.fillMaxWidth(),
+					horizontalArrangement = Arrangement.SpaceBetween
+				) {
+					if (item.usesUserWeight) {
+						Text(
+							text = "Uses Your Weight",
+							fontSize = 14.sp,
+							fontWeight = FontWeight(500)
+						)
+					} else {
+						Text(
+							text = "Does not use Your Weight",
+							fontSize = 14.sp,
+							fontWeight = FontWeight(500)
+						)
+					}
 				}
 			}
 		}
-	}
+	)
 }

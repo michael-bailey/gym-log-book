@@ -15,11 +15,7 @@ class Gatekeeper(
 
 	/** list of defined gatekeepers*/
 	val gatekeeperList: List<Pair<String, Boolean>> = listOf(
-		"new_exercise_selector" to false,
-		"in_memory_database" to true,
-		"database_exercise_item_view" to false,
-		"database_exercise_type_view" to false,
-		"database_weight_item_view" to false,
+		"null" to false
 	)
 
 	/**
