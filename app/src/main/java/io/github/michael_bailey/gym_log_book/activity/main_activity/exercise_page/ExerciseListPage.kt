@@ -95,7 +95,7 @@ fun ExerciseListPage(vm: MainActivityViewModel, listState: LazyListState) {
 							modifier = Modifier
 								.fillParentMaxWidth()
 								.onGloballyPositioned {
-									if (it.positionInParent().y == 0f) {
+									if (it.positionInParent().y <= 0f) {
 										currentHeaderState.value = entry.key
 									}
 								},

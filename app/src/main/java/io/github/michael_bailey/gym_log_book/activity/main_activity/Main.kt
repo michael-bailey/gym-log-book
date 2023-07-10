@@ -78,8 +78,6 @@ fun Main(vm: MainActivityViewModel) {
 	}
 
 	val scrollState = TopAppBarDefaults.pinnedScrollBehavior()
-
-
 	val navBackStackEntry by nav.currentBackStackEntryAsState()
 
 	val fabVisibility by remember {

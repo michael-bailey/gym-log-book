@@ -1,10 +1,10 @@
 package io.github.michael_bailey.gym_log_book.activity.amend_exercise_activity_v2.components
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material.OutlinedTextField
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue

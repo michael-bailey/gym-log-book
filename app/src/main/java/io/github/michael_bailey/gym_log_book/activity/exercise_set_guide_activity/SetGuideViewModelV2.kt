@@ -13,6 +13,8 @@ import io.github.michael_bailey.gym_log_book.repository.ExerciseEntryRepository
 import io.github.michael_bailey.gym_log_book.repository.ExerciseTypeRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
@@ -54,6 +56,9 @@ class SetGuideViewModelV2 @Inject constructor(
 	private val weightRepsCombine = currentWeight
 		.combine(currentReps) { w, r -> w to r }
 
+	// timer job
+	var timerJob: Job? = null
+
 	val canSubmit = typeSetCombine.combine(weightRepsCombine) { ts, wr ->
 		val (type, set) = ts
 		val (weight, reps) = wr
@@ -89,20 +94,23 @@ class SetGuideViewModelV2 @Inject constructor(
 		currentReps.emit(reps)
 	}
 
-	fun startTimer(onFinish: () -> Unit) = viewModelScope.launch {
-		while (currentTimerValue.value != 0) {
-			delay(1.seconds)
-			currentTimerValue.emit(currentTimerValue.value - 1)
+	fun startTimer(onFinish: () -> Unit) {
+		timerJob = viewModelScope.launch {
+			while (currentTimerValue.value != 0) {
+				delay(1.seconds)
+				currentTimerValue.emit(currentTimerValue.value - 1)
+			}
+			notificationManager.postTimerNotification(
+				exerciseType = currentExerciseType.value!!,
+				set = currentExerciseSet.value,
+				weight = currentWeight.value.toDouble(),
+			)
+			onFinish()
 		}
-		notificationManager.postTimerNotification(
-			exerciseType = currentExerciseType.value!!,
-			set = currentExerciseSet.value,
-			weight = currentWeight.value.toDouble(),
-		)
-		onFinish()
 	}
 
 	fun resetTimer() = viewModelScope.launch {
+		timerJob?.cancelAndJoin()
 		currentTimerValue.emit(60)
 		notificationManager.cancelTimerNotification()
 	}
