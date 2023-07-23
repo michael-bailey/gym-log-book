@@ -1,9 +1,10 @@
 package io.github.michael_bailey.gym_log_book.activity.onboarding_activity
 
-import androidx.lifecycle.AndroidViewModel
-import io.github.michael_bailey.gym_log_book.app.App
+import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
+@HiltViewModel
+class OnboardingActivityViewModel @Inject constructor(
 
-class OnboardingActivityViewModel(
-	val application: App
-) : AndroidViewModel(application)
+) : ViewModel()

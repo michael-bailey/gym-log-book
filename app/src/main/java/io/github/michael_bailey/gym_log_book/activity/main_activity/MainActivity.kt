@@ -11,14 +11,23 @@ import io.github.michael_bailey.gym_log_book.theme.Gym_Log_BookTheme
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+	val vm: MainActivityViewModel by viewModels()
+
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 
-		val vm: MainActivityViewModel by viewModels()
+		if (vm.onboardingComplete.value == false) {
+
+		}
 
 		ActivityCompat.requestPermissions(
 			this,
-			arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+			arrayOf(
+				Manifest.permission.POST_NOTIFICATIONS,
+				Manifest.permission.READ_CALENDAR,
+				Manifest.permission.WRITE_CALENDAR
+			),
 			100
 		)
 

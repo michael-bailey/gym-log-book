@@ -29,8 +29,8 @@ import androidx.compose.ui.platform.LocalContext
 import io.github.michael_bailey.gym_log_book.activity.add_exercise_activity.AmendExerciseViewModelV2
 import io.github.michael_bailey.gym_log_book.activity.amend_exercise_activity_v2.components.ExerciseTypeDropdownSelector
 import io.github.michael_bailey.gym_log_book.activity.internal.debug_settings_activity.DebugSettingsActivity
-import io.github.michael_bailey.gym_log_book.lib.Validator
 import io.github.michael_bailey.gym_log_book.lib.componenets.ValidatorTextField
+import io.github.michael_bailey.gym_log_book.lib.validation.Validator
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
@@ -84,7 +84,7 @@ fun Main(vm: AmendExerciseViewModelV2) {
 					)
 					ValidatorTextField(
 						state = setNumber,
-						validator = Validator.NumberValidator,
+						validator = Validator.NumberValidator(),
 						placeholder = "Set Number...",
 						onChange = {
 							vm.setSetNumber(it)
@@ -93,7 +93,7 @@ fun Main(vm: AmendExerciseViewModelV2) {
 
 					ValidatorTextField(
 						state = weight,
-						validator = Validator.FloatValidator,
+						validator = Validator.FloatValidator(),
 						placeholder = "Weight...",
 						onChange = {
 							vm.setWeight(it)
@@ -102,7 +102,7 @@ fun Main(vm: AmendExerciseViewModelV2) {
 
 					ValidatorTextField(
 						state = reps,
-						validator = Validator.NumberValidator,
+						validator = Validator.NumberValidator(true),
 						placeholder = "Reps...",
 						onChange = {
 							vm.setReps(it)

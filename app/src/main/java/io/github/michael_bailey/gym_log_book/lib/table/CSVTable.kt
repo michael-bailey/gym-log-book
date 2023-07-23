@@ -1,7 +1,7 @@
 package io.github.michael_bailey.gym_log_book.lib.table
 
 import android.content.Context
-import io.github.michael_bailey.gym_log_book.extension.any.log
+import io.github.michael_bailey.android_chat_kit.extension.any.log
 import io.github.michael_bailey.gym_log_book.lib.Identifiable
 import java.io.FileNotFoundException
 

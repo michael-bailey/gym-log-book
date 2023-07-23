@@ -8,7 +8,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.michael_bailey.gym_log_book.delegate.IExerciseTypeStateDelegate
 import io.github.michael_bailey.gym_log_book.delegate.impl.ExerciseTypeStateDelegate
 import io.github.michael_bailey.gym_log_book.lib.AppNotificationManager
-import io.github.michael_bailey.gym_log_book.lib.Validator
+import io.github.michael_bailey.gym_log_book.lib.validation.Validator
 import io.github.michael_bailey.gym_log_book.repository.ExerciseEntryRepository
 import io.github.michael_bailey.gym_log_book.repository.ExerciseTypeRepository
 import kotlinx.coroutines.CoroutineScope
@@ -66,8 +66,8 @@ class SetGuideViewModelV2 @Inject constructor(
 		when {
 			type == null -> false
 			set < 1 -> false
-			Validator.FloatValidator.validator(weight).isFailure -> false
-			Validator.NumberValidator.validator(reps).isFailure -> false
+			Validator.FloatValidator().validator(weight).isFailure -> false
+			Validator.NumberValidator().validator(reps).isFailure -> false
 			else -> true
 		}
 	}.asLiveData()

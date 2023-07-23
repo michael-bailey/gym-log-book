@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
+	<!-- service permissions-->
 	<application
 		android:name=".app.App"
 		android:allowBackup="true"
@@ -10,26 +11,12 @@
 		android:label="@string/app_name"
 		android:supportsRtl="true"
 		android:theme="@style/Theme.Gym_Log_Book">
-		<activity
-			android:name=".activity.amend_exercise_type_activity.AmendExerciseTypeActivity"
-			android:exported="false"
-			android:label="@string/title_activity_amend_exercise_type"
-			android:theme="@style/Theme.Gym_Log_Book" />
-		<activity
-			android:name=".activity.internal.tasks_activity.TaskActivity"
-			android:exported="true"
-			android:label="@string/title_activity_task"
-			android:theme="@style/Theme.Gym_Log_Book" />
-		<activity
-			android:name=".activity.onboarding_activity.OnboardingActivity"
-			android:exported="false"
-			android:label="@string/title_activity_onboarding"
-			android:theme="@style/Theme.Gym_Log_Book" />
+		<!--Main activity-->
 		<activity
 			android:name=".activity.main_activity.MainActivity"
 			android:exported="true"
 			android:label="@string/title_activity_main_v2"
-			android:launchMode="singleInstance"
+			android:launchMode="singleInstancePerTask"
 			android:theme="@style/Theme.Gym_Log_Book">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
@@ -38,38 +25,76 @@
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
+
+		<!--Onboarding activity-->
 		<activity
-			android:name=".activity.add_weight_activity.AddWeightActivity"
-			android:exported="false"
-			android:label="@string/title_activity_add_weight"
-			android:theme="@style/Theme.Gym_Log_Book.NoActionBar" />
-		<activity
-			android:name=".activity.amend_exercise_activity_v2.AmendExerciseActivityV2"
+			android:name=".activity.onboarding_activity.OnboardingActivity"
 			android:exported="true"
-			android:screenOrientation="fullSensor"
-			android:theme="@style/Theme.Gym_Log_Book.NoActionBar" />
+			android:label="@string/title_activity_onboarding"
+			android:launchMode="singleInstancePerTask"
+			android:theme="@style/Theme.Gym_Log_Book" />
+
+		<!--Exercise guidance activities-->
 		<activity
 			android:name=".activity.exercise_set_guide_activity.ExerciseSetGuideActivity"
 			android:exported="true"
 			android:label="@string/title_activity_exercise_set_guide"
 			android:launchMode="singleInstancePerTask"
 			android:theme="@style/Theme.Gym_Log_Book" />
+
+		<!--Data form activities-->
 		<activity
-			android:name=".activity.internal.debug_settings_activity.DebugSettingsActivity"
-			android:exported="true"
-			android:label="@string/title_activity_debug_settings"
+			android:name=".activity.amend_exercise_type_activity.AmendExerciseTypeActivity"
+			android:exported="false"
+			android:label="@string/title_activity_amend_exercise_type"
+			android:launchMode="singleInstancePerTask"
 			android:theme="@style/Theme.Gym_Log_Book" />
+		<activity
+			android:name=".activity.add_weight_activity.AddWeightActivity"
+			android:exported="false"
+			android:label="@string/title_activity_add_weight"
+			android:launchMode="singleInstancePerTask"
+			android:theme="@style/Theme.Gym_Log_Book.NoActionBar" />
+		<activity
+			android:name=".activity.amend_exercise_activity_v2.AmendExerciseActivityV2"
+			android:exported="true"
+			android:screenOrientation="fullSensor"
+			android:launchMode="singleInstancePerTask"
+			android:theme="@style/Theme.Gym_Log_Book.NoActionBar" />
 		<activity
 			android:name=".activity.add_exercise_type_activity.AddExerciseTypeActivity"
 			android:exported="true"
 			android:label="@string/title_activity_add_exercise_type"
+			android:launchMode="singleInstancePerTask"
 			android:theme="@style/Theme.Gym_Log_Book" />
 
+
+		<!--internal activities-->
+		<activity
+			android:name=".activity.internal.tasks_activity.TaskActivity"
+			android:exported="false"
+			android:label="@string/title_activity_task"
+			android:launchMode="singleInstancePerTask"
+			android:theme="@style/Theme.Gym_Log_Book" />
+		<activity
+			android:name=".activity.internal.debug_settings_activity.DebugSettingsActivity"
+			android:exported="true"
+			android:label="@string/title_activity_debug_settings"
+			android:launchMode="singleInstancePerTask"
+			android:theme="@style/Theme.Gym_Log_Book" />
+
+
+		<!--Services-->
 		<service
 			android:name=".service.DataImporterService"
 			android:exported="false" />
 	</application>
+	<uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
+	<!-- calendar events-->
+	<uses-permission android:name="android.permission.READ_CALENDAR" />
+	<uses-permission android:name="android.permission.WRITE_CALENDAR" />
+
 	<uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
-	<uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 </manifest>

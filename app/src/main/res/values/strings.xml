@@ -33,5 +33,6 @@
 	<string name="title_activity_task">TaskActivity</string>
 	<string name="title_activity_amend_exercise_type">AmendExerciseTypeActivity
 	</string>
+	<string name="onboarding_start_page">Welcome</string>
 
 </resources>

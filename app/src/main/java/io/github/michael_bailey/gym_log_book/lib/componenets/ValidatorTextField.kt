@@ -6,7 +6,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
-import io.github.michael_bailey.gym_log_book.lib.Validator
+import io.github.michael_bailey.gym_log_book.lib.validation.Validator
 
 enum class FieldType {
 	String,
@@ -39,7 +39,7 @@ fun ValidatorTextField(
 			label = { Text(placeholder) },
 			singleLine = true,
 			isError = errorState.second != "",
-			keyboardOptions = validator.keyboardOptions
+			keyboardOptions = validator.keyboard
 		)
 		Text(errorState.second, color = Color.Red)
 	}

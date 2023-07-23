@@ -2,7 +2,7 @@ package io.github.michael_bailey.gym_log_book.lib.table
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import io.github.michael_bailey.gym_log_book.extension.any.log
+import io.github.michael_bailey.android_chat_kit.extension.any.log
 import io.github.michael_bailey.gym_log_book.lib.Identifiable
 
 abstract class BaseTable<T : Identifiable> : ITable<T> {

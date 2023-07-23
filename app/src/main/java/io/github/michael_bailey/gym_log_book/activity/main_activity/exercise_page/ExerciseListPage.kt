@@ -9,9 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -30,13 +28,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.google.android.material.elevation.SurfaceColors
-import io.github.michael_bailey.gym_log_book.activity.main_activity.MainActivityViewModel
+import io.github.michael_bailey.gym_log_book.lib.interfaces.view_model.IExerciseViewModel
 import io.github.michael_bailey.gym_log_book.theme.StickyHeader
 import io.github.michael_bailey.gym_log_book.theme.Title
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ExerciseListPage(vm: MainActivityViewModel, listState: LazyListState) {
+fun ExerciseListPage(vm: IExerciseViewModel) {
+	val listState = vm.exerciseListState
 	val context = LocalContext.current
 	val exerciseEntryMap by vm.timeExerciseGroupedList.observeAsState(initial = mapOf())
 	val isEmpty by vm.isExercisesEmpty.observeAsState(true)

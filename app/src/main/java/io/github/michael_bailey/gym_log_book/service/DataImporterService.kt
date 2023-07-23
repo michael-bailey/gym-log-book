@@ -5,7 +5,7 @@ import android.app.Service
 import android.content.Intent
 import android.os.IBinder
 import dagger.hilt.android.AndroidEntryPoint
-import io.github.michael_bailey.gym_log_book.extension.any.log
+import io.github.michael_bailey.android_chat_kit.extension.any.log
 import io.github.michael_bailey.gym_log_book.lib.AppNotificationManager
 import io.github.michael_bailey.gym_log_book.repository.ExerciseEntryRepository
 import io.github.michael_bailey.gym_log_book.repository.ExerciseTypeRepository

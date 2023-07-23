@@ -1,6 +1,7 @@
 package io.github.michael_bailey.gym_log_book.app
 
 import android.app.Application
+import android.content.ContentResolver
 import android.content.Context
 import android.content.SharedPreferences
 import dagger.Module
@@ -8,7 +9,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import io.github.michael_bailey.gym_log_book.extension.application.preferences
+import io.github.michael_bailey.android_chat_kit.extension.application.preferences
 import javax.inject.Singleton
 
 @Module
@@ -37,4 +38,9 @@ class AppProvider {
 	@Singleton
 	fun providePreferences(@ApplicationContext context: Context): SharedPreferences =
 		(context as Application).preferences()
+
+	@Provides
+	fun provideContentResolver(@ApplicationContext context: Context): ContentResolver {
+		return context.contentResolver
+	}
 }

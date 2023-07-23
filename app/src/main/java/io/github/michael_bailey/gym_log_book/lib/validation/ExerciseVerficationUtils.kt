@@ -1,47 +1,12 @@
-package io.github.michael_bailey.gym_log_book.lib
+package io.github.michael_bailey.gym_log_book.lib.validation
 
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardCapitalization
-import androidx.compose.ui.text.input.KeyboardType
 import io.github.michael_bailey.gym_log_book.data_type.ExerciseItem
-import io.github.michael_bailey.gym_log_book.lib.exceptions.*
+import io.github.michael_bailey.gym_log_book.lib.exceptions.DecimalPointException
+import io.github.michael_bailey.gym_log_book.lib.exceptions.EmptyInputException
+import io.github.michael_bailey.gym_log_book.lib.exceptions.ItemExistsException
+import io.github.michael_bailey.gym_log_book.lib.exceptions.MultipleDecimalPointException
+import io.github.michael_bailey.gym_log_book.lib.exceptions.NegativeNumberException
 import kotlin.math.sign
-
-sealed class Validator(
-	open val validator: (String) -> Result<Unit>,
-	open val keyboardOptions: KeyboardOptions,
-) {
-	object NumberValidator : Validator(
-		ExerciseVerficationUtils::verifyNumber,
-		KeyboardOptions(
-			autoCorrect = false,
-			keyboardType = KeyboardType.Number,
-			capitalization = KeyboardCapitalization.None,
-			imeAction = ImeAction.Next
-		)
-	)
-
-	object StringNameValidator : Validator(
-		ExerciseVerficationUtils::verifyString,
-		KeyboardOptions(
-			autoCorrect = false,
-			keyboardType = KeyboardType.Text,
-			capitalization = KeyboardCapitalization.Words,
-			imeAction = ImeAction.Next,
-		)
-	)
-
-	object FloatValidator : Validator(
-		ExerciseVerficationUtils::verifyFloat,
-		KeyboardOptions(
-			autoCorrect = false,
-			keyboardType = KeyboardType.Number,
-			capitalization = KeyboardCapitalization.None,
-			imeAction = ImeAction.Next,
-		)
-	)
-}
 
 object ExerciseVerficationUtils {
 

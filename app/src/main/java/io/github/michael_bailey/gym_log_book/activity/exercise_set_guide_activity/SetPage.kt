@@ -9,8 +9,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import io.github.michael_bailey.gym_log_book.lib.Validator
 import io.github.michael_bailey.gym_log_book.lib.componenets.ValidatorTextField
+import io.github.michael_bailey.gym_log_book.lib.validation.Validator
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
@@ -44,14 +44,14 @@ fun SetPage(
 
 			ValidatorTextField(
 				state = weight,
-				validator = Validator.FloatValidator,
+				validator = Validator.FloatValidator(),
 				placeholder = "Weight",
 				onChange = vm::setWeight
 			)
 
 			ValidatorTextField(
 				state = reps,
-				validator = Validator.NumberValidator,
+				validator = Validator.NumberValidator(true),
 				placeholder = "Reps",
 				onChange = vm::setReps
 			)

@@ -3,7 +3,6 @@ package io.github.michael_bailey.gym_log_book.activity.main_activity
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,7 +21,6 @@ import io.github.michael_bailey.gym_log_book.theme.Title
 @Composable
 fun ExerciseTypeListPage(
 	vm: MainActivityViewModel,
-	listState: LazyListState
 ) {
 
 	val removedID by vm.removedID
@@ -68,7 +66,7 @@ fun ExerciseTypeListPage(
 	) {
 		LazyColumn(
 			Modifier,
-			state = listState,
+			state = vm.exerciseTypeListState,
 			contentPadding = PaddingValues(top = 8.dp, bottom = 8.dp),
 			verticalArrangement = Arrangement.spacedBy(8.dp),
 			horizontalAlignment = Alignment.CenterHorizontally

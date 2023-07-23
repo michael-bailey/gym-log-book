@@ -1,17 +1,28 @@
 package io.github.michael_bailey.gym_log_book.activity.main_activity
 
 import android.app.Activity
+import android.app.Application
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.github.michael_bailey.gym_log_book.activity.add_exercise_type_activity.AddExerciseTypeActivityIntentUtils
+import io.github.michael_bailey.gym_log_book.activity.add_weight_activity.AddWeightActivityIntentUtils
 import io.github.michael_bailey.gym_log_book.activity.amend_exercise_activity_v2.AmendExerciseActivityV2IntentUtils
+import io.github.michael_bailey.gym_log_book.activity.exercise_set_guide_activity.ExerciseSetGuideActivityIntentUtils
 import io.github.michael_bailey.gym_log_book.database.entity.EntExerciseEntry
+import io.github.michael_bailey.gym_log_book.database.entity.EntExerciseType
 import io.github.michael_bailey.gym_log_book.lib.PeriodGroup
 import io.github.michael_bailey.gym_log_book.lib.gatekeeper.Gatekeeper
+import io.github.michael_bailey.gym_log_book.lib.interfaces.view_model.IExerciseTypeViewModel
+import io.github.michael_bailey.gym_log_book.lib.interfaces.view_model.IExerciseViewModel
+import io.github.michael_bailey.gym_log_book.lib.one_shot.OneShotPreference
 import io.github.michael_bailey.gym_log_book.repository.ExerciseEntryRepository
 import io.github.michael_bailey.gym_log_book.repository.ExerciseTypeRepository
+import io.github.michael_bailey.gym_log_book.repository.ReminderRepository
 import io.github.michael_bailey.gym_log_book.repository.WeightEntryRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.map
@@ -25,21 +36,26 @@ class MainActivityViewModel @Inject constructor(
 	private val exerciseTypeRepository: ExerciseTypeRepository,
 	private val exerciseEntryRepository: ExerciseEntryRepository,
 	private val weightEntryRepository: WeightEntryRepository,
+	private val reminderRepository: ReminderRepository,
+	val gatekeeper: Gatekeeper,
+	application: Application,
+) : AndroidViewModel(application), IExerciseTypeViewModel, IExerciseViewModel {
 
-	val gatekeeper: Gatekeeper
-) : ViewModel() {
+	init {
+		reminderRepository.queryCalendars()
+	}
 
-	var removedID = mutableStateOf<UUID?>(null)
-	var selectedReplacementType = mutableStateOf<UUID?>(null)
+	// mark: - exercise page state
+	override val exerciseListState = LazyListState(
+		0,
+		0
+	)
 
-	val isExercisesEmpty = exerciseEntryRepository.isEmpty.asLiveData()
-
-	val timeExerciseGroupedList =
+	override val isExercisesEmpty = exerciseEntryRepository.isEmpty.asLiveData()
+	override val timeExerciseGroupedList: LiveData<Map<String, List<EntExerciseEntry>>> =
 		exerciseEntryRepository.timeExerciseGroupedList.map {
 			val output = mutableMapOf<String, List<EntExerciseEntry>>()
-
 			val sortedList = it.toList().sortedByDescending { it.first }.toMap()
-
 			for (date in sortedList.keys) {
 				val group =
 					PeriodGroup.getPeriodGroup(period = date.until(LocalDate.now()))
@@ -53,14 +69,31 @@ class MainActivityViewModel @Inject constructor(
 						(list + sortedList[date]!!.toList()).sortedByDescending { it.createdTime }
 				}
 			}
-
 			output
 		}.asLiveData()
 
-	private val exerciseTypeListFlow = exerciseTypeRepository.exerciseTypes
-	val exerciseTypeList = exerciseTypeListFlow.asLiveData()
+	// mark: - exercise type page state
+	override val exerciseTypeList: LiveData<List<EntExerciseType>>
+		get() = exerciseTypeRepository.exerciseTypes.asLiveData()
+	val exerciseTypeListState = LazyListState(
+		0,
+		0
+	)
+
+	val weightListState = LazyListState(
+		0,
+		0
+	)
+
+	private val _onbaordingOneShot = OneShotPreference("onboarding_complete")
+
+	val removedID = mutableStateOf<UUID?>(null)
+	val selectedReplacementType = mutableStateOf<UUID?>(null)
+
+
 	val weightEntryList = weightEntryRepository.weightEntryList.asLiveData()
 	val isExerciseTypeListEmpty = exerciseTypeRepository.isEmpty.asLiveData()
+	val onboardingComplete = _onbaordingOneShot.isConsumedFlow().asLiveData()
 
 	fun setSelectedReplacementType(id: UUID) {
 		selectedReplacementType.value = id
@@ -94,13 +127,36 @@ class MainActivityViewModel @Inject constructor(
 	fun amendExerciseEntry(activity: Activity, uuid: UUID) =
 		AmendExerciseActivityV2IntentUtils.startAmendActivity(activity, uuid)
 
-	fun deleteExerciseEntry(uuid: UUID) = viewModelScope.launch(Dispatchers.IO) {
-		exerciseEntryRepository.delete(
-			uuid
-		)
+	override fun amendExerciseEntry(id: UUID) {
+		TODO("Not yet implemented")
 	}
+
+	override fun deleteExerciseEntry(uuid: UUID) {
+		viewModelScope.launch(Dispatchers.IO) {
+			exerciseEntryRepository.delete(
+				uuid
+			)
+		}
+	}
+
 
 	fun deleteWeightEntry(uuid: UUID) = viewModelScope.launch(Dispatchers.IO) {
 		weightEntryRepository.delete(uuid)
+	}
+
+	fun startExerciseSetGuideActivity() {
+		ExerciseSetGuideActivityIntentUtils.startExerciseSetGuideActivity(
+			getApplication()
+		)
+	}
+
+	fun startAddWeightActivity() {
+		AddWeightActivityIntentUtils.startAddWeightActivity(getApplication())
+	}
+
+	fun startAddExerciseTypeActivity() {
+		AddExerciseTypeActivityIntentUtils.startAddExerciseTypeActivity(
+			getApplication()
+		)
 	}
 }

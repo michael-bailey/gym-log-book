@@ -19,14 +19,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import io.github.michael_bailey.gym_log_book.activity.main_activity.MainActivityViewModel
 import io.github.michael_bailey.gym_log_book.database.entity.EntExerciseEntry
 import io.github.michael_bailey.gym_log_book.lib.componenets.CardWithSwipeActions
+import io.github.michael_bailey.gym_log_book.lib.interfaces.view_model.IExerciseViewModel
 
 @Composable
 fun ExerciseEntryView(
 	modifier: Modifier = Modifier,
-	vm: MainActivityViewModel,
+	vm: IExerciseViewModel,
 	item: EntExerciseEntry
 ) {
 	val activity = LocalContext.current as Activity
@@ -44,7 +44,7 @@ fun ExerciseEntryView(
 			Button(onClick = { vm.deleteExerciseEntry(item.id) }) {
 				Text("Delete")
 			}
-			Button(onClick = { vm.amendExerciseEntry(activity, item.id) }) {
+			Button(onClick = { vm.amendExerciseEntry(item.id) }) {
 				Text("Modify")
 			}
 		}

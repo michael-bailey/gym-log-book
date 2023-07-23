@@ -21,8 +21,8 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import io.github.michael_bailey.gym_log_book.lib.Validator
 import io.github.michael_bailey.gym_log_book.lib.componenets.ValidatorTextField
+import io.github.michael_bailey.gym_log_book.lib.validation.Validator
 import io.github.michael_bailey.gym_log_book.theme.Title
 
 
@@ -50,7 +50,7 @@ fun Main(vm: AddWeightViewModel) {
 					Column(Modifier.width(IntrinsicSize.Min)) {
 						ValidatorTextField(
 							state = currentWeight,
-							validator = Validator.FloatValidator,
+							validator = Validator.FloatValidator(isLast = true),
 							placeholder = "Weight...",
 							onChange = { vm.setWeight(it) }
 						)

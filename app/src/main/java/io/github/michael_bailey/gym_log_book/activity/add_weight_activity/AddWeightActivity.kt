@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import dagger.hilt.android.AndroidEntryPoint
+import io.github.michael_bailey.gym_log_book.theme.Gym_Log_BookTheme
 
 @AndroidEntryPoint
 class AddWeightActivity : ComponentActivity() {
@@ -14,7 +15,9 @@ class AddWeightActivity : ComponentActivity() {
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		setContent {
-			Main(vm = vm)
+			Gym_Log_BookTheme {
+				Main(vm = vm)
+			}
 		}
 	}
 }

@@ -1,8 +1,8 @@
 package io.github.michael_bailey.gym_log_book.activity.exercise_set_guide_activity
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import java.util.UUID
 
 object ExerciseSetGuideActivityIntentUtils {
@@ -12,7 +12,8 @@ object ExerciseSetGuideActivityIntentUtils {
 
 	fun startExerciseSetGuideActivity(ctx: Context): Intent =
 		Intent(ctx, ExerciseSetGuideActivity::class.java).apply {
-			(ctx as Activity).startActivity(this)
+			flags = FLAG_ACTIVITY_NEW_TASK
+			ctx.startActivity(this)
 		}
 
 	fun createExerciseSetGuideActivityIntent(

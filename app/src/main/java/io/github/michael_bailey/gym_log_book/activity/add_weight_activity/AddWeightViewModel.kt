@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.github.michael_bailey.gym_log_book.lib.Validator
+import io.github.michael_bailey.gym_log_book.lib.validation.Validator
 import io.github.michael_bailey.gym_log_book.repository.WeightEntryRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
@@ -21,7 +21,7 @@ class AddWeightViewModel @Inject constructor(
 	val weight = currentWeight.asLiveData()
 
 	val isSubmitEnabled = currentWeight.map {
-		Validator.FloatValidator.validator(it).isSuccess
+		Validator.FloatValidator().validator(it).isSuccess
 	}.asLiveData()
 
 

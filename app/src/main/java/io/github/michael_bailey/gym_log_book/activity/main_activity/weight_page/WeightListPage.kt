@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,7 +21,7 @@ import io.github.michael_bailey.gym_log_book.activity.main_activity.MainActivity
 import io.github.michael_bailey.gym_log_book.theme.Title
 
 @Composable
-fun WeightListPage(vm: MainActivityViewModel, listState: LazyListState) {
+fun WeightListPage(vm: MainActivityViewModel) {
 	val weightList by vm.weightEntryList.observeAsState(initial = listOf())
 
 	val arrangement = remember {
@@ -46,7 +45,7 @@ fun WeightListPage(vm: MainActivityViewModel, listState: LazyListState) {
 			contentPadding = PaddingValues(top = 8.dp, bottom = 8.dp),
 			verticalArrangement = Arrangement.spacedBy(8.dp),
 			horizontalAlignment = Alignment.CenterHorizontally,
-			state = listState
+			state = vm.weightListState
 		) {
 			if (weightList.isEmpty()) {
 				item {

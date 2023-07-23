@@ -30,9 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import io.github.michael_bailey.gym_log_book.activity.internal.debug_settings_activity.setting_widget.SettingsGatekeeperWidget
-import io.github.michael_bailey.gym_log_book.activity.internal.debug_settings_activity.setting_widget.SettingsOneShotWidget
 import io.github.michael_bailey.gym_log_book.activity.internal.debug_settings_activity.setting_widget.SettingsToggleWidget
-import io.github.michael_bailey.gym_log_book.lib.one_shot.OneShotPreference
 import io.github.michael_bailey.gym_log_book.theme.StickyHeader
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
@@ -141,15 +139,6 @@ fun Main(vm: DebugSettingsViewModel) {
 						}
 
 						spacer()
-
-						spacedStickyHeader("One Shots")
-
-						items(OneShotPreference.getAll().toList()) { oneShot ->
-							SettingsOneShotWidget(
-								Modifier.fillMaxWidth(),
-								oneShot.second
-							)
-						}
 
 						spacedStickyHeader("Data Actions")
 
