@@ -1,11 +1,9 @@
 package io.github.michael_bailey.gym_log_book.repository
 
-import android.Manifest
 import android.content.ContentResolver
 import android.content.Context
-import android.content.pm.PackageManager
+import android.database.Cursor
 import android.provider.CalendarContract
-import androidx.core.app.ActivityCompat
 import dagger.hilt.android.qualifiers.ApplicationContext
 import io.github.michael_bailey.android_chat_kit.extension.any.log
 import javax.inject.Inject
@@ -33,46 +31,51 @@ class ReminderRepository @Inject constructor(
 		private const val PROJECTION_DISPLAY_NAME_INDEX: Int = 2
 		private const val PROJECTION_OWNER_ACCOUNT_INDEX: Int = 3
 
+		data class UserCalender(
+			val calID: Long,
+			val displayName: String,
+			val accountName: String,
+			val ownerName: String,
+		)
 	}
 
-	fun queryCalendars() {
-		if (
-			ActivityCompat
-				.checkSelfPermission(
-					context,
-					Manifest.permission.READ_CALENDAR
-				) != PackageManager.PERMISSION_GRANTED &&
-			ActivityCompat
-				.checkSelfPermission(
-					context,
-					Manifest.permission.WRITE_CALENDAR
-				) != PackageManager.PERMISSION_GRANTED
-		) {
-			return
-//			return listOf()
+	fun queryCalendars(): List<UserCalender>? {
+
+		var cur: Cursor? = null
+		try {
+			cur = resolver.query(CALENDAR_URI, CALENDAR_COLS, null, null, null)
+			log("loaded calendars :)")
+		} catch (e: SecurityException) {
+			log("cannot load calendars due to permissions")
 		}
 
-
-
-
-
-		resolver.query(CALENDAR_URI, CALENDAR_COLS, null, null, null)?.use {
+		return cur?.use {
 			it.moveToFirst()
 
 			if (it.count == 0) {
 				log("no calendars")
-				return
+				return null
 			}
 
 			log("calendar count ${it.count}")
 
+			val calList = mutableListOf<UserCalender>()
 			do {
 				val calID: Long = it.getLong(PROJECTION_ID_INDEX)
 				val displayName: String = it.getString(PROJECTION_DISPLAY_NAME_INDEX)
 				val accountName: String = it.getString(PROJECTION_ACCOUNT_NAME_INDEX)
 				val ownerName: String = it.getString(PROJECTION_OWNER_ACCOUNT_INDEX)
 				log("got details, calID:$calID, display name:$displayName, account name:$accountName, owner name:$ownerName")
+				calList.add(
+					UserCalender(
+						calID,
+						displayName,
+						accountName,
+						ownerName,
+					)
+				)
 			} while (it.moveToNext())
+			calList
 		}
 	}
 }

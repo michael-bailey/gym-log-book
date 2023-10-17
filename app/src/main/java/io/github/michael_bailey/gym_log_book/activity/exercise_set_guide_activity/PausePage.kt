@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -33,13 +34,16 @@ fun PausePage(
 	nav: NavHostController,
 	vm: SetGuideViewModelV2,
 ) {
+
+	val lifecycle = LocalLifecycleOwner.current
+
 	val theme = MaterialTheme.colorScheme
-	var count by remember { mutableStateOf(60) }
-	val timerValue by vm.timerValue.observeAsState(initial = 60)
+	val timerValue by vm.timerValue.observeAsState(initial = 0)
+	var initialLoad by remember { mutableStateOf(true) }
 
 	LaunchedEffect(Unit) {
 		vm.startTimer {
-			navigate(nav)
+			navigate(nav = nav)
 		}
 	}
 

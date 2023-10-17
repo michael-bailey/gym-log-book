@@ -128,7 +128,10 @@ class MainActivityViewModel @Inject constructor(
 		AmendExerciseActivityV2IntentUtils.startAmendActivity(activity, uuid)
 
 	override fun amendExerciseEntry(id: UUID) {
-		TODO("Not yet implemented")
+		AmendExerciseActivityV2IntentUtils.startAmendActivity(
+			getApplication<Application>().applicationContext,
+			id
+		)
 	}
 
 	override fun deleteExerciseEntry(uuid: UUID) {

@@ -30,6 +30,7 @@ import androidx.navigation.compose.rememberNavController
 import io.github.michael_bailey.gym_log_book.R
 import io.github.michael_bailey.gym_log_book.activity.internal.debug_settings_activity.DebugSettingsActivity
 import io.github.michael_bailey.gym_log_book.activity.internal.tasks_activity.TaskActivity
+import io.github.michael_bailey.gym_log_book.activity.settings_activity.SettingsActivityIntentUtils.startSettingsActivity
 import io.github.michael_bailey.gym_log_book.activity.main_activity.MainActivityPage.ExercisePage.NavItem as ExerciseNavItem
 import io.github.michael_bailey.gym_log_book.activity.main_activity.MainActivityPage.ExerciseTypePage.NavItem as ExerciseTypeNavItem
 import io.github.michael_bailey.gym_log_book.activity.main_activity.MainActivityPage.WeightPage.NavItem as WeightNavItem
@@ -75,6 +76,12 @@ fun Main(vm: MainActivityViewModel) {
 										DebugSettingsActivity::class.java
 									)
 								)
+							}
+						)
+						DropdownMenuItem(
+							text = { Text(text = "Settings") },
+							onClick = {
+								startSettingsActivity(activity)
 							}
 						)
 						DropdownMenuItem(

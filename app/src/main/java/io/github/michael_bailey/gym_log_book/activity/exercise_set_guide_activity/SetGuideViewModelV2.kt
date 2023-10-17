@@ -10,29 +10,29 @@ import io.github.michael_bailey.gym_log_book.delegate.impl.ExerciseTypeStateDele
 import io.github.michael_bailey.gym_log_book.lib.AppNotificationManager
 import io.github.michael_bailey.gym_log_book.lib.validation.Validator
 import io.github.michael_bailey.gym_log_book.repository.ExerciseEntryRepository
+import io.github.michael_bailey.gym_log_book.repository.ExerciseSetTimerRepository
 import io.github.michael_bailey.gym_log_book.repository.ExerciseTypeRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancelAndJoin
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.time.Duration.Companion.seconds
 
 @HiltViewModel
 class SetGuideViewModelV2 @Inject constructor(
 	exerciseTypeRepository: ExerciseTypeRepository,
 	private val exerciseEntryRepository: ExerciseEntryRepository,
 	private val notificationManager: AppNotificationManager,
+	private val exerciseSetTimerRepository: ExerciseSetTimerRepository,
 	val savedStateHandle: SavedStateHandle
 ) : ViewModel(), IExerciseTypeStateDelegate by ExerciseTypeStateDelegate(
 	exerciseTypeRepository,
 	CoroutineScope(Dispatchers.IO)
 ) {
+
 
 
 	// field state
@@ -42,10 +42,11 @@ class SetGuideViewModelV2 @Inject constructor(
 	private val currentReps = MutableStateFlow("")
 
 	// exposing fields
+
 	val exerciseSet = currentExerciseSet.asLiveData()
 	val weight = currentWeight.asLiveData()
 	val reps = currentReps.asLiveData()
-	val timerValue = currentTimerValue.asLiveData()
+	val timerValue = exerciseSetTimerRepository.timer.asLiveData()
 
 	// start page state
 	val isStartEnabled = currentExerciseType.map { it != null }.asLiveData()
@@ -57,7 +58,7 @@ class SetGuideViewModelV2 @Inject constructor(
 		.combine(currentReps) { w, r -> w to r }
 
 	// timer job
-	var timerJob: Job? = null
+	private var timerJob: Job? = null
 
 	val canSubmit = typeSetCombine.combine(weightRepsCombine) { ts, wr ->
 		val (type, set) = ts
@@ -92,26 +93,27 @@ class SetGuideViewModelV2 @Inject constructor(
 
 	fun setReps(reps: String) = viewModelScope.launch {
 		currentReps.emit(reps)
+		nav
 	}
 
-	fun startTimer(onFinish: () -> Unit) {
-		timerJob = viewModelScope.launch {
-			while (currentTimerValue.value != 0) {
-				delay(1.seconds)
-				currentTimerValue.emit(currentTimerValue.value - 1)
+	fun startTimer(onFinished: () -> Unit) {
+
+		val post = notificationManager.createTimerNotificationPoster(
+			exercise = currentExerciseType.value!!,
+			set = currentExerciseSet.value,
+			weight = currentWeight.value.toDouble(),
+		)
+
+		exerciseSetTimerRepository.start(60) {
+			viewModelScope.launch {
+				post()
+				activity
 			}
-			notificationManager.postTimerNotification(
-				exerciseType = currentExerciseType.value!!,
-				set = currentExerciseSet.value,
-				weight = currentWeight.value.toDouble(),
-			)
-			onFinish()
 		}
 	}
 
 	fun resetTimer() = viewModelScope.launch {
-		timerJob?.cancelAndJoin()
-		currentTimerValue.emit(60)
+		exerciseSetTimerRepository.stop()
 		notificationManager.cancelTimerNotification()
 	}
 

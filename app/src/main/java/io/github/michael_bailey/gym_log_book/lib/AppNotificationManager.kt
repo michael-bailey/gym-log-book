@@ -13,7 +13,9 @@ import io.github.michael_bailey.gym_log_book.R
 import io.github.michael_bailey.gym_log_book.activity.exercise_set_guide_activity.ExerciseSetGuideActivity
 import io.github.michael_bailey.gym_log_book.activity.exercise_set_guide_activity.ExerciseSetGuideActivityIntentUtils
 import io.github.michael_bailey.gym_log_book.activity.main_activity.MainActivity
-import io.github.michael_bailey.gym_log_book.theme.scheme
+import io.github.michael_bailey.gym_log_book.theme.Scheme
+import io.github.michael_bailey.gym_log_book.theme.TimerNotification
+import io.github.michael_bailey.gym_log_book.theme.TimerNotificationChannel
 import java.util.UUID
 import javax.inject.Inject
 
@@ -22,13 +24,8 @@ class AppNotificationManager @Inject constructor(
 ) {
 
 	private val timerNotificationChannel: NotificationChannel =
-		NotificationChannel(
-			"TimerChannel",
-			"Timer Notifications",
-			NotificationManager.IMPORTANCE_HIGH
-		).apply {
-			enableVibration(true)
-		}
+		TimerNotificationChannel
+
 
 	val serviceChannel: NotificationChannel =
 		NotificationChannel(
@@ -63,6 +60,7 @@ class AppNotificationManager @Inject constructor(
 	}
 
 
+	@Deprecated("Old code for posting notifications")
 	fun postTimerNotification(
 		exerciseType: UUID,
 		set: Int,
@@ -100,50 +98,50 @@ class AppNotificationManager @Inject constructor(
 					notificationManager.notify(1, build())
 				}
 		}
+	}
 
-		@Deprecated(" Old code used for non database stuff")
-		fun postTimerNotification(
-			exercise: String,
-			set: String,
-			weight: String
-		) {
+	fun createTimerNotificationPoster(
+		exercise: UUID,
+		set: Int,
+		weight: Double
+	): () -> Unit {
 
-			val guideData = Uri.Builder().run {
-				scheme(scheme)
-				path("/setGuideActivity/resume")
-				appendQueryParameter("exercise", exercise)
-				appendQueryParameter("set", set)
-				appendQueryParameter("weight", weight)
-				build()
+		val guideData = Uri.Builder().run {
+			scheme(Scheme)
+			path("/setGuideActivity/resume")
+			appendQueryParameter("exercise", exercise.toString())
+			appendQueryParameter("set", set.toString())
+			appendQueryParameter("weight", weight.toString())
+			build()
+		}
+
+		val mainActivityintent = Intent(application, MainActivity::class.java)
+
+		val setGuideIntent =
+			Intent(application, ExerciseSetGuideActivity::class.java).apply {
+				data = guideData
 			}
 
-			val mainActivityintent = Intent(application, MainActivity::class.java)
-			val setGuideIntent =
-				Intent(application, ExerciseSetGuideActivity::class.java).apply {
-					data = guideData
-				}
-			val notificationIntent: PendingIntent? =
-				TaskStackBuilder.create(application).run {
-					addNextIntentWithParentStack(mainActivityintent)
-					addNextIntentWithParentStack(setGuideIntent)
-					getPendingIntent(
-						0,
-						PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-					)
-				}
-
-
-			notificationManager.apply {
-				Notification
-					.Builder(application, timerNotificationChannel.id)
-					.apply {
-						setSmallIcon(R.drawable.ic_launcher_foreground)
-						setContentTitle("Timer Up!")
-						setContentIntent(notificationIntent)
-						setContentText("Time to start your next set")
-						notificationManager.notify(1, build())
-					}
+		val notificationIntent: PendingIntent? =
+			TaskStackBuilder.create(application).run {
+				addNextIntentWithParentStack(mainActivityintent)
+				addNextIntentWithParentStack(setGuideIntent)
+				getPendingIntent(
+					0,
+					PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+				)
 			}
+		val build = Notification
+			.Builder(application, timerNotificationChannel.id)
+			.apply {
+				setSmallIcon(R.drawable.ic_launcher_foreground)
+				setContentTitle("Timer Up!")
+				setContentIntent(notificationIntent)
+				setContentText("Time to start your next set")
+			}::build
+
+		return {
+			notificationManager.notify(TimerNotification, build())
 		}
 	}
 }

@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
 import dagger.hilt.android.AndroidEntryPoint
+import io.github.michael_bailey.gym_log_book.activity.onboarding_activity.OnboardingActivityIntentUtils
 import io.github.michael_bailey.gym_log_book.theme.Gym_Log_BookTheme
 
 @AndroidEntryPoint
@@ -18,7 +19,7 @@ class MainActivity : ComponentActivity() {
 		super.onCreate(savedInstanceState)
 
 		if (vm.onboardingComplete.value == false) {
-
+			OnboardingActivityIntentUtils.startActivity(applicationContext)
 		}
 
 		ActivityCompat.requestPermissions(
