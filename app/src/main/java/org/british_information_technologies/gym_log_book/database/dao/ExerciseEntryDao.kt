@@ -15,6 +15,7 @@ interface ExerciseEntryDao {
 	@Query(
 		"""
 			SELECT * FROM exercise_items
+			ORDER BY exercise_items.createdDate DESC, exercise_items.createdTime DESC
 		"""
 	)
 	fun queryAllExercise(): LiveData<List<EntExerciseEntry>>
@@ -22,6 +23,7 @@ interface ExerciseEntryDao {
 	@Query(
 		"""
 			SELECT * FROM exercise_items
+			ORDER BY exercise_items.createdDate DESC, exercise_items.createdTime DESC
 		"""
 	)
 	fun flowAllExercise(): Flow<List<EntExerciseEntry>>
@@ -29,6 +31,7 @@ interface ExerciseEntryDao {
 	@Query(
 		"""
 			SELECT * FROM exercise_items
+			ORDER BY exercise_items.createdDate DESC, exercise_items.createdTime DESC
 		"""
 	)
 	fun getAllExercise(): List<EntExerciseEntry>
@@ -46,6 +49,7 @@ interface ExerciseEntryDao {
 		"""
 			SELECT * FROM exercise_items
 			WHERE exerciseTypeId == :exercise
+			ORDER BY exercise_items.createdDate DESC, exercise_items.createdTime DESC
 		"""
 	)
 	suspend fun getExercisesByType(exercise: UUID): List<EntExerciseEntry>
@@ -69,6 +73,4 @@ interface ExerciseEntryDao {
 
 	@Delete
 	fun deleteExercise(exercise: EntExerciseEntry)
-
-
 }

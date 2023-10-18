@@ -84,7 +84,7 @@ fun ExerciseListPage(vm: IExerciseViewModel) {
 						verticalArrangement = Arrangement.Center,
 						horizontalAlignment = Alignment.CenterHorizontally
 					) {
-						Text("Exercises (DB)", fontSize = Title)
+						Text("Exercises (NEW APP)", fontSize = Title)
 					}
 				}
 

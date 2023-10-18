@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,6 +23,7 @@ import androidx.compose.ui.unit.sp
 import org.british_information_technologies.gym_log_book.database.entity.EntExerciseEntry
 import org.british_information_technologies.gym_log_book.lib.componenets.CardWithSwipeActions
 import org.british_information_technologies.gym_log_book.lib.interfaces.view_model.IExerciseViewModel
+import java.time.temporal.ChronoUnit
 
 @Composable
 fun ExerciseEntryView(
@@ -55,11 +57,35 @@ fun ExerciseEntryView(
 				.wrapContentHeight()
 				.padding(16.dp)
 		) {
-			Text(
-				text = exerciseName,
-				fontSize = 14.sp,
-				fontWeight = FontWeight(400)
-			)
+			Row(
+				Modifier
+					.wrapContentHeight()
+					.fillMaxWidth(),
+				horizontalArrangement = Arrangement.SpaceBetween
+			) {
+				Text(
+					text = exerciseName,
+					fontSize = 14.sp,
+					fontWeight = FontWeight(400)
+				)
+				Row(
+					Modifier
+						.wrapContentHeight()
+						.wrapContentWidth(),
+					horizontalArrangement = Arrangement.spacedBy(10.dp)
+				) {
+					Text(
+						text = "${item.createdDate}",
+						fontSize = 14.sp,
+						fontWeight = FontWeight(400)
+					)
+					Text(
+						text = "${item.createdTime.truncatedTo(ChronoUnit.SECONDS)}",
+						fontSize = 14.sp,
+						fontWeight = FontWeight(400)
+					)
+				}
+			}
 			Row(
 				Modifier
 					.wrapContentHeight()

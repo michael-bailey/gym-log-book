@@ -28,6 +28,7 @@ import org.british_information_technologies.gym_log_book.repository.ExerciseType
 import org.british_information_technologies.gym_log_book.repository.ReminderRepository
 import org.british_information_technologies.gym_log_book.repository.WeightEntryRepository
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.util.UUID
 import javax.inject.Inject
 
@@ -63,10 +64,20 @@ class MainActivityViewModel @Inject constructor(
 				val list = output[group]
 				if (list == null) {
 					output[group] =
-						sortedList[date]!!.toList().sortedByDescending { it.createdTime }
+						sortedList[date]!!.toList().sortedByDescending { it ->
+							LocalDateTime.of(
+								it.createdDate,
+								it.createdTime
+							)
+						}
 				} else {
 					output[group] =
-						(list + sortedList[date]!!.toList()).sortedByDescending { it.createdTime }
+						(list + sortedList[date]!!.toList()).sortedByDescending { it ->
+							LocalDateTime.of(
+								it.createdDate,
+								it.createdTime
+							)
+						}
 				}
 			}
 			output
