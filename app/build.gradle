@@ -10,11 +10,11 @@ kapt {
 }
 
 android {
-    namespace 'io.github.michael_bailey.gym_log_book'
+    namespace 'org.british_information_technologies.gym_log_book'
     compileSdk 33
 
     defaultConfig {
-        applicationId "io.github.michael_bailey.gym_log_book"
+        applicationId "org.british_information_technologies.gym_log_book"
         minSdk 33
         targetSdk 33
         versionCode 1
