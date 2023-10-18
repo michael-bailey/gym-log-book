@@ -24,9 +24,8 @@ fun Main(
 	)
 	val nav = rememberNavController()
 
-	nav.
 
-		// A surface container using the 'background' color from the theme
+	// A surface container using the 'background' color from the theme
 	Scaffold(
 		topBar = {
 			TopAppBar({ Text(text = stringResource(R.string.title_activity_exercise_set_guide)) })

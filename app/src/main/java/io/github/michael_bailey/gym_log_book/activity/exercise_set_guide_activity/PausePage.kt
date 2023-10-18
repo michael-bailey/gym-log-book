@@ -42,9 +42,7 @@ fun PausePage(
 	var initialLoad by remember { mutableStateOf(true) }
 
 	LaunchedEffect(Unit) {
-		vm.startTimer {
-			navigate(nav = nav)
-		}
+		startTimer(vm, nav)
 	}
 
 	Column(
@@ -61,6 +59,7 @@ fun PausePage(
 				val radius = size.minDimension / 2
 				val sweepAngle = 300f * (timerValue.toFloat() / 60.toFloat())
 				val startAngle = 120f
+
 				drawArc(
 					color = theme.secondary,
 					startAngle = startAngle,
@@ -72,10 +71,29 @@ fun PausePage(
 			Text("Time Left: $timerValue", fontSize = 36.sp)
 		}
 
-		Button(onClick = { navigate(nav) }) {
+		Button(onClick = {
+			skipTimer(vm, nav)
+		}) {
 			Text(text = "Skip Timer")
 		}
 	}
+}
+
+fun startTimer(
+	vm: SetGuideViewModelV2,
+	nav: NavHostController,
+) {
+	vm.startTimer {
+		navigate(nav = nav)
+	}
+}
+
+fun skipTimer(
+	vm: SetGuideViewModelV2,
+	nav: NavHostController,
+) {
+	vm.resetTimer()
+	navigate(nav = nav)
 }
 
 fun navigate(nav: NavHostController) {

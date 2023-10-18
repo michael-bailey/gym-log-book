@@ -93,10 +93,10 @@ class SetGuideViewModelV2 @Inject constructor(
 
 	fun setReps(reps: String) = viewModelScope.launch {
 		currentReps.emit(reps)
-		nav
+
 	}
 
-	fun startTimer(onFinished: () -> Unit) {
+	fun startTimer(onFinished: () -> Unit) = viewModelScope.launch {
 
 		val post = notificationManager.createTimerNotificationPoster(
 			exercise = currentExerciseType.value!!,
@@ -107,7 +107,7 @@ class SetGuideViewModelV2 @Inject constructor(
 		exerciseSetTimerRepository.start(60) {
 			viewModelScope.launch {
 				post()
-				activity
+				onFinished()
 			}
 		}
 	}

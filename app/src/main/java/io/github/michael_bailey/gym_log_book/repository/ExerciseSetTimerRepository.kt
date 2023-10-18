@@ -32,21 +32,19 @@ class ExerciseSetTimerRepository @OptIn(DelicateCoroutinesApi::class)
 
 	private var currentJob: Job? = null
 
-	fun start(count: Int, onFinish: () -> Unit) {
-		if (currentJob != null) {
+	suspend fun start(count: Int, onFinish: () -> Unit) {
+		if (currentJob != null || count < 1) {
 			return
 		}
+		_timer.emit(count)
 		this.currentJob = scope.launch {
-			if (count < 1) {
-				return@launch
-			}
-			_timer.emit(count)
 			do {
 				delay(1.seconds)
 				_timer.emit(timer.first() - 1)
 				log("counting down")
 			} while (timer.first() != 0)
 			onFinish()
+			currentJob = null
 		}
 	}
 
@@ -55,6 +53,7 @@ class ExerciseSetTimerRepository @OptIn(DelicateCoroutinesApi::class)
 			return
 		}
 		currentJob!!.cancelAndJoin()
+		currentJob = null
 		_timer.emit(0)
 	}
 }
