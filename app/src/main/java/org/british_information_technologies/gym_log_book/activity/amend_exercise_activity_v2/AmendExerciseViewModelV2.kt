@@ -1,4 +1,4 @@
-package io.github.michael_bailey.gym_log_book.activity.add_exercise_activity
+package org.british_information_technologies.gym_log_book.activity.amend_exercise_activity_v2
 
 import android.app.Activity
 import androidx.lifecycle.SavedStateHandle
