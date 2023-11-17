@@ -8,10 +8,10 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import org.british_information_technologies.gym_log_book.database.dao.ExerciseEntryDao
+import org.british_information_technologies.gym_log_book.database.dao.ExerciseGroupDao
 import org.british_information_technologies.gym_log_book.database.dao.ExerciseTypeDao
 import org.british_information_technologies.gym_log_book.database.dao.TaskDao
 import org.british_information_technologies.gym_log_book.database.dao.WeightEntryDao
-import org.british_information_technologies.gym_log_book.lib.gatekeeper.Gatekeeper
 import javax.inject.Singleton
 
 @Module
@@ -22,7 +22,6 @@ class DatabaseProvider {
 	@Singleton
 	fun provideAppDatabase(
 		@ApplicationContext context: Context,
-		gatekeeper: Gatekeeper,
 	): AppDatabase {
 		return Room.databaseBuilder(
 			context,
@@ -63,6 +62,11 @@ class DatabaseProvider {
 	): WeightEntryDao {
 		return appDatabase.weightEntryDao()
 	}
+
+	@Provides
+	fun provideExerciseGroupDao(
+		appDatabase: AppDatabase,
+	): ExerciseGroupDao = appDatabase.exerciseGroupDao()
 
 	@Provides
 	fun provideTaskDao(

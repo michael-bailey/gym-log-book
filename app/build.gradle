@@ -11,12 +11,12 @@ kapt {
 
 android {
     namespace 'org.british_information_technologies.gym_log_book'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "org.british_information_technologies.gym_log_book"
         minSdk 33
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 

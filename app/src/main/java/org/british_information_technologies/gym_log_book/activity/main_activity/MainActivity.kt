@@ -8,12 +8,17 @@ import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
 import dagger.hilt.android.AndroidEntryPoint
 import org.british_information_technologies.gym_log_book.activity.onboarding_activity.OnboardingActivityIntentUtils
+import org.british_information_technologies.gym_log_book.repository.ExerciseGroupRepository
 import org.british_information_technologies.gym_log_book.theme.Gym_Log_BookTheme
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
 	val vm: MainActivityViewModel by viewModels()
+
+	@Inject
+	lateinit var repo: ExerciseGroupRepository
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
