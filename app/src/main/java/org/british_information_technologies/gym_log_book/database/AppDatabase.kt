@@ -24,7 +24,7 @@ import org.british_information_technologies.gym_log_book.database.entity.EntWeig
 		EntExerciseGroup::class,
 		EdgeGroupToType::class,
 	],
-	version = 1,
+	version = 2,
 	exportSchema = true,
 )
 @TypeConverters(

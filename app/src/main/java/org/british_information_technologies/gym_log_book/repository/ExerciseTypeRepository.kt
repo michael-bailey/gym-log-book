@@ -14,8 +14,6 @@ class ExerciseTypeRepository @Inject constructor(
 ) {
 
 	val exerciseTypes = exerciseTypeDao.genQueryAll()
-	val exerciseTypeMap =
-		exerciseTypes.map { types -> types.associateBy { it.id } }
 	val isEmpty = exerciseTypeDao.exerciseTypeCount().map { it == 0 }
 
 	/**

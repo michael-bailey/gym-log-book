@@ -20,18 +20,12 @@ class ExerciseEntryRepository @Inject constructor(
 	val exerciseCount = exerciseEntryDao.exerciseCount()
 	val isEmpty = exerciseCount.map { it == 0 }
 
+
 	val timeExerciseList: Flow<List<EntExerciseEntry>> = exercises.map { list ->
 		list.sortedBy {
 			LocalDateTime.of(it.createdDate, it.createdTime)
 		}
 	}
-
-	val timeExerciseGroupedList =
-		timeExerciseList.map { list ->
-			list.groupBy {
-				it.createdDate
-			}
-		}
 
 	suspend fun getExercise(id: UUID) = exerciseEntryDao.queryExercise(id)
 
@@ -87,20 +81,10 @@ class ExerciseEntryRepository @Inject constructor(
 	}
 
 	suspend fun update(
-		exerciseID: UUID,
-		exerciseTypeID: UUID,
-		setNumber: Int,
-		weight: Double,
-		reps: Int
+		exercise: EntExerciseEntry
 	) {
-		val ent = exerciseEntryDao.queryExercise(exerciseID)
 		exerciseEntryDao.updateExercise(
-			ent.copy(
-				exerciseTypeId = exerciseTypeID,
-				setNumber = setNumber,
-				weight = weight,
-				reps = reps,
-			)
+			exercise = exercise
 		)
 	}
 

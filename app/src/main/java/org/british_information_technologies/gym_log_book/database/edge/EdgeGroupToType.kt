@@ -4,6 +4,7 @@ import androidx.room.Entity
 import java.util.UUID
 
 @Entity(
+	tableName = "group_to_type_edge",
 	primaryKeys = ["groupId", "typeId"],
 )
 data class EdgeGroupToType(

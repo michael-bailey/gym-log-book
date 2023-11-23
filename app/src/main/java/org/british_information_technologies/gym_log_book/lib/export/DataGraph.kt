@@ -1,27 +1,16 @@
 package org.british_information_technologies.gym_log_book.lib.export
 
 import com.google.gson.Gson
-import org.british_information_technologies.gym_log_book.database.dao.ExerciseEntryDao
-import org.british_information_technologies.gym_log_book.database.dao.ExerciseTypeDao
-import org.british_information_technologies.gym_log_book.database.dao.WeightEntryDao
-import javax.inject.Inject
+import org.british_information_technologies.gym_log_book.database.entity.EntExerciseEntry
+import org.british_information_technologies.gym_log_book.database.entity.EntExerciseType
+import org.british_information_technologies.gym_log_book.database.entity.EntWeightEntry
 
 
-class DataGraph {
-
-	@Inject
-	lateinit var entryDao: ExerciseEntryDao
-
-	@Inject
-	lateinit var typeDao: ExerciseTypeDao
-
-	@Inject
-	lateinit var weightDao: WeightEntryDao
-
-
-	val exerciseEntries by lazy { entryDao.getAllExercise() }
-	val exerciseTypes by lazy { entryDao.getAllExercise() }
-	val weightEntries by lazy { entryDao.getAllExercise() }
+class DataGraph(
+	internal val exerciseEntries: List<EntExerciseEntry>,
+	internal val exerciseTypes: List<EntExerciseType>,
+	internal val weightEntries: List<EntWeightEntry>,
+) {
 
 	companion object {
 		fun fromJSON(string: String): DataGraph =

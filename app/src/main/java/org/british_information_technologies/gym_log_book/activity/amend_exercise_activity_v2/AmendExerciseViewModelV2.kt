@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import org.british_information_technologies.gym_log_book.activity.amend_exercise_activity_v2.AmendExerciseActivityV2IntentUtils.INTENT_ID
+import org.british_information_technologies.gym_log_book.database.entity.EntExerciseEntry
 import org.british_information_technologies.gym_log_book.delegate.IExerciseTypeStateDelegate
 import org.british_information_technologies.gym_log_book.delegate.impl.ExerciseTypeStateDelegate
 import org.british_information_technologies.gym_log_book.repository.ExerciseEntryRepository
@@ -43,6 +44,7 @@ class AmendExerciseViewModelV2 @Inject constructor(
 	val weight = currentWeight.asLiveData()
 	val reps = currentReps.asLiveData()
 
+	val currentExerciseEntry = currentExerciseValue.asLiveData()
 
 	init {
 		viewModelScope.launch {
@@ -78,11 +80,13 @@ class AmendExerciseViewModelV2 @Inject constructor(
 	fun finalise(activity: Activity) = viewModelScope.launch(Dispatchers.IO) {
 		if (exerciseID != null) exerciseID.let {
 			exerciseRepository.update(
-				exerciseID = exerciseID,
-				exerciseTypeID = currentExerciseType.value!!,
-				setNumber = setNumber.value!!.toInt(),
-				weight = weight.value!!.toDouble(),
-				reps = reps.value!!.toInt()
+				EntExerciseEntry(
+					id = exerciseID,
+					exerciseTypeId = currentExerciseType.value!!,
+					setNumber = setNumber.value!!.toInt(),
+					weight = weight.value!!.toDouble(),
+					reps = reps.value!!.toInt()
+				)
 			)
 		} else {
 			exerciseRepository.create(
