@@ -45,8 +45,10 @@ fun ExerciseEntryView(
 		}
 	}
 
-	ExerciseEntryModifyDialogue(vm = vm, id = item.id) {
-		isUpdateDialogueShown = false
+	if (isUpdateDialogueShown) {
+		ExerciseEntryModifyDialogue(vm = vm, id = item.id) {
+			isUpdateDialogueShown = false
+		}
 	}
 
 	CardWithSwipeActions(

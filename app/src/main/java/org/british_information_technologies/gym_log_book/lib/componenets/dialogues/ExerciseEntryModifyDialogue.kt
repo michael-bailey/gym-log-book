@@ -45,6 +45,7 @@ fun ExerciseEntryModifyDialogue(
 							exercises = types,
 							onSubmit = {
 								vm.modifyExerciseEntry(it)
+								dismiss()
 							},
 							onCancel = dismiss,
 						)

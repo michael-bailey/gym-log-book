@@ -54,7 +54,7 @@ fun AmendExerciseEntryForm(
 		Column(Modifier.wrapContentSize()) {
 			ExerciseTypeDropdownSelector(
 				exercises = exercises,
-				selectedType = selectedType.toString(),
+				selectedType = exercises[selectedType],
 				setExercise = { selectedType = it }
 			)
 			ValidatorTextField(

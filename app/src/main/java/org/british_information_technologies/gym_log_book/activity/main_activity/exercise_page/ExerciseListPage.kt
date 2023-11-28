@@ -28,7 +28,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.google.android.material.elevation.SurfaceColors
-import org.british_information_technologies.gym_log_book.lib.componenets.dialogues.ExerciseEntryModifyDialogue
 import org.british_information_technologies.gym_log_book.lib.interfaces.view_model.IExerciseEntryListViewModel
 import org.british_information_technologies.gym_log_book.theme.StickyHeader
 import org.british_information_technologies.gym_log_book.theme.Title
@@ -37,7 +36,6 @@ import org.british_information_technologies.gym_log_book.theme.Title
 @Composable
 fun ExerciseListPage(vm: IExerciseEntryListViewModel) {
 	val listState = vm.exerciseListState
-	val context = LocalContext.current
 	val exerciseEntryMapState =
 		vm.timeExerciseGroupedList.observeAsState(initial = mapOf())
 	val exerciseEntryMap by exerciseEntryMapState
@@ -115,12 +113,6 @@ fun ExerciseListPage(vm: IExerciseEntryListViewModel) {
 					}
 
 					items(entry.value) { item ->
-						ExerciseEntryModifyDialogue(
-							vm,
-							item.id
-						) {
-
-						}
 						ExerciseEntryView(Modifier.fillMaxWidth(0.91F), vm, item = item)
 					}
 				}

@@ -86,7 +86,7 @@ class MainActivityViewModel @Inject constructor(
 
 	override fun modifyExerciseEntry(
 		newEntity: EntExerciseEntry
-	) = viewModelScope.launch {
+	) = viewModelScope.launch(Dispatchers.IO) {
 		exerciseEntryRepository.update(
 			newEntity
 		)
@@ -94,7 +94,7 @@ class MainActivityViewModel @Inject constructor(
 
 	override fun deleteExerciseEntry(
 		exerciseID: UUID
-	) = viewModelScope.launch {
+	) = viewModelScope.launch(Dispatchers.IO) {
 		exerciseEntryRepository.delete(exerciseID)
 	}
 
