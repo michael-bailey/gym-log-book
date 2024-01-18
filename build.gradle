@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        compose_version = '1.4.3'
+        compose_version = '1.5.4'
         room_version = "2.6.0"
         nav_version = "2.7.5"
         gson_version = "2.9.0"

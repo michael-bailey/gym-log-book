@@ -81,6 +81,7 @@ dependencies {
     implementation 'androidx.activity:activity-compose'
     implementation 'androidx.compose.material:material'
     implementation 'androidx.compose.ui:ui-graphics'
+    implementation "androidx.compose.material:material-icons-extended:$compose_version"
 
     // compose navigation
     implementation "androidx.navigation:navigation-compose:$nav_version"
@@ -113,10 +114,6 @@ dependencies {
 
     // bcrypt deps
     implementation 'org.mindrot:jbcrypt:0.4'
-
-    // accompanist deps
-//    implementation "com.google.accompanist:accompanist-systemuicontroller:0.3.0"
-
 
     androidTestImplementation platform('androidx.compose:compose-bom:2022.10.00')
     testImplementation 'junit:junit:4.13.2'

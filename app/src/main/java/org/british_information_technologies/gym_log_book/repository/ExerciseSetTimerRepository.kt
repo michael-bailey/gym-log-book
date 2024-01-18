@@ -1,5 +1,6 @@
 package org.british_information_technologies.gym_log_book.repository
 
+import dagger.hilt.android.scopes.ViewModelScoped
 import io.github.michael_bailey.android_chat_kit.extension.any.log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -16,6 +17,7 @@ import org.british_information_technologies.gym_log_book.lib.AppNotificationMana
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 
+@ViewModelScoped
 class ExerciseSetTimerRepository @OptIn(DelicateCoroutinesApi::class)
 @Inject constructor(
 	private val notificationManager: AppNotificationManager,
@@ -32,8 +34,15 @@ class ExerciseSetTimerRepository @OptIn(DelicateCoroutinesApi::class)
 
 	private var currentJob: Job? = null
 
+	/**
+	 * Starts the pause timer
+	 *
+	 * If a timer already exists, then it won't start another.
+	 *
+	 * @author michael-bailey
+	 */
 	suspend fun start(count: Int, onFinish: () -> Unit) {
-		if (currentJob != null || count < 1) {
+		if (currentJob != null || count > 0) {
 			return
 		}
 		_timer.emit(count)
