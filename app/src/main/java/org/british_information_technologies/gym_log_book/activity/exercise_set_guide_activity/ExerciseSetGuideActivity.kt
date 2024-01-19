@@ -21,8 +21,6 @@ class ExerciseSetGuideActivity : ComponentActivity() {
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 
-		vm.resetTimer()
-
 		setContent {
 			Gym_Log_BookTheme(colourNavBar = false) {
 				Main(vm = vm, this::finish)

@@ -29,8 +29,11 @@ class ExerciseSetTimerRepository @OptIn(DelicateCoroutinesApi::class)
 	private val _timer = MutableStateFlow(0)
 
 	val timer: Flow<Int> = _timer
-	val isCountingDown = _timer.map { it > 0 }
-	val isFinished = _timer.map { it > 0 }
+	val isCountingDown = _timer.map { isCounting() }
+	val isFinished = _timer.map { isFinished() }
+
+	fun isCounting() = currentJob != null
+	fun isFinished() = currentJob == null
 
 	private var currentJob: Job? = null
 
@@ -42,7 +45,10 @@ class ExerciseSetTimerRepository @OptIn(DelicateCoroutinesApi::class)
 	 * @author michael-bailey
 	 */
 	suspend fun start(count: Int, onFinish: () -> Unit) {
-		if (currentJob != null || count > 0) {
+		val a = isCounting()
+		log("is counting: $a")
+
+		if (isCounting()) {
 			return
 		}
 		_timer.emit(count)
@@ -55,6 +61,7 @@ class ExerciseSetTimerRepository @OptIn(DelicateCoroutinesApi::class)
 			onFinish()
 			currentJob = null
 		}
+		log("is counting: $a")
 	}
 
 	suspend fun stop() {
