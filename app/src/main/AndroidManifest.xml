@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools">
 
 	<application
 		android:name=".app.App"
@@ -43,14 +44,16 @@
 			android:name=".activity.onboarding_activity.OnboardingActivity"
 			android:exported="true"
 			android:label="@string/title_activity_onboarding"
-			android:launchMode="singleInstancePerTask"
+			android:launchMode="singleInstance"
 			android:theme="@style/Theme.Gym_Log_Book" /> <!-- Exercise guidance activities -->
 		<activity
 			android:name=".activity.exercise_set_guide_activity.ExerciseSetGuideActivity"
 			android:exported="true"
 			android:label="@string/title_activity_exercise_set_guide"
-			android:launchMode="singleInstancePerTask"
-			android:theme="@style/Theme.Gym_Log_Book" /> <!-- Data form activities -->
+			android:launchMode="singleInstance"
+			android:resizeableActivity="true"
+			android:theme="@style/Theme.Gym_Log_Book"
+			tools:ignore="LockedOrientationActivity" /> <!-- Data form activities -->
 		<activity
 			android:name=".activity.amend_exercise_type_activity.AmendExerciseTypeActivity"
 			android:exported="false"

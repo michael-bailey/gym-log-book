@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import dagger.hilt.android.AndroidEntryPoint
+import org.british_information_technologies.gym_log_book.activity.exercise_set_guide_activity.page.ExerciseSetGuideActivityPage
 import org.british_information_technologies.gym_log_book.theme.Gym_Log_BookTheme
 
 @AndroidEntryPoint
@@ -20,6 +21,8 @@ class ExerciseSetGuideActivity : ComponentActivity() {
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
+
+		lifecycle.addObserver(vm)
 
 		setContent {
 			Gym_Log_BookTheme(colourNavBar = false) {

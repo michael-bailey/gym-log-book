@@ -2,6 +2,7 @@ package org.british_information_technologies.gym_log_book.activity.exercise_set_
 
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import org.british_information_technologies.gym_log_book.activity.exercise_set_guide_activity.page.ExerciseSetGuideActivityPage
 
 object Utils {
 	fun navigateAskExtraSet(nav: NavHostController) {

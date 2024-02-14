@@ -1,4 +1,4 @@
-package org.british_information_technologies.gym_log_book.activity.exercise_set_guide_activity
+package org.british_information_technologies.gym_log_book.activity.exercise_set_guide_activity.page
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
@@ -9,6 +9,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import org.british_information_technologies.gym_log_book.activity.exercise_set_guide_activity.SetGuideViewModelV2
+import org.british_information_technologies.gym_log_book.activity.exercise_set_guide_activity.Utils
 import org.british_information_technologies.gym_log_book.lib.componenets.ValidatorTextField
 import org.british_information_technologies.gym_log_book.lib.validation.Validator
 

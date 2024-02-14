@@ -1,4 +1,4 @@
-package org.british_information_technologies.gym_log_book.activity.exercise_set_guide_activity
+package org.british_information_technologies.gym_log_book.activity.exercise_set_guide_activity.page
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
