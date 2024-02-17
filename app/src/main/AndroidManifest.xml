@@ -16,7 +16,7 @@
 			android:name=".activity.data_export.DataExportActivity"
 			android:exported="false"
 			android:label="@string/title_activity_data_export"
-			android:theme="@style/Theme.Gym_Log_Book" />
+			android:theme="@style/Theme.Gym_Log_Book.Dialogue" />
 		<activity
 			android:name=".activity.timer_activity.TimerActivity"
 			android:exported="true"
@@ -93,11 +93,12 @@
 		<service
 			android:name=".service.DataImporterService"
 			android:exported="false" />
-	</application> <!-- service permissions -->
-	<uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+	</application>
+
 	<uses-permission android:name="android.permission.READ_CALENDAR" />
 	<uses-permission android:name="android.permission.WRITE_CALENDAR" />
 
 	<uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
+	<uses-permission android:name="android.permission.FOREGROUND_SERVICE" /> <!-- service permissions -->
 </manifest>

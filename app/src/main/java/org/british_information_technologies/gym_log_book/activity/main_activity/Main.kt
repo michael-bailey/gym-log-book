@@ -31,6 +31,7 @@ import org.british_information_technologies.gym_log_book.R
 import org.british_information_technologies.gym_log_book.activity.internal.debug_settings_activity.DebugSettingsActivity
 import org.british_information_technologies.gym_log_book.activity.internal.tasks_activity.TaskActivity
 import org.british_information_technologies.gym_log_book.activity.settings_activity.SettingsActivityIntentUtils.startSettingsActivity
+import org.british_information_technologies.gym_log_book.extension.startExportDataActivity
 import org.british_information_technologies.gym_log_book.activity.main_activity.MainActivityPage.ExercisePage.NavItem as ExerciseNavItem
 import org.british_information_technologies.gym_log_book.activity.main_activity.MainActivityPage.ExerciseTypePage.NavItem as ExerciseTypeNavItem
 import org.british_information_technologies.gym_log_book.activity.main_activity.MainActivityPage.WeightPage.NavItem as WeightNavItem
@@ -76,6 +77,12 @@ fun Main(vm: MainActivityViewModel) {
 										DebugSettingsActivity::class.java
 									)
 								)
+							}
+						)
+						DropdownMenuItem(
+							text = { Text(text = "Export...") },
+							onClick = {
+								activity.startExportDataActivity()
 							}
 						)
 						DropdownMenuItem(

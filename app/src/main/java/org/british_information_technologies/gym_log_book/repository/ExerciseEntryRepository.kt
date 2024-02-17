@@ -10,7 +10,9 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.UUID
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class ExerciseEntryRepository @Inject constructor(
 	private val exerciseEntryDao: ExerciseEntryDao,
 	private val exerciseTypeDao: ExerciseTypeDao

@@ -7,7 +7,9 @@ import org.british_information_technologies.gym_log_book.database.dao.ExerciseTy
 import org.british_information_technologies.gym_log_book.database.entity.EntExerciseType
 import java.util.UUID
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class ExerciseTypeRepository @Inject constructor(
 	private val exerciseTypeDao: ExerciseTypeDao,
 	private val exerciseEntryDao: ExerciseEntryDao
