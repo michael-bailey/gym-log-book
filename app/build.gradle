@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'com.google.dagger.hilt.android'
+    id 'org.jetbrains.kotlin.plugin.serialization'
 }
 
 kapt {
@@ -11,18 +12,23 @@ kapt {
 
 android {
     namespace 'org.british_information_technologies.gym_log_book'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "org.british_information_technologies.gym_log_book"
         minSdk 33
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary true
+        }
+        kapt {
+            arguments {
+                arg("room.schemaLocation", "$projectDir/schemas")
+            }
         }
     }
 
@@ -44,7 +50,7 @@ android {
         compose true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion '1.4.7'
+        kotlinCompilerExtensionVersion '1.5.5'
     }
     packagingOptions {
         resources {
@@ -55,16 +61,16 @@ android {
 
 dependencies {
     // android deps
-    implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'androidx.appcompat:appcompat:1.4.1'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
+    implementation 'androidx.core:core-ktx:1.12.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.0'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.7.0'
     implementation "androidx.lifecycle:lifecycle-livedata-ktx"
 
     // material ui deps
-    implementation 'com.google.android.material:material:1.9.0'
+    implementation 'com.google.android.material:material:1.11.0'
 
     // compose deps
     implementation platform('androidx.compose:compose-bom:2023.04.01')
@@ -76,6 +82,7 @@ dependencies {
     implementation 'androidx.activity:activity-compose'
     implementation 'androidx.compose.material:material'
     implementation 'androidx.compose.ui:ui-graphics'
+    implementation "androidx.compose.material:material-icons-extended:$compose_version"
 
     // compose navigation
     implementation "androidx.navigation:navigation-compose:$nav_version"
@@ -87,13 +94,14 @@ dependencies {
     implementation platform('androidx.compose:compose-bom:2022.10.00')
     implementation platform('androidx.compose:compose-bom:2022.10.00')
     implementation "androidx.navigation:navigation-runtime-ktx:$nav_version"
+    implementation platform('androidx.compose:compose-bom:2023.08.00')
+    implementation platform('androidx.compose:compose-bom:2023.08.00')
     androidTestImplementation platform('androidx.compose:compose-bom:2022.10.00')
     androidTestImplementation platform('androidx.compose:compose-bom:2022.10.00')
     androidTestImplementation platform('androidx.compose:compose-bom:2022.10.00')
+    androidTestImplementation platform('androidx.compose:compose-bom:2023.08.00')
+    androidTestImplementation platform('androidx.compose:compose-bom:2023.08.00')
     kapt "androidx.room:room-compiler:$room_version"
-
-    // gson deps
-    implementation "com.google.code.gson:gson:$gson_version"
 
     // work manager deps
     implementation "androidx.work:work-runtime:$work_version"
@@ -105,13 +113,12 @@ dependencies {
     // security deps
     implementation "androidx.security:security-crypto:$security_version"
 
+    // serialisation
+    implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2'
+    implementation "org.jetbrains.kotlinx:kotlinx-datetime:0.3.2"
 
     // bcrypt deps
     implementation 'org.mindrot:jbcrypt:0.4'
-
-    // accompanist deps
-//    implementation "com.google.accompanist:accompanist-systemuicontroller:0.3.0"
-
 
     androidTestImplementation platform('androidx.compose:compose-bom:2022.10.00')
     testImplementation 'junit:junit:4.13.2'

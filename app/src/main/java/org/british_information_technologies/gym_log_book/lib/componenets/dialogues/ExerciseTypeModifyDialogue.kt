@@ -20,6 +20,7 @@ fun ExerciseTypeModifyDialogue(
 	id: UUID,
 	onDismiss: () -> Unit
 ) {
+
 	Dialog(onDismissRequest = onDismiss) {
 		Surface(
 			modifier = Modifier

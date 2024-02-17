@@ -1,6 +1,7 @@
 package org.british_information_technologies.gym_log_book.activity.amend_exercise_activity_v2.components
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -13,6 +14,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.ImeAction
 import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -20,6 +22,7 @@ import java.util.UUID
 fun ExerciseTypeDropdownSelector(
 	exercises: Map<UUID, String>,
 	selectedType: String?,
+	isLast: Boolean = false,
 	setExercise: (UUID) -> Unit
 ) {
 	var dropdownExposed by remember { mutableStateOf(false) }
@@ -38,7 +41,15 @@ fun ExerciseTypeDropdownSelector(
 				value = selectedType ?: "",
 				label = { Text("Exercise...") },
 				onValueChange = {},
-				isError = (selectedType == null)
+				isError = (selectedType == null),
+				keyboardOptions = KeyboardOptions(
+					autoCorrect = false,
+					imeAction = if (isLast) {
+						ImeAction.Next
+					} else {
+						ImeAction.Done
+					}
+				)
 			)
 			ExposedDropdownMenu(
 				expanded = dropdownExposed,

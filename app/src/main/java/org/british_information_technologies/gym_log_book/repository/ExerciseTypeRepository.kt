@@ -7,15 +7,15 @@ import org.british_information_technologies.gym_log_book.database.dao.ExerciseTy
 import org.british_information_technologies.gym_log_book.database.entity.EntExerciseType
 import java.util.UUID
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class ExerciseTypeRepository @Inject constructor(
 	private val exerciseTypeDao: ExerciseTypeDao,
 	private val exerciseEntryDao: ExerciseEntryDao
 ) {
 
-	val exerciseTypes = exerciseTypeDao.queryAllExerciseTypeFlow()
-	val exerciseTypeMap =
-		exerciseTypes.map { types -> types.associateBy { it.id } }
+	val exerciseTypes = exerciseTypeDao.genQueryAll()
 	val isEmpty = exerciseTypeDao.exerciseTypeCount().map { it == 0 }
 
 	/**

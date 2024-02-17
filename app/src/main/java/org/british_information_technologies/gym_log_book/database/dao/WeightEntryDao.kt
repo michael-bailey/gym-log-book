@@ -22,6 +22,13 @@ interface WeightEntryDao {
 	@Query(
 		"""
 			SELECT * FROM weight_items
+		"""
+	)
+	fun getAllWeight(): List<EntWeightEntry>
+
+	@Query(
+		"""
+			SELECT * FROM weight_items
 			WHERE id == :id
 		"""
 	)
@@ -50,6 +57,4 @@ interface WeightEntryDao {
 			)
 		)
 	}
-
-
 }

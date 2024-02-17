@@ -1,5 +1,6 @@
 package org.british_information_technologies.gym_log_book.repository
 
+import dagger.hilt.android.scopes.ViewModelScoped
 import io.github.michael_bailey.android_chat_kit.extension.any.log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -16,6 +17,7 @@ import org.british_information_technologies.gym_log_book.lib.AppNotificationMana
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 
+@ViewModelScoped
 class ExerciseSetTimerRepository @OptIn(DelicateCoroutinesApi::class)
 @Inject constructor(
 	private val notificationManager: AppNotificationManager,
@@ -27,13 +29,26 @@ class ExerciseSetTimerRepository @OptIn(DelicateCoroutinesApi::class)
 	private val _timer = MutableStateFlow(0)
 
 	val timer: Flow<Int> = _timer
-	val isCountingDown = _timer.map { it > 0 }
-	val isFinished = _timer.map { it > 0 }
+	val isCountingDown = _timer.map { isCounting() }
+	val isFinished = _timer.map { isFinished() }
+
+	fun isCounting() = currentJob != null
+	fun isFinished() = currentJob == null
 
 	private var currentJob: Job? = null
 
+	/**
+	 * Starts the pause timer
+	 *
+	 * If a timer already exists, then it won't start another.
+	 *
+	 * @author michael-bailey
+	 */
 	suspend fun start(count: Int, onFinish: () -> Unit) {
-		if (currentJob != null || count < 1) {
+		val a = isCounting()
+		log("is counting: $a")
+
+		if (isCounting()) {
 			return
 		}
 		_timer.emit(count)
@@ -46,6 +61,7 @@ class ExerciseSetTimerRepository @OptIn(DelicateCoroutinesApi::class)
 			onFinish()
 			currentJob = null
 		}
+		log("is counting: $a")
 	}
 
 	suspend fun stop() {

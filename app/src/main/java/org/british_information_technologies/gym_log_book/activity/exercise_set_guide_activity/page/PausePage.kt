@@ -1,4 +1,4 @@
-package org.british_information_technologies.gym_log_book.activity.exercise_set_guide_activity
+package org.british_information_technologies.gym_log_book.activity.exercise_set_guide_activity.page
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Arrangement
@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import org.british_information_technologies.gym_log_book.activity.exercise_set_guide_activity.SetGuideViewModelV2
 
 
 @Composable

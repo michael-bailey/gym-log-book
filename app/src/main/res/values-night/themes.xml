@@ -1,21 +1,17 @@
 <resources>
 	<!-- Base application theme. -->
-	<style name="Theme.Gym_Log_Book" parent="Theme.Material3.DynamicColors.Dark">
-		<!-- Status bar color. -->
-		<!--		<item name="android:statusBarColor">@android:color/system_neutral1_900</item>-->
-		<!--		<item name="android:windowLightStatusBar">false</item>-->
-		<!--		<item name="android:navigationBarColor">@android:color</item>-->
-
-
-	</style>
-
-	<style name="Theme.Gym_Log_book.BottomNavBar" parent="Theme.Gym_Log_Book">
-
-	</style>
-
-	<style name="Theme.Gym_Log_Book.NoActionBar">
+	<style name="Theme.Gym_Log_Book" parent="Theme.Material3.DynamicColors.DayNight">
+		<item name="android:windowBackground">@android:color/transparent</item>
+		<item name="android:backgroundDimEnabled">true</item>
 		<item name="windowActionBar">false</item>
 		<item name="windowNoTitle">true</item>
 	</style>
 
+	<style name="Theme.Gym_Log_Book.Dialogue" parent="Theme.Material3.DynamicColors.DayNight">
+		<item name="android:windowBackground">@android:color/transparent</item>
+		<item name="android:backgroundDimEnabled">true</item>
+		<item name="android:windowIsTranslucent">true</item>
+		<item name="windowActionBar">false</item>
+		<item name="windowNoTitle">true</item>
+	</style>
 </resources>

@@ -14,7 +14,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -22,21 +24,30 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.british_information_technologies.gym_log_book.database.entity.EntExerciseEntry
 import org.british_information_technologies.gym_log_book.lib.componenets.CardWithSwipeActions
-import org.british_information_technologies.gym_log_book.lib.interfaces.view_model.IExerciseViewModel
+import org.british_information_technologies.gym_log_book.lib.componenets.dialogues.ExerciseEntryModifyDialogue
+import org.british_information_technologies.gym_log_book.lib.interfaces.view_model.IExerciseEntryListViewModel
 import java.time.temporal.ChronoUnit
 
 @Composable
 fun ExerciseEntryView(
 	modifier: Modifier = Modifier,
-	vm: IExerciseViewModel,
+	vm: IExerciseEntryListViewModel,
 	item: EntExerciseEntry
 ) {
 	val activity = LocalContext.current as Activity
+
+	var isUpdateDialogueShown by remember { mutableStateOf(false) }
 
 	val exerciseTypes by vm.exerciseTypeList.observeAsState(listOf())
 	val exerciseName by remember {
 		derivedStateOf {
 			exerciseTypes.find { it.id == item.exerciseTypeId }?.name ?: "Not found"
+		}
+	}
+
+	if (isUpdateDialogueShown) {
+		ExerciseEntryModifyDialogue(vm = vm, id = item.id) {
+			isUpdateDialogueShown = false
 		}
 	}
 
@@ -46,7 +57,7 @@ fun ExerciseEntryView(
 			Button(onClick = { vm.deleteExerciseEntry(item.id) }) {
 				Text("Delete")
 			}
-			Button(onClick = { vm.amendExerciseEntry(item.id) }) {
+			Button(onClick = { isUpdateDialogueShown = true }) {
 				Text("Modify")
 			}
 		}

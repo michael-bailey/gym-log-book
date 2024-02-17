@@ -35,5 +35,7 @@
 	</string>
 	<string name="onboarding_start_page">Welcome</string>
 	<string name="title_activity_settings">SettingsActivity</string>
+	<string name="title_activity_timer">TimerActivity</string>
+	<string name="title_activity_data_export">DataExportActivity</string>
 
 </resources>

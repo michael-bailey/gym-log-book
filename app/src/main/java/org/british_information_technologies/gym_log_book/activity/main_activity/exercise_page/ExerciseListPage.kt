@@ -28,16 +28,17 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.google.android.material.elevation.SurfaceColors
-import org.british_information_technologies.gym_log_book.lib.interfaces.view_model.IExerciseViewModel
+import org.british_information_technologies.gym_log_book.lib.interfaces.view_model.IExerciseEntryListViewModel
 import org.british_information_technologies.gym_log_book.theme.StickyHeader
 import org.british_information_technologies.gym_log_book.theme.Title
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ExerciseListPage(vm: IExerciseViewModel) {
+fun ExerciseListPage(vm: IExerciseEntryListViewModel) {
 	val listState = vm.exerciseListState
-	val context = LocalContext.current
-	val exerciseEntryMap by vm.timeExerciseGroupedList.observeAsState(initial = mapOf())
+	val exerciseEntryMapState =
+		vm.timeExerciseGroupedList.observeAsState(initial = mapOf())
+	val exerciseEntryMap by exerciseEntryMapState
 	val isEmpty by vm.isExercisesEmpty.observeAsState(true)
 	val currentHeaderState = remember { mutableStateOf<String?>(null) }
 

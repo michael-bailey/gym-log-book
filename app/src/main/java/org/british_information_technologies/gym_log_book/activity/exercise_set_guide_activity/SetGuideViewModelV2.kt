@@ -1,5 +1,7 @@
 package org.british_information_technologies.gym_log_book.activity.exercise_set_guide_activity
 
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
@@ -7,7 +9,6 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
@@ -27,13 +28,14 @@ class SetGuideViewModelV2 @Inject constructor(
 	private val exerciseEntryRepository: ExerciseEntryRepository,
 	private val notificationManager: AppNotificationManager,
 	private val exerciseSetTimerRepository: ExerciseSetTimerRepository,
-	val savedStateHandle: SavedStateHandle
-) : ViewModel(), IExerciseTypeStateDelegate by ExerciseTypeStateDelegate(
+	val savedStateHandle: SavedStateHandle,
+
+	) : ViewModel(), IExerciseTypeStateDelegate by ExerciseTypeStateDelegate(
 	exerciseTypeRepository,
 	CoroutineScope(Dispatchers.IO)
-) {
+), DefaultLifecycleObserver {
 
-
+	var isVisible: Boolean = false
 
 	// field state
 	private var currentTimerValue = MutableStateFlow(60)
@@ -56,9 +58,6 @@ class SetGuideViewModelV2 @Inject constructor(
 		.combine(currentExerciseSet) { t, s -> t to s }
 	private val weightRepsCombine = currentWeight
 		.combine(currentReps) { w, r -> w to r }
-
-	// timer job
-	private var timerJob: Job? = null
 
 	val canSubmit = typeSetCombine.combine(weightRepsCombine) { ts, wr ->
 		val (type, set) = ts
@@ -87,6 +86,22 @@ class SetGuideViewModelV2 @Inject constructor(
 		}
 	}
 
+	override fun onStart(owner: LifecycleOwner) {
+		super.onStart(owner)
+
+		if (!isVisible) {
+			notificationManager.cancelTimerNotification()
+		}
+
+		this.isVisible = true
+
+	}
+
+	override fun onStop(owner: LifecycleOwner) {
+		super.onStop(owner)
+		this.isVisible = false
+	}
+
 	fun setWeight(weight: String) = viewModelScope.launch {
 		currentWeight.emit(weight)
 	}
@@ -106,7 +121,9 @@ class SetGuideViewModelV2 @Inject constructor(
 
 		exerciseSetTimerRepository.start(60) {
 			viewModelScope.launch {
-				post()
+				if (!this@SetGuideViewModelV2.isVisible) {
+					post()
+				}
 				onFinished()
 			}
 		}
@@ -114,7 +131,7 @@ class SetGuideViewModelV2 @Inject constructor(
 
 	fun resetTimer() = viewModelScope.launch {
 		exerciseSetTimerRepository.stop()
-		notificationManager.cancelTimerNotification()
+//		notificationManager.cancelTimerNotification()
 	}
 
 	/**

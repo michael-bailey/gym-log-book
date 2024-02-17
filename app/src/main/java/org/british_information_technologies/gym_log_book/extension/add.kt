@@ -5,7 +5,6 @@ import android.util.TypedValue
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 
-
 fun Dp.toPx(context: Context): Float {
 	return TypedValue.applyDimension(
 		TypedValue.COMPLEX_UNIT_DIP,

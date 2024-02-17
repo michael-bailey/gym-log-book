@@ -10,7 +10,6 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.british_information_technologies.gym_log_book.activity.add_exercise_type_activity.AddExerciseTypeActivityIntentUtils
 import org.british_information_technologies.gym_log_book.activity.add_weight_activity.AddWeightActivityIntentUtils
@@ -18,74 +17,56 @@ import org.british_information_technologies.gym_log_book.activity.amend_exercise
 import org.british_information_technologies.gym_log_book.activity.exercise_set_guide_activity.ExerciseSetGuideActivityIntentUtils
 import org.british_information_technologies.gym_log_book.database.entity.EntExerciseEntry
 import org.british_information_technologies.gym_log_book.database.entity.EntExerciseType
-import org.british_information_technologies.gym_log_book.lib.PeriodGroup
-import org.british_information_technologies.gym_log_book.lib.gatekeeper.Gatekeeper
+import org.british_information_technologies.gym_log_book.lib.interfaces.view_model.IExerciseEntryListViewModel
 import org.british_information_technologies.gym_log_book.lib.interfaces.view_model.IExerciseTypeViewModel
-import org.british_information_technologies.gym_log_book.lib.interfaces.view_model.IExerciseViewModel
 import org.british_information_technologies.gym_log_book.lib.one_shot.OneShotPreference
+import org.british_information_technologies.gym_log_book.repository.ExerciseEntryMappingsRepository
 import org.british_information_technologies.gym_log_book.repository.ExerciseEntryRepository
+import org.british_information_technologies.gym_log_book.repository.ExerciseTypeMappingsRepository
 import org.british_information_technologies.gym_log_book.repository.ExerciseTypeRepository
 import org.british_information_technologies.gym_log_book.repository.ReminderRepository
 import org.british_information_technologies.gym_log_book.repository.WeightEntryRepository
-import java.time.LocalDate
-import java.time.LocalDateTime
 import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
 class MainActivityViewModel @Inject constructor(
 	private val exerciseTypeRepository: ExerciseTypeRepository,
+	private val exerciseTypeMappingsRepository: ExerciseTypeMappingsRepository,
 	private val exerciseEntryRepository: ExerciseEntryRepository,
+	private val exerciseEntryMappingsRepository: ExerciseEntryMappingsRepository,
 	private val weightEntryRepository: WeightEntryRepository,
 	private val reminderRepository: ReminderRepository,
-	val gatekeeper: Gatekeeper,
 	application: Application,
-) : AndroidViewModel(application), IExerciseTypeViewModel, IExerciseViewModel {
+) : AndroidViewModel(application), IExerciseEntryListViewModel,
+	IExerciseTypeViewModel {
 
-	init {
-		reminderRepository.queryCalendars()
-	}
+	// preference state
+	private val _onbaordingOneShot = OneShotPreference("onboarding_complete")
 
-	// mark: - exercise page state
+	// live data
+	override val timeExerciseGroupedList: LiveData<Map<String, List<EntExerciseEntry>>>
+		get() = exerciseEntryMappingsRepository.exercisesGroupedByTime.asLiveData()
+	override val exerciseNameMap: LiveData<Map<UUID, String>>
+		get() = exerciseTypeMappingsRepository.exerciseIdToName.asLiveData()
+	override val exerciseEntryList: LiveData<List<EntExerciseEntry>>
+		get() = exerciseEntryRepository.exercises.asLiveData()
+
+	override val isExercisesEmpty = exerciseEntryRepository.isEmpty.asLiveData()
+
+	val weightEntryList = weightEntryRepository.weightEntryList.asLiveData()
+	val isExerciseTypeListEmpty = exerciseTypeRepository.isEmpty.asLiveData()
+	val onboardingComplete = _onbaordingOneShot.isConsumedFlow().asLiveData()
+
+	override val exerciseTypeList: LiveData<List<EntExerciseType>>
+		get() = exerciseTypeRepository.exerciseTypes.asLiveData()
+
+	// ui state
 	override val exerciseListState = LazyListState(
 		0,
 		0
 	)
 
-	override val isExercisesEmpty = exerciseEntryRepository.isEmpty.asLiveData()
-	override val timeExerciseGroupedList: LiveData<Map<String, List<EntExerciseEntry>>> =
-		exerciseEntryRepository.timeExerciseGroupedList.map {
-			val output = mutableMapOf<String, List<EntExerciseEntry>>()
-			val sortedList = it.toList().sortedByDescending { it.first }.toMap()
-			for (date in sortedList.keys) {
-				val group =
-					PeriodGroup.getPeriodGroup(period = date.until(LocalDate.now()))
-						.toString()
-				val list = output[group]
-				if (list == null) {
-					output[group] =
-						sortedList[date]!!.toList().sortedByDescending { it ->
-							LocalDateTime.of(
-								it.createdDate,
-								it.createdTime
-							)
-						}
-				} else {
-					output[group] =
-						(list + sortedList[date]!!.toList()).sortedByDescending { it ->
-							LocalDateTime.of(
-								it.createdDate,
-								it.createdTime
-							)
-						}
-				}
-			}
-			output
-		}.asLiveData()
-
-	// mark: - exercise type page state
-	override val exerciseTypeList: LiveData<List<EntExerciseType>>
-		get() = exerciseTypeRepository.exerciseTypes.asLiveData()
 	val exerciseTypeListState = LazyListState(
 		0,
 		0
@@ -96,15 +77,26 @@ class MainActivityViewModel @Inject constructor(
 		0
 	)
 
-	private val _onbaordingOneShot = OneShotPreference("onboarding_complete")
-
 	val removedID = mutableStateOf<UUID?>(null)
 	val selectedReplacementType = mutableStateOf<UUID?>(null)
 
+	init {
+		reminderRepository.queryCalendars()
+	}
 
-	val weightEntryList = weightEntryRepository.weightEntryList.asLiveData()
-	val isExerciseTypeListEmpty = exerciseTypeRepository.isEmpty.asLiveData()
-	val onboardingComplete = _onbaordingOneShot.isConsumedFlow().asLiveData()
+	override fun modifyExerciseEntry(
+		newEntity: EntExerciseEntry
+	) = viewModelScope.launch(Dispatchers.IO) {
+		exerciseEntryRepository.update(
+			newEntity
+		)
+	}
+
+	override fun deleteExerciseEntry(
+		exerciseID: UUID
+	) = viewModelScope.launch(Dispatchers.IO) {
+		exerciseEntryRepository.delete(exerciseID)
+	}
 
 	fun setSelectedReplacementType(id: UUID) {
 		selectedReplacementType.value = id
@@ -137,22 +129,6 @@ class MainActivityViewModel @Inject constructor(
 
 	fun amendExerciseEntry(activity: Activity, uuid: UUID) =
 		AmendExerciseActivityV2IntentUtils.startAmendActivity(activity, uuid)
-
-	override fun amendExerciseEntry(id: UUID) {
-		AmendExerciseActivityV2IntentUtils.startAmendActivity(
-			getApplication<Application>().applicationContext,
-			id
-		)
-	}
-
-	override fun deleteExerciseEntry(uuid: UUID) {
-		viewModelScope.launch(Dispatchers.IO) {
-			exerciseEntryRepository.delete(
-				uuid
-			)
-		}
-	}
-
 
 	fun deleteWeightEntry(uuid: UUID) = viewModelScope.launch(Dispatchers.IO) {
 		weightEntryRepository.delete(uuid)
