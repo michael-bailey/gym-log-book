@@ -13,9 +13,12 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import org.british_information_technologies.gym_log_book.activity.exercise_set_guide_activity.page.ExerciseSetGuideActivityPage
 import org.british_information_technologies.gym_log_book.delegate.IExerciseTypeStateDelegate
 import org.british_information_technologies.gym_log_book.delegate.impl.ExerciseTypeStateDelegate
 import org.british_information_technologies.gym_log_book.lib.AppNotificationManager
+import org.british_information_technologies.gym_log_book.lib.navigation.INavigationViewModel
+import org.british_information_technologies.gym_log_book.lib.navigation.NavigationViewModel
 import org.british_information_technologies.gym_log_book.lib.validation.Validator
 import org.british_information_technologies.gym_log_book.repository.ExerciseEntryRepository
 import org.british_information_technologies.gym_log_book.repository.ExerciseSetTimerRepository
@@ -28,23 +31,25 @@ class SetGuideViewModelV2 @Inject constructor(
 	private val exerciseEntryRepository: ExerciseEntryRepository,
 	private val notificationManager: AppNotificationManager,
 	private val exerciseSetTimerRepository: ExerciseSetTimerRepository,
-	val savedStateHandle: SavedStateHandle,
+	private val savedStateHandle: SavedStateHandle,
+) : ViewModel(),
+	IExerciseTypeStateDelegate by ExerciseTypeStateDelegate(
+		exerciseTypeRepository,
+		CoroutineScope(Dispatchers.IO)
+	),
+	INavigationViewModel by NavigationViewModel("start_page"),
+	DefaultLifecycleObserver {
 
-	) : ViewModel(), IExerciseTypeStateDelegate by ExerciseTypeStateDelegate(
-	exerciseTypeRepository,
-	CoroutineScope(Dispatchers.IO)
-), DefaultLifecycleObserver {
 
-	var isVisible: Boolean = false
+	private var isVisible: Boolean = false
 
 	// field state
-	private var currentTimerValue = MutableStateFlow(60)
 	private val currentExerciseSet = MutableStateFlow(1)
 	private val currentWeight = MutableStateFlow("")
 	private val currentReps = MutableStateFlow("")
 
-	// exposing fields
 
+	// exposing fields
 	val exerciseSet = currentExerciseSet.asLiveData()
 	val weight = currentWeight.asLiveData()
 	val reps = currentReps.asLiveData()
@@ -56,6 +61,7 @@ class SetGuideViewModelV2 @Inject constructor(
 	// add set state
 	private val typeSetCombine = currentExerciseType
 		.combine(currentExerciseSet) { t, s -> t to s }
+
 	private val weightRepsCombine = currentWeight
 		.combine(currentReps) { w, r -> w to r }
 
@@ -86,15 +92,17 @@ class SetGuideViewModelV2 @Inject constructor(
 		}
 	}
 
+	override fun onCreate(owner: LifecycleOwner) {
+
+	}
+
+	// Activity Lifecycle Events
 	override fun onStart(owner: LifecycleOwner) {
 		super.onStart(owner)
-
 		if (!isVisible) {
 			notificationManager.cancelTimerNotification()
 		}
-
 		this.isVisible = true
-
 	}
 
 	override fun onStop(owner: LifecycleOwner) {
@@ -102,16 +110,17 @@ class SetGuideViewModelV2 @Inject constructor(
 		this.isVisible = false
 	}
 
+	// View Model Setters
 	fun setWeight(weight: String) = viewModelScope.launch {
 		currentWeight.emit(weight)
 	}
 
 	fun setReps(reps: String) = viewModelScope.launch {
 		currentReps.emit(reps)
-
 	}
 
-	fun startTimer(onFinished: () -> Unit) = viewModelScope.launch {
+	// timer stuff
+	fun startTimer(onFinished: suspend () -> Unit) = viewModelScope.launch {
 
 		val post = notificationManager.createTimerNotificationPoster(
 			exercise = currentExerciseType.value!!,
@@ -131,13 +140,13 @@ class SetGuideViewModelV2 @Inject constructor(
 
 	fun resetTimer() = viewModelScope.launch {
 		exerciseSetTimerRepository.stop()
-//		notificationManager.cancelTimerNotification()
+		navigateTo(ExerciseSetGuideActivityPage.Set.route)
 	}
 
 	/**
 	 * gathers current state and saves it to the repository.
 	 */
-	fun finalise() = viewModelScope.launch {
+	fun saveSet() = viewModelScope.launch {
 
 		val exerciseType = currentExerciseType.value
 		val exerciseSet = currentExerciseSet.value
@@ -153,7 +162,25 @@ class SetGuideViewModelV2 @Inject constructor(
 			reps = exerciseReps.toInt()
 		)
 
+		if (currentExerciseSet.value >= 3) {
+			navigateTo(ExerciseSetGuideActivityPage.AskExtraSet.route)
+		} else {
+			navigateTo(ExerciseSetGuideActivityPage.Pause.route)
+			startTimer {
+				navigateTo(ExerciseSetGuideActivityPage.Set.route)
+			}
+		}
+
 		currentReps.emit("")
 		currentExerciseSet.emit(currentExerciseSet.value + 1)
 	}
+
+	fun goToSet() =
+		viewModelScope.launch { navigateTo(ExerciseSetGuideActivityPage.Set.route) }
+
+	fun goToPause() =
+		viewModelScope.launch { navigateTo(ExerciseSetGuideActivityPage.Pause.route) }
+
+	fun goToExtra() =
+		viewModelScope.launch { navigateTo(ExerciseSetGuideActivityPage.AskExtraSet.route) }
 }

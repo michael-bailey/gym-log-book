@@ -11,16 +11,19 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.NavHostController
-import org.british_information_technologies.gym_log_book.activity.amend_exercise_activity_v2.components.ExerciseTypeDropdownSelector
+import org.british_information_technologies.gym_log_book.activity.exercise_set_guide_activity.ExerciseSetGuideActivity
 import org.british_information_technologies.gym_log_book.activity.exercise_set_guide_activity.SetGuideViewModelV2
+import org.british_information_technologies.gym_log_book.extension.activity
+import org.british_information_technologies.gym_log_book.lib.componenets.ExerciseTypeDropdownSelector
 
 @Composable
 fun StartPage(
-	nav: NavHostController,
 	vm: SetGuideViewModelV2,
 ) {
+
+	val activity = activity<ExerciseSetGuideActivity>()
+	val vm = activity.vm
+
 	val exerciseMap by vm.exerciseNameMap.observeAsState(initial = mapOf())
 	val currentExercise by vm.selectedExerciseType.observeAsState()
 	val startEnabled by vm.isStartEnabled.observeAsState(false)
@@ -38,19 +41,7 @@ fun StartPage(
 		)
 		Button(
 			onClick = {
-				nav.navigate(ExerciseSetGuideActivityPage.Set.route) {
-					// Pop up to the start destination of the graph to
-					// avoid building up a large stack of destinations
-					// on the back stack as users select items
-					popUpTo(nav.graph.findStartDestination().id) {
-						saveState = true
-					}
-					// Avoid multiple copies of the same destination when
-					// reselecting the same item
-					launchSingleTop = true
-					// Restore state when reselecting a previously selected item
-					restoreState = true
-				}
+				vm.goToSet()
 			},
 			enabled = startEnabled
 		) {

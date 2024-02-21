@@ -7,12 +7,16 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.NavHostController
+import org.british_information_technologies.gym_log_book.activity.exercise_set_guide_activity.ExerciseSetGuideActivity
+import org.british_information_technologies.gym_log_book.activity.exercise_set_guide_activity.SetGuideViewModelV2
+import org.british_information_technologies.gym_log_book.extension.activity
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
-fun AskExtraSetPage(nav: NavHostController, onFinished: () -> Unit) {
+fun AskExtraSetPage(vm: SetGuideViewModelV2) {
+
+	val activity = activity<ExerciseSetGuideActivity>()
+
 	Column(
 		modifier = Modifier.fillMaxSize(),
 		verticalArrangement = Arrangement.SpaceEvenly,
@@ -24,30 +28,15 @@ fun AskExtraSetPage(nav: NavHostController, onFinished: () -> Unit) {
 			horizontalArrangement = Arrangement.SpaceEvenly
 		) {
 			Button(onClick = {
-				onFinished()
+				activity.finish()
 			}) {
 				Text(text = "Stop", fontSize = 18.sp)
 			}
 			Button(onClick = {
-				Util.navigate(nav)
+				vm.goToPause()
 			}) {
 				Text(text = "One More...", fontSize = 18.sp)
 			}
-		}
-	}
-}
-
-object Util {
-	fun navigate(nav: NavHostController) {
-		nav.navigate(ExerciseSetGuideActivityPage.Pause.route) {
-			popUpTo(nav.graph.findStartDestination().id) {
-				saveState = true
-			}
-			// Avoid multiple copies of the same destination when
-			// reselecting the same item
-			launchSingleTop = true
-			// Restore state when reselecting a previously selected item
-			restoreState = true
 		}
 	}
 }

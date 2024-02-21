@@ -13,26 +13,25 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import org.british_information_technologies.gym_log_book.R
-import org.british_information_technologies.gym_log_book.activity.exercise_set_guide_activity.page.AskExtraSetPage
 import org.british_information_technologies.gym_log_book.activity.exercise_set_guide_activity.page.ExerciseSetGuideActivityPage
-import org.british_information_technologies.gym_log_book.activity.exercise_set_guide_activity.page.PausePage
-import org.british_information_technologies.gym_log_book.activity.exercise_set_guide_activity.page.SetPage
-import org.british_information_technologies.gym_log_book.activity.exercise_set_guide_activity.page.StartPage
+import org.british_information_technologies.gym_log_book.extension.activity
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Main(
-	vm: SetGuideViewModelV2,
-	onFinished: () -> Unit,
 ) {
+
 	val items = listOf(
 		ExerciseSetGuideActivityPage.Start,
 		ExerciseSetGuideActivityPage.Set,
 		ExerciseSetGuideActivityPage.Pause,
 		ExerciseSetGuideActivityPage.AskExtraSet,
 	)
+
+	val vm = activity<ExerciseSetGuideActivity>().vm
 	val nav = rememberNavController()
 
+	vm.launchNavigationState(nav)
 
 	// A surface container using the 'background' color from the theme
 	Scaffold(
@@ -41,21 +40,9 @@ fun Main(
 		},
 		content = {
 			Surface(Modifier.padding(it)) {
-				NavHost(
-					navController = nav,
-					startDestination = ExerciseSetGuideActivityPage.Start.route
-				) {
-					composable(ExerciseSetGuideActivityPage.Start.route) {
-						StartPage(nav, vm)
-					}
-					composable(ExerciseSetGuideActivityPage.Set.route) {
-						SetPage(nav, vm)
-					}
-					composable(ExerciseSetGuideActivityPage.Pause.route) {
-						PausePage(nav, vm)
-					}
-					composable(ExerciseSetGuideActivityPage.AskExtraSet.route) {
-						AskExtraSetPage(nav, onFinished)
+				NavHost(navController = nav, startDestination = vm.initialRoute) {
+					for (i in items) {
+						composable(i.route) { i.content(vm) }
 					}
 				}
 			}

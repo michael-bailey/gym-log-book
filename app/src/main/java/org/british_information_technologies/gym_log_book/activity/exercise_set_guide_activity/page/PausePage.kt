@@ -32,7 +32,6 @@ import org.british_information_technologies.gym_log_book.activity.exercise_set_g
 
 @Composable
 fun PausePage(
-	nav: NavHostController,
 	vm: SetGuideViewModelV2,
 ) {
 
@@ -43,7 +42,7 @@ fun PausePage(
 	var initialLoad by remember { mutableStateOf(true) }
 
 	LaunchedEffect(Unit) {
-		startTimer(vm, nav)
+		startTimer(vm)
 	}
 
 	Column(
@@ -73,7 +72,7 @@ fun PausePage(
 		}
 
 		Button(onClick = {
-			skipTimer(vm, nav)
+			skipTimer(vm)
 		}) {
 			Text(text = "Skip Timer")
 		}
@@ -82,19 +81,17 @@ fun PausePage(
 
 fun startTimer(
 	vm: SetGuideViewModelV2,
-	nav: NavHostController,
 ) {
 	vm.startTimer {
-		navigate(nav = nav)
+		vm.goToSet()
 	}
 }
 
 fun skipTimer(
 	vm: SetGuideViewModelV2,
-	nav: NavHostController,
 ) {
 	vm.resetTimer()
-	navigate(nav = nav)
+	vm.goToSet()
 }
 
 fun navigate(nav: NavHostController) {

@@ -8,9 +8,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
 import org.british_information_technologies.gym_log_book.activity.exercise_set_guide_activity.SetGuideViewModelV2
-import org.british_information_technologies.gym_log_book.activity.exercise_set_guide_activity.Utils
 import org.british_information_technologies.gym_log_book.lib.componenets.ValidatorTextField
 import org.british_information_technologies.gym_log_book.lib.validation.Validator
 
@@ -18,7 +16,6 @@ import org.british_information_technologies.gym_log_book.lib.validation.Validato
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun SetPage(
-	nav: NavHostController,
 	vm: SetGuideViewModelV2,
 ) {
 	LaunchedEffect(Unit) {
@@ -61,14 +58,7 @@ fun SetPage(
 		}
 		Button(
 			enabled = enabled,
-			onClick = {
-				vm.finalise()
-				if (setNumber >= 3) {
-					Utils.navigateAskExtraSet(nav)
-				} else {
-					Utils.navigatePause(nav)
-				}
-			}
+			onClick = { vm.saveSet() }
 		) {
 			Text(text = "Submit set $setNumber", fontSize = 18.sp)
 		}
