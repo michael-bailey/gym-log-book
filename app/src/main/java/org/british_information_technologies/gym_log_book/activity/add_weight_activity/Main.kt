@@ -17,22 +17,24 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import io.github.michael_bailey.android_chat_kit.extension.any.log
+import org.british_information_technologies.gym_log_book.extension.activity
 import org.british_information_technologies.gym_log_book.lib.componenets.ValidatorTextField
 import org.british_information_technologies.gym_log_book.lib.validation.Validator
 import org.british_information_technologies.gym_log_book.theme.Title
 
+@Deprecated("This is used for scrap", level = DeprecationLevel.ERROR)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Main(vm: AddWeightViewModel) {
+fun Main() {
 
-	val activity = LocalContext.current as Activity
-
-	val currentWeight by vm.weight.observeAsState(initial = "")
-	val isSubmitEnabled by vm.isSubmitEnabled.observeAsState(initial = false)
+	val activity = activity<Activity>()
+	val currentWeight by remember { mutableStateOf("") }
+	val isSubmitEnabled by remember { mutableStateOf(false) }
 
 	Scaffold(
 		topBar = {
@@ -51,7 +53,7 @@ fun Main(vm: AddWeightViewModel) {
 							state = currentWeight,
 							validator = Validator.FloatValidator(isLast = true),
 							placeholder = "Weight...",
-							onChange = { vm.setWeight(it) }
+							onChange = { log("replace this") }
 						)
 					}
 					Row(
@@ -63,7 +65,7 @@ fun Main(vm: AddWeightViewModel) {
 							Text(text = "Cancel")
 						}
 						Button(
-							onClick = { vm.finalise(); activity.finish() },
+							onClick = { log("replace this") },
 							enabled = isSubmitEnabled
 						) {
 							Text(text = "Submit")
