@@ -15,8 +15,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import org.british_information_technologies.gym_log_book.activity.amend_exercise_activity_v2.components.ExerciseTypeDropdownSelector
 import org.british_information_technologies.gym_log_book.database.entity.EntExerciseEntry
+import org.british_information_technologies.gym_log_book.lib.componenets.ExerciseTypeDropdownSelector
 import org.british_information_technologies.gym_log_book.lib.componenets.ValidatorTextField
 import org.british_information_technologies.gym_log_book.lib.validation.Validator
 import java.util.UUID

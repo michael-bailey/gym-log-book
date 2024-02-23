@@ -2,16 +2,21 @@ package org.british_information_technologies.gym_log_book.activity.timer_activit
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.michael_bailey.android_chat_kit.extension.any.log
+import kotlinx.coroutines.launch
 import org.british_information_technologies.gym_log_book.extension.view_model.launch
+import org.british_information_technologies.gym_log_book.lib.navigation.INavigationViewModel
+import org.british_information_technologies.gym_log_book.lib.navigation.NavigationViewModel
 import org.british_information_technologies.gym_log_book.repository.ExerciseSetTimerRepository
 import javax.inject.Inject
 
 @HiltViewModel
 class TimerActivityViewModel @Inject constructor(
-	private val timerRepository: ExerciseSetTimerRepository
-) : ViewModel() {
+	private val timerRepository: ExerciseSetTimerRepository,
+
+	) : ViewModel(), INavigationViewModel by NavigationViewModel("home") {
 
 	val timer = timerRepository.timer.asLiveData()
 
@@ -23,5 +28,13 @@ class TimerActivityViewModel @Inject constructor(
 
 	fun stop() = launch {
 		timerRepository.stop()
+	}
+
+	fun goNext() = viewModelScope.launch {
+		navigateTo("next")
+	}
+
+	fun goHome() = viewModelScope.launch {
+		navigateTo("home")
 	}
 }
