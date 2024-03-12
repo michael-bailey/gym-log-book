@@ -2,6 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:tools="http://schemas.android.com/tools">
 
+	<uses-permission android:name="android.permission.READ_CALENDAR" />
+	<uses-permission android:name="android.permission.WRITE_CALENDAR" />
+	<uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+	<uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
 	<application
 		android:name=".app.App"
 		android:allowBackup="true"
@@ -68,26 +73,9 @@
 			android:exported="false"
 			android:label="@string/title_activity_data_export"
 			android:theme="@style/Theme.Gym_Log_Book.Dialogue" />
-		<activity
-			android:name=".activity.timer_activity.TimerActivity"
-			android:exported="true"
-			android:label="@string/title_activity_timer"
-			android:theme="@style/Theme.Gym_Log_Book">
-			<intent-filter>
-				<action android:name="android.intent.action.MAIN" />
-				<category android:name="android.intent.category.LAUNCHER" />
-			</intent-filter>
-		</activity>
 
 		<service
 			android:name=".service.DataImporterService"
 			android:exported="false" />
 	</application>
-	<uses-permission android:name="android.permission.WRITE_CALENDAR" />
-
-	<uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-
-	<uses-permission android:name="android.permission.FOREGROUND_SERVICE" /> <!-- service permissions -->
-
-	<uses-permission android:name="android.permission.READ_CALENDAR" />
 </manifest>
