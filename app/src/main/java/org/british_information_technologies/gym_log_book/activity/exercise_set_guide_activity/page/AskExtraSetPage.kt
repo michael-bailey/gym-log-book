@@ -1,12 +1,18 @@
 package org.british_information_technologies.gym_log_book.activity.exercise_set_guide_activity.page
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
+import androidx.navigation.compose.rememberNavController
 import org.british_information_technologies.gym_log_book.activity.exercise_set_guide_activity.ExerciseSetGuideActivity
 import org.british_information_technologies.gym_log_book.activity.exercise_set_guide_activity.SetGuideViewModelV2
 import org.british_information_technologies.gym_log_book.extension.activity
@@ -16,6 +22,10 @@ import org.british_information_technologies.gym_log_book.extension.activity
 fun AskExtraSetPage(vm: SetGuideViewModelV2) {
 
 	val activity = activity<ExerciseSetGuideActivity>()
+
+	val nav = rememberNavController()
+
+
 
 	Column(
 		modifier = Modifier.fillMaxSize(),

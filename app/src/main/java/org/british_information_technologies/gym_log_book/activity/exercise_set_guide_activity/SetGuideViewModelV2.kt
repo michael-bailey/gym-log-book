@@ -13,12 +13,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import org.british_information_technologies.gym_log_book.activity.exercise_set_guide_activity.page.ExerciseSetGuideActivityPage
 import org.british_information_technologies.gym_log_book.delegate.IExerciseTypeStateDelegate
 import org.british_information_technologies.gym_log_book.delegate.impl.ExerciseTypeStateDelegate
 import org.british_information_technologies.gym_log_book.lib.AppNotificationManager
-import org.british_information_technologies.gym_log_book.lib.navigation.INavigationViewModel
-import org.british_information_technologies.gym_log_book.lib.navigation.NavigationViewModel
 import org.british_information_technologies.gym_log_book.lib.validation.Validator
 import org.british_information_technologies.gym_log_book.repository.ExerciseEntryRepository
 import org.british_information_technologies.gym_log_book.repository.ExerciseSetTimerRepository
@@ -37,17 +34,20 @@ class SetGuideViewModelV2 @Inject constructor(
 		exerciseTypeRepository,
 		CoroutineScope(Dispatchers.IO)
 	),
-	INavigationViewModel by NavigationViewModel("start_page"),
 	DefaultLifecycleObserver {
 
 
-	private var isVisible: Boolean = false
+	// replacement for NavHost
+	private val _pageState = MutableStateFlow(PageState.Start)
+	val pageState = _pageState.asLiveData()
+
+	// not quite sure about this one
+	private var _isVisible: Boolean = false
 
 	// field state
 	private val currentExerciseSet = MutableStateFlow(1)
 	private val currentWeight = MutableStateFlow("")
 	private val currentReps = MutableStateFlow("")
-
 
 	// exposing fields
 	val exerciseSet = currentExerciseSet.asLiveData()
@@ -99,15 +99,15 @@ class SetGuideViewModelV2 @Inject constructor(
 	// Activity Lifecycle Events
 	override fun onStart(owner: LifecycleOwner) {
 		super.onStart(owner)
-		if (!isVisible) {
+		if (!_isVisible) {
 			notificationManager.cancelTimerNotification()
 		}
-		this.isVisible = true
+		this._isVisible = true
 	}
 
 	override fun onStop(owner: LifecycleOwner) {
 		super.onStop(owner)
-		this.isVisible = false
+		this._isVisible = false
 	}
 
 	// View Model Setters
@@ -130,7 +130,7 @@ class SetGuideViewModelV2 @Inject constructor(
 
 		exerciseSetTimerRepository.start(60) {
 			viewModelScope.launch {
-				if (!this@SetGuideViewModelV2.isVisible) {
+				if (!this@SetGuideViewModelV2._isVisible) {
 					post()
 				}
 				onFinished()
@@ -140,7 +140,6 @@ class SetGuideViewModelV2 @Inject constructor(
 
 	fun resetTimer() = viewModelScope.launch {
 		exerciseSetTimerRepository.stop()
-		navigateTo(ExerciseSetGuideActivityPage.Set.route)
 	}
 
 	/**
@@ -163,11 +162,11 @@ class SetGuideViewModelV2 @Inject constructor(
 		)
 
 		if (currentExerciseSet.value >= 3) {
-			navigateTo(ExerciseSetGuideActivityPage.AskExtraSet.route)
+			goToExtra()
 		} else {
-			navigateTo(ExerciseSetGuideActivityPage.Pause.route)
+			goToPause()
 			startTimer {
-				navigateTo(ExerciseSetGuideActivityPage.Set.route)
+				goToSet()
 			}
 		}
 
@@ -176,11 +175,11 @@ class SetGuideViewModelV2 @Inject constructor(
 	}
 
 	fun goToSet() =
-		viewModelScope.launch { navigateTo(ExerciseSetGuideActivityPage.Set.route) }
+		viewModelScope.launch { _pageState.emit(PageState.SetEntry) }
 
 	fun goToPause() =
-		viewModelScope.launch { navigateTo(ExerciseSetGuideActivityPage.Pause.route) }
+		viewModelScope.launch { _pageState.emit(PageState.Pause) }
 
 	fun goToExtra() =
-		viewModelScope.launch { navigateTo(ExerciseSetGuideActivityPage.AskExtraSet.route) }
+		viewModelScope.launch { _pageState.emit(PageState.ExtraSet) }
 }
