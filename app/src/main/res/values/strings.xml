@@ -37,5 +37,9 @@
 	<string name="title_activity_settings">SettingsActivity</string>
 	<string name="title_activity_timer">Testing Activity</string>
 	<string name="title_activity_data_export">DataExportActivity</string>
+	<string name="start_exercise_guide_fab_string">Start</string>
+	<string name="add_exercise_type_fab_string">Add Type</string>
+	<string name="navigation_graph_missing">The nav graph has not been set yet</string>
+	<string name="add_weight_fab_string">Add Weight</string>
 
 </resources>

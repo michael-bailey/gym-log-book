@@ -5,8 +5,9 @@ import android.content.Intent
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material.icons.outlined.MonitorWeight
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -17,35 +18,30 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.navigation.NavBackStackEntry
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.dialog
+import io.github.michael_bailey.gym_log_book.activity.main_activity.ExerciseTypeListPage
 import org.british_information_technologies.gym_log_book.R
-import org.british_information_technologies.gym_log_book.activity.internal.debug_settings_activity.DebugSettingsActivity
-import org.british_information_technologies.gym_log_book.activity.internal.tasks_activity.TaskActivity
-import org.british_information_technologies.gym_log_book.activity.settings_activity.SettingsActivityIntentUtils.startSettingsActivity
-import org.british_information_technologies.gym_log_book.extension.startExportDataActivity
-import org.british_information_technologies.gym_log_book.activity.main_activity.MainActivityPage.ExercisePage.NavItem as ExerciseNavItem
-import org.british_information_technologies.gym_log_book.activity.main_activity.MainActivityPage.ExerciseTypePage.NavItem as ExerciseTypeNavItem
-import org.british_information_technologies.gym_log_book.activity.main_activity.MainActivityPage.WeightPage.NavItem as WeightNavItem
+import org.british_information_technologies.gym_log_book.activity.exercise_set_guide_activity.ExerciseSetGuideActivity
+import org.british_information_technologies.gym_log_book.activity.main_activity.exercise_page.ExerciseListPage
+import org.british_information_technologies.gym_log_book.activity.main_activity.weight_page.WeightListPage
+import org.british_information_technologies.gym_log_book.lib.componenets.scaffold.BottomNavItem
+import org.british_information_technologies.gym_log_book.lib.componenets.scaffold.IntentFab
+import org.british_information_technologies.gym_log_book.lib.componenets.scaffold.NavigationFab
+import org.british_information_technologies.gym_log_book.lib.navigation.NavLocal
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Main(vm: MainActivityViewModel) {
 	val activity = LocalContext.current as Activity
-
-	val nav = rememberNavController()
-	val currentRoute = nav
-		.currentBackStackEntryFlow
-		.collectAsState(initial = nav.currentBackStackEntry)
-
+	val nav = NavLocal.current
 	val (dropDownDisplayed, setDropDownDisplayed) = remember {
 		mutableStateOf(
 			false
@@ -64,88 +60,72 @@ fun Main(vm: MainActivityViewModel) {
 					IconButton(onClick = { setDropDownDisplayed(!dropDownDisplayed) }) {
 						Icon(Icons.Default.MoreVert, "content")
 					}
-					DropdownMenu(
+					Menu(
 						expanded = dropDownDisplayed,
-						onDismissRequest = { setDropDownDisplayed(false) }
-					) {
-						DropdownMenuItem(
-							text = { Text(text = "Debug Settings") },
-							onClick = {
-								activity.startActivity(
-									Intent(
-										activity.applicationContext,
-										DebugSettingsActivity::class.java
-									)
-								)
-							}
-						)
-						DropdownMenuItem(
-							text = { Text(text = "Export...") },
-							onClick = {
-								activity.startExportDataActivity()
-							}
-						)
-						DropdownMenuItem(
-							text = { Text(text = "Settings") },
-							onClick = {
-								startSettingsActivity(activity)
-							}
-						)
-						DropdownMenuItem(
-							text = { Text(text = "Tasks") },
-							onClick = {
-								activity.startActivity(
-									Intent(
-										activity.applicationContext,
-										TaskActivity::class.java
-									)
-								)
-							}
-						)
-					}
+						onDismiss = { setDropDownDisplayed(false) })
 				})
 		},
 		content = {
 			Surface(Modifier.padding(it)) {
 				NavHost(
-					navController = nav,
-					startDestination = MainActivityPage.ExercisePage.route
+					navController = nav!!,
+					startDestination = "exercise_page",
 				) {
-					MainActivityPage.ExercisePage.compose(this, vm)
-					MainActivityPage.ExerciseTypePage.compose(this, vm)
-					MainActivityPage.WeightPage.compose(this, vm)
+					composable(route = "exercise_page") { ExerciseListPage(vm = vm) }
+					composable(route = "exercise_type_page") { ExerciseTypeListPage(vm = vm) }
+					composable(route = "weight_page") { WeightListPage(vm = vm) }
+
+					// dialogues
+					dialog(route = "add_exercise_type_dialogue") {
+						Text(text = "Add Exercise")
+					}
+
+					dialog(route = "add_weight_dialogue") {
+						Text(text = "Add Weight")
+					}
 				}
 			}
 		},
 		floatingActionButton = {
-			when (currentRoute.value?.destination?.route) {
-				MainActivityPage.ExercisePage.route -> MainActivityPage.ExercisePage.Fab(
-					vm
-				)
-
-				MainActivityPage.WeightPage.route -> MainActivityPage.WeightPage.Fab(vm)
-				MainActivityPage.ExerciseTypePage.route -> MainActivityPage.ExerciseTypePage.Fab(
-					vm
-				)
-			}
+			IntentFab(
+				label = stringResource(id = R.string.start_exercise_guide_fab_string),
+				icon = Icons.AutoMirrored.Outlined.DirectionsRun,
+				shownRoute = "exercise_page",
+				intent = Intent(activity, ExerciseSetGuideActivity::class.java)
+			)
+			NavigationFab(
+				label = stringResource(R.string.add_exercise_type_fab_string),
+				icon = Icons.Outlined.Add,
+				shownRoute = "exercise_type_page",
+				route = "add_exercise_type_dialogue"
+			)
+			NavigationFab(
+				label = stringResource(R.string.add_weight_fab_string),
+				icon = Icons.Outlined.Add,
+				shownRoute = "weight_page",
+				route = "add_weight_dialogue"
+			)
 		},
 		bottomBar = {
 			NavigationBar {
-				this.ExerciseNavItem(nav)
-				this.ExerciseTypeNavItem(nav)
-				this.WeightNavItem(nav)
+				BottomNavItem(
+					label = stringResource(R.string.exercise_page_nav_button_label),
+					icon = Icons.AutoMirrored.Outlined.List,
+					route = "exercise_page"
+				)
+
+				BottomNavItem(
+					label = stringResource(R.string.exercise_type_page_nav_button_label),
+					icon = Icons.Outlined.Edit,
+					route = "exercise_type_page"
+				)
+
+				BottomNavItem(
+					label = stringResource(R.string.weight_page_nav_button_label),
+					icon = Icons.Outlined.MonitorWeight,
+					route = "weight_page"
+				)
 			}
 		}
 	)
-}
-
-fun getOnClickText(backStack: NavBackStackEntry): String {
-	return when (backStack.destination.route) {
-		MainActivityPage.ExercisePage.route -> "Add Set"
-		MainActivityPage.WeightPage.route -> "Add Weight"
-		MainActivityPage.ExerciseTypePage.route -> "Add type"
-		else -> {
-			"ERR"
-		}
-	}
 }

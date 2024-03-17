@@ -18,9 +18,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.british_information_technologies.gym_log_book.activity.main_activity.MainActivityViewModel
+import org.british_information_technologies.gym_log_book.activity.main_activity.dialogue.ExerciseTypeCreateDialogue
 import org.british_information_technologies.gym_log_book.database.entity.EntExerciseType
 import org.british_information_technologies.gym_log_book.lib.componenets.CardWithSwipeActions
-import org.british_information_technologies.gym_log_book.lib.componenets.dialogues.ExerciseTypeModifyDialogue
 
 @Composable
 fun ExerciseTypeView(
@@ -31,9 +31,13 @@ fun ExerciseTypeView(
 
 	var modifyingDialogue: Boolean by remember { mutableStateOf(false) }
 
-	if (modifyingDialogue) {
-		ExerciseTypeModifyDialogue(vm = vm, id = item.id) {
-			modifyingDialogue = false
+	var addDialogue: Boolean by remember { mutableStateOf(false) }
+
+
+
+	if (addDialogue) {
+		ExerciseTypeCreateDialogue(vm = vm) {
+			addDialogue = false
 		}
 	}
 

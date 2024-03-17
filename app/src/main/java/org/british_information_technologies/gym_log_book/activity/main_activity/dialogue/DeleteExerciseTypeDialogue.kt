@@ -4,7 +4,7 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import org.british_information_technologies.gym_log_book.activity.amend_exercise_activity_v2.components.ExerciseTypeDropdownSelector
+import org.british_information_technologies.gym_log_book.lib.componenets.ExerciseTypeDropdownSelector
 import java.util.UUID
 
 @Composable

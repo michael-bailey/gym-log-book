@@ -1,6 +1,5 @@
 package org.british_information_technologies.gym_log_book.activity.main_activity
 
-import android.app.Activity
 import android.app.Application
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.mutableStateOf
@@ -10,15 +9,11 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
-import org.british_information_technologies.gym_log_book.activity.add_exercise_type_activity.AddExerciseTypeActivityIntentUtils
-import org.british_information_technologies.gym_log_book.activity.add_weight_activity.AddWeightActivityIntentUtils
-import org.british_information_technologies.gym_log_book.activity.amend_exercise_activity_v2.AmendExerciseActivityV2IntentUtils
-import org.british_information_technologies.gym_log_book.activity.exercise_set_guide_activity.ExerciseSetGuideActivityIntentUtils
 import org.british_information_technologies.gym_log_book.database.entity.EntExerciseEntry
 import org.british_information_technologies.gym_log_book.database.entity.EntExerciseType
 import org.british_information_technologies.gym_log_book.lib.interfaces.view_model.IExerciseEntryListViewModel
-import org.british_information_technologies.gym_log_book.lib.interfaces.view_model.IExerciseTypeViewModel
 import org.british_information_technologies.gym_log_book.lib.one_shot.OneShotPreference
 import org.british_information_technologies.gym_log_book.repository.ExerciseEntryMappingsRepository
 import org.british_information_technologies.gym_log_book.repository.ExerciseEntryRepository
@@ -38,17 +33,18 @@ class MainActivityViewModel @Inject constructor(
 	private val weightEntryRepository: WeightEntryRepository,
 	private val reminderRepository: ReminderRepository,
 	application: Application,
-) : AndroidViewModel(application), IExerciseEntryListViewModel,
-	IExerciseTypeViewModel {
+) : AndroidViewModel(application), IExerciseEntryListViewModel {
 
 	// preference state
-	private val _onbaordingOneShot = OneShotPreference("onboarding_complete")
+	private val _onboardingOneShot = OneShotPreference("onboarding_complete")
 
 	// live data
 	override val timeExerciseGroupedList: LiveData<Map<String, List<EntExerciseEntry>>>
 		get() = exerciseEntryMappingsRepository.exercisesGroupedByTime.asLiveData()
+
 	override val exerciseNameMap: LiveData<Map<UUID, String>>
 		get() = exerciseTypeMappingsRepository.exerciseIdToName.asLiveData()
+
 	override val exerciseEntryList: LiveData<List<EntExerciseEntry>>
 		get() = exerciseEntryRepository.exercises.asLiveData()
 
@@ -56,7 +52,7 @@ class MainActivityViewModel @Inject constructor(
 
 	val weightEntryList = weightEntryRepository.weightEntryList.asLiveData()
 	val isExerciseTypeListEmpty = exerciseTypeRepository.isEmpty.asLiveData()
-	val onboardingComplete = _onbaordingOneShot.isConsumedFlow().asLiveData()
+	val onboardingComplete = _onboardingOneShot.isConsumedFlow().asLiveData()
 
 	override val exerciseTypeList: LiveData<List<EntExerciseType>>
 		get() = exerciseTypeRepository.exerciseTypes.asLiveData()
@@ -127,26 +123,23 @@ class MainActivityViewModel @Inject constructor(
 
 	}
 
-	fun amendExerciseEntry(activity: Activity, uuid: UUID) =
-		AmendExerciseActivityV2IntentUtils.startAmendActivity(activity, uuid)
-
 	fun deleteWeightEntry(uuid: UUID) = viewModelScope.launch(Dispatchers.IO) {
 		weightEntryRepository.delete(uuid)
 	}
 
-	fun startExerciseSetGuideActivity() {
-		ExerciseSetGuideActivityIntentUtils.startExerciseSetGuideActivity(
-			getApplication()
-		)
+
+	fun createNewType(exerciseName: String, usingUserWeight: Boolean) =
+		viewModelScope.launch(Dispatchers.IO) {
+			exerciseTypeRepository.create(exerciseName, usingUserWeight)
+		}
+
+	fun getTypeFlow(id: UUID): Flow<EntExerciseType> =
+		exerciseTypeRepository.genType(id)
+
+	fun modifyExerciseType(ent: EntExerciseType) =
+		viewModelScope.launch(Dispatchers.IO) {
+			exerciseTypeRepository.updateType(ent)
 	}
 
-	fun startAddWeightActivity() {
-		AddWeightActivityIntentUtils.startAddWeightActivity(getApplication())
-	}
 
-	fun startAddExerciseTypeActivity() {
-		AddExerciseTypeActivityIntentUtils.startAddExerciseTypeActivity(
-			getApplication()
-		)
-	}
 }

@@ -5,20 +5,18 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.core.app.ActivityCompat
+import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import org.british_information_technologies.gym_log_book.activity.onboarding_activity.OnboardingActivityIntentUtils
-import org.british_information_technologies.gym_log_book.repository.ExerciseGroupRepository
+import org.british_information_technologies.gym_log_book.lib.navigation.NavLocal
 import org.british_information_technologies.gym_log_book.theme.Gym_Log_BookTheme
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
 	val vm: MainActivityViewModel by viewModels()
-
-	@Inject
-	lateinit var repo: ExerciseGroupRepository
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -38,9 +36,14 @@ class MainActivity : ComponentActivity() {
 		)
 
 		setContent {
-			Gym_Log_BookTheme(colourNavBar = true) {
-				// A surface container using the 'background' color from the theme
-				Main(vm = vm)
+			val nav = rememberNavController()
+			CompositionLocalProvider(
+				NavLocal provides nav
+			) {
+				Gym_Log_BookTheme(colourNavBar = true) {
+					// A surface container using the 'background' color from the theme
+					Main(vm = vm)
+				}
 			}
 		}
 	}

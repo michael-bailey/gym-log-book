@@ -22,9 +22,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import org.british_information_technologies.gym_log_book.activity.main_activity.dialogue.ExerciseEntryModifyDialogue
 import org.british_information_technologies.gym_log_book.database.entity.EntExerciseEntry
 import org.british_information_technologies.gym_log_book.lib.componenets.CardWithSwipeActions
-import org.british_information_technologies.gym_log_book.lib.componenets.dialogues.ExerciseEntryModifyDialogue
 import org.british_information_technologies.gym_log_book.lib.interfaces.view_model.IExerciseEntryListViewModel
 import java.time.temporal.ChronoUnit
 

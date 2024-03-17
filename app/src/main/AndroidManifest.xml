@@ -28,6 +28,7 @@
 			android:exported="true"
 			android:label="@string/title_activity_main_v2"
 			android:launchMode="singleInstancePerTask"
+			android:enableOnBackInvokedCallback="true"
 			android:theme="@style/Theme.Gym_Log_Book">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
@@ -46,7 +47,7 @@
 			android:name=".activity.exercise_set_guide_activity.ExerciseSetGuideActivity"
 			android:exported="true"
 			android:label="@string/title_activity_exercise_set_guide"
-			android:launchMode="singleInstance"
+			android:launchMode="singleTask"
 			android:resizeableActivity="true"
 			android:theme="@style/Theme.Gym_Log_Book"
 			tools:ignore="LockedOrientationActivity" /> <!-- Data form activities -->

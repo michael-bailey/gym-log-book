@@ -1,4 +1,4 @@
-package org.british_information_technologies.gym_log_book.lib.componenets.dialogues
+package org.british_information_technologies.gym_log_book.activity.main_activity.dialogue
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
