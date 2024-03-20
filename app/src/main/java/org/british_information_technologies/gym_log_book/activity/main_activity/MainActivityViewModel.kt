@@ -39,7 +39,7 @@ class MainActivityViewModel @Inject constructor(
 	private val _onboardingOneShot = OneShotPreference("onboarding_complete")
 
 	// live data
-	override val timeExerciseGroupedList: LiveData<Map<String, List<EntExerciseEntry>>>
+	override val timeExerciseGroupedList: LiveData<Map<String, List<UUID>>>
 		get() = exerciseEntryMappingsRepository.exercisesGroupedByTime.asLiveData()
 
 	override val exerciseNameMap: LiveData<Map<UUID, String>>
@@ -139,6 +139,10 @@ class MainActivityViewModel @Inject constructor(
 	fun modifyExerciseType(ent: EntExerciseType) =
 		viewModelScope.launch(Dispatchers.IO) {
 			exerciseTypeRepository.updateType(ent)
+	}
+
+	fun getEntryFlow(id: UUID): Flow<EntExerciseEntry> {
+		return exerciseEntryRepository.genExercise(id)
 	}
 
 

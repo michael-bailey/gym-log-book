@@ -50,7 +50,7 @@ class AppNotificationManager @Inject constructor(
 			.setContentTitle("Migration In Progress")
 			.setContentText("There is a data migration in progress, please wait")
 			.setProgress(100, 0, true)
-			.setSmallIcon(R.drawable.ic_launcher_foreground)
+			.setSmallIcon(R.drawable.app_icon_foreground)
 			.setOngoing(true)
 			.setCategory(Notification.CATEGORY_SERVICE)
 			.build()
@@ -91,7 +91,7 @@ class AppNotificationManager @Inject constructor(
 			Notification
 				.Builder(application, timerNotificationChannel.id)
 				.apply {
-					setSmallIcon(R.drawable.ic_launcher_foreground)
+					setSmallIcon(R.drawable.app_icon_foreground)
 					setContentTitle("Timer Up!")
 					setContentIntent(notificationIntent)
 					setContentText("Time to start your next set")
@@ -134,7 +134,7 @@ class AppNotificationManager @Inject constructor(
 		val build = Notification
 			.Builder(application, timerNotificationChannel.id)
 			.apply {
-				setSmallIcon(R.drawable.ic_launcher_foreground)
+				setSmallIcon(R.drawable.app_icon_foreground)
 				setContentTitle("Timer Up!")
 				setContentIntent(notificationIntent)
 				setContentText("Time to start your next set")

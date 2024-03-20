@@ -48,9 +48,7 @@ sealed class PeriodGroup(
 		other as PeriodGroup
 
 		if (priority != other.priority) return false
-		if (count != other.count) return false
-
-		return true
+		return count == other.count
 	}
 
 	override fun toString(): String {

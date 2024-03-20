@@ -29,15 +29,6 @@ fun navigate(
 
 	LaunchedEffect(key1 = nav, key2 = destination) {
 		functionState.value = {
-			val originalStartIdResult =
-				runCatching { nav!!.graph.startDestinationId }
-
-			if (originalStartIdResult.isFailure) {
-				Toast(activity).apply {
-					duration = Toast.LENGTH_LONG
-					this.setText(R.string.navigation_graph_missing)
-				}.show()
-			}
 			nav!!.navigate(destination)
 		}
 	}

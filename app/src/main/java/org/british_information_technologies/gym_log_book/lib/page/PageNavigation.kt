@@ -15,6 +15,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import io.github.michael_bailey.android_chat_kit.extension.any.log
 
 abstract class PageNavigation<VM : ViewModel>(
@@ -35,7 +36,8 @@ abstract class PageNavigation<VM : ViewModel>(
 	}
 
 	@Composable
-	fun RowScope.NavItem(nav: NavHostController) {
+	fun RowScope.NavItem(destination: String) {
+		val nav = rememberNavController()
 		val backstack by nav.currentBackStackEntryAsState()
 		val isSelected =
 			backstack?.destination?.hierarchy?.any { it.route == route } == true

@@ -1,4 +1,4 @@
-package org.british_information_technologies.gym_log_book.activity.amend_exercise_activity_v2.components
+package org.british_information_technologies.gym_log_book.lib.componenets
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.text.KeyboardOptions

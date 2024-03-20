@@ -28,6 +28,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.google.android.material.elevation.SurfaceColors
+import org.british_information_technologies.gym_log_book.activity.main_activity.MainActivity
+import org.british_information_technologies.gym_log_book.extension.activity
 import org.british_information_technologies.gym_log_book.lib.interfaces.view_model.IExerciseEntryListViewModel
 import org.british_information_technologies.gym_log_book.theme.StickyHeader
 import org.british_information_technologies.gym_log_book.theme.Title
@@ -35,6 +37,7 @@ import org.british_information_technologies.gym_log_book.theme.Title
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ExerciseListPage(vm: IExerciseEntryListViewModel) {
+	val activity = activity<MainActivity>()
 	val listState = vm.exerciseListState
 	val exerciseEntryMapState =
 		vm.timeExerciseGroupedList.observeAsState(initial = mapOf())
@@ -111,9 +114,9 @@ fun ExerciseListPage(vm: IExerciseEntryListViewModel) {
 							)
 						}
 					}
-
+					// change this query to be just ids
 					items(entry.value) { item ->
-						ExerciseEntryView(Modifier.fillMaxWidth(0.91F), vm, item = item)
+						ExerciseEntryView(Modifier.fillMaxWidth(0.91F), id = item)
 					}
 				}
 			}

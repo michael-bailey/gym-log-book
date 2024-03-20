@@ -18,12 +18,14 @@ import org.british_information_technologies.gym_log_book.database.entity.EntExer
 import org.british_information_technologies.gym_log_book.database.entity.EntWeightEntry
 
 @Database(
-	[
+	entities = [
 		EntExerciseEntry::class,
 		EntExerciseType::class,
 		EntWeightEntry::class,
 		EntExerciseGroup::class,
 		EdgeGroupToType::class,
+	],
+	views = [
 	],
 	version = 2,
 	exportSchema = true,

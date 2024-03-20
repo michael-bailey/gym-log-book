@@ -21,6 +21,7 @@ import org.british_information_technologies.gym_log_book.activity.main_activity.
 import org.british_information_technologies.gym_log_book.activity.main_activity.dialogue.ExerciseTypeCreateDialogue
 import org.british_information_technologies.gym_log_book.database.entity.EntExerciseType
 import org.british_information_technologies.gym_log_book.lib.componenets.CardWithSwipeActions
+import org.british_information_technologies.gym_log_book.lib.componenets.scaffold.NavigationButton
 
 @Composable
 fun ExerciseTypeView(
@@ -32,8 +33,6 @@ fun ExerciseTypeView(
 	var modifyingDialogue: Boolean by remember { mutableStateOf(false) }
 
 	var addDialogue: Boolean by remember { mutableStateOf(false) }
-
-
 
 	if (addDialogue) {
 		ExerciseTypeCreateDialogue(vm = vm) {
@@ -47,9 +46,10 @@ fun ExerciseTypeView(
 			Button(onClick = { vm.initiateExerciseTypeDeletion(item.id) }) {
 				Text("Delete")
 			}
-			Button(onClick = { modifyingDialogue = true }) {
-				Text("Modify")
-			}
+			NavigationButton(
+				route = "modify_exercise_type_dialogue/${item.id}",
+				label = "Modify"
+			)
 		},
 		content = {
 			Column(

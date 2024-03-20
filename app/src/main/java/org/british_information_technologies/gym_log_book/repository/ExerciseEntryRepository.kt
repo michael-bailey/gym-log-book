@@ -6,6 +6,7 @@ import org.british_information_technologies.gym_log_book.database.dao.ExerciseEn
 import org.british_information_technologies.gym_log_book.database.dao.ExerciseTypeDao
 import org.british_information_technologies.gym_log_book.database.entity.EntExerciseEntry
 import org.british_information_technologies.gym_log_book.database.entity.EntExerciseType
+import org.british_information_technologies.gym_log_book.database.view.EntExerciseIdTimeView
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.UUID
@@ -19,18 +20,16 @@ class ExerciseEntryRepository @Inject constructor(
 ) {
 
 	val exercises = exerciseEntryDao.flowAllExercise()
+	private val exercisesOnlyTime = exerciseEntryDao.flowExerciseIdWithTime()
 	val exerciseCount = exerciseEntryDao.exerciseCount()
 	val isEmpty = exerciseCount.map { it == 0 }
 
-
-	val timeExerciseList: Flow<List<EntExerciseEntry>> = exercises.map { list ->
+	val timeExerciseIdList: Flow<List<EntExerciseIdTimeView>> =
+		exercisesOnlyTime.map { list ->
 		list.sortedBy {
 			LocalDateTime.of(it.createdDate, it.createdTime)
 		}
 	}
-
-	suspend fun getExercise(id: UUID) = exerciseEntryDao.queryExercise(id)
-
 
 	suspend fun create(
 		exercise: UUID,
@@ -90,5 +89,7 @@ class ExerciseEntryRepository @Inject constructor(
 		)
 	}
 
-
+	fun genExercise(id: UUID): Flow<EntExerciseEntry> {
+		return exerciseEntryDao.flowExercise(id)
+	}
 }

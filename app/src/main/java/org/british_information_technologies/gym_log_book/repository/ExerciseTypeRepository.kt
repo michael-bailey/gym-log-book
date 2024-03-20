@@ -1,6 +1,7 @@
 package org.british_information_technologies.gym_log_book.repository
 
 
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import org.british_information_technologies.gym_log_book.database.dao.ExerciseEntryDao
 import org.british_information_technologies.gym_log_book.database.dao.ExerciseTypeDao
@@ -69,4 +70,10 @@ class ExerciseTypeRepository @Inject constructor(
 
 		exerciseTypeDao.deleteExercise(exerciseTypeDao.queryExercise(removedType)!!)
 	}
+
+	fun genType(id: UUID): Flow<EntExerciseType> = exerciseTypeDao.genQuery(id)
+	suspend fun updateType(ent: EntExerciseType) {
+		exerciseTypeDao.updateExercise(ent)
+	}
+
 }

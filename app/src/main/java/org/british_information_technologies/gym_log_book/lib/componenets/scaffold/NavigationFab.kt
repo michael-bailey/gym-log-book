@@ -1,8 +1,8 @@
 package org.british_information_technologies.gym_log_book.lib.componenets.scaffold
 
-import androidx.compose.material.Icon
-import androidx.compose.material.Text
 import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue

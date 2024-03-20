@@ -20,13 +20,17 @@ class ExerciseTypeStateDelegate(
 ) : IExerciseTypeStateDelegate {
 	override val currentExerciseType: MutableStateFlow<UUID?> =
 		MutableStateFlow(null)
+
 	private val exerciseTypesFlow = exerciseTypeRepository.exerciseTypes
+
 	override val exerciseTypes: LiveData<List<EntExerciseType>> =
 		exerciseTypesFlow.asLiveData()
+
 	override val exerciseNameMap: LiveData<Map<UUID, String>> =
 		exerciseTypesFlow.map {
 			it.associate { it.id to it.name }
 		}.asLiveData()
+
 	override val selectedExerciseType: LiveData<String?> =
 		currentExerciseType.combine(exerciseTypesFlow) { id, list ->
 			list.find { item -> item.id == id }?.name

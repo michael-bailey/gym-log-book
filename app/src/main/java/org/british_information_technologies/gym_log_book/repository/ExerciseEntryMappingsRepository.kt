@@ -1,7 +1,7 @@
 package org.british_information_technologies.gym_log_book.repository
 
 import kotlinx.coroutines.flow.map
-import org.british_information_technologies.gym_log_book.database.entity.EntExerciseEntry
+import org.british_information_technologies.gym_log_book.database.view.EntExerciseIdTimeView
 import org.british_information_technologies.gym_log_book.lib.PeriodGroup
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -12,14 +12,14 @@ class ExerciseEntryMappingsRepository @Inject constructor(
 ) {
 
 	private val timeExerciseGroupedList =
-		exerciseEntryRepository.timeExerciseList.map { list ->
+		exerciseEntryRepository.timeExerciseIdList.map { list ->
 			list.groupBy {
 				it.createdDate
 			}
 		}
 
 	val exercisesGroupedByTime = timeExerciseGroupedList.map {
-		val output = mutableMapOf<String, List<EntExerciseEntry>>()
+		val output = mutableMapOf<String, List<EntExerciseIdTimeView>>()
 		val sortedList = it.toList().sortedByDescending { it.first }.toMap()
 		for (date in sortedList.keys) {
 			val group =
@@ -44,6 +44,8 @@ class ExerciseEntryMappingsRepository @Inject constructor(
 					}
 			}
 		}
-		output
+		output.map {
+			it.key to it.value.map { it.id }
+		}.toMap()
 	}
 }

@@ -18,7 +18,7 @@ import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 
 @ViewModelScoped
-class ExerciseSetTimerRepository @OptIn(DelicateCoroutinesApi::class)
+class ExerciseSetTimerRepository
 @Inject constructor(
 	private val notificationManager: AppNotificationManager,
 ) {
@@ -32,8 +32,8 @@ class ExerciseSetTimerRepository @OptIn(DelicateCoroutinesApi::class)
 	val isCountingDown = _timer.map { isCounting() }
 	val isFinished = _timer.map { isFinished() }
 
-	fun isCounting() = currentJob != null
-	fun isFinished() = currentJob == null
+	private fun isCounting() = currentJob != null
+	private fun isFinished() = currentJob == null
 
 	private var currentJob: Job? = null
 

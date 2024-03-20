@@ -28,7 +28,7 @@ fun Main(
 
 	val vm = activity<ExerciseSetGuideActivity>().vm
 	val pageState = vm.pageState.observeAsState(PageState.Start)
-	
+
 	// A surface container using the 'background' color from the theme
 	Scaffold(
 		topBar = {

@@ -4,6 +4,8 @@ import android.app.Activity
 import android.content.Intent
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.DirectionsRun
+import androidx.compose.material.icons.automirrored.outlined.List
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Edit
@@ -24,18 +26,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
+import androidx.navigation.navArgument
 import io.github.michael_bailey.gym_log_book.activity.main_activity.ExerciseTypeListPage
 import org.british_information_technologies.gym_log_book.R
 import org.british_information_technologies.gym_log_book.activity.exercise_set_guide_activity.ExerciseSetGuideActivity
+import org.british_information_technologies.gym_log_book.activity.main_activity.dialogue.ExerciseEntryModifyDialogue
+import org.british_information_technologies.gym_log_book.activity.main_activity.dialogue.ExerciseTypeModifyDialogue
 import org.british_information_technologies.gym_log_book.activity.main_activity.exercise_page.ExerciseListPage
 import org.british_information_technologies.gym_log_book.activity.main_activity.weight_page.WeightListPage
 import org.british_information_technologies.gym_log_book.lib.componenets.scaffold.BottomNavItem
 import org.british_information_technologies.gym_log_book.lib.componenets.scaffold.IntentFab
 import org.british_information_technologies.gym_log_book.lib.componenets.scaffold.NavigationFab
 import org.british_information_technologies.gym_log_book.lib.navigation.NavLocal
+import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -78,6 +85,40 @@ fun Main(vm: MainActivityViewModel) {
 					// dialogues
 					dialog(route = "add_exercise_type_dialogue") {
 						Text(text = "Add Exercise")
+					}
+
+					dialog(
+						route = "modify_exercise_type_dialogue/{id}",
+						arguments = listOf(
+							navArgument(name = "id") {
+								this.nullable = false
+								this.type = NavType.StringType
+							}
+						),
+					) {
+						val stringID = it.arguments?.getString("id")
+						if (stringID == null) {
+							nav.popBackStack()
+						}
+						val id = UUID.fromString(stringID)
+						ExerciseTypeModifyDialogue(vm = vm, id = id)
+					}
+
+					dialog(
+						route = "modify_exercise_dialogue/{id}",
+						arguments = listOf(
+							navArgument(name = "id") {
+								this.nullable = false
+								this.type = NavType.StringType
+							}
+						),
+					) {
+						val stringID = it.arguments?.getString("id")
+						if (stringID == null) {
+							nav.popBackStack()
+						}
+						val id = UUID.fromString(stringID)
+						ExerciseEntryModifyDialogue(vm = vm, id = id)
 					}
 
 					dialog(route = "add_weight_dialogue") {
