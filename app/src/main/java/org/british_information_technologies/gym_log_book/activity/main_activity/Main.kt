@@ -35,6 +35,7 @@ import io.github.michael_bailey.gym_log_book.activity.main_activity.ExerciseType
 import org.british_information_technologies.gym_log_book.R
 import org.british_information_technologies.gym_log_book.activity.exercise_set_guide_activity.ExerciseSetGuideActivity
 import org.british_information_technologies.gym_log_book.activity.main_activity.dialogue.ExerciseEntryModifyDialogue
+import org.british_information_technologies.gym_log_book.activity.main_activity.dialogue.ExerciseTypeCreateDialogue
 import org.british_information_technologies.gym_log_book.activity.main_activity.dialogue.ExerciseTypeModifyDialogue
 import org.british_information_technologies.gym_log_book.activity.main_activity.exercise_page.ExerciseListPage
 import org.british_information_technologies.gym_log_book.activity.main_activity.weight_page.WeightListPage
@@ -84,7 +85,7 @@ fun Main(vm: MainActivityViewModel) {
 
 					// dialogues
 					dialog(route = "add_exercise_type_dialogue") {
-						Text(text = "Add Exercise")
+						ExerciseTypeCreateDialogue(vm)
 					}
 
 					dialog(
