@@ -10,4 +10,4 @@ As well as being a scratch pad to, tests new user interface designs, and experim
 - practice data science, by combining my results, and using that to create suggestions for workouts and session planning
 - add scriptability to introspect and modify data on the fly.
 
-> This app can be unstable, as it can change rapidly
+> This app can be unstable, as i have a habit of restructuring sections of this app rapidly.
