@@ -17,46 +17,64 @@
 		android:label="@string/app_name"
 		android:supportsRtl="true"
 		android:theme="@style/Theme.Gym_Log_Book">
-		<!-- Settings activity -->
-		<activity
-			android:name=".activity.settings_activity.SettingsActivity"
-			android:exported="false"
-			android:label="@string/title_activity_settings"
-			android:theme="@style/Theme.Gym_Log_Book" /> <!-- Main activity -->
+
+		<!-- Main activity -->
 		<activity
 			android:name=".activity.main_activity.MainActivity"
 			android:exported="true"
-			android:label="@string/title_activity_main_v2"
+			android:label="@string/main_activity_title"
 			android:launchMode="singleInstancePerTask"
 			android:enableOnBackInvokedCallback="true"
 			android:theme="@style/Theme.Gym_Log_Book">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
-
-				<category android:name="android.intent.category.DEFAULT" />
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
-		</activity> <!-- Onboarding activity -->
+
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW" />
+
+				<category android:name="android.intent.category.DEFAULT" />
+				<category android:name="android.intent.category.BROWSABLE" />
+
+				<data android:scheme="gym_log_book" />
+				<data android:host="home.british-information-technologies.org" />
+			</intent-filter>
+		</activity>
+		<!-- Onboarding activity -->
 		<activity
 			android:name=".activity.onboarding_activity.OnboardingActivity"
 			android:exported="true"
 			android:label="@string/title_activity_onboarding"
 			android:launchMode="singleInstance"
-			android:theme="@style/Theme.Gym_Log_Book" /> <!-- Exercise guidance activities -->
+			android:theme="@style/Theme.Gym_Log_Book" />
+		<!-- Exercise guidance activities -->
 		<activity
 			android:name=".activity.exercise_set_guide_activity.ExerciseSetGuideActivity"
 			android:exported="true"
 			android:label="@string/title_activity_exercise_set_guide"
-			android:launchMode="singleTask"
+			android:launchMode="singleInstance"
 			android:resizeableActivity="true"
 			android:theme="@style/Theme.Gym_Log_Book"
-			tools:ignore="LockedOrientationActivity" /> <!-- Data form activities -->
+			tools:ignore="LockedOrientationActivity">
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW" />
+
+				<category android:name="android.intent.category.DEFAULT" />
+				<category android:name="android.intent.category.BROWSABLE" />
+
+				<data android:scheme="gym_log_book" />
+				<data android:host="guide.british-information-technologies.org" />
+				<data android:path="/resume" />
+			</intent-filter>
+		</activity>
+		<!-- Settings activity -->
 		<activity
-			android:name=".activity.add_exercise_type_activity.AddExerciseTypeActivity"
-			android:exported="true"
-			android:label="@string/title_activity_add_exercise_type"
-			android:launchMode="singleInstancePerTask"
-			android:theme="@style/Theme.Gym_Log_Book" /> <!-- internal activities -->
+			android:name=".activity.settings_activity.SettingsActivity"
+			android:exported="false"
+			android:label="@string/title_activity_settings"
+			android:theme="@style/Theme.Gym_Log_Book" />
+		<!-- internal activities -->
 		<activity
 			android:name=".activity.internal.tasks_activity.TaskActivity"
 			android:exported="false"

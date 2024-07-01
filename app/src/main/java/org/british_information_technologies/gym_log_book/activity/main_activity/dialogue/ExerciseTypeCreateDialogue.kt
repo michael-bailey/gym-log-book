@@ -22,7 +22,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import org.british_information_technologies.gym_log_book.activity.main_activity.MainActivityViewModel
-import org.british_information_technologies.gym_log_book.lib.componenets.CheckBox
+import org.british_information_technologies.gym_log_book.data_type.EquipmentClass
+import org.british_information_technologies.gym_log_book.lib.componenets.EquipmentClassDropDownSelector
 import org.british_information_technologies.gym_log_book.lib.componenets.ValidatorTextField
 import org.british_information_technologies.gym_log_book.lib.navigation.NavLocal
 import org.british_information_technologies.gym_log_book.lib.validation.Validator
@@ -34,10 +35,12 @@ fun ExerciseTypeCreateDialogue(
 ) {
 	val nav = NavLocal.current
 	var exerciseName by remember { mutableStateOf("") }
-	val isUsingUserWeight = remember { mutableStateOf(false) }
+	var equipmentClass by remember {
+		mutableStateOf<EquipmentClass?>(null)
+	}
 	val canSubmit by remember {
 		derivedStateOf {
-			exerciseName.isNotEmpty()
+			exerciseName.isNotEmpty() && equipmentClass != null
 		}
 	}
 	Surface(
@@ -47,22 +50,23 @@ fun ExerciseTypeCreateDialogue(
 		shape = RoundedCornerShape(28.dp),
 		content = {
 			Column(
-				Modifier.padding(24.dp),
-				verticalArrangement = Arrangement.spacedBy(8.dp),
+				modifier = Modifier
+					.width(IntrinsicSize.Min)
+					.padding(24.dp),
+				verticalArrangement = Arrangement.spacedBy(16.dp),
 				horizontalAlignment = Alignment.CenterHorizontally
 			) {
 				Text("Add Exercise Type", fontSize = Title)
-				Column(Modifier.width(IntrinsicSize.Min)) {
-					ValidatorTextField(
-						state = exerciseName,
-						validator = Validator.StringNameValidator(isLast = true),
-						placeholder = "Exercise name",
-						onChange = { exerciseName = it }
-					)
-					CheckBox(isUsingUserWeight, "Uses your Weight?") {
-						isUsingUserWeight.value = it
-					}
-				}
+				ValidatorTextField(
+					state = exerciseName,
+					validator = Validator.StringNameValidator(isLast = true),
+					placeholder = "Exercise name",
+					onChange = { exerciseName = it }
+				)
+				EquipmentClassDropDownSelector(
+					selectedClass = equipmentClass,
+					isLast = true,
+				) { equipmentClass = it }
 				Row(
 					Modifier.fillMaxWidth(),
 					horizontalArrangement = Arrangement.SpaceEvenly,
@@ -76,7 +80,8 @@ fun ExerciseTypeCreateDialogue(
 						onClick = {
 							vm.createNewType(
 								exerciseName,
-								isUsingUserWeight.value
+								usingUserWeight = equipmentClass!! is EquipmentClass.UsesUserWeight,
+								equipmentClass = equipmentClass!!
 							)
 							nav!!.popBackStack()
 						}
@@ -87,5 +92,4 @@ fun ExerciseTypeCreateDialogue(
 			}
 		}
 	)
-
 }

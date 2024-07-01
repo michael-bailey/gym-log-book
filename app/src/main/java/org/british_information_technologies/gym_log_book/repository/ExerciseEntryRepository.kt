@@ -2,6 +2,7 @@ package org.british_information_technologies.gym_log_book.repository
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import org.british_information_technologies.gym_log_book.data_type.EquipmentClass
 import org.british_information_technologies.gym_log_book.database.dao.ExerciseEntryDao
 import org.british_information_technologies.gym_log_book.database.dao.ExerciseTypeDao
 import org.british_information_technologies.gym_log_book.database.entity.EntExerciseEntry
@@ -60,7 +61,8 @@ class ExerciseEntryRepository @Inject constructor(
 		if (exerciseType == null) {
 			exerciseType = EntExerciseType(
 				name = exerciseName,
-				usesUserWeight = false
+				usesUserWeight = false,
+				equipmentClass = EquipmentClass.None
 			)
 
 			exerciseTypeDao.insertExercise(exerciseType)

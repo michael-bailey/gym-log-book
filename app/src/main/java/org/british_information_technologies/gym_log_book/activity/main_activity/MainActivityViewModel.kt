@@ -11,8 +11,10 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import org.british_information_technologies.gym_log_book.data_type.EquipmentClass
 import org.british_information_technologies.gym_log_book.database.entity.EntExerciseEntry
 import org.british_information_technologies.gym_log_book.database.entity.EntExerciseType
+import org.british_information_technologies.gym_log_book.database.entity.EntWeightEntry
 import org.british_information_technologies.gym_log_book.lib.interfaces.view_model.IExerciseEntryListViewModel
 import org.british_information_technologies.gym_log_book.lib.one_shot.OneShotPreference
 import org.british_information_technologies.gym_log_book.repository.ExerciseEntryMappingsRepository
@@ -128,9 +130,16 @@ class MainActivityViewModel @Inject constructor(
 	}
 
 
-	fun createNewType(exerciseName: String, usingUserWeight: Boolean) =
-		viewModelScope.launch(Dispatchers.IO) {
-			exerciseTypeRepository.create(exerciseName, usingUserWeight)
+	fun createNewType(
+		exerciseName: String,
+		usingUserWeight: Boolean,
+		equipmentClass: EquipmentClass
+	) = viewModelScope.launch(Dispatchers.IO) {
+		exerciseTypeRepository.create(
+			exerciseName,
+			usingUserWeight,
+			equipmentClass = equipmentClass
+		)
 		}
 
 	fun getTypeFlow(id: UUID): Flow<EntExerciseType> =
@@ -145,5 +154,11 @@ class MainActivityViewModel @Inject constructor(
 		return exerciseEntryRepository.genExercise(id)
 	}
 
+	fun addWeightEntry(weight: Double) = viewModelScope.launch(Dispatchers.IO) {
+		weightEntryRepository.create(weight)
+	}
 
+	fun getWeightFlow(id: UUID): LiveData<EntWeightEntry?> {
+		return weightEntryRepository.genWeight(id).asLiveData()
+	}
 }

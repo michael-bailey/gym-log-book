@@ -15,19 +15,26 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.ImeAction
-import java.util.UUID
+import org.british_information_technologies.gym_log_book.data_type.EquipmentClass
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ExerciseTypeDropdownSelector(
-	exercises: Map<UUID, String>,
-	selectedType: String?,
+fun EquipmentClassDropDownSelector(
+	selectedClass: EquipmentClass?,
 	isLast: Boolean = false,
-	setExercise: (UUID) -> Unit
+	setEquipmentClass: (EquipmentClass) -> Unit
 ) {
+
+	val selectableClasses = listOf(
+		EquipmentClass.Machine,
+		EquipmentClass.UsesUserWeight,
+		EquipmentClass.FreeWeight,
+		EquipmentClass.None,
+	)
+
 	var dropdownExposed by remember { mutableStateOf(false) }
-	val error = if (selectedType == null) {
-		"Choose a Type"
+	val error = if (selectedClass == null) {
+		"Select equipment class"
 	} else {
 		""
 	}
@@ -38,10 +45,10 @@ fun ExerciseTypeDropdownSelector(
 		) {
 			OutlinedTextField(
 				modifier = Modifier.menuAnchor(),
-				value = selectedType ?: "",
-				label = { Text("Exercise...") },
+				value = selectedClass?.toString() ?: "",
+				label = { Text("Equipment Class...") },
 				onValueChange = {},
-				isError = (selectedType == null),
+				isError = (selectedClass == null),
 				keyboardOptions = KeyboardOptions(
 					autoCorrect = false,
 					imeAction = if (isLast) {
@@ -54,10 +61,10 @@ fun ExerciseTypeDropdownSelector(
 			ExposedDropdownMenu(
 				expanded = dropdownExposed,
 				onDismissRequest = { dropdownExposed = false }) {
-				for (i in exercises) {
+				for (i in selectableClasses) {
 					DropdownMenuItem(
-						text = { Text(i.value) },
-						onClick = { setExercise(i.key); dropdownExposed = false })
+						text = { Text(i.toString()) },
+						onClick = { setEquipmentClass(i); dropdownExposed = false })
 				}
 			}
 		}

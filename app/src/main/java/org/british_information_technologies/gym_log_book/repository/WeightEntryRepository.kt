@@ -1,6 +1,7 @@
 package org.british_information_technologies.gym_log_book.repository
 
 
+import kotlinx.coroutines.flow.Flow
 import org.british_information_technologies.gym_log_book.database.dao.WeightEntryDao
 import org.british_information_technologies.gym_log_book.database.entity.EntWeightEntry
 import java.time.LocalDate
@@ -31,6 +32,10 @@ class WeightEntryRepository @Inject constructor(
 
 	suspend fun delete(uuid: UUID) {
 		weightEntryDao.deleteWeight(weightEntryDao.getWeight(uuid))
+	}
+
+	fun genWeight(id: UUID): Flow<EntWeightEntry?> {
+		return weightEntryDao.genWeight(id)
 	}
 
 

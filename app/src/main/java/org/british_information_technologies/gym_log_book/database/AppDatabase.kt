@@ -5,6 +5,7 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import org.british_information_technologies.gym_log_book.database.converter.DateConverter
+import org.british_information_technologies.gym_log_book.database.converter.EquipmentClassConverter
 import org.british_information_technologies.gym_log_book.database.converter.TimeConverter
 import org.british_information_technologies.gym_log_book.database.converter.UUIDConverter
 import org.british_information_technologies.gym_log_book.database.dao.ExerciseEntryDao
@@ -27,7 +28,7 @@ import org.british_information_technologies.gym_log_book.database.entity.EntWeig
 	],
 	views = [
 	],
-	version = 2,
+	version = 3,
 	exportSchema = true,
 	autoMigrations = [
 		AutoMigration(from = 1, to = 2)
@@ -36,7 +37,8 @@ import org.british_information_technologies.gym_log_book.database.entity.EntWeig
 @TypeConverters(
 	DateConverter::class,
 	TimeConverter::class,
-	UUIDConverter::class
+	UUIDConverter::class,
+	EquipmentClassConverter::class,
 )
 abstract class AppDatabase : RoomDatabase() {
 	abstract fun exerciseEntryDao(): ExerciseEntryDao

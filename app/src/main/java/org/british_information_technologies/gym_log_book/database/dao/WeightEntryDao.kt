@@ -1,10 +1,14 @@
 package org.british_information_technologies.gym_log_book.database.dao
 
 import androidx.lifecycle.LiveData
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.Query
+import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 import org.british_information_technologies.gym_log_book.database.entity.EntWeightEntry
-import java.util.*
+import java.util.UUID
 
 @Dao
 /**
@@ -57,4 +61,12 @@ interface WeightEntryDao {
 			)
 		)
 	}
+
+	@Query(
+		"""
+			Select * From weight_items
+			Where id = :id
+		"""
+	)
+	fun genWeight(id: UUID): Flow<EntWeightEntry?>
 }

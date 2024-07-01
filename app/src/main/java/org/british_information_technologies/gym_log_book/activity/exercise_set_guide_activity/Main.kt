@@ -27,7 +27,7 @@ fun Main(
 ) {
 
 	val vm = activity<ExerciseSetGuideActivity>().vm
-	val pageState = vm.pageState.observeAsState(PageState.Start)
+	val pageState by vm.pageState.observeAsState(PageState.Start)
 
 	// A surface container using the 'background' color from the theme
 	Scaffold(
@@ -38,8 +38,7 @@ fun Main(
 			Surface(Modifier.padding(it)) {
 				AnimatedContent(
 					targetState = pageState, label = "",
-				) {
-					val page by pageState
+				) { page ->
 					when (page) {
 						PageState.Start -> StartPage(vm = vm)
 						PageState.SetEntry -> SetPage(vm = vm)

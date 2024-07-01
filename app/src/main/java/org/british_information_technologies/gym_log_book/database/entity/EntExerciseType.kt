@@ -1,8 +1,10 @@
 package org.british_information_technologies.gym_log_book.database.entity
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import org.british_information_technologies.gym_log_book.data_type.EquipmentClass
 import java.time.LocalDate
 import java.time.LocalTime
 import java.util.UUID
@@ -18,5 +20,9 @@ data class EntExerciseType(
 	val createdTime: LocalTime = LocalTime.now(),
 
 	val name: String,
-	val usesUserWeight: Boolean
+	val usesUserWeight: Boolean,
+
+	@ColumnInfo(name = "equipment", defaultValue = "none")
+	val equipmentClass: EquipmentClass,
+
 )

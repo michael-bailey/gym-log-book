@@ -1,7 +1,12 @@
-package io.github.michael_bailey.gym_log_book.activity.main_activity
+package org.british_information_technologies.gym_log_book.activity.main_activity.home_page.exercise_types_tab
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text
@@ -15,7 +20,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import org.british_information_technologies.gym_log_book.activity.main_activity.MainActivityViewModel
 import org.british_information_technologies.gym_log_book.activity.main_activity.dialogue.DeleteExerciseTypeDialogue
-import org.british_information_technologies.gym_log_book.activity.main_activity.exercise_type_page.ExerciseTypeView
 import org.british_information_technologies.gym_log_book.theme.Title
 
 @OptIn(ExperimentalFoundationApi::class)

@@ -8,7 +8,7 @@
 	<string name="title_activity_main">Gym Log Book</string>
 
 	<!-- used for MainActivityV2 -->
-	<string name="title_activity_main_v2">Gym Log Book (V2)</string>
+	<string name="main_activity_title">Gym Log Book</string>
 	<string name="exercise_page_nav_button_label">Exercises</string>
 	<string name="weight_page_nav_button_label">Weight</string>
 	<string name="exercise_type_page_nav_button_label">Types</string>
@@ -41,5 +41,6 @@
 	<string name="add_exercise_type_fab_string">Add Type</string>
 	<string name="navigation_graph_missing">The nav graph has not been set yet</string>
 	<string name="add_weight_fab_string">Add Weight</string>
+	<string name="home_page_nav_button_label">Home</string>
 
 </resources>

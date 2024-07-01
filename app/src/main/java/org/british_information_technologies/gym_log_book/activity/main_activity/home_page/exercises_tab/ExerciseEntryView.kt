@@ -1,4 +1,4 @@
-package org.british_information_technologies.gym_log_book.activity.main_activity.exercise_page
+package org.british_information_technologies.gym_log_book.activity.main_activity.home_page.exercises_tab
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

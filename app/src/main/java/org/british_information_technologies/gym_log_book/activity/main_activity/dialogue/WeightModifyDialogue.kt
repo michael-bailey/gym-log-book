@@ -13,10 +13,9 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -24,8 +23,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import org.british_information_technologies.gym_log_book.activity.main_activity.MainActivityViewModel
-import org.british_information_technologies.gym_log_book.data_type.EquipmentClass
-import org.british_information_technologies.gym_log_book.lib.componenets.EquipmentClassDropDownSelector
 import org.british_information_technologies.gym_log_book.lib.componenets.ValidatorTextField
 import org.british_information_technologies.gym_log_book.lib.navigation.NavLocal
 import org.british_information_technologies.gym_log_book.lib.validation.Validator
@@ -33,32 +30,23 @@ import org.british_information_technologies.gym_log_book.theme.Title
 import java.util.UUID
 
 @Composable
-fun ExerciseTypeModifyDialogue(
+fun WeightModifyDialogue(
 	vm: MainActivityViewModel,
 	id: UUID,
 ) {
 
-	val nav = NavLocal.current
-	val item by vm.getTypeFlow(id).collectAsState(null)
+	val item by vm.getWeightFlow(id).observeAsState(null)
 
-	var exerciseName by remember { mutableStateOf("") }
-
-	var equipmentClass by remember {
-		mutableStateOf<EquipmentClass?>(null)
+	var weight by remember {
+		mutableStateOf(item?.value?.toString() ?: "0.0")
 	}
+
+	val nav = NavLocal.current
 
 	val canSubmit by remember {
 		derivedStateOf {
-			exerciseName.isNotEmpty() && equipmentClass != null
+			weight.isNotBlank()
 		}
-	}
-
-	LaunchedEffect(key1 = item) {
-		if (item == null) {
-			return@LaunchedEffect
-		}
-		exerciseName = item!!.name
-		equipmentClass = item!!.equipmentClass
 	}
 
 	Surface(
@@ -68,23 +56,21 @@ fun ExerciseTypeModifyDialogue(
 		shape = RoundedCornerShape(28.dp),
 	) {
 		Column(
-			modifier = Modifier
-				.width(IntrinsicSize.Min)
+			Modifier
+				.fillMaxWidth()
 				.padding(24.dp),
-			verticalArrangement = Arrangement.spacedBy(16.dp),
+			verticalArrangement = Arrangement.spacedBy(8.dp),
 			horizontalAlignment = Alignment.CenterHorizontally
 		) {
-			Text("Modify Type", fontSize = Title)
-			ValidatorTextField(
-				state = exerciseName,
-				validator = Validator.StringNameValidator(isLast = true),
-				placeholder = "Exercise name",
-				onChange = { exerciseName = it }
-			)
-			EquipmentClassDropDownSelector(
-				selectedClass = equipmentClass,
-				isLast = true,
-			) { equipmentClass = it }
+			Text("Hi there", fontSize = Title)
+			Column(Modifier.width(IntrinsicSize.Min)) {
+				ValidatorTextField(
+					state = weight,
+					validator = Validator.FloatValidator(isLast = true),
+					placeholder = "Weight...",
+					onChange = { weight = it }
+				)
+			}
 			Row(
 				Modifier.fillMaxWidth(),
 				horizontalArrangement = Arrangement.SpaceEvenly,
@@ -94,18 +80,8 @@ fun ExerciseTypeModifyDialogue(
 					Text(text = "Cancel")
 				}
 				Button(
-					enabled = canSubmit,
-					onClick = {
-						vm.modifyExerciseType(
-							item!!.copy(
-								name = exerciseName,
-								usesUserWeight = equipmentClass!! is EquipmentClass.UsesUserWeight,
-								equipmentClass = equipmentClass!!
-
-							)
-						)
-						nav!!.popBackStack()
-					}
+					onClick = { vm.addWeightEntry(weight.toDouble()); nav!!.popBackStack() },
+					enabled = canSubmit
 				) {
 					Text(text = "Submit")
 				}

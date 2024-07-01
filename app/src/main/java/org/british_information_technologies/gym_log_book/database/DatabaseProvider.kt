@@ -12,6 +12,7 @@ import org.british_information_technologies.gym_log_book.database.dao.ExerciseGr
 import org.british_information_technologies.gym_log_book.database.dao.ExerciseTypeDao
 import org.british_information_technologies.gym_log_book.database.dao.TaskDao
 import org.british_information_technologies.gym_log_book.database.dao.WeightEntryDao
+import org.british_information_technologies.gym_log_book.database.migrations.MigrationTwoToThree
 import javax.inject.Singleton
 
 @Module
@@ -27,6 +28,8 @@ class DatabaseProvider {
 			context,
 			AppDatabase::class.java,
 			"app_database"
+		).addMigrations(
+			MigrationTwoToThree
 		).build()
 	}
 
