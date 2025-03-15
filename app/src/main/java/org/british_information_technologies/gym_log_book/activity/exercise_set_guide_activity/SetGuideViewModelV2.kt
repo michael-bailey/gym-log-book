@@ -36,7 +36,6 @@ class SetGuideViewModelV2 @Inject constructor(
 	),
 	DefaultLifecycleObserver {
 
-
 	// replacement for NavHost
 	private val _pageState = MutableStateFlow(PageState.Start)
 	val pageState = _pageState.asLiveData()
@@ -64,6 +63,13 @@ class SetGuideViewModelV2 @Inject constructor(
 
 	private val weightRepsCombine = currentWeight
 		.combine(currentReps) { w, r -> w to r }
+
+	val pastEntries =
+		exerciseEntryRepository.exercises.combine(currentExerciseType) { entries, type ->
+			entries.filter { entry ->
+				entry.exerciseTypeId == type
+			}.sortedBy { it.getLocalDateTime() }.takeLast(3)
+		}.asLiveData()
 
 	val canSubmit = typeSetCombine.combine(weightRepsCombine) { ts, wr ->
 		val (type, set) = ts
