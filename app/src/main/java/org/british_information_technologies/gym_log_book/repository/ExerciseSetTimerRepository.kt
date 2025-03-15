@@ -1,10 +1,7 @@
 package org.british_information_technologies.gym_log_book.repository
 
-import dagger.hilt.android.scopes.ViewModelScoped
 import io.github.michael_bailey.android_chat_kit.extension.any.log
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.delay
@@ -13,18 +10,15 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import org.british_information_technologies.gym_log_book.lib.AppNotificationManager
 import javax.inject.Inject
+import javax.inject.Singleton
 import kotlin.time.Duration.Companion.seconds
 
-@ViewModelScoped
+@Singleton
 class ExerciseSetTimerRepository
 @Inject constructor(
-	private val notificationManager: AppNotificationManager,
+	private val applicationScope: CoroutineScope
 ) {
-
-	@OptIn(DelicateCoroutinesApi::class)
-	private val scope: CoroutineScope = GlobalScope
 
 	private val _timer = MutableStateFlow(0)
 
@@ -52,7 +46,7 @@ class ExerciseSetTimerRepository
 			return
 		}
 		_timer.emit(count)
-		this.currentJob = scope.launch {
+		this.currentJob = applicationScope.launch {
 			do {
 				delay(1.seconds)
 				_timer.emit(timer.first() - 1)
