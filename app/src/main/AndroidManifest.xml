@@ -92,9 +92,5 @@
 			android:exported="false"
 			android:label="@string/title_activity_data_export"
 			android:theme="@style/Theme.Gym_Log_Book.Dialogue" />
-
-		<service
-			android:name=".service.DataImporterService"
-			android:exported="false" />
 	</application>
 </manifest>
