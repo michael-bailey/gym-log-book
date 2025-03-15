@@ -19,9 +19,7 @@ class DebugSettingsActivity : ComponentActivity() {
 			val isDebugEnabled = vm.isDebugEnabled.observeAsState(false)
 			Gym_Log_BookTheme(colourNavBar = isDebugEnabled.value) {
 				// A surface container using the 'background' color from the theme
-
 				Main(vm)
-
 			}
 		}
 	}

@@ -6,6 +6,7 @@ import org.british_information_technologies.gym_log_book.lib.data_manager.BaseDa
 import org.british_information_technologies.gym_log_book.table.WeightTable
 import javax.inject.Inject
 
+@Deprecated("This is an old api, DON'T USE")
 class WeightDataManager @Inject constructor(
 	private val context: Context,
 	table: WeightTable

@@ -9,7 +9,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import org.british_information_technologies.gym_log_book.lib.DebugPreferencesManager
 import org.british_information_technologies.gym_log_book.lib.gatekeeper.Gatekeeper
-import org.british_information_technologies.gym_log_book.service.ServiceUtils
 import javax.inject.Inject
 
 /**
@@ -60,10 +59,6 @@ class DebugSettingsViewModel @Inject constructor(
 		viewModelScope.launch {
 			gatekeeper.setGatekeeper(name, value)
 		}
-	}
-
-	fun runDataMigration() {
-		ServiceUtils.startMigrationIntent(context = applicationContext)
 	}
 }
 

@@ -5,6 +5,7 @@ import org.british_information_technologies.gym_log_book.lib.data_manager.BaseDa
 import org.british_information_technologies.gym_log_book.table.ExerciseTable
 import javax.inject.Inject
 
+@Deprecated("This is an old api, DON'T USE")
 class ExerciseDataManager @Inject constructor(
 	table: ExerciseTable
 ) : BaseDataManager<ExerciseItem>(table)
