@@ -44,48 +44,45 @@ fun StartPage(
 		Surface(
 			modifier = Modifier
 				.weight(1f)
-				.fillMaxWidth(),
+				.fillMaxSize(),
 			shape = RoundedCornerShape(20.dp),
 			color = MaterialTheme.colorScheme.surfaceDim,
 		) {
 
 			LazyColumn(
-				Modifier.background(Color.Transparent),
-				contentPadding = PaddingValues(20.dp)
+				Modifier
+					.background(Color.Transparent)
+					.fillMaxSize(),
 			) {
 				items(
 					items = exerciseMap.entries.toList(),
 				) { item ->
-
-					val textFun = @Composable {
+					Surface(
+						modifier = Modifier
+							.clickable { vm.setExerciseType(item.key) }
+							.fillMaxWidth(),
+						shape = RoundedCornerShape(20.dp),
+						color = if (item.value == currentExercise)
+							MaterialTheme.colorScheme.surface else Color.Transparent
+					) {
 						Text(
 							modifier = Modifier
-								.padding(PaddingValues(8.dp))
-								.fillParentMaxWidth()
-								.clickable { vm.setExerciseType(item.key) },
+								.fillMaxSize()
+								.padding(PaddingValues(horizontal = 20.dp, vertical = 8.dp)),
 							text = item.value
 						)
-					}
-
-
-					if (item.value == currentExercise) {
-						Surface(
-							shape = RoundedCornerShape(12.dp)
-						) {
-							textFun()
-						}
-					} else {
-						textFun()
 					}
 				}
 			}
 		}
 
-		Row(
-			modifier = Modifier.padding(20.dp),
-			horizontalArrangement = Arrangement.End
-		) {
 
+		Row(
+			modifier = Modifier
+				.padding(20.dp)
+				.fillMaxWidth(),
+			horizontalArrangement = Arrangement.Center
+		) {
 			Button(
 				onClick = {
 					vm.goToSet()
