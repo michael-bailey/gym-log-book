@@ -41,6 +41,7 @@ class AppProvider {
 		(context as Application).preferences()
 
 	@Provides
+	@Singleton
 	fun provideContentResolver(@ApplicationContext context: Context): ContentResolver {
 		return context.contentResolver
 	}

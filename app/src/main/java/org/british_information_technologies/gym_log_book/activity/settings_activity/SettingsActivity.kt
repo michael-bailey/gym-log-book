@@ -8,8 +8,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import dagger.hilt.android.AndroidEntryPoint
 import org.british_information_technologies.gym_log_book.theme.Gym_Log_BookTheme
 
+@AndroidEntryPoint
 class SettingsActivity : ComponentActivity() {
 
 	val vm: SettingsViewModel by viewModels()
