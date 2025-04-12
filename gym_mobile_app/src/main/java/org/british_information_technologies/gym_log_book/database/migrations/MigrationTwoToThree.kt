@@ -2,7 +2,7 @@ package org.british_information_technologies.gym_log_book.database.migrations
 
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
-import org.british_information_technologies.gym_log_book.data_type.EquipmentClass
+import org.british_information_technologies.gym_library.data_type.EquipmentClass
 import org.british_information_technologies.gym_log_book.database.AppDatabase
 
 /**

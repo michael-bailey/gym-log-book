@@ -11,7 +11,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
-import org.british_information_technologies.gym_log_book.data_type.EquipmentClass
+import org.british_information_technologies.gym_library.data_type.EquipmentClass
 import org.british_information_technologies.gym_log_book.database.entity.EntExerciseEntry
 import org.british_information_technologies.gym_log_book.database.entity.EntExerciseType
 import org.british_information_technologies.gym_log_book.database.entity.EntWeightEntry

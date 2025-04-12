@@ -2,7 +2,7 @@ package org.british_information_technologies.gym_log_book.lib.table
 
 import android.content.Context
 import io.github.michael_bailey.android_chat_kit.extension.any.log
-import org.british_information_technologies.gym_log_book.lib.Identifiable
+import org.british_information_technologies.gym_library.data_type.Identifiable
 import java.io.FileNotFoundException
 
 abstract class CSVTable<T : Identifiable>(

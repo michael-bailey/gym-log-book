@@ -8,7 +8,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import org.british_information_technologies.gym_log_book.R
-import org.british_information_technologies.gym_log_book.extension.activity
+import org.british_information_technologies.gym_log_book.extensions.activity
 
 @Composable
 fun navigateBottom(

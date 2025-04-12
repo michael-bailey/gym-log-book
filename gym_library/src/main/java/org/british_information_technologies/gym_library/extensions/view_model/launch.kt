@@ -1,4 +1,4 @@
-package org.british_information_technologies.gym_log_book.extension.view_model
+package org.british_information_technologies.gym_library.extensions.view_model
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

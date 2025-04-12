@@ -29,7 +29,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.google.android.material.elevation.SurfaceColors
 import org.british_information_technologies.gym_log_book.activity.main_activity.MainActivity
-import org.british_information_technologies.gym_log_book.extension.activity
+import org.british_information_technologies.gym_log_book.extensions.activity
 import org.british_information_technologies.gym_log_book.lib.interfaces.view_model.IExerciseEntryListViewModel
 import org.british_information_technologies.gym_log_book.theme.StickyHeader
 import org.british_information_technologies.gym_log_book.theme.Title

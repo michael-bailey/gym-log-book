@@ -2,7 +2,7 @@ package org.british_information_technologies.gym_log_book.table
 
 import android.content.Context
 import io.github.michael_bailey.android_chat_kit.extension.any.log
-import org.british_information_technologies.gym_log_book.data_type.WeightItem
+import org.british_information_technologies.gym_library.data_type.WeightItem
 import org.british_information_technologies.gym_log_book.lib.table.CSVTable
 import java.time.LocalDate
 

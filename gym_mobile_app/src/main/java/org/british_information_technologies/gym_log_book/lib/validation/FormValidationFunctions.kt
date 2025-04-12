@@ -1,6 +1,6 @@
 package org.british_information_technologies.gym_log_book.lib.validation
 
-import org.british_information_technologies.gym_log_book.data_type.ExerciseItem
+import org.british_information_technologies.gym_library.data_type.ExerciseItem
 import org.british_information_technologies.gym_log_book.lib.exceptions.DecimalPointException
 import org.british_information_technologies.gym_log_book.lib.exceptions.EmptyInputException
 import org.british_information_technologies.gym_log_book.lib.exceptions.MultipleDecimalPointException

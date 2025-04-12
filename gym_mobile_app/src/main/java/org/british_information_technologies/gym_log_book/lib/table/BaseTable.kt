@@ -3,7 +3,7 @@ package org.british_information_technologies.gym_log_book.lib.table
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import io.github.michael_bailey.android_chat_kit.extension.any.log
-import org.british_information_technologies.gym_log_book.lib.Identifiable
+import org.british_information_technologies.gym_library.data_type.Identifiable
 
 abstract class BaseTable<T : Identifiable> : ITable<T> {
 	val _liveData: MutableLiveData<List<T>> = MutableLiveData(listOf())

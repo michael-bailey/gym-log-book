@@ -1,4 +1,4 @@
-package org.british_information_technologies.gym_log_book.extension
+package org.british_information_technologies.gym_log_book.extensions
 
 import android.app.Activity
 import androidx.compose.runtime.Composable

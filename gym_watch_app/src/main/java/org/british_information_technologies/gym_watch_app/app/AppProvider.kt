@@ -9,6 +9,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import io.github.michael_bailey.android_chat_kit.extension.application.preferences
 import kotlinx.coroutines.CoroutineScope
 import javax.inject.Singleton
 

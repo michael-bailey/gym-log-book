@@ -6,7 +6,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import org.british_information_technologies.gym_log_book.extension.activity
+import org.british_information_technologies.gym_log_book.extensions.activity
 
 @Composable
 fun Main() {

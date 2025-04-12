@@ -23,8 +23,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import org.british_information_technologies.gym_library.data_type.EquipmentClass
 import org.british_information_technologies.gym_log_book.activity.main_activity.MainActivityViewModel
-import org.british_information_technologies.gym_log_book.data_type.EquipmentClass
 import org.british_information_technologies.gym_log_book.lib.componenets.EquipmentClassDropDownSelector
 import org.british_information_technologies.gym_log_book.lib.componenets.text_fields.ValidatorTextField
 import org.british_information_technologies.gym_log_book.lib.navigation.NavLocal

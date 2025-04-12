@@ -1,6 +1,5 @@
-package org.british_information_technologies.gym_log_book.data_type
+package org.british_information_technologies.gym_library.data_type
 
-import org.british_information_technologies.gym_log_book.lib.Identifiable
 import java.time.LocalDate
 
 /// This represents an item in the exercise list

@@ -1,7 +1,7 @@
 package org.british_information_technologies.gym_log_book.table
 
 import android.content.Context
-import org.british_information_technologies.gym_log_book.data_type.ExerciseItem
+import org.british_information_technologies.gym_library.data_type.ExerciseItem
 import org.british_information_technologies.gym_log_book.lib.table.CSVTable
 import java.time.LocalDate
 

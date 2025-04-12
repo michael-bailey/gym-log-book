@@ -1,6 +1,5 @@
 package org.british_information_technologies.gym_watch_app.database
 
-import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
@@ -8,17 +7,17 @@ import org.british_information_technologies.gym_library.database.converter.DateC
 import org.british_information_technologies.gym_library.database.converter.EquipmentClassConverter
 import org.british_information_technologies.gym_library.database.converter.TimeConverter
 import org.british_information_technologies.gym_library.database.converter.UUIDConverter
+import org.british_information_technologies.gym_watch_app.database.entities.TestEntity
 
 @Database(
 	entities = [
+		TestEntity::class
 	],
 	views = [
 	],
-	version = 3,
+	version = 0,
 	exportSchema = true,
-	autoMigrations = [
-		AutoMigration(from = 1, to = 2)
-	]
+	autoMigrations = []
 )
 @TypeConverters(
 	DateConverter::class,

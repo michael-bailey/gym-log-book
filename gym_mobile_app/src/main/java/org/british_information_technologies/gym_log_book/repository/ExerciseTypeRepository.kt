@@ -3,7 +3,7 @@ package org.british_information_technologies.gym_log_book.repository
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import org.british_information_technologies.gym_log_book.data_type.EquipmentClass
+import org.british_information_technologies.gym_library.data_type.EquipmentClass
 import org.british_information_technologies.gym_log_book.database.dao.ExerciseEntryDao
 import org.british_information_technologies.gym_log_book.database.dao.ExerciseTypeDao
 import org.british_information_technologies.gym_log_book.database.entity.EntExerciseType

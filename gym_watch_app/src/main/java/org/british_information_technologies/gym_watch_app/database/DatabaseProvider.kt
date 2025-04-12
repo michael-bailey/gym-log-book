@@ -7,12 +7,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import org.british_information_technologies.gym_log_book.database.dao.ExerciseEntryDao
-import org.british_information_technologies.gym_log_book.database.dao.ExerciseGroupDao
-import org.british_information_technologies.gym_log_book.database.dao.ExerciseTypeDao
-import org.british_information_technologies.gym_log_book.database.dao.TaskDao
-import org.british_information_technologies.gym_log_book.database.dao.WeightEntryDao
-import org.british_information_technologies.gym_log_book.database.migrations.MigrationTwoToThree
 import javax.inject.Singleton
 
 @Module
@@ -28,53 +22,6 @@ class DatabaseProvider {
 			context,
 			AppDatabase::class.java,
 			"app_database"
-		).addMigrations(
-			MigrationTwoToThree
-		).build()
-	}
-
-	@Provides
-	@Singleton
-	fun provideInternalDatabase(
-		@ApplicationContext context: Context
-	): InternalDatabase {
-		return Room.databaseBuilder(
-			context,
-			InternalDatabase::class.java,
-			"internal_database"
-		).build()
-	}
-
-	@Provides
-	fun provideExerciseTypeDao(
-		appDatabase: AppDatabase,
-	): ExerciseTypeDao {
-		return appDatabase.exerciseTypeDao()
-	}
-
-	@Provides
-	fun provideExerciseEntryDao(
-		appDatabase: AppDatabase,
-	): ExerciseEntryDao {
-		return appDatabase.exerciseEntryDao()
-	}
-
-	@Provides
-	fun provideWeightEntryDao(
-		appDatabase: AppDatabase,
-	): WeightEntryDao {
-		return appDatabase.weightEntryDao()
-	}
-
-	@Provides
-	fun provideExerciseGroupDao(
-		appDatabase: AppDatabase,
-	): ExerciseGroupDao = appDatabase.exerciseGroupDao()
-
-	@Provides
-	fun provideTaskDao(
-		internalDatabase: InternalDatabase,
-	): TaskDao {
-		return internalDatabase.taskDao()
+		).fallbackToDestructiveMigration().build()
 	}
 }

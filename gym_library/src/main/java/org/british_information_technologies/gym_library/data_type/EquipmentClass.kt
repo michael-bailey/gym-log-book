@@ -1,9 +1,7 @@
-package org.british_information_technologies.gym_log_book.data_type
-
-import org.british_information_technologies.gym_log_book.database.entity.EntExerciseType
+package org.british_information_technologies.gym_library.data_type
 
 /**
- * Mapping of different equipment classes for [EntExerciseType]
+ * Mapping of different equipment classes
  */
 sealed class EquipmentClass {
 	data object Machine :

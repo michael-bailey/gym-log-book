@@ -1,7 +1,7 @@
 package org.british_information_technologies.gym_log_book.data_manager
 
 import android.content.Context
-import org.british_information_technologies.gym_log_book.data_type.ExerciseType
+import org.british_information_technologies.gym_library.data_type.ExerciseType
 import org.british_information_technologies.gym_log_book.lib.data_manager.BaseDataManager
 import org.british_information_technologies.gym_log_book.table.ExerciseTypeTable
 import javax.inject.Inject

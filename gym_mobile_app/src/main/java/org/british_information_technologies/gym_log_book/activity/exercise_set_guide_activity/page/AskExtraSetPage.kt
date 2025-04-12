@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.rememberNavController
 import org.british_information_technologies.gym_log_book.activity.exercise_set_guide_activity.ExerciseSetGuideActivity
 import org.british_information_technologies.gym_log_book.activity.exercise_set_guide_activity.SetGuideViewModelV2
-import org.british_information_technologies.gym_log_book.extension.activity
+import org.british_information_technologies.gym_log_book.extensions.activity
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable

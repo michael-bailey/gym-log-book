@@ -1,4 +1,4 @@
-package org.british_information_technologies.gym_watch_app.presentation.theme
+package org.british_information_technologies.gym_watch_app.theme
 
 import androidx.compose.runtime.Composable
 import androidx.wear.compose.material.MaterialTheme

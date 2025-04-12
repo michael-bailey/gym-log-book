@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import org.british_information_technologies.gym_log_book.data_type.EquipmentClass
+import org.british_information_technologies.gym_library.data_type.EquipmentClass
 import java.time.LocalDate
 import java.time.LocalTime
 import java.util.UUID
@@ -25,4 +25,4 @@ data class EntExerciseType(
 	@ColumnInfo(name = "equipment", defaultValue = "none")
 	val equipmentClass: EquipmentClass,
 
-)
+	)

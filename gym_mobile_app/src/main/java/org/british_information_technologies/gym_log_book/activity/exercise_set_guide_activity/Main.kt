@@ -18,7 +18,7 @@ import org.british_information_technologies.gym_log_book.activity.exercise_set_g
 import org.british_information_technologies.gym_log_book.activity.exercise_set_guide_activity.page.PausePage
 import org.british_information_technologies.gym_log_book.activity.exercise_set_guide_activity.page.SetPage
 import org.british_information_technologies.gym_log_book.activity.exercise_set_guide_activity.page.StartPage
-import org.british_information_technologies.gym_log_book.extension.activity
+import org.british_information_technologies.gym_log_book.extensions.activity
 
 @SuppressLint("UnusedContentLambdaTargetStateParameter")
 @OptIn(ExperimentalMaterial3Api::class)

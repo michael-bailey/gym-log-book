@@ -1,7 +1,8 @@
-package org.british_information_technologies.gym_log_book.data_type.shareable
+package org.british_information_technologies.gym_library.data_type.shareable
 
 import kotlinx.serialization.Serializable
-import org.british_information_technologies.gym_log_book.lib.serialisation.LocalDateTimeSerialiser
+import org.british_information_technologies.gym_library.serialisation.LocalDateTimeSerialiser
+
 import java.time.LocalDateTime
 
 @Serializable

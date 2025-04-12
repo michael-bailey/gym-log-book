@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.flow.flow
 import org.british_information_technologies.gym_log_book.activity.main_activity.MainActivity
-import org.british_information_technologies.gym_log_book.extension.activity
+import org.british_information_technologies.gym_log_book.extensions.activity
 import org.british_information_technologies.gym_log_book.lib.componenets.CardWithSwipeActions
 import org.british_information_technologies.gym_log_book.lib.componenets.scaffold.NavigationButton
 import java.time.temporal.ChronoUnit

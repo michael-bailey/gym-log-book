@@ -8,8 +8,8 @@ import androidx.compose.runtime.Composable
 import org.british_information_technologies.gym_log_book.activity.internal.debug_settings_activity.DebugSettingsActivity
 import org.british_information_technologies.gym_log_book.activity.internal.tasks_activity.TaskActivity
 import org.british_information_technologies.gym_log_book.activity.settings_activity.SettingsActivityIntentUtils
-import org.british_information_technologies.gym_log_book.extension.activity
-import org.british_information_technologies.gym_log_book.extension.startExportDataActivity
+import org.british_information_technologies.gym_log_book.extensions.activity
+import org.british_information_technologies.gym_log_book.extensions.startExportDataActivity
 
 @Composable
 fun Menu(

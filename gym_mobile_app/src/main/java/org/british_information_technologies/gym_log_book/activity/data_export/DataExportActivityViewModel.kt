@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import org.british_information_technologies.gym_log_book.data_type.shareable.ShareableExerciseEntryData
+import org.british_information_technologies.gym_library.data_type.shareable.ShareableExerciseEntryData
 import org.british_information_technologies.gym_log_book.repository.ExerciseEntryRepository
 import org.british_information_technologies.gym_log_book.repository.ExerciseTypeRepository
 import java.io.FileNotFoundException

@@ -15,7 +15,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.ImeAction
-import org.british_information_technologies.gym_log_book.data_type.EquipmentClass
+import org.british_information_technologies.gym_library.data_type.EquipmentClass
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
