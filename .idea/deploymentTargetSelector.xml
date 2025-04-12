@@ -4,10 +4,10 @@
     <selectionStates>
       <SelectionState runConfigName="Main Activity">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2024-06-30T16:35:05.706671Z">
+        <DropdownSelection timestamp="2025-04-12T08:13:17.128509Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="PhysicalDevice" identifier="serial=36131FDHS001TM" />
+              <DeviceId pluginId="LocalEmulator" identifier="path=/Users/michaelbailey/.android/avd/Wear_OS.avd" />
             </handle>
           </Target>
         </DropdownSelection>
@@ -16,7 +16,10 @@
       <SelectionState runConfigName="Guide Activity">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="SettingsActivity">
+      <SelectionState runConfigName="myapplication">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="MainActivity">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>

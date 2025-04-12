@@ -10,10 +10,11 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/gym_library" />
+            <option value="$PROJECT_DIR$/gym_mobile_app" />
+            <option value="$PROJECT_DIR$/gym_watch_app" />
           </set>
         </option>
-        <option name="resolveExternalAnnotations" value="false" />
       </GradleProjectSettings>
     </option>
   </component>

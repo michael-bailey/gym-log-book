@@ -13,4 +13,6 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "Gym_Log_Book"
-include ':app'
+include ':gym_mobile_app'
+include ':gym_watch_app'
+include ':gym_library'
