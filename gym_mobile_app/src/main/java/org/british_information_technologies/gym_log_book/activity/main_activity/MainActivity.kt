@@ -1,12 +1,10 @@
 package org.british_information_technologies.gym_log_book.activity.main_activity
 
-import android.Manifest
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.core.app.ActivityCompat
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import org.british_information_technologies.gym_log_book.activity.onboarding_activity.OnboardingActivityIntentUtils
@@ -25,15 +23,7 @@ class MainActivity : ComponentActivity() {
 			OnboardingActivityIntentUtils.startActivity(applicationContext)
 		}
 
-		ActivityCompat.requestPermissions(
-			this,
-			arrayOf(
-				Manifest.permission.POST_NOTIFICATIONS,
-				Manifest.permission.READ_CALENDAR,
-				Manifest.permission.WRITE_CALENDAR
-			),
-			100
-		)
+		lifecycle.addObserver(vm)
 
 		setContent {
 			val nav = rememberNavController()
@@ -46,6 +36,11 @@ class MainActivity : ComponentActivity() {
 				}
 			}
 		}
+	}
+
+	override fun onDestroy() {
+		super.onDestroy()
+		lifecycle.removeObserver(vm)
 	}
 }
 

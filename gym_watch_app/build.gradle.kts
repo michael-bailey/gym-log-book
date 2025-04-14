@@ -60,53 +60,48 @@ dependencies {
 	implementation(project(":gym_library"))
 
 	// android deps
-	implementation("androidx.core:core-ktx:1.16.0")
-	implementation("androidx.core:core-splashscreen:1.0.1")
-	implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.7")
-	implementation("androidx.lifecycle:lifecycle-livedata-ktx")
+	implementation(libs.androidx.core.ktx)
+	implementation(libs.bundles.lifecycle)
+	implementation(libs.androidx.core.splashscreen)
 
 	// google play deps
-	implementation("com.google.android.gms:play-services-wearable:19.0.0")
+	implementation(libs.play.services.wearable)
 
 	// compose deps
-	implementation(platform("androidx.compose:compose-bom:2025.04.00"))
+	implementation(platform(libs.compose.bom))
+	implementation(libs.bundles.compose)
 
-	implementation("androidx.compose.ui:ui")
-	implementation("androidx.compose.ui:ui-graphics")
-	implementation("androidx.compose.ui:ui-tooling-preview")
-	implementation("androidx.wear.compose:compose-material:1.4.1")
-	implementation("androidx.wear.compose:compose-foundation:1.4.1")
+	implementation(libs.wear.compose.material)
+	implementation(libs.wear.compose.foundation)
 
-	implementation("androidx.compose.ui:ui-tooling-preview")
-	implementation("androidx.compose.material3:material3")
-	implementation("androidx.compose.runtime:runtime-livedata")
-
-	implementation("androidx.activity:activity-compose:1.10.1")
-	implementation("androidx.compose.material:material-icons-extended:$compose_version")
+	debugImplementation(libs.compose.ui.tooling.preview)
+	implementation(libs.compose.material3)
+	implementation(libs.compose.material.icons.extended)
 
 	// tile deps
-	implementation("androidx.wear.tiles:tiles:1.4.1")
-	implementation("androidx.wear.tiles:tiles-material:1.4.1")
-	implementation("androidx.wear.tiles:tiles-tooling-preview:1.4.1")
+	implementation(libs.androidx.tiles)
+	implementation(libs.androidx.tiles.material)
+	implementation(libs.androidx.tiles.tooling.preview)
 
 	// horologist deps
-	implementation("com.google.android.horologist:horologist-compose-tools:0.6.23")
-	implementation("com.google.android.horologist:horologist-tiles:0.6.23")
-	implementation("androidx.wear.watchface:watchface-complications-data-source-ktx:1.2.1")
+	implementation(libs.horologist.compose.tools)
+	implementation(libs.horologist.tiles)
+	implementation(libs.androidx.watchface.complications.data.source.ktx)
 
 	// compose navigation
-	implementation("androidx.navigation:navigation-compose:$nav_version")
-	implementation("androidx.navigation:navigation-runtime-ktx:$nav_version")
+	implementation(libs.bundles.navigation)
+
 
 	// room database deps
-	implementation("androidx.room:room-runtime:$room_version")
-	implementation("androidx.room:room-ktx:$room_version")
-	kapt("androidx.room:room-compiler:$room_version")
+	implementation(libs.bundles.room)
+	kapt(libs.room.compiler)
+
+	// work manager deps
+	implementation(libs.work.manager)
 
 	// hilt deps
-	implementation("com.google.dagger:hilt-android:$hilt_version")
-	kapt("com.google.dagger:hilt-android-compiler:$hilt_version")
-	implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
+	implementation(libs.bundles.hilt)
+	kapt(libs.hilt.compiler)
 
 	// debug deps
 	implementation("androidx.wear:wear-tooling-preview:1.0.0")

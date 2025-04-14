@@ -68,26 +68,14 @@ android {
 
 dependencies {
 
-	val compose_version = "1.7.8"
-	val room_version = "2.7.0"
-	val nav_version = "2.8.9"
-	val gson_version = "2.9.0"
-	val work_version = "2.10.0"
-	val security_version = "1.0.0"
-	val hilt_version = "2.56.1"
-
 	implementation(project(":gym_library"))
-
-	// reflection
-	implementation(kotlin("reflect", version = "2.1.20"))
 
 	// android deps
 	implementation(libs.androidx.core.ktx)
 	implementation(libs.androidx.appcompat)
 	implementation(libs.androidx.constraintlayout)
-	implementation("androidx.navigation:navigation-fragment-ktx:$nav_version")
-	implementation("androidx.navigation:navigation-ui-ktx:$nav_version")
-
+	implementation(libs.navigation.fragment.ktx)
+	implementation(libs.navigation.ui.ktx)
 
 	// compose deps
 	implementation(platform(libs.compose.bom))
@@ -128,11 +116,11 @@ dependencies {
 	// bcrypt deps
 	implementation(libs.jbcrypt)
 
-	testImplementation("junit:junit:4.13.2")
-	androidTestImplementation("androidx.test.ext:junit:1.2.1")
-	androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
-	androidTestImplementation("androidx.compose.ui:ui-test-junit4:$compose_version")
-	debugImplementation("androidx.compose.ui:ui-tooling:$compose_version")
-	debugImplementation("androidx.compose.ui:ui-test-manifest:$compose_version")
-	testImplementation("org.mockito:mockito-core:5.17.0")
+	testImplementation(libs.junit)
+	androidTestImplementation(libs.junit.android)
+	androidTestImplementation(libs.espresso.core)
+	androidTestImplementation(libs.androidx.ui.test.junit4)
+	debugImplementation(libs.androidx.ui.tooling)
+	debugImplementation(libs.androidx.ui.test.manifest)
+	testImplementation(libs.mockito.core)
 }

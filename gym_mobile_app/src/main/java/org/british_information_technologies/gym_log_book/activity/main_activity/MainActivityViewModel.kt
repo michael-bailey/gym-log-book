@@ -4,6 +4,8 @@ import android.app.Application
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
@@ -35,7 +37,9 @@ class MainActivityViewModel @Inject constructor(
 	private val weightEntryRepository: WeightEntryRepository,
 	private val reminderRepository: ReminderRepository,
 	application: Application,
-) : AndroidViewModel(application), IExerciseEntryListViewModel {
+) : AndroidViewModel(application),
+	IExerciseEntryListViewModel,
+	DefaultLifecycleObserver {
 
 	// preference state
 	private val _onboardingOneShot = OneShotPreference("onboarding_complete")
@@ -61,18 +65,18 @@ class MainActivityViewModel @Inject constructor(
 
 	// ui state
 	override val exerciseListState = LazyListState(
-		0,
-		0
+		firstVisibleItemIndex = 0,
+		firstVisibleItemScrollOffset = 0
 	)
 
 	val exerciseTypeListState = LazyListState(
-		0,
-		0
+		firstVisibleItemIndex = 0,
+		firstVisibleItemScrollOffset = 0
 	)
 
 	val weightListState = LazyListState(
-		0,
-		0
+		firstVisibleItemIndex = 0,
+		firstVisibleItemScrollOffset = 0
 	)
 
 	val removedID = mutableStateOf<UUID?>(null)
@@ -100,10 +104,11 @@ class MainActivityViewModel @Inject constructor(
 		selectedReplacementType.value = id
 	}
 
-	fun initiateExerciseTypeDeletion(id: UUID) =
-		viewModelScope.launch(Dispatchers.IO) {
-			removedID.value = id
-		}
+	fun initiateExerciseTypeDeletion(
+		id: UUID
+	) = viewModelScope.launch(Dispatchers.IO) {
+		removedID.value = id
+	}
 
 	fun clearExerciseTypeDeletion() {
 		removedID.value = null
@@ -129,7 +134,6 @@ class MainActivityViewModel @Inject constructor(
 		weightEntryRepository.delete(uuid)
 	}
 
-
 	fun createNewType(
 		exerciseName: String,
 		usingUserWeight: Boolean,
@@ -140,7 +144,7 @@ class MainActivityViewModel @Inject constructor(
 			usingUserWeight,
 			equipmentClass = equipmentClass
 		)
-		}
+	}
 
 	fun getTypeFlow(id: UUID): Flow<EntExerciseType> =
 		exerciseTypeRepository.genType(id)
@@ -160,5 +164,21 @@ class MainActivityViewModel @Inject constructor(
 
 	fun getWeightFlow(id: UUID): LiveData<EntWeightEntry?> {
 		return weightEntryRepository.genWeight(id).asLiveData()
+	}
+
+	override fun onCreate(owner: LifecycleOwner) {
+		super.onCreate(owner)
+		viewModelScope.launch(Dispatchers.IO) {
+			// this needs to be moved to onboarding, and put behind button presses.
+//			ActivityCompat.requestPermissions(
+//				owner as Activity,
+//				arrayOf(
+//					Manifest.permission.POST_NOTIFICATIONS,
+//					Manifest.permission.READ_CALENDAR,
+//					Manifest.permission.WRITE_CALENDAR
+//				),
+//				100
+//			)
+		}
 	}
 }
