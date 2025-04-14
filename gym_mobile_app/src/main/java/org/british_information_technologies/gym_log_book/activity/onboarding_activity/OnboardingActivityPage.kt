@@ -3,6 +3,7 @@ package org.british_information_technologies.gym_log_book.activity.onboarding_ac
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Star
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import io.github.michael_bailey.android_chat_kit.utils.page.PageNavigation
 import org.british_information_technologies.gym_log_book.R
@@ -21,7 +22,7 @@ sealed class OnboardingActivityPage(
 		label = R.string.onboarding_start_page,
 		icon = Icons.Outlined.Star
 	) {
-		override val pageFunction: (OnboardingActivityViewModel) -> Unit
-			get() = TODO("Not yet implemented")
+		override val pageFunction: @Composable (OnboardingActivityViewModel) -> Unit
+			get() = { TODO("Not yet implemented") }
 	}
 }

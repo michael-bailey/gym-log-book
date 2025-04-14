@@ -19,11 +19,12 @@ class HomeTabViewModel @Inject constructor(
 ) : ViewModel() {
 
 	val lastGymVisit = exerciseRepository.exercises.map {
-		it.first()
+		it.firstOrNull()
 	}.map {
-		Period.between(it.createdDate, LocalDate.now())
+		it?.let { Period.between(it.createdDate, LocalDate.now()) }
 	}.map {
 		when {
+			it == null -> "None"
 			it.years > 0 -> "${it.years} Years ago"
 			it.months > 0 -> "${it.months} Months ago"
 			it.days > 7 -> "${it.days / 7} Weeks ago"

@@ -15,7 +15,7 @@ import org.british_information_technologies.gym_watch_app.database.entities.Test
 	],
 	views = [
 	],
-	version = 0,
+	version = 1,
 	exportSchema = true,
 	autoMigrations = []
 )

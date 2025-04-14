@@ -15,7 +15,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -52,7 +51,7 @@ fun HomeTabView(
 		Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
 			Card(modifier = Modifier.weight(1f)) {
 				Column(modifier = Modifier.padding(16.dp)) {
-					for (exercise in lastSessionsExercises!!) {
+					for (exercise in lastSessionsExercises ?: listOf()) {
 						Text(text = exercise)
 					}
 				}
@@ -62,11 +61,4 @@ fun HomeTabView(
 			}
 		}
 	}
-}
-
-@Preview
-@Composable
-fun preview() {
-	HomeTabView(
-	)
 }

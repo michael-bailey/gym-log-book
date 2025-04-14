@@ -23,9 +23,11 @@
 			android:name=".activity.main_activity.MainActivity"
 			android:exported="true"
 			android:label="@string/main_activity_title"
-			android:launchMode="singleInstancePerTask"
+			android:launchMode="standard"
+			android:resizeableActivity="true"
 			android:enableOnBackInvokedCallback="true"
-			android:theme="@style/Theme.Gym_Log_Book">
+			android:theme="@style/Theme.Gym_Log_Book"
+			tools:ignore="LockedOrientationActivity">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />
@@ -55,6 +57,7 @@
 			android:label="@string/title_activity_exercise_set_guide"
 			android:launchMode="singleInstance"
 			android:resizeableActivity="true"
+			android:enableOnBackInvokedCallback="true"
 			android:theme="@style/Theme.Gym_Log_Book"
 			tools:ignore="LockedOrientationActivity">
 			<intent-filter>

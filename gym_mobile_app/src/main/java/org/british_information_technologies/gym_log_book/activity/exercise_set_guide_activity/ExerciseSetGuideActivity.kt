@@ -4,6 +4,10 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,7 +34,12 @@ class ExerciseSetGuideActivity : ComponentActivity() {
 
 		setContent {
 			Gym_Log_BookTheme(colourNavBar = false) {
-				Main()
+				Surface(
+					modifier = Modifier.fillMaxSize(),
+					color = MaterialTheme.colorScheme.background
+				) {
+					Main()
+				}
 			}
 		}
 	}
