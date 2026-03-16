@@ -1,11 +1,10 @@
 plugins {
-	alias(libs.plugins.android.library)
-	alias(libs.plugins.kotlin.android)
+	alias(libs.plugins.androidLibrary)
 	alias(libs.plugins.hilt)
 	alias(libs.plugins.serialisation)
-	alias(libs.plugins.compose)
+	alias(libs.plugins.composeMultiplatform)
 
-	id("kotlin-kapt")
+	id("com.google.devtools.ksp")
 }
 
 android {
@@ -52,14 +51,14 @@ dependencies {
 
 	// room database deps
 	api(libs.bundles.room)
-	kapt(libs.room.compiler)
+	ksp(libs.room.compiler)
 
 	// work manager deps
 	api(libs.work.manager)
 
 	// hilt deps
 	api(libs.bundles.hilt)
-	kapt(libs.hilt.compiler)
+	ksp(libs.hilt.compiler)
 
 	// serialisation
 	implementation(libs.serialization.json)

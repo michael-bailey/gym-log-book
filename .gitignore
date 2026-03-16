@@ -17,3 +17,5 @@ local.properties
 /.idea/codeStyles/Project.xml
 /.idea/AndroidProjectSystem.xml
 /.idea/runConfigurations.xml
+/.idea/
+/gym_log_book_client/build

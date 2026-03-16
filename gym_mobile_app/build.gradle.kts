@@ -1,15 +1,16 @@
 plugins {
-	alias(libs.plugins.android.application)
-	alias(libs.plugins.kotlin.android)
+	alias(libs.plugins.androidApplication)
 	alias(libs.plugins.hilt)
 	alias(libs.plugins.serialisation)
-	alias(libs.plugins.compose)
+	alias(libs.plugins.composeMultiplatform)
+	alias(libs.plugins.composeCompiler)
 
-	id("kotlin-kapt")
+	id("com.google.devtools.ksp")
 }
 
-kapt {
-	correctErrorTypes = true
+ksp {
+
+//	correctErrorTypes = true
 }
 
 android {
@@ -27,10 +28,10 @@ android {
 		vectorDrawables {
 			useSupportLibrary = true
 		}
-		kapt {
-			arguments {
-				arg("room.schemaLocation", "$projectDir/schemas")
-			}
+		ksp {
+//			arguments {
+//				arg("room.schemaLocation", "$projectDir/schemas")
+//			}
 		}
 	}
 
@@ -94,14 +95,14 @@ dependencies {
 
 	// room database deps
 	implementation(libs.bundles.room)
-	kapt(libs.room.compiler)
+	ksp(libs.room.compiler)
 
 	// work manager deps
 	implementation(libs.work.manager)
 
 	// hilt deps
 	implementation(libs.bundles.hilt)
-	kapt(libs.hilt.compiler)
+	ksp(libs.hilt.compiler)
 
 	// security deps
 	implementation(libs.android.crypto)

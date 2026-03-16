@@ -1,14 +1,16 @@
 plugins {
-	id("com.android.application")
-	id("org.jetbrains.kotlin.android")
-	id("kotlin-kapt")
-	id("com.google.dagger.hilt.android")
+	alias(libs.plugins.androidApplication)
+	alias(libs.plugins.hilt)
+	alias(libs.plugins.composeMultiplatform)
+	alias(libs.plugins.composeCompiler)
+
+	id("com.google.devtools.ksp")
+
 	id("org.jetbrains.kotlin.plugin.serialization")
-	id("org.jetbrains.kotlin.plugin.compose")
 }
 
-kapt {
-	correctErrorTypes = true
+ksp {
+//	correctErrorTypes = true
 }
 
 android {
@@ -91,14 +93,14 @@ dependencies {
 
 	// room database deps
 	implementation(libs.bundles.room)
-	kapt(libs.room.compiler)
+	ksp(libs.room.compiler)
 
 	// work manager deps
 	implementation(libs.work.manager)
 
 	// hilt deps
 	implementation(libs.bundles.hilt)
-	kapt(libs.hilt.compiler)
+	ksp(libs.hilt.compiler)
 
 	// debug deps
 	implementation("androidx.wear:wear-tooling-preview:1.0.0")
