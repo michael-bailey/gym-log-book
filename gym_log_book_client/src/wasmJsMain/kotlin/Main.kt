@@ -1,26 +1,38 @@
-package net.michael_bailey.gym_log_book.wasm
+package net.michael_bailey.gym_log_book.client
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.window.ComposeViewport
+import io.ktor.client.*
+import io.ktor.client.engine.js.*
 import kotlinx.browser.document
+import kotlinx.rpc.krpc.ktor.client.installKrpc
+import kotlinx.rpc.krpc.ktor.client.rpc
+import kotlinx.rpc.krpc.ktor.client.rpcConfig
+import kotlinx.rpc.krpc.serialization.json.json
+import net.michael_bailey.gym_log_book.client.config.COUNTER_RPC_URL
+import net.michael_bailey.gym_log_book.client.counter.service.CounterClientService
+import net.michael_bailey.gym_log_book.client.counter.view.CounterApp
+import net.michael_bailey.gym_log_book.client.di.counterClientModule
+import org.koin.core.context.startKoin
 
 @OptIn(ExperimentalComposeUiApi::class)
 fun main() {
-	ComposeViewport(document.body!!) {
-
-		val (value, setValue) = remember { mutableStateOf("Hello world") }
-
-		Column {
-			Text("$value")
-
-			Button(onClick = { setValue("Clicked!") }) {
-				Text("Click Me!")
+	val httpClient = HttpClient(Js) {
+		installKrpc()
+	}
+	val rpcClient = httpClient.rpc(COUNTER_RPC_URL) {
+		rpcConfig {
+			serialization {
+				json()
 			}
 		}
+	}
+	val koin = startKoin {
+		modules(counterClientModule(rpcClient))
+	}.koin
+	val counterClientService = koin.get<CounterClientService>()
+
+	ComposeViewport(document.body!!) {
+		CounterApp(counterClientService)
 	}
 }

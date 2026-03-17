@@ -1,29 +1,26 @@
-val koin_version: String by project
-val koog_version: String by project
-val kotlin_version: String = "2.20.0"
-val logback_version: String by project
-
 plugins {
 	alias(libs.plugins.kotlinJvm)
-	id("io.ktor.plugin") version "3.4.1"
-}
-
-application {
-	mainClass = "io.ktor.server.netty.EngineMain"
+	alias(libs.plugins.serialisation)
+	alias(libs.plugins.krpc)
+	alias(libs.plugins.ktorServer)
 }
 
 kotlin {
 	jvmToolchain(21)
 }
 
+application {
+	mainClass = "io.ktor.server.netty.EngineMain"
+}
+
 dependencies {
-	implementation("io.ktor:ktor-server-core")
-	implementation("io.insert-koin:koin-ktor:4.1.1")
-	implementation("io.insert-koin:koin-logger-slf4j:4.1.1")
-	implementation("ai.koog:koog-ktor:0.6.4")
-	implementation("io.ktor:ktor-server-netty")
-	implementation("ch.qos.logback:logback-classic:1.5.32")
-	implementation("io.ktor:ktor-server-config-yaml")
-	testImplementation("io.ktor:ktor-server-test-host")
-	testImplementation("org.jetbrains.kotlin:kotlin-test-junit:2.3.0")
+	implementation(project(":gym_log_book_shared"))
+	implementation(libs.bundles.ktor.server)
+	implementation(libs.kotlinx.coroutines.core)
+
+	testImplementation(libs.kotlin.test.junit)
+	testImplementation(libs.kotlin.testCoroutines)
+	testImplementation(libs.ktor.server.test.host)
+	testImplementation(libs.bundles.ktor.client.jvm)
+	testImplementation(libs.bundles.ktor.client.common)
 }

@@ -5,12 +5,12 @@
 [versions]
 
 # --- Kotlin & Build Tools -----------------------------------------------------
-kotlin = "2.2.21"
+kotlin = "2.3.0"
 coroutines = "1.10.2"
 serialization = "1.9.0"
 datetime = "0.7.1"
 agp = "8.7.3"
-ksp = "2.2.21-2.0.4"
+ksp = "2.3.0"
 
 # --- Compose Multiplatform (Desktop + Wasm) -----------------------------------
 compose-multiplatform = "1.10.0"
@@ -71,7 +71,7 @@ mockk = "1.14.9"
 # --- Server / ktor ------------------------------------------------------------
 ktor = "3.4.1"
 koin = "4.1.1"
-krpc = "0.10.1"
+krpc = "0.10.2"
 
 
 # ==============================================================================
@@ -160,6 +160,8 @@ krpc-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-rpc-krpc-ser
 # --- Shared / ktor ------------------------------------------------------------
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
+ktor-client-js = { module = "io.ktor:ktor-client-js", version.ref = "ktor" }
+ktor-client-js-wasm = { module = "io.ktor:ktor-client-js-wasm-js", version.ref = "ktor" }
 ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
 ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
 
@@ -168,7 +170,9 @@ ktor-server-core = { module = "io.ktor:ktor-server-core-jvm", version.ref = "kto
 ktor-server-netty = { module = "io.ktor:ktor-server-netty-jvm", version.ref = "ktor" }
 ktor-server-config = { module = "io.ktor:ktor-server-config-yaml-jvm", version.ref = "ktor" }
 ktor-server-content-negotiation = { module = "io.ktor:ktor-server-content-negotiation-jvm", version.ref = "ktor" }
+ktor-server-websockets = { module = "io.ktor:ktor-server-websockets-jvm", version.ref = "ktor" }
 ktor-server-test-host = { module = "io.ktor:ktor-server-test-host-jvm", version.ref = "ktor" }
+koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 ktor-server-koin = { module = "io.insert-koin:koin-ktor", version.ref = "koin" }
 koin-logger-slf4j = { module = "io.insert-koin:koin-logger-slf4j", version.ref = "koin" }
 
@@ -202,17 +206,24 @@ ktor-client-common = [
     "ktor-serialization-kotlinx-json",
     "krpc-client",
     "krpc-ktor-client",
+    "krpc-serialization-json",
+    "koin-core",
 ]
 ktor-client-jvm = [
     "ktor-client-cio",
+]
+ktor-client-wasm = [
+    "ktor-client-js-wasm",
 ]
 ktor-server = [
     "ktor-server-core",
     "ktor-server-netty",
     "ktor-server-config",
     "ktor-server-content-negotiation",
+    "ktor-server-websockets",
     "ktor-server-koin",
     "koin-logger-slf4j",
+    "koin-core",
     "krpc-server",
     "krpc-ktor-server",
     "krpc-serialization-json",
