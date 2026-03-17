@@ -1,11 +1,10 @@
 plugins {
 	alias(libs.plugins.androidApplication)
+	alias(libs.plugins.kotlinAndroid)
 	alias(libs.plugins.hilt)
 	alias(libs.plugins.serialisation)
-	alias(libs.plugins.composeMultiplatform)
 	alias(libs.plugins.composeCompiler)
-
-	id("com.google.devtools.ksp")
+	alias(libs.plugins.ksp)
 }
 
 ksp {
@@ -53,9 +52,6 @@ android {
 	buildFeatures {
 		viewBinding = true
 		compose = true
-	}
-	composeOptions {
-		kotlinCompilerExtensionVersion = "1.5.10"
 	}
 	packaging {
 		resources {

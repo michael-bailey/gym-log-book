@@ -1,10 +1,9 @@
 plugins {
 	alias(libs.plugins.androidLibrary)
+	alias(libs.plugins.kotlinAndroid)
 	alias(libs.plugins.hilt)
 	alias(libs.plugins.serialisation)
-	alias(libs.plugins.composeMultiplatform)
-
-	id("com.google.devtools.ksp")
+	alias(libs.plugins.ksp)
 }
 
 android {
@@ -36,18 +35,13 @@ android {
 }
 
 dependencies {
-
-	api(kotlin("reflect", version = "2.1.20"))
+	api(kotlin("reflect"))
 
 	implementation(libs.androidx.core.ktx)
 	implementation(libs.androidx.appcompat)
-	implementation(libs.compose.material)
-
-	implementation(platform(libs.compose.bom))
 
 	// material design
 	implementation(libs.material)
-	implementation(libs.bundles.material.design)
 
 	// room database deps
 	api(libs.bundles.room)

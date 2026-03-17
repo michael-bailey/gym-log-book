@@ -5,11 +5,15 @@
 [versions]
 
 # --- Kotlin & Build Tools -----------------------------------------------------
-kotlin = "2.3.10"
+kotlin = "2.2.21"
+coroutines = "1.10.2"
+serialization = "1.9.0"
+datetime = "0.7.1"
 agp = "8.7.3"
+ksp = "2.2.21-2.0.4"
 
 # --- Compose Multiplatform (Desktop + Wasm) -----------------------------------
-compose-multiplatform = "1.10.2"
+compose-multiplatform = "1.10.0"
 
 # --- Android: Compose ---------------------------------------------------------
 composeBomVersion = "2026.03.00"
@@ -58,10 +62,16 @@ espresso_core_version = "3.7.0"
 mockitoCoreVersion = "5.23.0"
 
 # --- Shared / Multiplatform Libraries -----------------------------------------
-datetime_version = "0.7.1"
-json_serialisation_version = "1.10.0"
 jbcryptVersion = "0.4"
 gson_version = "2.9.0"
+
+# --- Shared / Testing ---------------------------------------------------------
+mockk = "1.14.9"
+
+# --- Server / ktor ------------------------------------------------------------
+ktor = "3.4.1"
+koin = "4.1.1"
+krpc = "0.10.1"
 
 
 # ==============================================================================
@@ -133,9 +143,40 @@ androidx-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", v
 androidx-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "uiToolingVersion" }
 
 # --- Shared / Multiplatform Libraries -----------------------------------------
-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "datetime_version" }
-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "json_serialisation_version" }
+datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "datetime" }
+serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 jbcrypt = { module = "org.mindrot:jbcrypt", version.ref = "jbcryptVersion" }
+gson = { module = "com.google.code.gson:gson", version.ref = "gson_version" }
+
+# --- Shared / RPC -------------------------------------------------------------
+krpc-core = { module = "org.jetbrains.kotlinx:kotlinx-rpc-core", version.ref = "krpc" }
+krpc-client = { module = "org.jetbrains.kotlinx:kotlinx-rpc-krpc-client", version.ref = "krpc" }
+krpc-ktor-client = { module = "org.jetbrains.kotlinx:kotlinx-rpc-krpc-ktor-client", version.ref = "krpc" }
+krpc-server = { module = "org.jetbrains.kotlinx:kotlinx-rpc-krpc-server", version.ref = "krpc" }
+krpc-ktor-server = { module = "org.jetbrains.kotlinx:kotlinx-rpc-krpc-ktor-server", version.ref = "krpc" }
+krpc-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-rpc-krpc-serialization-json", version.ref = "krpc" }
+
+# --- Shared / ktor ------------------------------------------------------------
+ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
+ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+
+# --- Server / ktor
+ktor-server-core = { module = "io.ktor:ktor-server-core-jvm", version.ref = "ktor" }
+ktor-server-netty = { module = "io.ktor:ktor-server-netty-jvm", version.ref = "ktor" }
+ktor-server-config = { module = "io.ktor:ktor-server-config-yaml-jvm", version.ref = "ktor" }
+ktor-server-content-negotiation = { module = "io.ktor:ktor-server-content-negotiation-jvm", version.ref = "ktor" }
+ktor-server-test-host = { module = "io.ktor:ktor-server-test-host-jvm", version.ref = "ktor" }
+ktor-server-koin = { module = "io.insert-koin:koin-ktor", version.ref = "koin" }
+koin-logger-slf4j = { module = "io.insert-koin:koin-logger-slf4j", version.ref = "koin" }
+
+# --- Shared / Testing ---------------------------------------------------------
+kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
+kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
+kotlin-testCoroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 
 
 # ==============================================================================
@@ -149,6 +190,38 @@ lifecycle = ["lifecycle-ktx", "androidx-livedata", "livedata-ktx"]
 material-design = ["material", "compose-material", "compose-material3", "compose-material-icons-extended"]
 navigation = ["navigation-compose", "navigation-runtime"]
 room = ["room-runtime", "room-ktx"]
+shared-contract = [
+    "datetime",
+    "serialization-json",
+    "kotlinx-coroutines-core",
+    "krpc-core",
+]
+ktor-client-common = [
+    "ktor-client-core",
+    "ktor-client-content-negotiation",
+    "ktor-serialization-kotlinx-json",
+    "krpc-client",
+    "krpc-ktor-client",
+]
+ktor-client-jvm = [
+    "ktor-client-cio",
+]
+ktor-server = [
+    "ktor-server-core",
+    "ktor-server-netty",
+    "ktor-server-config",
+    "ktor-server-content-negotiation",
+    "ktor-server-koin",
+    "koin-logger-slf4j",
+    "krpc-server",
+    "krpc-ktor-server",
+    "krpc-serialization-json",
+]
+test = [
+    "kotlin-test",
+    "kotlin-testCoroutines",
+    "mockk",
+]
 
 
 # ==============================================================================
@@ -156,6 +229,9 @@ room = ["room-runtime", "room-ktx"]
 # ==============================================================================
 
 [plugins]
+# --- Shared / Build Tools ----------------------------------------------------------
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+krpc = { id = "org.jetbrains.kotlinx.rpc.plugin", version.ref = "krpc" }
 
 # --- Android ------------------------------------------------------------------
 androidApplication = { id = "com.android.application", version.ref = "agp" }
@@ -166,10 +242,10 @@ serialisation = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref 
 
 # --- Multiplatform (Desktop + Wasm) -------------------------------------------
 
-
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }
 composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 
 # --- Server (Ktor) ------------------------------------------------------------
 kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+ktorServer = { id = "io.ktor.plugin", version.ref = "ktor" }

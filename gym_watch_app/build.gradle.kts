@@ -1,12 +1,10 @@
 plugins {
 	alias(libs.plugins.androidApplication)
+	alias(libs.plugins.kotlinAndroid)
 	alias(libs.plugins.hilt)
-	alias(libs.plugins.composeMultiplatform)
 	alias(libs.plugins.composeCompiler)
-
-	id("com.google.devtools.ksp")
-
-	id("org.jetbrains.kotlin.plugin.serialization")
+	alias(libs.plugins.ksp)
+	alias(libs.plugins.serialisation)
 }
 
 ksp {
@@ -47,15 +45,6 @@ android {
 }
 
 dependencies {
-
-	val compose_version = "1.7.8"
-	val room_version = "2.7.0"
-	val nav_version = "2.8.9"
-	val gson_version = "2.9.0"
-	val work_version = "2.10.0"
-	val security_version = "1.0.0"
-	val hilt_version = "2.56.1"
-
 	implementation(project(":gym_library"))
 
 	// android deps
