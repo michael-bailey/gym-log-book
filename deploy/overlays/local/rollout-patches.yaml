@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: gym-log-book-server
+spec:
+  replicas: 1
+  strategy:
+    blueGreen:
+      activeService: gym-log-book-server-stable
+      previewService: gym-log-book-server-preview
+      autoPromotionEnabled: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: gym-log-book-web
+spec:
+  replicas: 1
+  strategy:
+    blueGreen:
+      activeService: gym-log-book-web-stable
+      previewService: gym-log-book-web-preview
+      autoPromotionEnabled: true

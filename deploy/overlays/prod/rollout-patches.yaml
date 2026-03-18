@@ -1,0 +1,41 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: gym-log-book-server
+spec:
+  strategy:
+    canary:
+      stableService: gym-log-book-server-stable
+      canaryService: gym-log-book-server-preview
+      trafficRouting:
+        traefik:
+          weightedTraefikServiceName: gym-log-book-server-traffic
+      steps:
+        - setWeight: 10
+        - pause:
+            duration: 2m
+        - setWeight: 50
+        - pause:
+            duration: 5m
+        - setWeight: 100
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: gym-log-book-web
+spec:
+  strategy:
+    canary:
+      stableService: gym-log-book-web-stable
+      canaryService: gym-log-book-web-preview
+      trafficRouting:
+        traefik:
+          weightedTraefikServiceName: gym-log-book-web-traffic
+      steps:
+        - setWeight: 10
+        - pause:
+            duration: 2m
+        - setWeight: 50
+        - pause:
+            duration: 5m
+        - setWeight: 100

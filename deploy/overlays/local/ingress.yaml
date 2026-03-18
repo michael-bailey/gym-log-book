@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: gym-log-book
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: gym.127.0.0.1.sslip.io
+      http:
+        paths:
+          - path: /rpc
+            pathType: Prefix
+            backend:
+              service:
+                name: gym-log-book-server-stable
+                port:
+                  number: 8080
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: gym-log-book-web-stable
+                port:
+                  number: 80
