@@ -15,7 +15,7 @@ kotlin {
 	@OptIn(ExperimentalKotlinGradlePluginApi::class)
 	jvm("desktop") {
 		mainRun {
-			mainClass.set("net.michael_bailey.gym_log_book.MainKt")
+			mainClass.set("net.michael_bailey.gym_log_book.client.MainKt")
 		}
 	}
 
@@ -65,7 +65,7 @@ kotlin {
 
 compose.desktop {
 	application {
-		mainClass = "net.michael_bailey.gym_log_book.MainKt"
+		mainClass = "net.michael_bailey.gym_log_book.client.MainKt"
 	}
 }
 
@@ -76,7 +76,7 @@ val desktopFatJar by tasks.registering(Jar::class) {
 	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
 	manifest {
-		attributes["Main-Class"] = "net.michael_bailey.gym_log_book.MainKt"
+		attributes["Main-Class"] = "net.michael_bailey.gym_log_book.client.MainKt"
 	}
 
 	dependsOn("desktopJar")
