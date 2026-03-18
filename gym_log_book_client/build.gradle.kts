@@ -1,3 +1,4 @@
+import org.gradle.jvm.tasks.Jar
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 
@@ -14,7 +15,7 @@ kotlin {
 	@OptIn(ExperimentalKotlinGradlePluginApi::class)
 	jvm("desktop") {
 		mainRun {
-			mainClass.set("net.michael_bailey.gym_log_book.client.MainKt")
+			mainClass.set("net.michael_bailey.gym_log_book.MainKt")
 		}
 	}
 
@@ -60,4 +61,33 @@ kotlin {
 
 	jvmToolchain(21)
 
+}
+
+compose.desktop {
+	application {
+		mainClass = "net.michael_bailey.gym_log_book.MainKt"
+	}
+}
+
+val desktopFatJar by tasks.registering(Jar::class) {
+	group = "distribution"
+	description = "Assembles a runnable desktop jar with all runtime dependencies."
+	archiveClassifier.set("all")
+	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+	manifest {
+		attributes["Main-Class"] = "net.michael_bailey.gym_log_book.MainKt"
+	}
+
+	dependsOn("desktopJar")
+
+	val desktopJar = tasks.named("desktopJar", Jar::class)
+	from({
+		zipTree(desktopJar.get().archiveFile.get().asFile)
+	})
+	from({
+		configurations.getByName("desktopRuntimeClasspath").map { dependency ->
+			if (dependency.isDirectory) dependency else zipTree(dependency)
+		}
+	})
 }

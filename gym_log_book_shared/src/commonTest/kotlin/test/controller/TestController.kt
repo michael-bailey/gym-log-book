@@ -1,4 +1,4 @@
-package net.michael_bailey.gym_log_book.shared.test.controller
+package test.controller
 
 import kotlinx.rpc.annotations.Rpc
 
