@@ -1,11 +1,9 @@
 plugins {
-	alias(libs.plugins.android.library)
-	alias(libs.plugins.kotlin.android)
+	alias(libs.plugins.androidLibrary)
+	alias(libs.plugins.kotlinAndroid)
 	alias(libs.plugins.hilt)
 	alias(libs.plugins.serialisation)
-	alias(libs.plugins.compose)
-
-	id("kotlin-kapt")
+	alias(libs.plugins.ksp)
 }
 
 android {
@@ -34,35 +32,27 @@ android {
 		sourceCompatibility = JavaVersion.VERSION_11
 		targetCompatibility = JavaVersion.VERSION_11
 	}
-	kotlinOptions {
-		jvmTarget = "11"
-	}
 }
 
 dependencies {
-
-	api(kotlin("reflect", version = "2.1.20"))
+	api(kotlin("reflect"))
 
 	implementation(libs.androidx.core.ktx)
 	implementation(libs.androidx.appcompat)
-	implementation(libs.compose.material)
-
-	implementation(platform(libs.compose.bom))
 
 	// material design
 	implementation(libs.material)
-	implementation(libs.bundles.material.design)
 
 	// room database deps
 	api(libs.bundles.room)
-	kapt(libs.room.compiler)
+	ksp(libs.room.compiler)
 
 	// work manager deps
 	api(libs.work.manager)
 
 	// hilt deps
 	api(libs.bundles.hilt)
-	kapt(libs.hilt.compiler)
+	ksp(libs.hilt.compiler)
 
 	// serialisation
 	implementation(libs.serialization.json)

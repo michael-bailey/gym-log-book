@@ -1,122 +1,191 @@
+# ==============================================================================
+# VERSIONS
+# ==============================================================================
+
 [versions]
-android_version = "8.9.1"
-composeBomVersion = "2025.04.00"
-composeMaterialVersion = "1.4.1"
-coreSplashscreenVersion = "1.0.1"
-espresso_core_version = "3.6.1"
-horologistComposeToolsVersion = "0.6.23"
-junit = "1.2.1"
-junit-version = "4.13.2"
-kotlin_android_version = "1.9.22"
-hilt_version = "2.56.1"
-crypto_version = "1.0.0"
-lifecycleRuntimeKtxVersion = "2.8.7"
+
+# --- Kotlin & Build Tools -----------------------------------------------------
+kotlin = "2.3.0"
+coroutines = "1.10.2"
+serialization = "1.9.0"
+datetime = "0.7.1"
+agp = "8.7.3"
+ksp = "2.3.0"
+
+# --- Compose Multiplatform (Desktop + Wasm) -----------------------------------
+compose-multiplatform = "1.10.0"
+
+# --- Android: Compose ---------------------------------------------------------
+composeBomVersion = "2026.03.00"
+composeMaterialVersion = "1.5.6"
 materialIconsExtendedVersion = "1.7.8"
-material_version = "1.12.0"
-mockitoCoreVersion = "5.17.0"
-navigation-fragment-version = "2.8.9"
-playServicesWearableVersion = "19.0.0"
-serialisation_plugin_version = "2.1.10"
-compose_version = "2.0.21"
+material_version = "1.13.0"
+uiTestJunit4Version = "1.10.5"
+uiTestManifestVersion = "1.10.5"
+uiToolingVersion = "1.10.5"
 
-android_kotlin_core_version = "1.16.0"
-android_appcompat_version = "1.7.0"
+# --- Android: Core ------------------------------------------------------------
+android_kotlin_core_version = "1.18.0"
+android_appcompat_version = "1.7.1"
 android_constraint_layout_version = "2.2.1"
+coreSplashscreenVersion = "1.2.0"
+lifecycleRuntimeKtxVersion = "2.10.0"
 
-datetime_version = "0.6.2"
+# --- Android: Navigation ------------------------------------------------------
+navigation_version = "2.9.7"
+navigation-fragment-version = "2.9.7"
 
-hiltAndroidVersion = "2.56.1"
-hiltNavigationComposeVersion = "1.2.0"
+# --- Android: DI (Hilt) -------------------------------------------------------
+hilt_version = "2.58"
+hiltNavigationComposeVersion = "1.3.0"
 
+# --- Android: Room ------------------------------------------------------------
+room_version = "2.8.4"
+
+# --- Android: Work Manager ----------------------------------------------------
+workRuntimeVersion = "2.11.1"
+
+# --- Android: Security --------------------------------------------------------
+crypto_version = "1.1.0"
+
+# --- Android: Wear OS ---------------------------------------------------------
+playServicesWearableVersion = "19.0.0"
+horologistComposeToolsVersion = "0.7.15"
+tilesVersion = "1.5.0"
+tilesMaterialVersion = "1.5.0"
+watchfaceComplicationsDataSourceKtxVersion = "1.3.0"
+
+# --- Android: Testing ---------------------------------------------------------
+junit-version = "4.13.2"
+junit = "1.3.0"
+espresso_core_version = "3.7.0"
+mockitoCoreVersion = "5.23.0"
+
+# --- Shared / Multiplatform Libraries -----------------------------------------
 jbcryptVersion = "0.4"
-
-navigation_version = "2.8.9"
-
-room_version = "2.7.0"
-
-json_serialisation_version = "1.8.1"
-
-
-nav_version = "2.8.9"
 gson_version = "2.9.0"
-tilesMaterialVersion = "1.4.1"
-tilesToolingPreviewVersion = "1.4.1"
-tilesVersion = "1.4.1"
-uiTestJunit4Version = "1.7.8"
-uiTestManifestVersion = "1.7.8"
-uiToolingVersion = "1.7.8"
-watchfaceComplicationsDataSourceKtxVersion = "1.2.1"
-work_version = "2.10.0"
-security_version = "1.0.0"
-workRuntimeVersion = "2.10.0"
+
+# --- Shared / Testing ---------------------------------------------------------
+mockk = "1.14.9"
+
+# --- Server / ktor ------------------------------------------------------------
+ktor = "3.4.1"
+koin = "4.1.1"
+krpc = "0.10.2"
+
+
+# ==============================================================================
+# LIBRARIES
+# ==============================================================================
 
 [libraries]
+
+# --- Android: Core ------------------------------------------------------------
+androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "android_kotlin_core_version" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "android_appcompat_version" }
 androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "android_constraint_layout_version" }
-androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "android_kotlin_core_version" }
-
-android-crypto = { module = "androidx.security:security-crypto", version.ref = "crypto_version" }
-
-
 androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreenVersion" }
-androidx-tiles = { module = "androidx.wear.tiles:tiles", version.ref = "tilesVersion" }
-androidx-tiles-material = { module = "androidx.wear.tiles:tiles-material", version.ref = "tilesMaterialVersion" }
-androidx-tiles-tooling-preview = { module = "androidx.wear.tiles:tiles-tooling-preview", version.ref = "tilesToolingPreviewVersion" }
-navigation-fragment-ktx = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation-fragment-version" }
-navigation-ui-ktx = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation-fragment-version" }
-livedata-ktx = { module = "androidx.lifecycle:lifecycle-livedata-ktx" }
 lifecycle-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtxVersion" }
+livedata-ktx = { module = "androidx.lifecycle:lifecycle-livedata-ktx" }
 androidx-livedata = { module = "androidx.compose.runtime:runtime-livedata" }
 
+# --- Android: Compose ---------------------------------------------------------
 compose-bom = { module = "androidx.compose:compose-bom", version.ref = "composeBomVersion" }
 compose-activity = { module = "androidx.activity:activity-compose" }
 compose-ui = { module = "androidx.compose.ui:ui" }
 compose-ui-graphics = { module = "androidx.compose.ui:ui-graphics" }
 compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
-
-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "datetime_version" }
-
-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroidVersion" }
-hilt-navigation = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationComposeVersion" }
-hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltAndroidVersion" }
-
-jbcrypt = { module = "org.mindrot:jbcrypt", version.ref = "jbcryptVersion" }
-
-material = { module = "com.google.android.material:material", version.ref = "material_version" }
 compose-material = { module = "androidx.compose.material:material" }
 compose-material3 = { module = "androidx.compose.material3:material3" }
 compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsExtendedVersion" }
+material = { module = "com.google.android.material:material", version.ref = "material_version" }
 
+# --- Android: Navigation ------------------------------------------------------
 navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation_version" }
 navigation-runtime = { module = "androidx.navigation:navigation-runtime-ktx", version.ref = "navigation_version" }
+navigation-fragment-ktx = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation-fragment-version" }
+navigation-ui-ktx = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation-fragment-version" }
 
-play-services-wearable = { module = "com.google.android.gms:play-services-wearable", version.ref = "playServicesWearableVersion" }
-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room_version" }
-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room_version" }
+# --- Android: DI (Hilt) -------------------------------------------------------
+hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt_version" }
+hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt_version" }
+hilt-navigation = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationComposeVersion" }
+
+# --- Android: Room ------------------------------------------------------------
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room_version" }
+room-ktx = { module = "androidx.room:room-ktx", version.ref = "room_version" }
+room-compiler = { module = "androidx.room:room-compiler", version.ref = "room_version" }
 
-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "json_serialisation_version" }
-
+# --- Android: Work Manager ----------------------------------------------------
 work-manager = { module = "androidx.work:work-runtime", version.ref = "workRuntimeVersion" }
 
+# --- Android: Security --------------------------------------------------------
+android-crypto = { module = "androidx.security:security-crypto", version.ref = "crypto_version" }
+
+# --- Android: Wear OS ---------------------------------------------------------
+play-services-wearable = { module = "com.google.android.gms:play-services-wearable", version.ref = "playServicesWearableVersion" }
 wear-compose-foundation = { module = "androidx.wear.compose:compose-foundation", version.ref = "composeMaterialVersion" }
 wear-compose-material = { module = "androidx.wear.compose:compose-material", version.ref = "composeMaterialVersion" }
-
+androidx-tiles = { module = "androidx.wear.tiles:tiles", version.ref = "tilesVersion" }
+androidx-tiles-material = { module = "androidx.wear.tiles:tiles-material", version.ref = "tilesMaterialVersion" }
+androidx-tiles-tooling-preview = { module = "androidx.wear.tiles:tiles-tooling-preview", version.ref = "tilesMaterialVersion" }
 androidx-watchface-complications-data-source-ktx = { module = "androidx.wear.watchface:watchface-complications-data-source-ktx", version.ref = "watchfaceComplicationsDataSourceKtxVersion" }
-
 horologist-compose-tools = { module = "com.google.android.horologist:horologist-compose-tools", version.ref = "horologistComposeToolsVersion" }
 horologist-tiles = { module = "com.google.android.horologist:horologist-tiles", version.ref = "horologistComposeToolsVersion" }
 
-# unti testing deps
+# --- Android: Testing ---------------------------------------------------------
 junit = { module = "junit:junit", version.ref = "junit-version" }
 junit-android = { module = "androidx.test.ext:junit", version.ref = "junit" }
-
+espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espresso_core_version" }
+mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockitoCoreVersion" }
 androidx-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "uiTestJunit4Version" }
 androidx-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "uiTestManifestVersion" }
 androidx-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "uiToolingVersion" }
 
-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espresso_core_version" }
-mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockitoCoreVersion" }
+# --- Shared / Multiplatform Libraries -----------------------------------------
+datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "datetime" }
+serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
+jbcrypt = { module = "org.mindrot:jbcrypt", version.ref = "jbcryptVersion" }
+gson = { module = "com.google.code.gson:gson", version.ref = "gson_version" }
+
+# --- Shared / RPC -------------------------------------------------------------
+krpc-core = { module = "org.jetbrains.kotlinx:kotlinx-rpc-core", version.ref = "krpc" }
+krpc-client = { module = "org.jetbrains.kotlinx:kotlinx-rpc-krpc-client", version.ref = "krpc" }
+krpc-ktor-client = { module = "org.jetbrains.kotlinx:kotlinx-rpc-krpc-ktor-client", version.ref = "krpc" }
+krpc-server = { module = "org.jetbrains.kotlinx:kotlinx-rpc-krpc-server", version.ref = "krpc" }
+krpc-ktor-server = { module = "org.jetbrains.kotlinx:kotlinx-rpc-krpc-ktor-server", version.ref = "krpc" }
+krpc-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-rpc-krpc-serialization-json", version.ref = "krpc" }
+
+# --- Shared / ktor ------------------------------------------------------------
+ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
+ktor-client-js = { module = "io.ktor:ktor-client-js", version.ref = "ktor" }
+ktor-client-js-wasm = { module = "io.ktor:ktor-client-js-wasm-js", version.ref = "ktor" }
+ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+
+# --- Server / ktor
+ktor-server-core = { module = "io.ktor:ktor-server-core-jvm", version.ref = "ktor" }
+ktor-server-netty = { module = "io.ktor:ktor-server-netty-jvm", version.ref = "ktor" }
+ktor-server-config = { module = "io.ktor:ktor-server-config-yaml-jvm", version.ref = "ktor" }
+ktor-server-content-negotiation = { module = "io.ktor:ktor-server-content-negotiation-jvm", version.ref = "ktor" }
+ktor-server-websockets = { module = "io.ktor:ktor-server-websockets-jvm", version.ref = "ktor" }
+ktor-server-test-host = { module = "io.ktor:ktor-server-test-host-jvm", version.ref = "ktor" }
+koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
+ktor-server-koin = { module = "io.insert-koin:koin-ktor", version.ref = "koin" }
+koin-logger-slf4j = { module = "io.insert-koin:koin-logger-slf4j", version.ref = "koin" }
+
+# --- Shared / Testing ---------------------------------------------------------
+kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
+kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
+kotlin-testCoroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+
+
+# ==============================================================================
+# BUNDLES
+# ==============================================================================
 
 [bundles]
 compose = ["compose-activity", "compose-ui", "compose-ui-graphics", "compose-ui-tooling-preview"]
@@ -125,11 +194,69 @@ lifecycle = ["lifecycle-ktx", "androidx-livedata", "livedata-ktx"]
 material-design = ["material", "compose-material", "compose-material3", "compose-material-icons-extended"]
 navigation = ["navigation-compose", "navigation-runtime"]
 room = ["room-runtime", "room-ktx"]
+shared-contract = [
+    "datetime",
+    "serialization-json",
+    "kotlinx-coroutines-core",
+    "krpc-core",
+]
+ktor-client-common = [
+    "ktor-client-core",
+    "ktor-client-content-negotiation",
+    "ktor-serialization-kotlinx-json",
+    "krpc-client",
+    "krpc-ktor-client",
+    "krpc-serialization-json",
+    "koin-core",
+]
+ktor-client-jvm = [
+    "ktor-client-cio",
+]
+ktor-client-wasm = [
+    "ktor-client-js-wasm",
+]
+ktor-server = [
+    "ktor-server-core",
+    "ktor-server-netty",
+    "ktor-server-config",
+    "ktor-server-content-negotiation",
+    "ktor-server-websockets",
+    "ktor-server-koin",
+    "koin-logger-slf4j",
+    "koin-core",
+    "krpc-server",
+    "krpc-ktor-server",
+    "krpc-serialization-json",
+]
+test = [
+    "kotlin-test",
+    "kotlin-testCoroutines",
+    "mockk",
+]
+
+
+# ==============================================================================
+# PLUGINS
+# ==============================================================================
 
 [plugins]
-android-application = { id = "com.android.application", version.ref = "android_version" }
-android-library = { id = "com.android.library", version.ref = "android_version" }
-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin_android_version" }
+# --- Shared / Build Tools ----------------------------------------------------------
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+krpc = { id = "org.jetbrains.kotlinx.rpc.plugin", version.ref = "krpc" }
+
+# --- Android ------------------------------------------------------------------
+androidApplication = { id = "com.android.application", version.ref = "agp" }
+androidLibrary = { id = "com.android.library", version.ref = "agp" }
+kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt_version" }
-serialisation = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "serialisation_plugin_version" }
-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "compose_version" }
+serialisation = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+
+# --- Multiplatform (Desktop + Wasm) -------------------------------------------
+
+kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }
+composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+
+# --- Server (Ktor) ------------------------------------------------------------
+kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+ktorServer = { id = "io.ktor.plugin", version.ref = "ktor" }

@@ -1,14 +1,14 @@
 plugins {
-	id("com.android.application")
-	id("org.jetbrains.kotlin.android")
-	id("kotlin-kapt")
-	id("com.google.dagger.hilt.android")
-	id("org.jetbrains.kotlin.plugin.serialization")
-	id("org.jetbrains.kotlin.plugin.compose")
+	alias(libs.plugins.androidApplication)
+	alias(libs.plugins.kotlinAndroid)
+	alias(libs.plugins.hilt)
+	alias(libs.plugins.composeCompiler)
+	alias(libs.plugins.ksp)
+	alias(libs.plugins.serialisation)
 }
 
-kapt {
-	correctErrorTypes = true
+ksp {
+//	correctErrorTypes = true
 }
 
 android {
@@ -39,24 +39,12 @@ android {
 		sourceCompatibility = JavaVersion.VERSION_11
 		targetCompatibility = JavaVersion.VERSION_11
 	}
-	kotlinOptions {
-		jvmTarget = "11"
-	}
 	buildFeatures {
 		compose = true
 	}
 }
 
 dependencies {
-
-	val compose_version = "1.7.8"
-	val room_version = "2.7.0"
-	val nav_version = "2.8.9"
-	val gson_version = "2.9.0"
-	val work_version = "2.10.0"
-	val security_version = "1.0.0"
-	val hilt_version = "2.56.1"
-
 	implementation(project(":gym_library"))
 
 	// android deps
@@ -94,14 +82,14 @@ dependencies {
 
 	// room database deps
 	implementation(libs.bundles.room)
-	kapt(libs.room.compiler)
+	ksp(libs.room.compiler)
 
 	// work manager deps
 	implementation(libs.work.manager)
 
 	// hilt deps
 	implementation(libs.bundles.hilt)
-	kapt(libs.hilt.compiler)
+	ksp(libs.hilt.compiler)
 
 	// debug deps
 	implementation("androidx.wear:wear-tooling-preview:1.0.0")
