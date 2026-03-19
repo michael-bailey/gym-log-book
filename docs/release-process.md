@@ -4,7 +4,6 @@ Production promotion is tag-driven.
 
 ## How to release
 
-1. Merge the desired code to `main`.
 1. Merge the desired code to `master`.
 2. Create and push a release tag:
 
