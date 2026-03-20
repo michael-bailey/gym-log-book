@@ -1,0 +1,33 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: TraefikService
+metadata:
+  name: gym-log-book-server-traffic
+  namespace: gym-log-book
+spec:
+  weighted:
+    services:
+      - name: gym-log-book-server-stable
+        port: 8080
+        kind: Service
+        weight: 1
+      - name: gym-log-book-server-preview
+        port: 8080
+        kind: Service
+        weight: 0
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: TraefikService
+metadata:
+  name: gym-log-book-web-traffic
+  namespace: gym-log-book
+spec:
+  weighted:
+    services:
+      - name: gym-log-book-web-stable
+        port: 80
+        kind: Service
+        weight: 1
+      - name: gym-log-book-web-preview
+        port: 80
+        kind: Service
+        weight: 0

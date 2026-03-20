@@ -1,0 +1,26 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: gym-log-book
+  namespace: gym-log-book
+  annotations:
+    kubernetes.io/ingress.class: traefik
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host("gym.british-information-technologies.org") && PathPrefix("/rpc")
+      kind: Rule
+      priority: 120
+      services:
+        - name: gym-log-book-server-traffic
+          kind: TraefikService
+    - match: Host("gym.british-information-technologies.org") && PathPrefix("/")
+      kind: Rule
+      priority: 110
+      services:
+        - name: gym-log-book-web-traffic
+          kind: TraefikService
+          namespace: gym-log-book
+  tls:
+    secretName: gym-log-book-tls

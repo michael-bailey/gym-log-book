@@ -10,7 +10,7 @@ kotlin {
 }
 
 application {
-	mainClass = "io.ktor.server.netty.EngineMain"
+	mainClass = "net.michael_bailey.gym_log_book.server.MainKt"
 }
 
 dependencies {
