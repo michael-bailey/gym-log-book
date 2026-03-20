@@ -1,0 +1,79 @@
+name: Promote Production
+
+on:
+  release:
+    types:
+      - published
+
+permissions:
+  contents: write
+  deployments: write
+
+jobs:
+  promote:
+    if: startsWith(github.event.release.tag_name, 'v')
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://${{ vars.PROD_HOSTNAME }}
+
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@v4
+        with:
+          ref: master
+
+      - name: Update prod image tags
+        shell: bash
+        run: |
+          owner="$(echo "${GITHUB_REPOSITORY_OWNER}" | tr '[:upper:]' '[:lower:]')"
+          tag="${{ github.event.release.tag_name }}"
+          server_image="ghcr.io/${owner}/gym-log-book-server:${tag}"
+          web_image="ghcr.io/${owner}/gym-log-book-web:${tag}"
+
+          sed -i.bak -E "s#image: ghcr.io/.*/gym-log-book-server:.*#image: ${server_image}#" deploy/overlays/prod/image-patches.yaml
+          sed -i.bak -E "s#image: ghcr.io/.*/gym-log-book-web:.*#image: ${web_image}#" deploy/overlays/prod/image-patches.yaml
+          rm deploy/overlays/prod/image-patches.yaml.bak
+
+      - name: Commit prod promotion
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          if git diff --quiet -- deploy/overlays/prod/image-patches.yaml; then
+            echo "No production manifest changes to commit."
+            exit 0
+          fi
+
+          git add deploy/overlays/prod/image-patches.yaml
+          git commit -m "chore: promote production to ${{ github.event.release.tag_name }} [skip ci]"
+          git push origin HEAD:master
+
+      - name: Install Argo CD CLI
+        shell: bash
+        run: |
+          curl -sSL -o argocd https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
+          chmod +x argocd
+          sudo mv argocd /usr/local/bin/argocd
+
+      - name: Wait for Argo CD sync
+        shell: bash
+        env:
+          ARGOCD_SERVER: ${{ secrets.ARGOCD_SERVER }}
+          ARGOCD_AUTH_TOKEN: ${{ secrets.ARGOCD_AUTH_TOKEN }}
+          ARGOCD_INSECURE: ${{ vars.ARGOCD_INSECURE }}
+        run: |
+          insecure_args=""
+          if [ "${ARGOCD_INSECURE}" = "true" ]; then
+            insecure_args="--insecure"
+          fi
+
+          argocd app wait gym-log-book-prod \
+            --server "${ARGOCD_SERVER}" \
+            --auth-token "${ARGOCD_AUTH_TOKEN}" \
+            --grpc-web \
+            ${insecure_args} \
+            --health \
+            --sync \
+            --timeout 900

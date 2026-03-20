@@ -1,0 +1,22 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: gym-log-book
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`gym.example.com`) && PathPrefix(`/rpc`)
+      kind: Rule
+      priority: 20
+      services:
+        - name: gym-log-book-server-traffic
+          kind: TraefikService
+    - match: Host(`gym.example.com`) && PathPrefix(`/`)
+      kind: Rule
+      priority: 10
+      services:
+        - name: gym-log-book-web-traffic
+          kind: TraefikService
+  tls:
+    secretName: gym-log-book-tls

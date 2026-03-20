@@ -11,3 +11,14 @@ As well as being a scratch pad to, tests new user interface designs, and experim
 - add scriptability to introspect and modify data on the fly.
 
 > This app can be unstable, as i have a habit of restructuring sections of this app rapidly.
+
+## DevOps
+
+This repo includes a GitOps deployment layout using Argo CD, Kustomize, GitHub Actions, and Argo Rollouts.
+
+Start with:
+
+- [DevOps overview](docs/devops-overview.md)
+- [Local setup](docs/local-setup.md)
+- [Production setup](docs/prod-setup.md)
+- [Release process](docs/release-process.md)

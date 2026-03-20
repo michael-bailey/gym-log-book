@@ -1,6 +1,7 @@
-package net.michael_bailey.gym_log_book
+package net.michael_bailey.gym_log_book.server
 
 import io.ktor.server.application.*
+import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -19,7 +20,6 @@ import org.koin.ktor.plugin.Koin
 private val applicationScopeQualifier = named("applicationScope")
 
 fun Application.module() {
-
 	println("Starting application module")
 
 	val applicationScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
@@ -44,7 +44,11 @@ fun Application.module() {
 	}
 
 	routing {
-		rpc("/counter") {
+		get("/healthz") {
+			call.respondText("ok")
+		}
+
+		rpc("/rpc/counter") {
 			registerService<CounterController> {
 				get()
 			}
