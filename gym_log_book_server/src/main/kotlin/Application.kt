@@ -30,7 +30,7 @@ fun Application.module() {
 
 	install(Koin) {
 		modules(
-			counterModule(applicationScope),
+			counterModule(),
 			module {
 				single(applicationScopeQualifier) { applicationScope }
 			},
