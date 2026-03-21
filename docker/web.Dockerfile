@@ -9,6 +9,8 @@ COPY settings.gradle.kts build.gradle.kts gradle.properties ./
 COPY gym_log_book_client gym_log_book_client
 COPY gym_log_book_shared gym_log_book_shared
 
+RUN apt-get update && apt-get install -y libatomic1 && rm -rf /var/lib/apt/lists/*
+
 RUN chmod +x gradlew && ./gradlew :gym_log_book_client:wasmJsBrowserDistribution --no-daemon
 
 FROM nginx:1.27-alpine
