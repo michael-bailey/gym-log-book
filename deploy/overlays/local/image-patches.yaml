@@ -34,7 +34,7 @@ spec:
     spec:
       containers:
         - name: web
-          image: gym-log-book-web:dev
+          image: michaelbailey128/gym-log-book-web:dev
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
