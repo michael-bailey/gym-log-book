@@ -174,7 +174,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: ./gym_log_book_client/Dockerfile
+          file: ./docker/server.Dockerfile
           push: true
           tags: |
             ghcr.io/${{ github.repository }}/web:${{ github.sha }}
@@ -234,7 +234,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./gym_log_book_server        # ← context is the subproject dir
-          file: ./gym_log_book_server/docker/server.Dockerfile
+          file: ./docker/server.Dockerfile
           push: true
           tags: |
             ghcr.io/${{ github.repository }}/server:${{ github.sha }}
