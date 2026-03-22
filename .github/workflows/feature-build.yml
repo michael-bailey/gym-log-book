@@ -234,11 +234,10 @@ jobs:
       - name: Build and push server image
         uses: docker/build-push-action@v5
         with:
-          context: .
-          file: ./gym_log_book_server/Dockerfile
+          context: ./gym_log_book_server        # ← context is the subproject dir
+          file: ./gym_log_book_server/docker/server.Dockerfile
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}/server:latest
-            ghcr.io/${{ github.repository }}/server:${{ github.sha }}
+            ghcr.io/${{ github.repository }}/server:${{ github. }}
           cache-from: type=gha,scope=server
           cache-to: type=gha,scope=server,mode=max
