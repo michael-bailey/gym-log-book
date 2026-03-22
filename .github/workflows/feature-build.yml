@@ -238,6 +238,6 @@ jobs:
           file: ./gym_log_book_server/docker/server.Dockerfile
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}/server:${{ github.event.pull_request.number }}:${{ github.sha }}
+            ghcr.io/${{ github.repository }}/server:${{ github.sha }}
           cache-from: type=gha,scope=server
           cache-to: type=gha,scope=server,mode=max
