@@ -233,7 +233,7 @@ jobs:
       - name: Build and push server image
         uses: docker/build-push-action@v5
         with:
-          context: ./gym_log_book_server        # ← context is the subproject dir
+          context: .
           file: ./docker/server.Dockerfile
           push: true
           tags: |
