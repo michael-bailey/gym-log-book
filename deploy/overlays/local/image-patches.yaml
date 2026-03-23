@@ -34,7 +34,7 @@ spec:
     spec:
       containers:
         - name: web
-          image: ghcr.io/michael-bailey/gym-log-book/server:dev
+          image: ghcr.io/michael-bailey/gym-log-book/web:dev
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
