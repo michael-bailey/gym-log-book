@@ -181,6 +181,7 @@ jobs:
           sbom: false
           tags: |
             ghcr.io/${{ github.repository }}/web:${{ github.sha }}
+            ghcr.io/${{ github.repository }}/web:dev
           cache-from: type=gha,scope=web
           cache-to: type=gha,scope=web,mode=max
 
@@ -244,5 +245,6 @@ jobs:
           sbom: false
           tags: |
             ghcr.io/${{ github.repository }}/server:${{ github.sha }}
+            ghcr.io/${{ github.repository }}/server:dev
           cache-from: type=gha,scope=server
           cache-to: type=gha,scope=server,mode=max
