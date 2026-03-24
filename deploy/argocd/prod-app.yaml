@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/YOUR_GITHUB_USERNAME/Gym_Log_Book.git
+    repoURL: https://github.com/michael-bailey/gym-log-book.git
     targetRevision: master
     path: deploy/overlays/prod
   destination:
