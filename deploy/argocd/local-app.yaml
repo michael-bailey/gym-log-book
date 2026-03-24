@@ -12,7 +12,7 @@ spec:
     path: deploy/overlays/local
   destination:
     server: https://kubernetes.default.svc
-    namespace: gym-log-book
+    namespace: gym-log-book-local
   syncPolicy:
     automated:
       prune: true
