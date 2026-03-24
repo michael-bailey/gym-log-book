@@ -6,6 +6,12 @@ on:
       - docs/**
       - README.md
 
+
+permissions:
+  contents: read
+  packages: write
+
+
 jobs:
 
   # ════════════════════════════════════════
