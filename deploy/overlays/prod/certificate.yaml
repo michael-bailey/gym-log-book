@@ -5,7 +5,7 @@ metadata:
 spec:
   secretName: gym-log-book-tls
   dnsNames:
-    - gym.example.com
+    - gym.british-information-technologies.org
   issuerRef:
     kind: ClusterIssuer
     name: letsencrypt-prod
