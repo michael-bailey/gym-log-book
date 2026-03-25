@@ -7,7 +7,7 @@ spec:
     spec:
       containers:
         - name: server
-          image: ghcr.io/michael-bailey/gym-log-book-server:master
+          image: ghcr.io/michael-bailey/gym-log-book/server:master
           imagePullPolicy: Always
           ports:
             - name: http
@@ -34,7 +34,7 @@ spec:
     spec:
       containers:
         - name: web
-          image: ghcr.io/michael-bailey/gym-log-book-web:master
+          image: ghcr.io/michael-bailey/gym-log-book/web:master
           imagePullPolicy: Always
           ports:
             - name: http
