@@ -15,8 +15,8 @@ spec:
     spec:
       containers:
         - name: web
-          image: ghcr.io/example-owner/gym-log-book-web:0.0.0-placeholder
-          imagePullPolicy: IfNotPresent
+          image: ghcr.io/michael-bailey/gym-log-book/web:master
+          imagePullPolicy: Always
           ports:
             - name: http
               containerPort: 80
