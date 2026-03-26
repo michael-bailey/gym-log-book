@@ -5,7 +5,10 @@ on:
   push:
     branches:
       - 'feature/**'
-
+    paths-ignore:
+      - docs/**
+      - README.md
+      - deploy/**
 permissions:
   contents: read
   packages: write
