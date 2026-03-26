@@ -20,5 +20,6 @@ spec:
       services:
         - name: gym-log-book-web-traffic
           kind: TraefikService
+          namespace: gym-log-book
   tls:
     secretName: gym-log-book-tls
