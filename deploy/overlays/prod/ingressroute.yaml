@@ -1,30 +1,22 @@
-apiVersion: networking.k8s.io/v1
-kind: Ingress
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
 metadata:
   name: gym-log-book
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-prod
 spec:
-  ingressClassName: traefik
-  rules:
-    - host: gym.british-information-technologies.org
-      http:
-        paths:
-          - path: /rpc
-            pathType: Prefix
-            backend:
-              service:
-                name: gym-log-book-server-stable
-                port:
-                  number: 8080
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: gym-log-book-web-stable
-                port:
-                  number: 80
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`gym.british-information-technologies.org`) && PathPrefix(`/rpc`)
+      kind: Rule
+      priority: 20
+      services:
+        - name: gym-log-book-server-traffic
+          kind: TraefikService
+    - match: Host(`gym.british-information-technologies.org`) && PathPrefix(`/`)
+      kind: Rule
+      priority: 10
+      services:
+        - name: gym-log-book-web-traffic
+          kind: TraefikService
   tls:
-    - hosts:
-        - gym.british-information-technologies.org
-      secretName: gym-log-book-tls
+    secretName: gym-log-book-tls
