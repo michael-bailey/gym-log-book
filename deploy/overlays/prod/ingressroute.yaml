@@ -15,7 +15,6 @@ spec:
       services:
         - name: gym-log-book-server-traffic
           kind: TraefikService
-          namespace: gym-log-book
     - match: Host("gym.british-information-technologies.org") && PathPrefix("/")
       kind: Rule
       priority: 110
