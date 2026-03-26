@@ -22,6 +22,16 @@ kubectl apply -n argo-rollouts -f https://github.com/argoproj/argo-rollouts/rele
 kubectl rollout status deployment/argo-rollouts -n argo-rollouts
 ```
 
+### Traefik API group for Rollouts
+
+Note: Argo Rollouts currently expects Traefik CRDs in the `traefik.containo.us` group. Even if you use Traefik v3, you
+must install the legacy CRDs for the `TraefikService` resources to be found by the Rollout controller.
+
+```bash
+# Install Traefik v2 CRDs (backwards compatibility)
+kubectl apply -f https://raw.githubusercontent.com/traefik/traefik/v2.10/docs/content/reference/dynamic-configuration/kubernetes-crd-definition-v1.yaml
+```
+
 Optional CLI plugin:
 
 ```bash
