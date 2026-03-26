@@ -3,6 +3,8 @@ kind: Application
 metadata:
   name: gym-log-book-prod
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/external-url: https://gym.british-information-technologies.org
 spec:
   project: default
   source:

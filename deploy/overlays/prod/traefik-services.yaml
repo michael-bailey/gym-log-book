@@ -8,9 +8,11 @@ spec:
       - name: gym-log-book-server-stable
         port: 8080
         kind: Service
+        weight: 1
       - name: gym-log-book-server-preview
         port: 8080
         kind: Service
+        weight: 0
 ---
 apiVersion: traefik.io/v1alpha1
 kind: TraefikService
@@ -22,6 +24,8 @@ spec:
       - name: gym-log-book-web-stable
         port: 80
         kind: Service
+        weight: 1
       - name: gym-log-book-web-preview
         port: 80
         kind: Service
+        weight: 0

@@ -6,6 +6,7 @@ namespace: gym-log-book
 resources:
   - ../../base
   - certificate.yaml
+  - ingress.yaml
   - ingressroute.yaml
   - traefik-services.yaml
 
