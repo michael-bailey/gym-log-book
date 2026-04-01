@@ -10,6 +10,7 @@ dependencyResolutionManagement {
 	repositories {
 		google()
 		mavenCentral()
+		gradlePluginPortal()
 		exclusiveContent {
 			forRepository {
 				ivy {

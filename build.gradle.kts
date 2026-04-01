@@ -12,6 +12,7 @@ plugins {
 	alias(libs.plugins.ksp) apply false
 	alias(libs.plugins.krpc) apply false
 	alias(libs.plugins.ktorServer) apply false
+	alias(libs.plugins.koinCompiler) apply false
 }
 
 subprojects {

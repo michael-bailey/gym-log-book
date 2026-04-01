@@ -3,6 +3,7 @@ plugins {
 	alias(libs.plugins.serialisation)
 	alias(libs.plugins.krpc)
 	alias(libs.plugins.ktorServer)
+	alias(libs.plugins.koinCompiler)
 }
 
 kotlin {
