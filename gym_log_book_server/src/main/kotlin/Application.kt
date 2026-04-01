@@ -10,14 +10,14 @@ import kotlinx.coroutines.cancel
 import kotlinx.rpc.krpc.ktor.server.Krpc
 import kotlinx.rpc.krpc.ktor.server.rpc
 import kotlinx.rpc.krpc.serialization.json.json
-import net.michael_bailey.gym_log_book.server.di.counterModule
 import net.michael_bailey.gym_log_book.shared.counter.controller.CounterController
-import org.koin.core.qualifier.named
-import org.koin.dsl.module
+import org.koin.core.annotation.KoinApplication
 import org.koin.ktor.ext.get
 import org.koin.ktor.plugin.Koin
+import org.koin.plugin.module.dsl.withConfiguration
 
-private val applicationScopeQualifier = named("applicationScope")
+@KoinApplication
+class ApplicationContainer
 
 fun Application.module() {
 	println("Starting application module")
@@ -29,12 +29,7 @@ fun Application.module() {
 	}
 
 	install(Koin) {
-		modules(
-			counterModule(),
-			module {
-				single(applicationScopeQualifier) { applicationScope }
-			},
-		)
+		withConfiguration<ApplicationContainer>()
 	}
 
 	install(Krpc) {

@@ -8,9 +8,11 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import org.koin.core.annotation.Singleton
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
 
+@Singleton
 class CounterRepository(
 	private val scope: CoroutineScope,
 	private val tickInterval: Duration = 1.seconds,
