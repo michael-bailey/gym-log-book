@@ -11,6 +11,7 @@ import kotlinx.rpc.krpc.ktor.server.Krpc
 import kotlinx.rpc.krpc.ktor.server.rpc
 import kotlinx.rpc.krpc.serialization.json.json
 import net.michael_bailey.gym_log_book.shared.counter.controller.CounterController
+import net.michael_bailey.gym_log_book.shared.exercise.controller.ExerciseEntryController
 import net.michael_bailey.gym_log_book.shared.exercise.controller.ExerciseTypeController
 import org.koin.core.annotation.KoinApplication
 import org.koin.ktor.ext.get
@@ -45,10 +46,13 @@ fun Application.module() {
 		}
 
 		rpc("/rpc") {
+			registerService<CounterController> {
+				get()
+			}
 			registerService<ExerciseTypeController> {
 				get()
 			}
-			registerService<CounterController> {
+			registerService<ExerciseEntryController> {
 				get()
 			}
 		}
