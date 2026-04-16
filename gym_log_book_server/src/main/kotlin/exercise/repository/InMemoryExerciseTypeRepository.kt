@@ -51,6 +51,16 @@ class InMemoryExerciseTypeRepository(
 		type
 	}
 
+	override suspend fun deleteTypes(ids: Collection<Uuid>) {
+		if (ids.isEmpty()) {
+			return
+		}
+
+		_mapState.emit(
+			_mapState.value.filterKeys { id -> id !in ids }
+		)
+	}
+
 	companion object {
 		private fun MutableMap<Uuid, ExerciseType>.seedData() = (0 until 5).forEach {
 			val id = Uuid.random()

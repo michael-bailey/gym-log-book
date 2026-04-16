@@ -101,6 +101,30 @@ class InMemoryExerciseTypeRepositoryTest {
 		verify(exactly = 1) { exerciseTypeFactory.create(BENCH_PRESS_NAME, BENCH_PRESS_EQUIPMENT_CLASS) }
 	}
 
+	@Test
+	fun `deleteTypes removes matching exercise types`() = runTest {
+		val repository = createRepository()
+		val initialTypes = repository.allExerciseTypes.first().toList()
+		val idsToDelete = initialTypes.take(2).map { it.id }
+
+		repository.deleteTypes(idsToDelete)
+
+		val remainingTypes = repository.allExerciseTypes.first()
+
+		assertEquals(INITIAL_TYPE_COUNT - idsToDelete.size, remainingTypes.size)
+		assertTrue(idsToDelete.none { id -> remainingTypes.any { it.id == id } })
+	}
+
+	@Test
+	fun `deleteTypes with empty ids leaves repository unchanged`() = runTest {
+		val repository = createRepository()
+		val initialTypes = repository.allExerciseTypes.first()
+
+		repository.deleteTypes(emptyList())
+
+		assertEquals(initialTypes, repository.allExerciseTypes.first())
+	}
+
 	private fun assertTrueAllMachine(exerciseTypes: Collection<ExerciseType>) {
 		assertEquals(
 			exerciseTypes.size,
@@ -129,4 +153,3 @@ class InMemoryExerciseTypeRepositoryTest {
 		private const val BENCH_PRESS_IS_USING_USER_WEIGHT = false
 	}
 }
-

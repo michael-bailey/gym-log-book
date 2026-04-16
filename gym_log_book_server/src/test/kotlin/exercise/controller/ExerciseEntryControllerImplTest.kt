@@ -14,7 +14,6 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.LocalDateTime
 import net.michael_bailey.gym_log_book.server.exercise.controller.ExerciseEntryControllerImpl
 import net.michael_bailey.gym_log_book.server.exercise.service.ExerciseEntryService
-import net.michael_bailey.gym_log_book.server.exercise.service.IExerciseTypeService
 import net.michael_bailey.gym_log_book.shared.exercise.model.ExerciseEntry
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -25,7 +24,6 @@ import kotlin.uuid.Uuid
 class ExerciseEntryControllerImplTest {
 
 	private val exerciseEntryService: ExerciseEntryService = mockk()
-	private val exerciseTypeService: IExerciseTypeService = mockk()
 
 	@Test
 	fun `getExerciseEntries delegates to service flow`() = runTest {
@@ -61,7 +59,6 @@ class ExerciseEntryControllerImplTest {
 		exerciseEntryService = exerciseEntryService.also {
 			every { it.exerciseEntries } returns exerciseEntriesFlow
 		},
-		exerciseTypeService = exerciseTypeService,
 	)
 
 	private fun createEntry(

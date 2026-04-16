@@ -44,24 +44,38 @@ class ExerciseTypeControllerImplTest {
 	}
 
 	@Test
-	fun `createExerciseType delegates to service with undefined equipment class`() = runTest {
+	fun `createExerciseType delegates to service with the provided equipment class`() = runTest {
 		val createdType = ExerciseType(
 			id = Uuid.random(),
 			name = PULL_UP_NAME,
-			equipmentClass = UNDEFINED_EQUIPMENT_CLASS,
+			equipmentClass = PULL_UP_EQUIPMENT_CLASS,
 			isUsingUserWeight = PULL_UP_IS_USING_USER_WEIGHT,
 		)
 		coEvery {
-			exerciseTypeService.createNewExerciseType(PULL_UP_NAME, UNDEFINED_EQUIPMENT_CLASS)
+			exerciseTypeService.createNewExerciseType(PULL_UP_NAME, PULL_UP_EQUIPMENT_CLASS)
 		} returns createdType
 
 		val controller = createController()
 
-		val result = controller.createExerciseType(PULL_UP_NAME)
+		val result = controller.createExerciseType(PULL_UP_NAME, PULL_UP_EQUIPMENT_CLASS)
 
 		assertEquals(createdType, result)
 		coVerify(exactly = 1) {
-			exerciseTypeService.createNewExerciseType(PULL_UP_NAME, UNDEFINED_EQUIPMENT_CLASS)
+			exerciseTypeService.createNewExerciseType(PULL_UP_NAME, PULL_UP_EQUIPMENT_CLASS)
+		}
+	}
+
+	@Test
+	fun `deleteExerciseTypes delegates to service`() = runTest {
+		val ids = listOf(Uuid.random(), Uuid.random())
+		coEvery { exerciseTypeService.deleteExerciseTypes(ids) } returns Unit
+
+		val controller = createController()
+
+		controller.deleteExerciseTypes(ids)
+
+		coVerify(exactly = 1) {
+			exerciseTypeService.deleteExerciseTypes(ids)
 		}
 	}
 
@@ -77,6 +91,5 @@ class ExerciseTypeControllerImplTest {
 		private const val PULL_UP_NAME = "Pull Up"
 		private val PULL_UP_EQUIPMENT_CLASS = EquipmentClass.UsesUserWeight
 		private const val PULL_UP_IS_USING_USER_WEIGHT = true
-		private val UNDEFINED_EQUIPMENT_CLASS = EquipmentClass.Undefined("oops: $PULL_UP_NAME")
 	}
 }

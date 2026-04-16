@@ -10,7 +10,7 @@ import org.koin.core.annotation.Factory
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
-@Factory(binds = [IExerciseTypeService::class])
+@Factory(binds = [IExerciseEntryService::class])
 class ExerciseEntryService(
 	private val exerciseEntryRepository: IExerciseEntryRepository,
 	private val exerciseTypeRepository: IExerciseTypeRepository,

@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalUuidApi::class)
+
 package net.michael_bailey.gym_log_book.server.exercise.controller
 
 import kotlinx.coroutines.flow.Flow
@@ -6,6 +8,8 @@ import net.michael_bailey.gym_log_book.shared.exercise.controller.ExerciseTypeCo
 import net.michael_bailey.gym_log_book.shared.exercise.model.EquipmentClass
 import net.michael_bailey.gym_log_book.shared.exercise.model.ExerciseType
 import org.koin.core.annotation.Factory
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
 @Factory(binds = [ExerciseTypeController::class])
 class ExerciseTypeControllerImpl(
@@ -14,10 +18,17 @@ class ExerciseTypeControllerImpl(
 
 	override fun exerciseTypes(): Flow<Collection<ExerciseType>> = exerciseTypeService.exerciseTypes
 
-	override suspend fun createExerciseType(name: String): ExerciseType {
+	override suspend fun createExerciseType(
+		name: String,
+		equipmentClass: EquipmentClass,
+	): ExerciseType {
 		return exerciseTypeService.createNewExerciseType(
 			name = name,
-			equipmentClass = EquipmentClass.Undefined("oops: $name")
+			equipmentClass = equipmentClass,
 		)
+	}
+
+	override suspend fun deleteExerciseTypes(ids: Collection<Uuid>) {
+		exerciseTypeService.deleteExerciseTypes(ids)
 	}
 }

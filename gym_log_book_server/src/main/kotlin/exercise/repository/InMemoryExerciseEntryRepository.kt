@@ -16,7 +16,7 @@ import kotlin.uuid.Uuid
 
 @Single
 class InMemoryExerciseEntryRepository(
-	private val exerciseEntryfactory: InMemoryExerciseEntryFactory,
+	private val exerciseEntryFactory: InMemoryExerciseEntryFactory,
 	private val scope: CoroutineScope,
 ) : IExerciseEntryRepository {
 
@@ -31,7 +31,7 @@ class InMemoryExerciseEntryRepository(
 		entryReps: Int
 	): Deferred<ExerciseEntry> = scope.async {
 
-		val entry = exerciseEntryfactory.createEntry(
+		val entry = exerciseEntryFactory.createEntry(
 			exerciseTypeId = exerciseTypeId,
 			entrySetNumber = entrySetNumber,
 			entryWeight = entryWeight,

@@ -93,7 +93,7 @@ class InMemoryExerciseEntryRepositoryTest {
 
 	private fun TestScope.createRepository(): InMemoryExerciseEntryRepository =
 		InMemoryExerciseEntryRepository(
-			exerciseEntryfactory = exerciseEntryFactory,
+			exerciseEntryFactory = exerciseEntryFactory,
 			scope = backgroundScope,
 		)
 

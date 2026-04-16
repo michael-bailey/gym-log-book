@@ -2,9 +2,7 @@
 
 package exercise.service
 
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.verify
+import io.mockk.*
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -62,6 +60,20 @@ class InMemoryExerciseTypeServiceTest {
 		assertEquals(createdType, result)
 		verify(exactly = 1) {
 			exerciseTypeRepository.createNewType(PULL_UP_NAME, PULL_UP_EQUIPMENT_CLASS)
+		}
+	}
+
+	@Test
+	fun `deleteExerciseTypes delegates to repository`() = runTest {
+		val ids = listOf(Uuid.random(), Uuid.random())
+		coEvery { exerciseTypeRepository.deleteTypes(ids) } returns Unit
+
+		val service = createService()
+
+		service.deleteExerciseTypes(ids)
+
+		coVerify(exactly = 1) {
+			exerciseTypeRepository.deleteTypes(ids)
 		}
 	}
 
