@@ -5,26 +5,26 @@
 [versions]
 
 # --- Kotlin & Build Tools -----------------------------------------------------
-kotlin = "2.3.0"
+kotlin = "2.3.20"
 coroutines = "1.10.2"
-serialization = "1.9.0"
+serialization = "1.11.0"
 datetime = "0.7.1"
-agp = "8.7.3"
+agp = "8.9.1"
 ksp = "2.3.0"
-koin = "4.2.0"
-koin-plugin = "0.4.1"
+koin = "4.2.1"
+koin-plugin = "0.6.2"
 
 # --- Compose Multiplatform (Desktop + Wasm) -----------------------------------
 compose-multiplatform = "1.10.3"
 
 # --- Android: Compose ---------------------------------------------------------
-composeBomVersion = "2026.03.00"
-composeMaterialVersion = "1.5.6"
+composeBomVersion = "2026.03.01"
+composeMaterialVersion = "1.6.1"
 materialIconsExtendedVersion = "1.7.8"
 material_version = "1.13.0"
-uiTestJunit4Version = "1.10.5"
-uiTestManifestVersion = "1.10.5"
-uiToolingVersion = "1.10.5"
+uiTestJunit4Version = "1.10.6"
+uiTestManifestVersion = "1.10.6"
+uiToolingVersion = "1.10.6"
 
 # --- Android: Core ------------------------------------------------------------
 android_kotlin_core_version = "1.18.0"
@@ -71,8 +71,11 @@ gson_version = "2.9.0"
 mockk = "1.14.9"
 
 # --- Server / ktor ------------------------------------------------------------
-ktor = "3.4.1"
+ktor = "3.4.2"
 krpc = "0.10.2"
+
+guava = "33.4.0-android"
+guava-listenablefuture-version = "1.0"
 
 
 # ==============================================================================
@@ -133,6 +136,9 @@ androidx-tiles-tooling-preview = { module = "androidx.wear.tiles:tiles-tooling-p
 androidx-watchface-complications-data-source-ktx = { module = "androidx.wear.watchface:watchface-complications-data-source-ktx", version.ref = "watchfaceComplicationsDataSourceKtxVersion" }
 horologist-compose-tools = { module = "com.google.android.horologist:horologist-compose-tools", version.ref = "horologistComposeToolsVersion" }
 horologist-tiles = { module = "com.google.android.horologist:horologist-tiles", version.ref = "horologistComposeToolsVersion" }
+
+# Fix for Hilt / Tiles ListenableFuture compilation error
+guava-android = { module = "com.google.guava:guava", version.ref = "guava" }
 
 # --- Android: Testing ---------------------------------------------------------
 junit = { module = "junit:junit", version.ref = "junit-version" }
