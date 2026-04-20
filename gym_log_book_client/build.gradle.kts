@@ -42,6 +42,7 @@ kotlin {
 			implementation(compose.material3)
 			implementation(compose.ui)
 			implementation(libs.bundles.ktor.client.common)
+			implementation(libs.bundles.koinClient)
 		}
 
 		commonTest.dependencies {
@@ -52,6 +53,7 @@ kotlin {
 		desktopMain.dependencies {
 			implementation(compose.desktop.currentOs)
 			implementation(libs.bundles.ktor.client.jvm)
+			implementation(libs.bundles.desktop)
 		}
 
 		wasmJsMain.dependencies {

@@ -10,6 +10,8 @@ actual object CounterClientConfig {
 				else -> "ws"
 			}
 
-			return "$protocol://${window.location.host}/rpc/counter"
+			val port = if (window.location.hostname == "localhost") "8080" else ""
+
+			return "$protocol://${window.location.hostname}:$port/rpc/counter"
 		}
 }

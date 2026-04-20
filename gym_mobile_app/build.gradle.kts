@@ -8,18 +8,17 @@ plugins {
 }
 
 ksp {
-
-//	correctErrorTypes = true
+	arg("room.schemaLocation", "$projectDir/schemas")
 }
 
 android {
 	namespace = "org.british_information_technologies.gym_log_book"
-	compileSdk = 35
+	compileSdk = 36
 
 	defaultConfig {
 		applicationId = "org.british_information_technologies.gym_log_book"
 		minSdk = 33
-		targetSdk = 35
+		targetSdk = 36
 		versionCode = 1
 		versionName = "1.0"
 
@@ -27,11 +26,7 @@ android {
 		vectorDrawables {
 			useSupportLibrary = true
 		}
-		ksp {
-//			arguments {
-//				arg("room.schemaLocation", "$projectDir/schemas")
-//			}
-		}
+
 	}
 
 	buildTypes {
@@ -46,8 +41,8 @@ android {
 		}
 	}
 	compileOptions {
-		sourceCompatibility = JavaVersion.VERSION_17
-		targetCompatibility = JavaVersion.VERSION_17
+		sourceCompatibility = JavaVersion.VERSION_21
+		targetCompatibility = JavaVersion.VERSION_21
 	}
 	buildFeatures {
 		viewBinding = true

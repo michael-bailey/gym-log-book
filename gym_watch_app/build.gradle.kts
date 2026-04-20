@@ -13,12 +13,12 @@ ksp {
 
 android {
 	namespace = "com.example.myapplication"
-	compileSdk = 35
+	compileSdk = 36
 
 	defaultConfig {
 		applicationId = "com.example.myapplication"
 		minSdk = 33
-		targetSdk = 34
+		targetSdk = 36
 		versionCode = 1
 		versionName = "1.0"
 
@@ -36,8 +36,8 @@ android {
 		}
 	}
 	compileOptions {
-		sourceCompatibility = JavaVersion.VERSION_11
-		targetCompatibility = JavaVersion.VERSION_11
+		sourceCompatibility = JavaVersion.VERSION_21
+		targetCompatibility = JavaVersion.VERSION_21
 	}
 	buildFeatures {
 		compose = true
@@ -90,6 +90,9 @@ dependencies {
 	// hilt deps
 	implementation(libs.bundles.hilt)
 	ksp(libs.hilt.compiler)
+
+	// Fix for Hilt / Tiles ListenableFuture compilation error
+	implementation(libs.guava.android)
 
 	// debug deps
 	implementation("androidx.wear:wear-tooling-preview:1.0.0")

@@ -3,6 +3,7 @@ plugins {
 	alias(libs.plugins.serialisation)
 	alias(libs.plugins.krpc)
 	alias(libs.plugins.ktorServer)
+	alias(libs.plugins.koinCompiler)
 }
 
 kotlin {
@@ -20,6 +21,7 @@ dependencies {
 
 	testImplementation(libs.kotlin.test.junit)
 	testImplementation(libs.kotlin.testCoroutines)
+	testImplementation(libs.mockk)
 	testImplementation(libs.ktor.server.test.host)
 	testImplementation(libs.bundles.ktor.client.jvm)
 	testImplementation(libs.bundles.ktor.client.common)
