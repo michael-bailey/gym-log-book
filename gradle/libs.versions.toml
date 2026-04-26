@@ -179,6 +179,9 @@ ktor-server-config = { module = "io.ktor:ktor-server-config-yaml-jvm", version.r
 ktor-server-content-negotiation = { module = "io.ktor:ktor-server-content-negotiation-jvm", version.ref = "ktor" }
 ktor-server-websockets = { module = "io.ktor:ktor-server-websockets-jvm", version.ref = "ktor" }
 ktor-server-test-host = { module = "io.ktor:ktor-server-test-host-jvm", version.ref = "ktor" }
+ktor-server-auth = { module = "io.ktor:ktor-server-auth", version.ref = "ktor" }
+ktor-server-jwt = { module = "io.ktor:ktor-server-auth-jwt", version.ref = "ktor" }
+
 
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 koin-annotations = { module = "io.insert-koin:koin-annotations", version.ref = "koin" }
@@ -242,6 +245,8 @@ ktor-server = [
     "krpc-server",
     "krpc-ktor-server",
     "krpc-serialization-json",
+    "ktor-server-auth",
+    "ktor-server-jwt"
 ]
 test = [
     "kotlin-test",
