@@ -5,3 +5,8 @@ actual object ClientConfig {
 
 	actual val exerciseRpcUrl: String = DEFAULT_ANDROID_URL
 }
+actual constructor(){
+	TODO("Not yet implemented")
+}actual constructor(){
+	TODO("Not yet implemented")
+}
