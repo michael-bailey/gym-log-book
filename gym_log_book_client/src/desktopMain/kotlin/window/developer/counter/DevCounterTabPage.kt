@@ -1,26 +1,24 @@
-package net.michael_bailey.gym_log_book.client.counter.view
+package net.michael_bailey.gym_log_book.client.window.developer.counter
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import net.michael_bailey.gym_log_book.client.counter.viewmodel.CounterViewModel
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun CounterScreen(
-	viewModel: CounterViewModel = koinViewModel()
+fun DevCounterTabPage(
+	viewModel: DevCounterTabPageViewModel = koinViewModel()
 ) {
 
-	val counterText by viewModel.counterText().collectAsState()
+	val counterText by viewModel.counterValue.collectAsState("")
 
 	Column(
 		modifier = Modifier
@@ -33,9 +31,7 @@ fun CounterScreen(
 			value = counterText,
 			onValueChange = {},
 			readOnly = true,
-			label = {
-				Text("Shared Counter")
-			},
 		)
 	}
+
 }
