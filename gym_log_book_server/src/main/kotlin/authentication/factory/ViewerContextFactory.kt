@@ -8,7 +8,6 @@ import io.ktor.server.auth.jwt.*
 import net.michael_bailey.gym_log_book.server.authentication.config.JWTClaimNames.USERNAME_CLAIM_KEY
 import net.michael_bailey.gym_log_book.server.authentication.model.ViewerContext
 import net.michael_bailey.gym_log_book.server.authentication.scope.ViewerScope
-import net.michael_bailey.gym_log_book.server.authentication.service.ITokenService
 import org.koin.core.annotation.InjectedParam
 import org.koin.core.annotation.Scope
 import org.koin.core.annotation.Scoped
@@ -19,8 +18,8 @@ import kotlin.uuid.Uuid
 @Scope(ViewerScope::class)
 class ViewerContextFactory(
 	@InjectedParam private val call: ApplicationCall,
-	private val tokenService: ITokenService
 ) {
+
 	fun create(): ViewerContext {
 
 		val jwtToken = call.principal<JWTPrincipal>() ?: return ViewerContext(

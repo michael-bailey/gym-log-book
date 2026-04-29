@@ -1,7 +1,6 @@
 package authentication.factory
 
 import kotlinx.coroutines.test.runTest
-import net.michael_bailey.gym_log_book.server.authentication.factory.AuthenticatedTokenPairFactory
 import net.michael_bailey.gym_log_book.shared.authentication.model.AuthenticationTokenPair
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -16,8 +15,7 @@ class AuthenticatedTokenPairFactoryTest {
 			refreshToken = REFRESH_TOKEN
 		)
 
-		val factory = AuthenticatedTokenPairFactory()
-		val expected = factory.create(
+		val expected = AuthenticationTokenPair(
 			accessToken = ACCESS_TOKEN,
 			refreshToken = REFRESH_TOKEN
 		)

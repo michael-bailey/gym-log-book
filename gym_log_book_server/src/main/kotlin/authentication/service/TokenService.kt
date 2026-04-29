@@ -19,12 +19,8 @@ import kotlin.uuid.Uuid
 @Single
 class TokenService(
 	private val authenticationConfiguration: IJWTConfiguration,
+	private val verifier: JWTVerifier
 ) : ITokenService {
-
-	override val verifier: JWTVerifier = JWT.require(Algorithm.HMAC256(authenticationConfiguration.jwtSecret))
-		.withIssuer(authenticationConfiguration.issuer)
-		.withAudience(authenticationConfiguration.audience)
-		.build()
 
 	override fun issueAccessToken(
 		userId: Uuid,
@@ -33,7 +29,7 @@ class TokenService(
 		.withIssuer(authenticationConfiguration.issuer)
 		.withAudience(authenticationConfiguration.audience)
 		.withSubject(userId.toString())
-		.withClaim(TYPE_CLAIM_KEY, TokenType.Authentication.toString())
+		.withClaim(TYPE_CLAIM_KEY, TokenType.Access.toString())
 		.withClaim(USERNAME_CLAIM_KEY, username)
 		.withExpiresAt(Date(System.currentTimeMillis() + authenticationConfiguration.accessExpiry))
 		.sign(Algorithm.HMAC256(authenticationConfiguration.jwtSecret))
@@ -58,6 +54,7 @@ class TokenService(
 		if (TokenType.valueOf(type) != TokenType.Refresh) null
 		else TokenPayload(
 			subject = Uuid.parse(decoded.subject),
+			// if this is throws, creation logic is wrong, as null should not happen
 			username = decoded.claims[USERNAME_CLAIM_KEY]!!.asString()
 		)
 	} catch (e: JWTVerificationException) {

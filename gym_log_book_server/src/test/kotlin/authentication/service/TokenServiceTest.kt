@@ -2,6 +2,7 @@
 
 package authentication.service
 
+import net.michael_bailey.gym_log_book.server.authentication.AuthenticationModule
 import net.michael_bailey.gym_log_book.server.authentication.config.IJWTConfiguration
 import net.michael_bailey.gym_log_book.server.authentication.config.JWTClaimNames.TYPE_CLAIM_KEY
 import net.michael_bailey.gym_log_book.server.authentication.config.JWTClaimNames.USERNAME_CLAIM_KEY
@@ -22,7 +23,13 @@ class TokenServiceTest {
 		override val audience: String = "test-audience"
 	}
 
-	private val service = TokenService(configuration)
+	private val authModule = AuthenticationModule()
+	private val verifier = authModule.jwtVerifier(configuration)
+
+	private val service = TokenService(
+		configuration,
+		verifier = verifier
+	)
 
 	@Test
 	fun `test issueAccessToken creates signed token with expected claims`() {
@@ -32,12 +39,12 @@ class TokenServiceTest {
 			username = USERNAME
 		)
 
-		val decoded = service.verifier.verify(token)
+		val decoded = verifier.verify(token)
 
 		assertEquals(expected = configuration.issuer, actual = decoded.issuer)
 		assertEquals(expected = configuration.audience, actual = decoded.audience.single())
 		assertEquals(expected = userId.toString(), actual = decoded.subject)
-		assertEquals(expected = TokenType.Authentication.toString(), actual = decoded.getClaim(TYPE_CLAIM_KEY).asString())
+		assertEquals(expected = TokenType.Access.toString(), actual = decoded.getClaim(TYPE_CLAIM_KEY).asString())
 		assertEquals(expected = USERNAME, actual = decoded.getClaim(USERNAME_CLAIM_KEY).asString())
 
 		val expiration = decoded.expiresAt?.time
@@ -54,7 +61,7 @@ class TokenServiceTest {
 			username = USERNAME
 		)
 
-		val decoded = service.verifier.verify(token)
+		val decoded = verifier.verify(token)
 
 		assertEquals(expected = configuration.issuer, actual = decoded.issuer)
 		assertEquals(expected = configuration.audience, actual = decoded.audience.single())

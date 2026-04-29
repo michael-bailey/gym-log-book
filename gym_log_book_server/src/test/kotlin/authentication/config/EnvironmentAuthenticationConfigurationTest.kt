@@ -1,6 +1,8 @@
 package authentication.config
 
 import net.michael_bailey.gym_log_book.server.authentication.config.EnvironmentAuthenticationConfiguration
+import net.michael_bailey.gym_log_book.server.authentication.config.EnvironmentAuthenticationConfiguration.Companion.defaultAccessExpiry
+import net.michael_bailey.gym_log_book.server.authentication.config.EnvironmentAuthenticationConfiguration.Companion.defaultRefreshExpiry
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -17,13 +19,13 @@ class EnvironmentAuthenticationConfigurationTest {
 
 		val configuration = EnvironmentAuthenticationConfiguration(environment)
 
-		assertEquals(expected = 0, actual = configuration.refreshExpiry)
-		assertEquals(expected = 0, actual = configuration.accessExpiry)
+		assertEquals(expected = defaultAccessExpiry.inWholeSeconds.toInt(), actual = configuration.accessExpiry)
+		assertEquals(expected = defaultRefreshExpiry.inWholeSeconds.toInt(), actual = configuration.refreshExpiry)
 		assertEquals(expected = JWT_SECRET, actual = configuration.jwtSecret)
 		assertEquals(expected = ISSUER, actual = configuration.issuer)
 		assertEquals(expected = AUDIENCE, actual = configuration.audience)
-		assertEquals(expected = USERNAME, actual = configuration.password)
-		assertEquals(expected = PASSWORD, actual = configuration.username)
+		assertEquals(expected = USERNAME, actual = configuration.username)
+		assertEquals(expected = PASSWORD, actual = configuration.password)
 	}
 
 	@Test

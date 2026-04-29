@@ -14,7 +14,6 @@ import net.michael_bailey.gym_log_book.server.authentication.factory.ViewerConte
 import net.michael_bailey.gym_log_book.server.authentication.factory.ViewerContextFactory.Companion.GUEST_USERNAME
 import net.michael_bailey.gym_log_book.server.authentication.factory.ViewerContextFactory.Companion.guestId
 import net.michael_bailey.gym_log_book.server.authentication.model.ViewerContext
-import net.michael_bailey.gym_log_book.server.authentication.service.ITokenService
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.uuid.ExperimentalUuidApi
@@ -23,7 +22,6 @@ import kotlin.uuid.Uuid
 class ViewerContextFactoryTest {
 
 	private val call: ApplicationCall = mockk()
-	private val tokenService: ITokenService = mockk()
 
 	@Test
 	fun `test ViewerContextFactory create viewerContext using payload from token`() {
@@ -44,7 +42,6 @@ class ViewerContextFactoryTest {
 
 		val factory = ViewerContextFactory(
 			call = call,
-			tokenService = tokenService
 		)
 
 		val expected = factory.create()
@@ -70,7 +67,6 @@ class ViewerContextFactoryTest {
 
 		val factory = ViewerContextFactory(
 			call = call,
-			tokenService = tokenService
 		)
 
 		val expected = factory.create()
@@ -90,7 +86,6 @@ class ViewerContextFactoryTest {
 
 		val factory = ViewerContextFactory(
 			call = call,
-			tokenService = tokenService
 		)
 
 		val expected = factory.create()
