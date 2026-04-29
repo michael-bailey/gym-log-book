@@ -10,7 +10,8 @@ import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val counterClientModule = module {
-	single {
+
+single {
 		println("creating counter RCP")
 		get<RpcClient>().withService<CounterController>()
 	} bind CounterController::class

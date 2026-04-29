@@ -16,13 +16,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import net.michael_bailey.gym_log_book.client.util.scopedInject
 import net.michael_bailey.gym_log_book.shared.exercise.model.EquipmentClass
-import org.koin.compose.koinInject
 import kotlin.uuid.ExperimentalUuidApi
 
 @Composable
 fun DevExerciseTypeTabPage(
-	viewModel: DevExerciseTypeTabPageViewModel = koinInject()
+	viewModel: DevExerciseTypeTabPageViewModel = scopedInject()
 ) {
 
 	val typeList by viewModel.exerciseTypeList.collectAsState(initial = emptyList())

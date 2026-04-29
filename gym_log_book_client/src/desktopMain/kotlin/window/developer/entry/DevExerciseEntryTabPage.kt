@@ -1,11 +1,11 @@
 package net.michael_bailey.gym_log_book.client.window.developer.entry
 
 import androidx.compose.runtime.Composable
-import org.koin.compose.koinInject
+import net.michael_bailey.gym_log_book.client.util.scopedInject
 
 @Composable
 fun DevExerciseEntryTabPage(
-	viewModel: DevExerciseEntryTabPageViewModel = koinInject()
+	viewModel: DevExerciseEntryTabPageViewModel = scopedInject()
 ) {
 
 }

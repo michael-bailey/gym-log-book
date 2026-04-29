@@ -12,6 +12,9 @@ import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val applicationModule = module {
+
+	single { ClientConfig() }
+
 	single {
 		HttpClient(get<HttpClientEngine>()) {
 			installKrpc()
@@ -19,13 +22,27 @@ val applicationModule = module {
 	}
 
 	single {
-		get<HttpClient>().rpc(ClientConfig.exerciseRpcUrl) {
-			println("created rpc ")
+
+		println("creating clientConfig")
+		val clientConfig = get<ClientConfig>()
+		println("created clientConfig")
+
+		println("creating client")
+		val client = get<HttpClient>()
+		println("created client")
+
+		println("creating rpc")
+		val rpc = client.rpc(clientConfig.unauthenticatedUrl.toString()) {
+			println("initing rpc")
 			rpcConfig {
 				serialization {
 					json()
 				}
 			}
+			println("inited rpc")
 		}
+		println("created rpc")
+
+		rpc
 	} bind RpcClient::class
 }

@@ -72,6 +72,15 @@ fun Application.module() {
 			call.respondText("ok")
 		}
 
+		rpc("/rpc") {
+
+			val scope = createScope()
+
+			registerService<CounterController> {
+				scope.get()
+			}
+		}
+
 		rpc("/rpc/authentication") {
 			val scope = createScope()
 			registerService<AuthenticationController> {
@@ -80,13 +89,11 @@ fun Application.module() {
 		}
 
 		authenticate {
-			rpc("/rpc") {
+			rpc("/rpc/authenticated") {
 
 				val scope = createScope()
 
-				registerService<CounterController> {
-					scope.get()
-				}
+
 				registerService<ExerciseTypeController> {
 					scope.get()
 				}
