@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 
 plugins {
+	alias(libs.plugins.androidLibrary)
 	alias(libs.plugins.kotlinMultiplatform)
 	alias(libs.plugins.serialisation)
 	alias(libs.plugins.krpc)
@@ -11,6 +12,7 @@ plugins {
 }
 
 kotlin {
+	androidTarget()
 
 	@OptIn(ExperimentalKotlinGradlePluginApi::class)
 	jvm("desktop") {
@@ -32,6 +34,7 @@ kotlin {
 
 	sourceSets {
 		val commonTest by getting
+		val androidMain by getting
 		val desktopMain by getting
 		val wasmJsMain by getting
 
@@ -40,14 +43,23 @@ kotlin {
 			implementation(compose.runtime)
 			implementation(compose.foundation)
 			implementation(compose.material3)
+			implementation(compose.materialIconsExtended)
 			implementation(compose.ui)
+			implementation(libs.compose.multiplatform.ui.tooling.preview)
 			implementation(libs.bundles.ktor.client.common)
 			implementation(libs.bundles.koinClient)
+//			implementation(libs.jetbrains.navigation3.ui)
+			implementation(compose.material3AdaptiveNavigationSuite)
+			implementation(libs.bundles.composeMultiplatform)
 		}
 
 		commonTest.dependencies {
 			implementation(libs.kotlin.test)
 			implementation(libs.kotlin.testCoroutines)
+		}
+
+		androidMain.dependencies {
+			implementation(libs.bundles.ktor.client.jvm)
 		}
 
 		desktopMain.dependencies {
@@ -65,10 +77,32 @@ kotlin {
 
 }
 
+android {
+	namespace = "net.michael_bailey.gym_log_book.client"
+	compileSdk = 35
+
+	defaultConfig {
+		minSdk = 24
+	}
+
+	buildFeatures {
+		compose = true
+	}
+
+	compileOptions {
+		sourceCompatibility = JavaVersion.VERSION_17
+		targetCompatibility = JavaVersion.VERSION_17
+	}
+}
+
 compose.desktop {
 	application {
 		mainClass = "net.michael_bailey.gym_log_book.client.MainKt"
 	}
+}
+
+dependencies {
+	debugImplementation(libs.compose.multiplatform.ui.tooling)
 }
 
 val desktopFatJar by tasks.registering(Jar::class) {
