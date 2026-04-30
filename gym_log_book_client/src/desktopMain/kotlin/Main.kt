@@ -7,6 +7,7 @@ import androidx.compose.ui.window.application
 import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
+import net.michael_bailey.gym_log_book.client.authentication.authenticationClientModule
 import net.michael_bailey.gym_log_book.client.counter.counterClientModule
 import net.michael_bailey.gym_log_book.client.exercise.exerciseClientModule
 import net.michael_bailey.gym_log_book.client.platform.platformModule
@@ -18,6 +19,7 @@ fun main() = application {
 		modules(
 			platformModule,
 			applicationModule,
+			authenticationClientModule,
 			counterClientModule,
 			exerciseClientModule,
 		)
