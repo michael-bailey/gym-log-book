@@ -27,13 +27,15 @@ val exerciseClientModule = module {
 	scope<AuthenticatedScope> {
 
 		scoped {
+			println("Creating application level http Client")
 			HttpClient(get<HttpClientEngine>()) {
 				installKrpc()
 			}
 		}
 
 		scoped {
-			val clientConfig = get<ClientConfig>()
+
+		val clientConfig = get<ClientConfig>()
 			val client = get<HttpClient>()
 			client.rpc(clientConfig.unauthenticatedUrl.toString()) {
 				rpcConfig {
