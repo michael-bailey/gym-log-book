@@ -10,13 +10,10 @@ import androidx.compose.ui.window.Window
 import net.michael_bailey.gym_log_book.client.component.navigation.GymAdaptiveScaffold
 import net.michael_bailey.gym_log_book.client.component.navigation.GymNavItem
 import net.michael_bailey.gym_log_book.client.component.navigation.GymNavScope
-import net.michael_bailey.gym_log_book.client.di.AuthenticatedScope
-import net.michael_bailey.gym_log_book.client.util.KoinScope
+import net.michael_bailey.gym_log_book.client.di.AuthenticatedViewScope
+import net.michael_bailey.gym_log_book.client.di.AuthenticationViewScope
 import net.michael_bailey.gym_log_book.client.window.developer.DeveloperWindowViewModel.DevTab
 import net.michael_bailey.gym_log_book.client.window.developer.counter.DevCounterTabPage
-import net.michael_bailey.gym_log_book.client.window.developer.entry.DevExerciseEntryTabPage
-import net.michael_bailey.gym_log_book.client.window.developer.type.DevExerciseTypeTabPage
-
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -50,17 +47,10 @@ fun DeveloperToolWindow(
 			) {
 				when (currentTab) {
 					DevTab.Counter -> DevCounterTabPage()
-					DevTab.Type -> KoinScope<AuthenticatedScope> {
-						DevExerciseTypeTabPage()
-					}
-
-					DevTab.Entry -> KoinScope<AuthenticatedScope> {
-						DevExerciseEntryTabPage()
-					}
+					DevTab.Login -> AuthenticationViewScope(currentTab)
+					DevTab.Type, DevTab.Entry -> AuthenticatedViewScope(currentTab)
 				}
 			}
 		}
 	}
 }
-
-fun onClose() {}

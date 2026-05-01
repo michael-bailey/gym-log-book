@@ -37,7 +37,7 @@ val exerciseClientModule = module {
 
 		val clientConfig = get<ClientConfig>()
 			val client = get<HttpClient>()
-			client.rpc(clientConfig.unauthenticatedUrl.toString()) {
+			client.rpc(clientConfig.authenticatedUrl.toString()) {
 				rpcConfig {
 					serialization {
 						json()

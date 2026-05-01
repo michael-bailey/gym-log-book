@@ -8,6 +8,7 @@ import net.michael_bailey.gym_log_book.client.window.ExerciseHomeWindowViewModel
 import net.michael_bailey.gym_log_book.client.window.developer.DeveloperWindowViewModel
 import net.michael_bailey.gym_log_book.client.window.developer.counter.DevCounterTabPageViewModel
 import net.michael_bailey.gym_log_book.client.window.developer.entry.DevExerciseEntryTabPageViewModel
+import net.michael_bailey.gym_log_book.client.window.developer.login.DevLoginViewModel
 import net.michael_bailey.gym_log_book.client.window.developer.type.DevExerciseTypeTabPageViewModel
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.scopedOf
@@ -28,5 +29,9 @@ actual val platformModule: Module = module {
 	scope<AuthenticatedScope> {
 		scopedOf(::DevExerciseTypeTabPageViewModel)
 		scopedOf(::DevExerciseEntryTabPageViewModel)
+	}
+
+	scope<AuthenticationScope> {
+		scopedOf(::DevLoginViewModel)
 	}
 }
