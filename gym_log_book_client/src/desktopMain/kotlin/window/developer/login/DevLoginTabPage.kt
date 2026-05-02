@@ -3,6 +3,7 @@ package net.michael_bailey.gym_log_book.client.window.developer.login
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Button
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -20,6 +21,15 @@ fun DevLoginTabPage(
 	Column(
 		Modifier.fillMaxSize()
 	) {
+
+		OutlinedTextField(
+			state = viewModel.username
+		)
+
+		OutlinedTextField(
+			state = viewModel.password
+		)
+
 		if (isLoggedIn) {
 			Text("Logged In")
 			Button(onClick = { viewModel.logout() }) {

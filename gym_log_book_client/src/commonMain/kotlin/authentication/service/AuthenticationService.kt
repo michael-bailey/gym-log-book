@@ -1,18 +1,14 @@
 package net.michael_bailey.gym_log_book.client.authentication.service
 
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.map
+import net.michael_bailey.gym_log_book.client.authentication.repository.AuthenticationRepository
 
-class AuthenticationService {
+class AuthenticationService(
+	private val authenticationRepository: AuthenticationRepository,
+) {
 
-	private val _isAuthenticated = MutableStateFlow(false)
+	private val _isAuthenticated = authenticationRepository.token.map { it != null }
 	val isAuthenticated: Flow<Boolean> = _isAuthenticated
 
-	suspend fun login() {
-		_isAuthenticated.emit(true)
-	}
-
-	suspend fun logout() {
-		_isAuthenticated.emit(false)
-	}
 }

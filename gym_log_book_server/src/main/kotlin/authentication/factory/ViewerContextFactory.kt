@@ -8,7 +8,7 @@ import io.ktor.server.auth.jwt.*
 import net.michael_bailey.gym_log_book.server.authentication.config.JWTClaimNames.USERNAME_CLAIM_KEY
 import net.michael_bailey.gym_log_book.server.authentication.model.ViewerContext
 import net.michael_bailey.gym_log_book.server.authentication.scope.ViewerScope
-import org.koin.core.annotation.InjectedParam
+import org.koin.core.annotation.Provided
 import org.koin.core.annotation.Scope
 import org.koin.core.annotation.Scoped
 import kotlin.uuid.ExperimentalUuidApi
@@ -17,7 +17,7 @@ import kotlin.uuid.Uuid
 @Scoped
 @Scope(ViewerScope::class)
 class ViewerContextFactory(
-	@InjectedParam private val call: ApplicationCall,
+	@Provided private val call: ApplicationCall,
 ) {
 
 	fun create(): ViewerContext {
