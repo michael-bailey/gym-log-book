@@ -72,32 +72,35 @@ fun Application.module() {
 			call.respondText("ok")
 		}
 
-		rpc("/rpc/authentication") {
+		rpc("/rpc") {
+			rpcConfig { serialization { json() } }
 			val scope = createScope()
+
+			registerService<CounterController> {
+				scope.get()
+			}
+		}
+
+		rpc("/rpc/authentication") {
+			rpcConfig { serialization { json() } }
+			val scope = createScope()
+
 			registerService<AuthenticationController> {
 				scope.get()
 			}
 		}
 
 		authenticate {
-			rpc("/rpc") {
+			rpc("/rpc/authenticated") {
+				rpcConfig { serialization { json() } }
 
 				val scope = createScope()
 
-				registerService<CounterController> {
-					scope.get()
-				}
 				registerService<ExerciseTypeController> {
 					scope.get()
 				}
 				registerService<ExerciseEntryController> {
 					scope.get()
-				}
-
-				rpcConfig { serialization { json() } }
-
-				this.coroutineContext.job.invokeOnCompletion {
-					scope.close()
 				}
 			}
 		}
@@ -111,7 +114,11 @@ fun KrpcRoute.createScope(): Scope {
 		scopeId = "connection-${Uuid.generateV4()}",
 		qualifier = named<ViewerScope>(),
 	)
-	scope.declare(call)
+	scope.declare<ApplicationCall>(call)
+
+	this.coroutineContext.job.invokeOnCompletion {
+		scope.close()
+	}
 
 	return scope
 }
