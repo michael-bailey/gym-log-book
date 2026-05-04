@@ -27,7 +27,7 @@ class AuthenticationModule {
 
 	@Single
 	@Qualifier(Map::class, "environment")
-	fun environmentMap(): Map<String, String> = System.getenv()
+	fun environmentMap(): Map<String, String> = environmentProvider()
 
 	@Single
 	fun coroutineScope(): CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
@@ -35,4 +35,9 @@ class AuthenticationModule {
 	@Scoped
 	@Scope(ViewerScope::class)
 	fun viewerContext(factory: ViewerContextFactory): ViewerContext = factory.create()
+
+	companion object {
+		@Volatile
+		var environmentProvider: () -> Map<String, String> = System::getenv
+	}
 }
