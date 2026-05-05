@@ -2,8 +2,8 @@ package net.michael_bailey.gym_log_book.client.platform
 
 import io.ktor.client.engine.cio.*
 import net.michael_bailey.gym_log_book.client.ApplicationViewModel
-import net.michael_bailey.gym_log_book.client.di.AuthenticatedScope
-import net.michael_bailey.gym_log_book.client.di.AuthenticationScope
+import net.michael_bailey.gym_log_book.client.di.scopes.AuthenticatedScope
+import net.michael_bailey.gym_log_book.client.di.scopes.LoginScope
 import net.michael_bailey.gym_log_book.client.window.developer.DeveloperWindowViewModel
 import net.michael_bailey.gym_log_book.client.window.developer.counter.DevCounterTabPageViewModel
 import net.michael_bailey.gym_log_book.client.window.developer.entry.DevExerciseEntryTabPageViewModel
@@ -24,14 +24,12 @@ actual val platformModule: Module = module {
 
 	viewModelOf(::DevCounterTabPageViewModel)
 
-	scope<AuthenticationScope> { }
-
 	scope<AuthenticatedScope> {
 		scopedOf(::DevExerciseTypeTabPageViewModel)
 		scopedOf(::DevExerciseEntryTabPageViewModel)
 	}
 
-	scope<AuthenticationScope> {
+	scope<LoginScope> {
 		scopedOf(::DevLoginViewModel)
 	}
 }

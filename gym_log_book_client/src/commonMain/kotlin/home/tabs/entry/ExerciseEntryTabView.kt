@@ -25,8 +25,8 @@ import net.michael_bailey.gym_log_book.client.config.Strings
 import net.michael_bailey.gym_log_book.client.exercise.view.ExerciseEntryOverviewCard
 import net.michael_bailey.gym_log_book.client.home.tabs.IExerciseEntryTabViewViewModel
 import net.michael_bailey.gym_log_book.client.theme.ClientTheme
+import net.michael_bailey.gym_log_book.client.util.scopedInject
 import net.michael_bailey.gym_log_book.shared.exercise.model.ExerciseEntry
-import org.koin.compose.viewmodel.koinViewModel
 import kotlin.time.Clock
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
@@ -34,7 +34,7 @@ import kotlin.uuid.Uuid
 @Composable
 fun ExerciseEntryTabView(
 	modifier: Modifier = Modifier,
-	viewModel: IExerciseEntryTabViewViewModel = koinViewModel()
+	viewModel: IExerciseEntryTabViewViewModel = scopedInject()
 ) {
 	Box(
 		modifier = modifier

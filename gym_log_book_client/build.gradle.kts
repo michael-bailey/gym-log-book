@@ -79,7 +79,7 @@ kotlin {
 
 android {
 	namespace = "net.michael_bailey.gym_log_book.client"
-	compileSdk = 35
+	compileSdk = 36
 
 	defaultConfig {
 		minSdk = 24

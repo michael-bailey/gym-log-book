@@ -15,16 +15,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import net.michael_bailey.gym_log_book.client.exercise.view.ExerciseTypeOverviewCard
 import net.michael_bailey.gym_log_book.client.exercise.view_model.ExerciseTypeListViewModel
+import net.michael_bailey.gym_log_book.client.util.scopedInject
 import net.michael_bailey.gym_log_book.shared.exercise.model.EquipmentClass
 import net.michael_bailey.gym_log_book.shared.exercise.model.ExerciseType
-import org.koin.compose.viewmodel.koinViewModel
 import kotlin.uuid.ExperimentalUuidApi
 
 @OptIn(ExperimentalUuidApi::class)
 @Composable
 fun ExerciseTypeOverviewList(
 	modifier: Modifier = Modifier,
-	vm: ExerciseTypeListViewModel = koinViewModel(),
+	vm: ExerciseTypeListViewModel = scopedInject(),
 ) {
 	val list by vm.exerciseTypes.collectAsState(emptyList())
 	var typeName by rememberSaveable { mutableStateOf("") }

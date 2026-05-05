@@ -19,6 +19,7 @@ import kotlinx.datetime.TimeZone.Companion.UTC
 import kotlinx.datetime.toLocalDateTime
 import net.michael_bailey.gym_log_book.client.component.navigation.FabDefinition
 import net.michael_bailey.gym_log_book.client.component.navigation.GymAdaptiveScaffold
+import net.michael_bailey.gym_log_book.client.di.scopes.AuthenticatedScope
 import net.michael_bailey.gym_log_book.client.exercise.service.ExerciseEntryService
 import net.michael_bailey.gym_log_book.client.exercise.service.ExerciseTypeService
 import net.michael_bailey.gym_log_book.client.exercise.view_model.ExerciseTypeListViewModel
@@ -29,15 +30,15 @@ import net.michael_bailey.gym_log_book.client.home.tabs.entry.ExerciseEntryTabVi
 import net.michael_bailey.gym_log_book.client.home.tabs.entry.ExerciseEntryTabViewViewModel
 import net.michael_bailey.gym_log_book.client.home.tabs.type.ExerciseTypeOverviewList
 import net.michael_bailey.gym_log_book.client.theme.ClientTheme
+import net.michael_bailey.gym_log_book.client.util.KoinScope
 import net.michael_bailey.gym_log_book.shared.exercise.controller.ExerciseEntryController
 import net.michael_bailey.gym_log_book.shared.exercise.controller.ExerciseTypeController
 import net.michael_bailey.gym_log_book.shared.exercise.model.EquipmentClass
 import net.michael_bailey.gym_log_book.shared.exercise.model.ExerciseEntry
 import net.michael_bailey.gym_log_book.shared.exercise.model.ExerciseType
-import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.context.startKoin
+import org.koin.core.module.dsl.scopedOf
 import org.koin.core.module.dsl.singleOf
-import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
 import kotlin.time.Clock
@@ -45,9 +46,7 @@ import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
 @Composable
-fun HomePage(
-	vm: HomePageViewModel = koinViewModel()
-) {
+fun HomePage() {
 	ClientTheme {
 		NewHomePage()
 	}
@@ -187,15 +186,16 @@ fun HomePage_Preview() {
 				singleOf(::ExerciseTypeService)
 				singleOf(::ExerciseEntryService)
 
-				viewModelOf(::ExerciseTypeListViewModel)
-
-				viewModelOf(::ExerciseEntryTabViewViewModel) bind IExerciseEntryTabViewViewModel::class
+				scope<AuthenticatedScope> {
+					scopedOf(::ExerciseTypeListViewModel)
+					scopedOf(::ExerciseEntryTabViewViewModel) bind IExerciseEntryTabViewViewModel::class
+				}
 
 			}
 		)
 	}
 
-	val viewModel = HomePageViewModel()
-
-	HomePage(viewModel)
+	KoinScope<AuthenticatedScope> {
+		HomePage()
+	}
 }

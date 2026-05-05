@@ -16,6 +16,4 @@ class AuthenticationRepository {
 	suspend fun clearToken() {
 		_token.emit(null)
 	}
-
-
 }

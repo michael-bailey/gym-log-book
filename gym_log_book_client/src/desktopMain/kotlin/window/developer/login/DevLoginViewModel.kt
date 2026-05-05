@@ -22,6 +22,6 @@ class DevLoginViewModel(
 	}
 
 	fun logout() = viewModelScope.launch {
-		loginService.logout()
+		authenticationService.logout()
 	}
 }
