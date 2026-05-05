@@ -6,11 +6,7 @@ expect class ClientConfig {
 
 	constructor()
 
-	val unauthenticatedUrl: Url
-	val authenticationUrl: Url
+	val publicUrl: Url
 	val authenticatedUrl: Url
-
-	@Deprecated("Use authenticatedUrl instead")
-	val exerciseRpcUrl: String
 
 }

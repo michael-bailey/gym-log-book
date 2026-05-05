@@ -1,12 +1,22 @@
 package net.michael_bailey.gym_log_book.client.config
 
-actual object ClientConfig {
-	private const val DEFAULT_ANDROID_URL = "ws://10.0.2.2:8080/rpc"
+import io.ktor.http.*
 
-	actual val exerciseRpcUrl: String = DEFAULT_ANDROID_URL
-}
-actual constructor(){
-	TODO("Not yet implemented")
-}actual constructor(){
-	TODO("Not yet implemented")
+actual class ClientConfig {
+
+	actual constructor()
+
+	actual val publicUrl: Url = buildUrl {
+		protocol = URLProtocol.WS
+		host = "10.0.2.2"
+		port = 8080
+		path("rpc")
+	}
+
+	actual val authenticatedUrl: Url = buildUrl {
+		protocol = URLProtocol.WS
+		host = "10.0.2.2"
+		port = 8080
+		path("rpc", "authenticated")
+	}
 }
