@@ -15,6 +15,7 @@ import kotlinx.rpc.krpc.ktor.server.rpc
 import kotlinx.rpc.krpc.serialization.json.json
 import net.michael_bailey.gym_log_book.server.authentication.scope.ViewerScope
 import net.michael_bailey.gym_log_book.shared.authentication.controller.AuthenticationController
+import net.michael_bailey.gym_log_book.shared.authentication.controller.ViewerContextDebuggerController
 import net.michael_bailey.gym_log_book.shared.counter.controller.CounterController
 import net.michael_bailey.gym_log_book.shared.exercise.controller.ExerciseEntryController
 import net.michael_bailey.gym_log_book.shared.exercise.controller.ExerciseTypeController
@@ -95,6 +96,9 @@ fun Application.module() {
 					scope.get()
 				}
 				registerService<ExerciseEntryController> {
+					scope.get()
+				}
+				registerService<ViewerContextDebuggerController> {
 					scope.get()
 				}
 			}
