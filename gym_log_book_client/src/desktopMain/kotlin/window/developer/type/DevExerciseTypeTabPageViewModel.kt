@@ -43,14 +43,7 @@ class DevExerciseTypeTabPageViewModel(
 	fun toggleExerciseTypeSelection(id: Uuid) {
 		if (id in selectedTypeIds) {
 			selectedTypeIds.remove(id)
-			if (selectedTypeIds.isEmpty()) {
-				isSelectionModeShown.value = false
-			}
 			return
-		}
-
-		if (!isSelectionModeShown.value) {
-			isSelectionModeShown.value = true
 		}
 		selectedTypeIds.add(id)
 	}

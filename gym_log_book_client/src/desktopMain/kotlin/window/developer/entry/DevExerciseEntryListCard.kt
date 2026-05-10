@@ -32,7 +32,7 @@ fun DevExerciseEntryListCard(
 	onCheckedChange: (Uuid) -> Unit = {},
 ) {
 	Card(
-		modifier = modifier,
+		modifier = modifier.fillMaxWidth(),
 		colors = CardDefaults.cardColors(
 			containerColor = if (isChecked) {
 				MaterialTheme.colorScheme.secondaryContainer
@@ -42,10 +42,10 @@ fun DevExerciseEntryListCard(
 		)
 	) {
 		Row(
-			modifier = Modifier.padding(12.dp)
+			modifier = Modifier
 				.fillMaxWidth()
-				.clickable(enabled = showCheckBox) { onCheckedChange(exerciseEntry.id) },
-			verticalAlignment = Alignment.CenterVertically,
+				.clickable(enabled = showCheckBox) { onCheckedChange(exerciseEntry.id) }
+				.padding(12.dp),
 		) {
 			if (showCheckBox) {
 				Checkbox(
