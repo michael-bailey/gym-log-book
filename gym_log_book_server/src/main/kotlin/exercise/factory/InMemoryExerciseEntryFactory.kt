@@ -30,6 +30,7 @@ class InMemoryExerciseEntryFactory(
 			setNumber = entrySetNumber,
 			weight = entryWeight,
 			reps = entryReps,
+			exerciseTypeName = "TODO()",
 		)
 	}
 }
