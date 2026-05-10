@@ -13,12 +13,19 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import net.michael_bailey.gym_log_book.client.exercise.service.ExerciseTypeService
 import net.michael_bailey.gym_log_book.client.util.scopedInject
+import net.michael_bailey.gym_log_book.shared.exercise.controller.ExerciseTypeController
 import net.michael_bailey.gym_log_book.shared.exercise.model.EquipmentClass
+import net.michael_bailey.gym_log_book.shared.exercise.model.ExerciseType
 import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
 @Composable
 fun DevExerciseTypeTabPage(
@@ -78,7 +85,11 @@ fun DevExerciseTypeTabPage(
 				}
 			}
 		}
-		LazyColumn(Modifier.fillMaxSize()) {
+		LazyColumn(
+			modifier = Modifier.fillMaxSize(),
+			contentPadding = PaddingValues(8.dp),
+			verticalArrangement = Arrangement.spacedBy(8.dp)
+		) {
 			items(
 				items = typeList,
 				key = { it.id },
@@ -188,3 +199,40 @@ private val EquipmentClass.displayName: String
 		EquipmentClass.None -> "None"
 		is EquipmentClass.Undefined -> "Undefined"
 	}
+
+@Preview
+@Composable
+fun DevExerciseTypeTabPage_Preview() {
+	val viewModel = DevExerciseTypeTabPageViewModel(
+		exerciseTypeService = ExerciseTypeService(
+			exerciseTypeController = object : ExerciseTypeController {
+				override fun exerciseTypes(): Flow<Collection<ExerciseType>> = flow {
+					emit(
+						(0..10).map {
+							ExerciseType(
+								id = Uuid.random(),
+								name = "Random Type",
+								equipmentClass = EquipmentClass.None,
+								isUsingUserWeight = false,
+							)
+						}
+					)
+				}
+
+
+				override suspend fun createExerciseType(
+					name: String,
+					equipmentClass: EquipmentClass
+				): ExerciseType {
+					TODO("Not yet implemented")
+				}
+
+				override suspend fun deleteExerciseTypes(ids: Collection<Uuid>) {
+					TODO("Not yet implemented")
+				}
+			}
+		)
+	)
+
+	DevExerciseTypeTabPage(viewModel = viewModel)
+}

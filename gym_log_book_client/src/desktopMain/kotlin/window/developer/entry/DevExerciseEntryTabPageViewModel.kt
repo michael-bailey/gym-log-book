@@ -2,6 +2,8 @@
 
 package net.michael_bailey.gym_log_book.client.window.developer.entry
 
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.map
 import net.michael_bailey.gym_log_book.client.exercise.service.ExerciseEntryService
@@ -14,8 +16,34 @@ class DevExerciseEntryTabPageViewModel(
 
 	val exerciseEntriesList = exerciseEntryService.allEntries.map { it.toList() }
 
+	val isSelectionModeShown = mutableStateOf(false)
+	val selectedEntryIds = mutableStateListOf<Uuid>()
+
+	fun showSelectionMode() {
+		isSelectionModeShown.value = true
+	}
+
+	fun hideSelectionMode() {
+		isSelectionModeShown.value = false
+		selectedEntryIds.clear()
+	}
+
+	fun toggleExerciseTypeSelection(id: Uuid) {
+		if (id in selectedEntryIds) {
+			selectedEntryIds.remove(id)
+			if (selectedEntryIds.isEmpty()) {
+				isSelectionModeShown.value = false
+			}
+			return
+		}
+
+		if (!isSelectionModeShown.value) {
+			isSelectionModeShown.value = true
+		}
+		selectedEntryIds.add(id)
+	}
+
 	fun deleteExerciseEntry(id: Uuid) {
 
 	}
-
 }

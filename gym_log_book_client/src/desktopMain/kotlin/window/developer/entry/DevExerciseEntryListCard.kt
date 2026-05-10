@@ -2,14 +2,14 @@
 
 package net.michael_bailey.gym_log_book.client.window.developer.entry
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material3.Card
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,11 +25,39 @@ import kotlin.uuid.Uuid
 @Composable
 fun DevExerciseEntryListCard(
 	modifier: Modifier = Modifier,
-	exerciseEntry: ExerciseEntry
+	exerciseEntry: ExerciseEntry,
+	// todo: Move this into separate functionality, maybe make a state container for it?
+	showCheckBox: Boolean = false,
+	isChecked: Boolean = false,
+	onCheckedChange: (Uuid) -> Unit = {},
 ) {
-	Card {
-		Row(modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
-			Icon(modifier = Modifier.padding(end = 12.dp), imageVector = Icons.Filled.Info, contentDescription = "")
+	Card(
+		modifier = modifier,
+		colors = CardDefaults.cardColors(
+			containerColor = if (isChecked) {
+				MaterialTheme.colorScheme.secondaryContainer
+			} else {
+				MaterialTheme.colorScheme.surfaceContainer
+			}
+		)
+	) {
+		Row(
+			modifier = Modifier.padding(12.dp)
+				.fillMaxWidth()
+				.clickable(enabled = showCheckBox) { onCheckedChange(exerciseEntry.id) },
+			verticalAlignment = Alignment.CenterVertically,
+		) {
+			if (showCheckBox) {
+				Checkbox(
+					checked = isChecked,
+					onCheckedChange = { onCheckedChange(exerciseEntry.id) }
+				)
+			}
+			Icon(
+				modifier = Modifier.padding(end = 12.dp),
+				imageVector = Icons.Filled.Info,
+				contentDescription = ""
+			)
 			Column(
 				horizontalAlignment = Alignment.End
 			) {
@@ -67,6 +95,6 @@ fun DevExerciseEntryListCard_Preview() {
 			setNumber = 3,
 			weight = 27.25,
 			reps = 12
-		),
+		)
 	)
 }

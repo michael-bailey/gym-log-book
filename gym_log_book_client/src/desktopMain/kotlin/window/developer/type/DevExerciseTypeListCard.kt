@@ -25,8 +25,7 @@ fun DevExerciseTypeCard(
 ) {
 	Card(
 		modifier = Modifier
-			.fillMaxWidth()
-			.padding(8.dp),
+			.fillMaxWidth(),
 		colors = CardDefaults.cardColors(
 			containerColor = if (isChecked) {
 				MaterialTheme.colorScheme.secondaryContainer
@@ -47,7 +46,6 @@ fun DevExerciseTypeCard(
 					onCheckedChange = { onCheckedChange(id) }
 				)
 			}
-
 			Column {
 				Text("Id: $id")
 				Text("Name: $name")
