@@ -165,6 +165,7 @@ fun HomePage_Preview() {
 									id = Uuid.random(),
 									date = Clock.System.now().toLocalDateTime(UTC),
 									exerciseTypeId = typeId,
+									exerciseTypeName = "A Type",
 									setNumber = 1,
 									weight = 1.0,
 									reps = 1
