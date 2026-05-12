@@ -16,8 +16,10 @@ class DevExerciseEntryTabPageViewModel(
 
 	val exerciseEntriesList = exerciseEntryService.allEntries.map { it.toList() }
 
-	val isSelectionModeShown = mutableStateOf(false)
+	var isSelectionModeShown = mutableStateOf(false)
 	val selectedEntryIds = mutableStateListOf<Uuid>()
+
+	val isNewEntryModalShown = mutableStateOf(false)
 
 	fun showSelectionMode() {
 		isSelectionModeShown.value = true
@@ -34,6 +36,14 @@ class DevExerciseEntryTabPageViewModel(
 			return
 		}
 		selectedEntryIds.add(id)
+	}
+
+	fun showCreateModal() {
+		isNewEntryModalShown.value = true
+	}
+
+	fun closeCreateModal() {
+		isNewEntryModalShown.value = false
 	}
 
 	fun deleteExerciseEntry(id: Uuid) {
