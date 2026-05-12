@@ -8,6 +8,7 @@ import net.michael_bailey.gym_log_book.client.di.scopes.AuthenticatedScope
 import net.michael_bailey.gym_log_book.client.di.scopes.LoginScope
 import net.michael_bailey.gym_log_book.client.window.developer.DeveloperWindowViewModel
 import net.michael_bailey.gym_log_book.client.window.developer.counter.DevCounterTabPageViewModel
+import net.michael_bailey.gym_log_book.client.window.developer.entry.DevExerciseEntryCreateDialogueViewModel
 import net.michael_bailey.gym_log_book.client.window.developer.entry.DevExerciseEntryTabPageViewModel
 import net.michael_bailey.gym_log_book.client.window.developer.login.DevLoginViewModel
 import net.michael_bailey.gym_log_book.client.window.developer.type.DevExerciseTypeTabPageViewModel
@@ -30,6 +31,7 @@ actual val platformModule: Module = module {
 	scope<AuthenticatedScope> {
 		scopedOf(::DevExerciseTypeTabPageViewModel)
 		scopedOf(::DevExerciseEntryTabPageViewModel)
+		scopedOf(::DevExerciseEntryCreateDialogueViewModel)
 
 		scoped {
 			val client = get<RpcClient>()
