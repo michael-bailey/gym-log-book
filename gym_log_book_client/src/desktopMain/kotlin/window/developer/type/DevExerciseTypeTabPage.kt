@@ -42,49 +42,7 @@ fun DevExerciseTypeTabPage(
 	Column(
 		modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally
 	) {
-		Surface(
-			modifier = Modifier.fillMaxWidth().padding(8.dp),
-			shape = RoundedCornerShape(16.dp),
-			color = MaterialTheme.colorScheme.surfaceDim,
-		) {
-			Row(
-				modifier = Modifier.fillMaxWidth(),
-				horizontalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterHorizontally),
-				verticalAlignment = Alignment.CenterVertically
-			) {
-				Text(
-					text = if (isSelectionModeShown) {
-						"$selectedCount selected"
-					} else {
-						"Entry page"
-					}
-				)
-				Button(onClick = viewModel::showNewTypeDialogue) {
-					Icon(Icons.Rounded.Add, contentDescription = null)
-					Text("Add Type")
-				}
-				if (isSelectionModeShown) {
-					OutlinedButton(onClick = viewModel::hideSelectionMode) {
-						Text("Cancel")
-					}
-					Button(
-						onClick = viewModel::deleteSelectedExerciseTypes,
-						enabled = selectedCount > 0,
-						colors = ButtonDefaults.buttonColors(
-							containerColor = MaterialTheme.colorScheme.error,
-							contentColor = MaterialTheme.colorScheme.onError,
-						),
-					) {
-						Icon(Icons.Rounded.Delete, contentDescription = null)
-						Text("Delete")
-					}
-				} else {
-					OutlinedButton(onClick = viewModel::showSelectionMode) {
-						Text("Select")
-					}
-				}
-			}
-		}
+		SeletionToolbar(isSelectionModeShown, selectedCount, viewModel)
 		LazyColumn(
 			modifier = Modifier.fillMaxSize(),
 			contentPadding = PaddingValues(8.dp),
@@ -111,6 +69,57 @@ fun DevExerciseTypeTabPage(
 			onDismissRequest = viewModel::hideNewTypeDialogue,
 			onSave = viewModel::addExerciseType,
 		)
+	}
+}
+
+@Composable
+private fun SeletionToolbar(
+	isSelectionModeShown: Boolean,
+	selectedCount: Int,
+	viewModel: DevExerciseTypeTabPageViewModel
+) {
+	Surface(
+		modifier = Modifier.fillMaxWidth().padding(8.dp),
+		shape = RoundedCornerShape(16.dp),
+		color = MaterialTheme.colorScheme.surfaceDim,
+	) {
+		Row(
+			modifier = Modifier.fillMaxWidth(),
+			horizontalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterHorizontally),
+			verticalAlignment = Alignment.CenterVertically
+		) {
+			Text(
+				text = if (isSelectionModeShown) {
+					"$selectedCount selected"
+				} else {
+					"Entry page"
+				}
+			)
+			Button(onClick = viewModel::showNewTypeDialogue) {
+				Icon(Icons.Rounded.Add, contentDescription = null)
+				Text("Add Type")
+			}
+			if (isSelectionModeShown) {
+				OutlinedButton(onClick = viewModel::hideSelectionMode) {
+					Text("Cancel")
+				}
+				Button(
+					onClick = viewModel::deleteSelectedExerciseTypes,
+					enabled = selectedCount > 0,
+					colors = ButtonDefaults.buttonColors(
+						containerColor = MaterialTheme.colorScheme.error,
+						contentColor = MaterialTheme.colorScheme.onError,
+					),
+				) {
+					Icon(Icons.Rounded.Delete, contentDescription = null)
+					Text("Delete")
+				}
+			} else {
+				OutlinedButton(onClick = viewModel::showSelectionMode) {
+					Text("Select")
+				}
+			}
+		}
 	}
 }
 
