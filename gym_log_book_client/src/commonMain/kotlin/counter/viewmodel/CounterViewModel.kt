@@ -1,5 +1,6 @@
 package net.michael_bailey.gym_log_book.client.counter.viewmodel
 
+import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -10,7 +11,7 @@ import net.michael_bailey.gym_log_book.client.counter.service.CounterClientServi
 class CounterViewModel(
 	private val counterClientService: CounterClientService,
 	private val scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Default),
-) {
+) : ViewModel() {
 	private val counterText = MutableStateFlow("Loading...")
 
 	init {

@@ -11,8 +11,9 @@ import kotlin.uuid.Uuid
 data class ExerciseEntry(
 	override val id: Uuid,
 	val date: LocalDateTime,
-	var exerciseTypeId: Uuid,
-	var setNumber: Int,
-	var weight: Double,
-	var reps: Int,
+	val exerciseTypeId: Uuid,
+	val exerciseTypeName: String,
+	val setNumber: Int,
+	val weight: Double,
+	val reps: Int,
 ) : Identifiable()

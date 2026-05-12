@@ -6,36 +6,22 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import net.michael_bailey.gym_log_book.client.counter.service.CounterClientService
 import net.michael_bailey.gym_log_book.client.counter.viewmodel.CounterViewModel
-
-@Composable
-fun CounterApp(
-	counterClientService: CounterClientService,
-) {
-	val viewModel = remember(counterClientService) {
-		CounterViewModel(counterClientService)
-	}
-
-	DisposableEffect(viewModel) {
-		onDispose {
-			viewModel.close()
-		}
-	}
-
-	val counterText by viewModel.counterText().collectAsState()
-
-	CounterScreen(counterText)
-}
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun CounterScreen(
-	counterText: String,
+	viewModel: CounterViewModel = koinViewModel()
 ) {
+
+	val counterText by viewModel.counterText().collectAsState()
+
 	Column(
 		modifier = Modifier
 			.fillMaxSize()
