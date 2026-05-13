@@ -10,3 +10,4 @@ local.properties
 .kotlin
 **/.idea/
 **/build/
+deploy/base/secrets.yaml
