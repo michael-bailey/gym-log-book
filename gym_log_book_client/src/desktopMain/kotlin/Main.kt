@@ -18,7 +18,7 @@ import org.koin.compose.koinInject
 import org.koin.core.context.startKoin
 
 fun main() = application {
-	val koin = startKoin {
+	startKoin {
 		modules(
 			platformModule,
 			applicationModule,
