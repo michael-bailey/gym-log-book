@@ -13,7 +13,7 @@ import net.michael_bailey.gym_log_book.client.counter.counterClientModule
 import net.michael_bailey.gym_log_book.client.exercise.exerciseClientModule
 import net.michael_bailey.gym_log_book.client.platform.platformModule
 import net.michael_bailey.gym_log_book.client.window.developer.DeveloperToolWindow
-import net.michael_bailey.gym_log_book.client.window.home.ExerciseHomeWindow
+import net.michael_bailey.gym_log_book.client.window.home.ExerciseLoginWindow
 import org.koin.compose.koinInject
 import org.koin.core.context.startKoin
 
@@ -49,7 +49,8 @@ fun main() = application {
 		val isLoginWindowShown by applicationViewModel.isLoginWindowShown
 
 		if (isLoginWindowShown)
-			ExerciseHomeWindow()
+			ExerciseLoginWindow()
+
 
 		DeveloperToolWindow()
 	}
