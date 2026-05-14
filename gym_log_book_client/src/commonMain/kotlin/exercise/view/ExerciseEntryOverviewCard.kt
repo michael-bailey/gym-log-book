@@ -35,7 +35,6 @@ fun ExerciseEntryOverviewCard(
 		Text(text = name)
 		Text(text = date.toString())
 	}
-
 }
 
 @Preview

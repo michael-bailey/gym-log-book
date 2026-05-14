@@ -2,7 +2,10 @@
 
 package net.michael_bailey.gym_log_book.client.home.tabs.entry
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
@@ -22,8 +25,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.datetime.TimeZone.Companion.UTC
 import kotlinx.datetime.toLocalDateTime
 import net.michael_bailey.gym_log_book.client.config.Strings
-import net.michael_bailey.gym_log_book.client.exercise.view.ExerciseEntryOverviewCard
-import net.michael_bailey.gym_log_book.client.home.tabs.IExerciseEntryTabViewViewModel
+import net.michael_bailey.gym_log_book.client.exercise.view.ExerciseEntryCard
 import net.michael_bailey.gym_log_book.client.theme.ClientTheme
 import net.michael_bailey.gym_log_book.client.util.scopedInject
 import net.michael_bailey.gym_log_book.shared.exercise.model.ExerciseEntry
@@ -34,7 +36,7 @@ import kotlin.uuid.Uuid
 @Composable
 fun ExerciseEntryTabView(
 	modifier: Modifier = Modifier,
-	viewModel: IExerciseEntryTabViewViewModel = scopedInject()
+	viewModel: IExerciseEntryTabViewModel = scopedInject()
 ) {
 	Box(
 		modifier = modifier
@@ -50,7 +52,8 @@ fun ExerciseEntryTabView(
 
 			LazyColumn(
 				contentPadding = PaddingValues(24.dp),
-				horizontalAlignment = Alignment.CenterHorizontally
+				horizontalAlignment = Alignment.CenterHorizontally,
+				verticalArrangement = Arrangement.spacedBy(12.dp)
 			) {
 				item {
 					Text(
@@ -71,11 +74,8 @@ fun ExerciseEntryTabView(
 					items(
 						items = exerciseEntries
 					) {
-						ExerciseEntryOverviewCard(
-							modifier = Modifier.fillMaxWidth().padding(8.dp),
-							id = it.id.toString(),
-							name = it.exerciseTypeName,
-							date = it.date
+						ExerciseEntryCard(
+							it
 						)
 					}
 				}
@@ -89,7 +89,7 @@ fun ExerciseEntryTabView(
 @Composable
 fun ExerciseEntryTabView_Preview() {
 
-	val viewModel = object : IExerciseEntryTabViewViewModel() {
+	val viewModel = object : IExerciseEntryTabViewModel() {
 		override val allEntries: Flow<List<ExerciseEntry>>
 			get() = flow {}
 		override val combinedViewData: Flow<List<ExerciseEntryViewData>>
