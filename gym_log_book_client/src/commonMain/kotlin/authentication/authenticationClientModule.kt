@@ -14,18 +14,21 @@ import kotlinx.rpc.withService
 import net.michael_bailey.gym_log_book.client.authentication.repository.AuthenticationRepository
 import net.michael_bailey.gym_log_book.client.authentication.service.AuthenticationLoginService
 import net.michael_bailey.gym_log_book.client.authentication.service.AuthenticationService
+import net.michael_bailey.gym_log_book.client.authentication.view_model.LoginPageViewModel
 import net.michael_bailey.gym_log_book.client.config.ClientConfig
 import net.michael_bailey.gym_log_book.client.di.scopes.AuthenticatedScope
 import net.michael_bailey.gym_log_book.client.di.scopes.LoginScope
 import net.michael_bailey.gym_log_book.shared.authentication.controller.AuthenticationController
 import org.koin.core.module.dsl.scopedOf
 import org.koin.core.module.dsl.singleOf
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val authenticationClientModule = module {
 
 	singleOf(::AuthenticationService)
+	singleOf(::AuthenticationLoginService)
 	singleOf(::AuthenticationRepository)
 
 	single {
@@ -36,6 +39,8 @@ val authenticationClientModule = module {
 	scope<LoginScope> {
 		scopedOf(::AuthenticationLoginService)
 	}
+
+	viewModelOf(::LoginPageViewModel)
 
 	scope<AuthenticatedScope> {
 		scoped {

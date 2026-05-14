@@ -15,11 +15,13 @@ class AuthenticationLoginService(
 		password: String
 	) {
 		val token = withTimeout(1.seconds) {
-			authenticationController.getAuthenticationTokenPair(
-				username = username,
-				password = password
-			)
+			runCatching {
+				authenticationController.getAuthenticationTokenPair(
+					username = username,
+					password = password
+				)
+			}
 		}
-		authenticationRepository.setToken(token)
+		authenticationRepository.setToken(token.getOrNull()!!)
 	}
 }
