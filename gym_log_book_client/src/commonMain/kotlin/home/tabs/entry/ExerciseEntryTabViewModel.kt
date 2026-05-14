@@ -6,16 +6,15 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import net.michael_bailey.gym_log_book.client.exercise.service.ExerciseEntryService
 import net.michael_bailey.gym_log_book.client.exercise.service.ExerciseTypeService
-import net.michael_bailey.gym_log_book.client.home.tabs.IExerciseEntryTabViewViewModel
 import net.michael_bailey.gym_log_book.shared.exercise.model.ExerciseEntry
 import net.michael_bailey.gym_log_book.shared.exercise.model.ExerciseType
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
-class ExerciseEntryTabViewViewModel(
+class ExerciseEntryTabViewModel(
 	private val exerciseEntryService: ExerciseEntryService,
 	private val exerciseTypeService: ExerciseTypeService,
-) : IExerciseEntryTabViewViewModel() {
+) : IExerciseEntryTabViewModel() {
 
 	override val allEntries = exerciseEntryService.allEntries.map {
 		it.toList()

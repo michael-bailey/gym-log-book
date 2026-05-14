@@ -25,9 +25,9 @@ import net.michael_bailey.gym_log_book.client.exercise.service.ExerciseTypeServi
 import net.michael_bailey.gym_log_book.client.exercise.view_model.ExerciseTypeListViewModel
 import net.michael_bailey.gym_log_book.client.home.HomePageViewModel.HomePageTab
 import net.michael_bailey.gym_log_book.client.home.tabs.HomeTab
-import net.michael_bailey.gym_log_book.client.home.tabs.IExerciseEntryTabViewViewModel
 import net.michael_bailey.gym_log_book.client.home.tabs.entry.ExerciseEntryTabView
-import net.michael_bailey.gym_log_book.client.home.tabs.entry.ExerciseEntryTabViewViewModel
+import net.michael_bailey.gym_log_book.client.home.tabs.entry.ExerciseEntryTabViewModel
+import net.michael_bailey.gym_log_book.client.home.tabs.entry.IExerciseEntryTabViewModel
 import net.michael_bailey.gym_log_book.client.home.tabs.type.ExerciseTypeOverviewList
 import net.michael_bailey.gym_log_book.client.theme.ClientTheme
 import net.michael_bailey.gym_log_book.client.util.KoinScope
@@ -189,7 +189,7 @@ fun HomePage_Preview() {
 
 				scope<AuthenticatedScope> {
 					scopedOf(::ExerciseTypeListViewModel)
-					scopedOf(::ExerciseEntryTabViewViewModel) bind IExerciseEntryTabViewViewModel::class
+					scopedOf(::ExerciseEntryTabViewModel) bind IExerciseEntryTabViewModel::class
 				}
 
 			}

@@ -6,8 +6,8 @@ import net.michael_bailey.gym_log_book.client.di.scopes.AuthenticatedScope
 import net.michael_bailey.gym_log_book.client.exercise.service.ExerciseEntryService
 import net.michael_bailey.gym_log_book.client.exercise.service.ExerciseTypeService
 import net.michael_bailey.gym_log_book.client.exercise.view_model.ExerciseTypeListViewModel
-import net.michael_bailey.gym_log_book.client.home.tabs.IExerciseEntryTabViewViewModel
-import net.michael_bailey.gym_log_book.client.home.tabs.entry.ExerciseEntryTabViewViewModel
+import net.michael_bailey.gym_log_book.client.home.tabs.entry.ExerciseEntryTabViewModel
+import net.michael_bailey.gym_log_book.client.home.tabs.entry.IExerciseEntryTabViewModel
 import net.michael_bailey.gym_log_book.shared.exercise.controller.ExerciseEntryController
 import net.michael_bailey.gym_log_book.shared.exercise.controller.ExerciseTypeController
 import org.koin.core.module.dsl.scopedOf
@@ -31,6 +31,6 @@ val exerciseClientModule = module {
 		scopedOf(::ExerciseTypeService)
 
 		scopedOf(::ExerciseTypeListViewModel)
-		scopedOf(::ExerciseEntryTabViewViewModel) bind IExerciseEntryTabViewViewModel::class
+		scopedOf(::ExerciseEntryTabViewModel) bind IExerciseEntryTabViewModel::class
 	}
 }

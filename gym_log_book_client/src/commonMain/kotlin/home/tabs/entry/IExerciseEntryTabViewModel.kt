@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalUuidApi::class)
 
-package net.michael_bailey.gym_log_book.client.home.tabs
+package net.michael_bailey.gym_log_book.client.home.tabs.entry
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.Flow
@@ -9,7 +9,7 @@ import net.michael_bailey.gym_log_book.shared.exercise.model.ExerciseEntry
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
-abstract class IExerciseEntryTabViewViewModel : ViewModel() {
+abstract class IExerciseEntryTabViewModel : ViewModel() {
 	abstract val allEntries: Flow<List<ExerciseEntry>>
 	abstract val combinedViewData: Flow<List<ExerciseEntryViewData>>
 
