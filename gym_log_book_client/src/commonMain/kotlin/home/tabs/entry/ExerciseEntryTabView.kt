@@ -2,7 +2,10 @@
 
 package net.michael_bailey.gym_log_book.client.home.tabs.entry
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
@@ -17,13 +20,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.datetime.TimeZone.Companion.UTC
 import kotlinx.datetime.toLocalDateTime
 import net.michael_bailey.gym_log_book.client.config.Strings
 import net.michael_bailey.gym_log_book.client.exercise.view.ExerciseEntryCard
-import net.michael_bailey.gym_log_book.client.home.tabs.entry.IExerciseEntryTabViewModel.ExerciseEntryViewData
 import net.michael_bailey.gym_log_book.client.theme.ClientTheme
 import net.michael_bailey.gym_log_book.client.util.scopedInject
+import net.michael_bailey.gym_log_book.shared.exercise.model.ExerciseEntry
 import kotlin.time.Clock
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
@@ -32,19 +37,6 @@ import kotlin.uuid.Uuid
 fun ExerciseEntryTabView(
 	modifier: Modifier = Modifier,
 	viewModel: IExerciseEntryTabViewModel = scopedInject()
-) {
-	val exerciseEntries by viewModel.combinedViewData.collectAsState(listOf())
-
-	ExerciseEntryTabView(
-		modifier = modifier,
-		exerciseEntries = exerciseEntries,
-	)
-}
-
-@Composable
-fun ExerciseEntryTabView(
-	modifier: Modifier,
-	exerciseEntries: List<ExerciseEntryViewData>
 ) {
 	Box(
 		modifier = modifier
@@ -55,6 +47,9 @@ fun ExerciseEntryTabView(
 			modifier = Modifier.fillMaxSize(),
 			shape = MaterialTheme.shapes.extraLarge
 		) {
+
+			val exerciseEntries by viewModel.combinedViewData.collectAsState(listOf())
+
 			LazyColumn(
 				contentPadding = PaddingValues(24.dp),
 				horizontalAlignment = Alignment.CenterHorizontally,
@@ -80,7 +75,6 @@ fun ExerciseEntryTabView(
 						items = exerciseEntries
 					) {
 						ExerciseEntryCard(
-							modifier = Modifier.widthIn(min = 300.dp, max = 500.dp),
 							it
 						)
 					}
@@ -95,22 +89,31 @@ fun ExerciseEntryTabView(
 @Composable
 fun ExerciseEntryTabView_Preview() {
 
-	val entries = (0 until 10).map {
-		val id = Uuid.random()
-		ExerciseEntryViewData(
-			id = id,
-			date = Clock.System.now().toLocalDateTime(UTC),
-			exerciseTypeName = "Type Name",
-			setNumber = it,
-			weight = 100.toDouble(),
-			reps = 12
-		)
+	val viewModel = object : IExerciseEntryTabViewModel() {
+		override val allEntries: Flow<List<ExerciseEntry>>
+			get() = flow {}
+		override val combinedViewData: Flow<List<ExerciseEntryViewData>>
+			get() = flow {
+				val entries = (0 until 10).map {
+					val id = Uuid.random()
+					ExerciseEntryViewData(
+						id = id,
+						date = Clock.System.now().toLocalDateTime(UTC),
+						exerciseTypeName = "Type Name",
+						setNumber = it,
+						weight = 100.toDouble(),
+						reps = 12
+					)
+				}
+
+				emit(entries)
+			}
+
 	}
 
 	ClientTheme {
 		ExerciseEntryTabView(
-			modifier = Modifier.fillMaxSize(),
-			exerciseEntries = entries
+			viewModel = viewModel
 		)
 	}
 }

@@ -7,12 +7,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Add
+import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
-import home.tabs.type.ExerciseTypeTabViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.datetime.TimeZone.Companion.UTC
@@ -22,12 +22,13 @@ import net.michael_bailey.gym_log_book.client.component.navigation.GymAdaptiveSc
 import net.michael_bailey.gym_log_book.client.di.scopes.AuthenticatedScope
 import net.michael_bailey.gym_log_book.client.exercise.service.ExerciseEntryService
 import net.michael_bailey.gym_log_book.client.exercise.service.ExerciseTypeService
+import net.michael_bailey.gym_log_book.client.exercise.view_model.ExerciseTypeListViewModel
+import net.michael_bailey.gym_log_book.client.home.HomePageViewModel.HomePageTab
 import net.michael_bailey.gym_log_book.client.home.tabs.HomeTab
 import net.michael_bailey.gym_log_book.client.home.tabs.entry.ExerciseEntryTabView
 import net.michael_bailey.gym_log_book.client.home.tabs.entry.ExerciseEntryTabViewModel
 import net.michael_bailey.gym_log_book.client.home.tabs.entry.IExerciseEntryTabViewModel
-import net.michael_bailey.gym_log_book.client.home.tabs.type.ExerciseTypeTabView
-import net.michael_bailey.gym_log_book.client.home.tabs.type.IExerciseTypeTabViewModel
+import net.michael_bailey.gym_log_book.client.home.tabs.type.ExerciseTypeOverviewList
 import net.michael_bailey.gym_log_book.client.theme.ClientTheme
 import net.michael_bailey.gym_log_book.client.util.KoinScope
 import net.michael_bailey.gym_log_book.shared.exercise.controller.ExerciseEntryController
@@ -74,7 +75,7 @@ fun NewHomePage() {
 		}
 	) {
 		HomeContentSurface(
-			modifier = Modifier.padding(it),
+			modifier = Modifier.padding(),
 			currentTabs = currentTabs,
 		)
 	}
@@ -96,12 +97,27 @@ private fun HomeContentSurface(
 				HomeTab.Exercises -> ExerciseEntryTabView(
 					modifier = Modifier.fillMaxSize(),
 				)
-				HomeTab.Types -> ExerciseTypeTabView(
+
+				HomeTab.Types -> ExerciseTypeOverviewList(
 					modifier = Modifier.fillMaxSize(),
 				)
 			}
 		}
 	}
+}
+
+private fun navigationIconFor(
+	tab: HomePageTab,
+): ImageVector = when (tab) {
+	HomePageTab.ExerciseEntryTab -> Icons.Rounded.FitnessCenter
+	HomePageTab.ExerciseTypeTab -> Icons.Rounded.Category
+}
+
+private fun fabIconFor(
+	tab: HomePageTab,
+): ImageVector = when (tab) {
+	HomePageTab.ExerciseEntryTab -> Icons.Rounded.PlayArrow
+	HomePageTab.ExerciseTypeTab -> Icons.Rounded.AddCircle
 }
 
 @Preview
@@ -113,6 +129,7 @@ fun HomePage_Preview() {
 	startKoin {
 		modules(
 			module {
+
 				single<ExerciseTypeController> {
 					object : ExerciseTypeController {
 						override fun exerciseTypes(): Flow<Collection<ExerciseType>> = flowOf(
@@ -171,7 +188,7 @@ fun HomePage_Preview() {
 				singleOf(::ExerciseEntryService)
 
 				scope<AuthenticatedScope> {
-					scopedOf(::ExerciseTypeTabViewModel) bind IExerciseTypeTabViewModel::class
+					scopedOf(::ExerciseTypeListViewModel)
 					scopedOf(::ExerciseEntryTabViewModel) bind IExerciseEntryTabViewModel::class
 				}
 
