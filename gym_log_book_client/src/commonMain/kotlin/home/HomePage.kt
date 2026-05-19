@@ -133,7 +133,7 @@ fun HomePage_Preview() {
 							id = typeId,
 							name = name,
 							equipmentClass = equipmentClass,
-							isUsingUserWeight = equipmentClass == EquipmentClass.UsesUserWeight
+							isUsingUserWeight = equipmentClass == EquipmentClass.UserWeightMachine
 						)
 
 						override suspend fun deleteExerciseTypes(ids: Collection<Uuid>) = Unit

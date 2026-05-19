@@ -11,5 +11,7 @@ data class ExerciseType(
 	override val id: Uuid,
 	val name: String,
 	val equipmentClass: EquipmentClass,
+
+	@Deprecated("This should be calculated from the equipment class")
 	val isUsingUserWeight: Boolean,
 ) : Identifiable()

@@ -195,18 +195,20 @@ private fun NewExerciseTypeDialog(
 
 private val exerciseTypeEquipmentClasses = listOf(
 	EquipmentClass.Machine,
-	EquipmentClass.UsesUserWeight,
+	EquipmentClass.UserWeightMachine,
+	EquipmentClass.Calisthenics,
 	EquipmentClass.FreeWeight,
 	EquipmentClass.None,
 )
 
-private val EquipmentClass.displayName: String
+val EquipmentClass.displayName: String
 	get() = when (this) {
-		EquipmentClass.Machine -> "Machine"
-		EquipmentClass.UsesUserWeight -> "Uses User Weight"
 		EquipmentClass.FreeWeight -> "Free Weight"
-		EquipmentClass.None -> "None"
-		is EquipmentClass.Undefined -> "Undefined"
+		EquipmentClass.Machine -> "Machine"
+		EquipmentClass.None -> "Please Select"
+		EquipmentClass.UserWeightMachine -> "User Weight Machine"
+		EquipmentClass.Calisthenics -> "Calisthenics"
+		is EquipmentClass.Undefined -> "undefined name:${this.text}"
 	}
 
 @Preview

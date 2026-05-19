@@ -10,8 +10,12 @@ sealed class EquipmentClass {
 	data object Machine : EquipmentClass()
 
 	@Serializable
-	@SerialName("UsesUserWeight")
-	data object UsesUserWeight : EquipmentClass()
+	@SerialName("UserWeightMachine")
+	data object UserWeightMachine : EquipmentClass()
+
+	@Serializable
+	@SerialName("Calisthenics")
+	data object Calisthenics : EquipmentClass()
 
 	@Serializable
 	@SerialName("FreeWeight")

@@ -17,6 +17,6 @@ class InMemoryExerciseTypeFactory : IExerciseTypeFactory {
 		id = Uuid.random(),
 		name = name,
 		equipmentClass = equipmentClass,
-		isUsingUserWeight = equipmentClass == EquipmentClass.UsesUserWeight,
+		isUsingUserWeight = false,
 	)
 }
