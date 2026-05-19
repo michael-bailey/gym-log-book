@@ -1,82 +1,46 @@
 package net.michael_bailey.gym_log_book.client.exercise.view
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Start
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
-import kotlin.time.Clock
 
 @Composable
 fun ExerciseTypeContent(
-	type: String,
-	createDate: String,
-	createdTime: String,
-	setNumber: Int,
-	weight: Double,
-	reps: Int
+	modifier: Modifier = Modifier,
+	name: String,
+	equipmentClass: String,
+	isUsingUserWeight: Boolean
 ) {
 	Column(
-		Modifier
-			.fillMaxWidth()
-			.wrapContentHeight()
-			.padding(16.dp)
+		modifier = modifier
 	) {
 		Row(
-			Modifier
+			modifier = Modifier.fillMaxWidth()
 				.wrapContentHeight()
-				.fillMaxWidth(),
-			horizontalArrangement = Arrangement.SpaceBetween
+				.padding(16.dp),
+			verticalAlignment = Alignment.CenterVertically,
 		) {
-			Text(
-				text = type,
-				fontSize = 14.sp,
-				fontWeight = FontWeight(400)
+			Icon(
+				modifier = Modifier.padding(end = 12.dp),
+				imageVector = Icons.Default.Start,
+				contentDescription = ""
 			)
-			Row(
-				Modifier
-					.wrapContentHeight()
-					.wrapContentWidth(),
-				horizontalArrangement = Arrangement.spacedBy(10.dp)
-			) {
+			Column {
 				Text(
-					text = createDate,
-					fontSize = 14.sp,
-					fontWeight = FontWeight(400)
+					text = name,
+					fontSize = 18.sp
 				)
-				Text(
-					text = createdTime,
-					fontSize = 14.sp,
-					fontWeight = FontWeight(400)
-				)
+				Text(text = "$equipmentClass class")
+				Text(text = "Uses user weight: $isUsingUserWeight")
 			}
-		}
-		Row(
-			Modifier
-				.wrapContentHeight()
-				.fillMaxWidth(),
-			horizontalArrangement = Arrangement.SpaceBetween
-		) {
-			Text(
-				text = "Set: $setNumber",
-				fontSize = 22.sp,
-				fontWeight = FontWeight(500)
-			)
-			Text(
-				text = "$weight KG",
-				fontSize = 22.sp,
-				fontWeight = FontWeight(500)
-			)
-			Text(
-				text = "$reps reps",
-				fontSize = 22.sp,
-				fontWeight = FontWeight(500)
-			)
 		}
 	}
 }
@@ -84,17 +48,10 @@ fun ExerciseTypeContent(
 @Preview
 @Composable
 fun ExerciseTypeContent_Preview() {
-
-	val now = Clock.System.now().toLocalDateTime(TimeZone.UTC)
-	val time = now.time.toString()
-	val date = now.date.toString()
-
-	ExerciseEntryContent(
-		type = "Test Type",
-		createDate = date,
-		createdTime = time,
-		setNumber = 3,
-		weight = 12.25,
-		reps = 8
+	ExerciseTypeContent(
+		modifier = Modifier.fillMaxWidth(),
+		name = "Type",
+		equipmentClass = "Free weight",
+		isUsingUserWeight = false
 	)
 }
