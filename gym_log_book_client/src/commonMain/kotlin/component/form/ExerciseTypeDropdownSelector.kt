@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalUuidApi::class)
 
-package net.michael_bailey.gym_log_book.client.component
+package net.michael_bailey.gym_log_book.client.component.form
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth

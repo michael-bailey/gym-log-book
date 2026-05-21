@@ -1,5 +1,6 @@
 package net.michael_bailey.gym_log_book.client.platform
 
+import androidx.compose.material3.CalendarLocale
 import io.ktor.client.engine.cio.*
 import kotlinx.rpc.RpcClient
 import kotlinx.rpc.withService
@@ -17,10 +18,13 @@ import net.michael_bailey.gym_log_book.shared.authentication.controller.ViewerCo
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.scopedOf
 import org.koin.core.module.dsl.viewModelOf
+import org.koin.dsl.bind
 import org.koin.dsl.module
+import java.util.*
 
 actual val platformModule: Module = module {
 	single { CIO.create() }
+	single { Locale.getDefault() } bind CalendarLocale::class
 
 	viewModelOf(::ExerciseHomeWindowViewModel)
 	viewModelOf(::ApplicationViewModel)
