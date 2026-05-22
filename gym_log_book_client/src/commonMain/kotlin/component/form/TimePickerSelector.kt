@@ -14,7 +14,7 @@ fun TimePickerSelector(
 	val showDialogue = mutableStateOf(false)
 
 	val formattedState = derivedStateOf {
-		"selected: ${timeState.hour.toString().padStart(2, '0')}:${timeState.minute.toString().padStart(2, '0')}"
+		"${timeState.hour.toString().padStart(2, '0')}:${timeState.minute.toString().padStart(2, '0')}"
 	}
 
 	OutlinedButton(onClick = { showDialogue.value = true }) {

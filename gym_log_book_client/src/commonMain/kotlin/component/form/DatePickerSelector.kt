@@ -20,7 +20,7 @@ fun DatePickerSelector(
 			?.let { millis ->
 				val date = Instant.fromEpochMilliseconds(millis)
 					.toLocalDateTime(TimeZone.currentSystemDefault()).date
-				"Selected: ${date.day}/${date.month.number}/${date.year}"
+				"${date.day}/${date.month.number}/${date.year}"
 			} ?: "Select date"
 	}
 
@@ -35,6 +35,7 @@ fun DatePickerSelector(
 }
 
 @Composable
+@OptIn(ExperimentalMaterial3Api::class)
 private fun DatePickerDialogue(
 	showState: MutableState<Boolean>,
 	dateState: DatePickerState,
