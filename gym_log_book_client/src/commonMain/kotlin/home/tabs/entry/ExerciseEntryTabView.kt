@@ -5,12 +5,9 @@ package net.michael_bailey.gym_log_book.client.home.tabs.entry
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -20,7 +17,9 @@ import androidx.compose.ui.unit.sp
 import kotlinx.datetime.TimeZone.Companion.UTC
 import kotlinx.datetime.toLocalDateTime
 import net.michael_bailey.gym_log_book.client.config.Strings
+import net.michael_bailey.gym_log_book.client.exercise.state.ExerciseEntryCreateFormState
 import net.michael_bailey.gym_log_book.client.exercise.view.ExerciseEntryCard
+import net.michael_bailey.gym_log_book.client.exercise.view.ExerciseEntryCreateFormDialogue
 import net.michael_bailey.gym_log_book.client.home.tabs.entry.IExerciseEntryTabViewModel.ExerciseEntryViewData
 import net.michael_bailey.gym_log_book.client.theme.ClientTheme
 import net.michael_bailey.gym_log_book.client.util.scopedInject
@@ -34,17 +33,41 @@ fun ExerciseEntryTabView(
 	viewModel: IExerciseEntryTabViewModel = scopedInject()
 ) {
 	val exerciseEntries by viewModel.combinedViewData.collectAsState(listOf())
+	val exerciseTypeState = viewModel.exerciseTypesMap.collectAsState(emptyMap())
+	var showCreateEntryFormDialogue by remember { mutableStateOf(false) }
 
 	ExerciseEntryTabView(
 		modifier = modifier,
 		exerciseEntries = exerciseEntries,
+		{ showCreateEntryFormDialogue = true }
 	)
+
+	if (showCreateEntryFormDialogue) {
+		val state = ExerciseEntryCreateFormState.remembered(
+			exerciseTypeState = exerciseTypeState,
+		)
+		ExerciseEntryCreateFormDialogue(
+			formState = state,
+			onDismiss = { showCreateEntryFormDialogue = false },
+			onSubmit = {
+				viewModel.submitCreateEntryForm(
+					exerciseType = state.exerciseTypeSelectionState.selectedTypeState.value!!,
+					entrySetNumber = state.setNumberTextFieldState.text.toString().toInt(),
+					entryWeight = state.weightTextFieldState.text.toString().toDouble(),
+					entryReps = state.repsTextFieldState.text.toString().toInt()
+				)
+				showCreateEntryFormDialogue = false
+			},
+		)
+	}
+
 }
 
 @Composable
 fun ExerciseEntryTabView(
 	modifier: Modifier,
-	exerciseEntries: List<ExerciseEntryViewData>
+	exerciseEntries: List<ExerciseEntryViewData>,
+	onShowCreateEntryDialogue: () -> Unit
 ) {
 	Box(
 		modifier = modifier
@@ -66,6 +89,21 @@ fun ExerciseEntryTabView(
 						fontSize = 32.sp,
 						fontWeight = FontWeight(500),
 					)
+				}
+
+				item {
+					Card(
+						modifier = Modifier.widthIn(min = 300.dp, max = 500.dp),
+						shape = RoundedCornerShape(24.dp)
+					) {
+						Row(
+							modifier = Modifier.padding(12.dp).fillMaxWidth()
+						) {
+							Button(onClick = onShowCreateEntryDialogue) {
+								Text("New...")
+							}
+						}
+					}
 				}
 
 				if (exerciseEntries.isEmpty()) {
@@ -110,7 +148,8 @@ fun ExerciseEntryTabView_Preview() {
 	ClientTheme {
 		ExerciseEntryTabView(
 			modifier = Modifier.fillMaxSize(),
-			exerciseEntries = entries
+			exerciseEntries = entries,
+			{}
 		)
 	}
 }

@@ -9,7 +9,6 @@ class SelectionState<ID> {
 	val selectedList: State<Set<ID>>
 		get() = _selectedList
 
-
 	fun add(id: ID) {
 		_selectedList.value += setOf(id)
 	}
