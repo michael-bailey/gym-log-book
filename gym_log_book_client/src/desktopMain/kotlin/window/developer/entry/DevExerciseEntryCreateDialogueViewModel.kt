@@ -35,7 +35,7 @@ class DevExerciseEntryCreateDialogueViewModel(
 
 	val showDatePickerState = mutableStateOf(false)
 	val selectedDateState = DatePickerState(
-		// todo: make this a setting
+		// todo: make this DI
 		locale = Locale.UK,
 		initialSelectedDate = Clock.System.now()
 			.toLocalDateTime(TimeZone.UTC).date.toJavaLocalDate()
