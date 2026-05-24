@@ -4,6 +4,7 @@ package net.michael_bailey.gym_log_book.server.exercise.controller
 
 import kotlinx.coroutines.flow.Flow
 import net.michael_bailey.gym_log_book.server.exercise.service.ExerciseEntryService
+import net.michael_bailey.gym_log_book.shared.exercise.command.NewExerciseEntryCommand
 import net.michael_bailey.gym_log_book.shared.exercise.controller.ExerciseEntryController
 import net.michael_bailey.gym_log_book.shared.exercise.model.ExerciseEntry
 import org.koin.core.annotation.Factory
@@ -28,5 +29,9 @@ class ExerciseEntryControllerImpl(
 		entryWeight = entryWeight,
 		entryReps = entryReps
 	)
+
+	override suspend fun newEntry(command: NewExerciseEntryCommand) {
+		TODO("Not yet implemented")
+	}
 
 }

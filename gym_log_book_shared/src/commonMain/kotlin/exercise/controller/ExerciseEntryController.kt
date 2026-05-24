@@ -4,6 +4,7 @@ package net.michael_bailey.gym_log_book.shared.exercise.controller
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.rpc.annotations.Rpc
+import net.michael_bailey.gym_log_book.shared.exercise.command.NewExerciseEntryCommand
 import net.michael_bailey.gym_log_book.shared.exercise.model.ExerciseEntry
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
@@ -13,5 +14,7 @@ interface ExerciseEntryController {
 
 	fun getExerciseEntries(): Flow<Collection<ExerciseEntry>>
 
+	@Deprecated("Use `newEntry`")
 	suspend fun createEntry(exerciseTypeId: Uuid, entrySetNumber: Int, entryWeight: Double, entryReps: Int): ExerciseEntry
+	suspend fun newEntry(command: NewExerciseEntryCommand)
 }
