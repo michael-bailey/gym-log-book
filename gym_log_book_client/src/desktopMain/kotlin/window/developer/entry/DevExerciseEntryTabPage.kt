@@ -24,8 +24,10 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import net.michael_bailey.gym_log_book.client.exercise.service.ExerciseEntryService
 import net.michael_bailey.gym_log_book.client.util.scopedInject
+import net.michael_bailey.gym_log_book.shared.exercise.command.NewExerciseEntryCommand
 import net.michael_bailey.gym_log_book.shared.exercise.controller.ExerciseEntryController
 import net.michael_bailey.gym_log_book.shared.exercise.model.ExerciseEntry
+import net.michael_bailey.gym_log_book.shared.exercise.model.ExerciseEntryView
 import kotlin.time.Clock
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
@@ -128,11 +130,11 @@ fun DevExerciseEntryTabPage_Preview() {
 	val viewModel = DevExerciseEntryTabPageViewModel(
 		exerciseEntryService = ExerciseEntryService(
 			exerciseEntryController = object : ExerciseEntryController {
-				override fun getExerciseEntries(): Flow<Collection<ExerciseEntry>> {
+				override fun getExerciseEntries(): Flow<Collection<ExerciseEntryView>> {
 					return flow {
 						emit(
 							(0..10).map {
-								ExerciseEntry(
+								ExerciseEntryView(
 									id = Uuid.random(),
 									date = Clock.System.now().toLocalDateTime(TimeZone.UTC),
 									exerciseTypeId = Uuid.random(),
@@ -156,12 +158,18 @@ fun DevExerciseEntryTabPage_Preview() {
 						id = Uuid.random(),
 						date = Clock.System.now().toLocalDateTime(TimeZone.UTC),
 						exerciseTypeId = Uuid.random(),
-						exerciseTypeName = "Random Type",
 						setNumber = 3,
 						weight = 27.25,
 						reps = 12
 					)
 				}
+
+				override suspend fun newEntry(command: NewExerciseEntryCommand): ExerciseEntry = createEntry(
+					exerciseTypeId = command.exerciseTypeId,
+					entrySetNumber = command.setNumber,
+					entryWeight = command.weight,
+					entryReps = command.reps,
+				)
 			}
 		)
 	)

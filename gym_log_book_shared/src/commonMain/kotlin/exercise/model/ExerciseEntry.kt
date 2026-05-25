@@ -12,7 +12,6 @@ data class ExerciseEntry(
 	override val id: Uuid,
 	val date: LocalDateTime,
 	val exerciseTypeId: Uuid,
-	val exerciseTypeName: String,
 	val setNumber: Int,
 	val weight: Double,
 	val reps: Int,

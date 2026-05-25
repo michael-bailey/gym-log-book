@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalUuidApi::class)
+@file:OptIn(ExperimentalCoroutinesApi::class, ExperimentalUuidApi::class)
 
 package exercise.controller
 
@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import net.michael_bailey.gym_log_book.server.exercise.controller.ExerciseTypeControllerImpl
 import net.michael_bailey.gym_log_book.server.exercise.service.IMutableExerciseTypeService
+import net.michael_bailey.gym_log_book.shared.exercise.command.NewExerciseTypeCommand
 import net.michael_bailey.gym_log_book.shared.exercise.model.EquipmentClass
 import net.michael_bailey.gym_log_book.shared.exercise.model.ExerciseType
 import kotlin.test.Test
@@ -21,21 +22,13 @@ import kotlin.test.assertSame
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class ExerciseTypeControllerImplTest {
 
 	private val exerciseTypeService: IMutableExerciseTypeService = mockk()
 
 	@Test
 	fun `exerciseTypes delegates to service flow`() = runTest {
-		val exerciseTypes = listOf(
-			ExerciseType(
-				id = Uuid.random(),
-				name = PULL_UP_NAME,
-				equipmentClass = PULL_UP_EQUIPMENT_CLASS,
-				isUsingUserWeight = PULL_UP_IS_USING_USER_WEIGHT,
-			)
-		)
+		val exerciseTypes = listOf(createType())
 		val exerciseTypesFlow = flowOf(exerciseTypes)
 		val controller = createController(exerciseTypesFlow)
 
@@ -45,12 +38,7 @@ class ExerciseTypeControllerImplTest {
 
 	@Test
 	fun `createExerciseType delegates to service with the provided equipment class`() = runTest {
-		val createdType = ExerciseType(
-			id = Uuid.random(),
-			name = PULL_UP_NAME,
-			equipmentClass = PULL_UP_EQUIPMENT_CLASS,
-			isUsingUserWeight = PULL_UP_IS_USING_USER_WEIGHT,
-		)
+		val createdType = createType()
 		coEvery {
 			exerciseTypeService.createNewExerciseType(PULL_UP_NAME, PULL_UP_EQUIPMENT_CLASS)
 		} returns createdType
@@ -63,6 +51,20 @@ class ExerciseTypeControllerImplTest {
 		coVerify(exactly = 1) {
 			exerciseTypeService.createNewExerciseType(PULL_UP_NAME, PULL_UP_EQUIPMENT_CLASS)
 		}
+	}
+
+	@Test
+	fun `newType delegates to service`() = runTest {
+		val command = NewExerciseTypeCommand(PULL_UP_NAME, PULL_UP_EQUIPMENT_CLASS)
+		val createdType = createType()
+		coEvery { exerciseTypeService.newType(command) } returns createdType
+
+		val controller = createController()
+
+		val result = controller.newType(command)
+
+		assertEquals(createdType, result)
+		coVerify(exactly = 1) { exerciseTypeService.newType(command) }
 	}
 
 	@Test
@@ -87,9 +89,18 @@ class ExerciseTypeControllerImplTest {
 		},
 	)
 
+	private fun createType(
+		id: Uuid = Uuid.random(),
+		name: String = PULL_UP_NAME,
+		equipmentClass: EquipmentClass = PULL_UP_EQUIPMENT_CLASS,
+	): ExerciseType = ExerciseType(
+		id = id,
+		name = name,
+		equipmentClass = equipmentClass,
+	)
+
 	companion object {
 		private const val PULL_UP_NAME = "Pull Up"
-		private val PULL_UP_EQUIPMENT_CLASS = EquipmentClass.UsesUserWeight
-		private const val PULL_UP_IS_USING_USER_WEIGHT = true
+		private val PULL_UP_EQUIPMENT_CLASS = EquipmentClass.UserWeightMachine
 	}
 }

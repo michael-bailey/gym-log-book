@@ -21,6 +21,5 @@ interface IExerciseTypeTabViewModel {
 	data class ExerciseTypeViewData(
 		val name: String,
 		val equipmentClass: String,
-		val isUsingUserWeight: Boolean,
 	)
 }

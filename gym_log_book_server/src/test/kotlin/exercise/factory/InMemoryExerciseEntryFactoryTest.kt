@@ -2,54 +2,53 @@
 
 package exercise.factory
 
-import io.mockk.every
-import io.mockk.mockk
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
+import net.michael_bailey.gym_log_book.server.exercise.domain.NewExerciseEntryModel
 import net.michael_bailey.gym_log_book.server.exercise.factory.InMemoryExerciseEntryFactory
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
-import kotlin.time.Clock
 import kotlin.time.Instant
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
 class InMemoryExerciseEntryFactoryTest {
 
-	private val clock: Clock = mockk()
-	private val factory = InMemoryExerciseEntryFactory(clock)
+	private val factory = InMemoryExerciseEntryFactory()
 
 	@Test
-	fun `createEntry maps inputs and uses UTC clock time for date`() {
-		every { clock.now() } returns FIXED_INSTANT
+	fun `createEntry maps inputs`() {
 		val exerciseTypeId = Uuid.random()
-
-		val entry = factory.createEntry(
+		val newExerciseEntry = NewExerciseEntryModel(
 			exerciseTypeId = exerciseTypeId,
-			entrySetNumber = SET_NUMBER,
-			entryWeight = WEIGHT,
-			entryReps = REPS,
+			creationInstant = FIXED_INSTANT,
+			setNumber = SET_NUMBER,
+			weight = WEIGHT,
+			reps = REPS,
 		)
 
+		val entry = factory.createEntry(newExerciseEntry)
+
 		assertEquals(exerciseTypeId, entry.exerciseTypeId)
+		assertEquals(FIXED_INSTANT, entry.creationInstant)
 		assertEquals(SET_NUMBER, entry.setNumber)
 		assertEquals(WEIGHT, entry.weight)
 		assertEquals(REPS, entry.reps)
-		assertEquals(FIXED_INSTANT.toLocalDateTime(TimeZone.UTC), entry.date)
 		assertNotEquals(Uuid.NIL, entry.id)
 	}
 
 	@Test
 	fun `createEntry generates a new id for each entry`() {
-		every { clock.now() } returns FIXED_INSTANT
-		val exerciseTypeId = Uuid.random()
+		val newExerciseEntry = NewExerciseEntryModel(
+			exerciseTypeId = Uuid.random(),
+			creationInstant = FIXED_INSTANT,
+			setNumber = SET_NUMBER,
+			weight = WEIGHT,
+			reps = REPS,
+		)
 
-		val firstEntry = factory.createEntry(exerciseTypeId, SET_NUMBER, WEIGHT, REPS)
-		val secondEntry = factory.createEntry(exerciseTypeId, SET_NUMBER, WEIGHT, REPS)
+		val firstEntry = factory.createEntry(newExerciseEntry)
+		val secondEntry = factory.createEntry(newExerciseEntry)
 
-		assertNotEquals(Uuid.NIL, firstEntry.id)
-		assertNotEquals(Uuid.NIL, secondEntry.id)
 		assertNotEquals(firstEntry.id, secondEntry.id)
 	}
 

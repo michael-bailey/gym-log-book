@@ -113,7 +113,6 @@ fun ExerciseTypeOverviewList_Preview() {
 				ExerciseTypeViewData(
 					name = "Type $it",
 					equipmentClass = "Class",
-					isUsingUserWeight = false
 				)
 			)
 		}

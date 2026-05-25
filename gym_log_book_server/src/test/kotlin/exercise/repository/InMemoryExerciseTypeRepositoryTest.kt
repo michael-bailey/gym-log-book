@@ -12,10 +12,11 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
+import net.michael_bailey.gym_log_book.server.exercise.domain.ExerciseTypeModel
+import net.michael_bailey.gym_log_book.server.exercise.domain.NewExerciseTypeModel
 import net.michael_bailey.gym_log_book.server.exercise.factory.IExerciseTypeFactory
 import net.michael_bailey.gym_log_book.server.exercise.repository.InMemoryExerciseTypeRepository
 import net.michael_bailey.gym_log_book.shared.exercise.model.EquipmentClass
-import net.michael_bailey.gym_log_book.shared.exercise.model.ExerciseType
 import kotlin.test.*
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
@@ -39,66 +40,61 @@ class InMemoryExerciseTypeRepositoryTest {
 	}
 
 	@Test
-	fun `async getters return found and missing exercise types`() = runTest {
+	fun `getters return found and missing exercise types`() = runTest {
 		val repository = createRepository()
 		val existingType = repository.allExerciseTypes.first().first()
 
-		assertEquals(existingType, repository.getExerciseTypeAsync(existingType.id))
-		assertNull(repository.getExerciseTypeAsync(Uuid.random()))
-		assertEquals(existingType, repository.getExerciseTypeByNameAsync(existingType.name))
-		assertNull(repository.getExerciseTypeByNameAsync(MISSING_NAME))
+		assertEquals(existingType, repository.getExerciseType(existingType.id))
+		assertNull(repository.getExerciseType(Uuid.random()))
+		assertEquals(existingType, repository.getExerciseTypeByName(existingType.name))
+		assertNull(repository.getExerciseTypeByName(MISSING_NAME))
 	}
 
 	@Test
-	fun `createNewType uses factory and adds new exercise type`() = runTest {
-		val createdType = ExerciseType(
-			id = Uuid.random(),
+	fun `createType uses factory and adds new exercise type`() = runTest {
+		val newType = NewExerciseTypeModel(PULL_UP_NAME, PULL_UP_EQUIPMENT_CLASS)
+		val createdType = createTypeModel(
 			name = PULL_UP_NAME,
 			equipmentClass = PULL_UP_EQUIPMENT_CLASS,
-			isUsingUserWeight = PULL_UP_IS_USING_USER_WEIGHT,
 		)
-		every { exerciseTypeFactory.create(PULL_UP_NAME, PULL_UP_EQUIPMENT_CLASS) } returns createdType
+		every { exerciseTypeFactory.create(newType) } returns createdType
 
 		val repository = createRepository()
 
-		val result = repository.createNewType(PULL_UP_NAME, PULL_UP_EQUIPMENT_CLASS).await()
+		val result = repository.createType(newType)
 		val allTypes = repository.allExerciseTypes.first()
 
 		assertEquals(createdType, result)
-		assertNotNull(repository.getExerciseTypeAsync(createdType.id))
-		assertEquals(createdType, repository.getExerciseTypeByNameAsync(PULL_UP_NAME))
+		assertEquals(createdType, repository.getExerciseType(createdType.id))
+		assertEquals(createdType, repository.getExerciseTypeByName(PULL_UP_NAME))
 		assertEquals(INITIAL_TYPE_COUNT + 1, allTypes.size)
-		assertEquals(createdType, allTypes.first { it.id == createdType.id })
-		verify(exactly = 1) { exerciseTypeFactory.create(PULL_UP_NAME, PULL_UP_EQUIPMENT_CLASS) }
+		verify(exactly = 1) { exerciseTypeFactory.create(newType) }
 	}
 
 	@Test
-	fun `getExerciseType only emits when the requested exercise type changes`() = runTest {
-		val createdType = ExerciseType(
-			id = Uuid.random(),
+	fun `observeExerciseType only emits when the requested exercise type changes`() = runTest {
+		val newType = NewExerciseTypeModel(BENCH_PRESS_NAME, BENCH_PRESS_EQUIPMENT_CLASS)
+		val createdType = createTypeModel(
 			name = BENCH_PRESS_NAME,
 			equipmentClass = BENCH_PRESS_EQUIPMENT_CLASS,
-			isUsingUserWeight = BENCH_PRESS_IS_USING_USER_WEIGHT,
 		)
-		every { exerciseTypeFactory.create(BENCH_PRESS_NAME, BENCH_PRESS_EQUIPMENT_CLASS) } returns createdType
+		every { exerciseTypeFactory.create(newType) } returns createdType
 
 		val repository = createRepository()
 		val existingType = repository.allExerciseTypes.first().first()
-		val observedValues = mutableListOf<ExerciseType?>()
+		val observedValues = mutableListOf<ExerciseTypeModel?>()
 		val collectJob = backgroundScope.launch(start = CoroutineStart.UNDISPATCHED) {
-			repository.getExerciseType(existingType.id).collect(observedValues::add)
+			repository.observeExerciseType(existingType.id).collect(observedValues::add)
 		}
 
 		advanceUntilIdle()
-		assertEquals(listOf<ExerciseType?>(existingType), observedValues)
+		assertEquals(listOf<ExerciseTypeModel?>(existingType), observedValues)
 
-		repository.createNewType(BENCH_PRESS_NAME, BENCH_PRESS_EQUIPMENT_CLASS).await()
+		repository.createType(newType)
 		advanceUntilIdle()
 
-		assertEquals(listOf<ExerciseType?>(existingType), observedValues)
-
+		assertEquals(listOf<ExerciseTypeModel?>(existingType), observedValues)
 		collectJob.cancel()
-		verify(exactly = 1) { exerciseTypeFactory.create(BENCH_PRESS_NAME, BENCH_PRESS_EQUIPMENT_CLASS) }
 	}
 
 	@Test
@@ -125,31 +121,36 @@ class InMemoryExerciseTypeRepositoryTest {
 		assertEquals(initialTypes, repository.allExerciseTypes.first())
 	}
 
-	private fun assertTrueAllMachine(exerciseTypes: Collection<ExerciseType>) {
+	private fun assertTrueAllMachine(exerciseTypes: Collection<ExerciseTypeModel>) {
 		assertEquals(
 			exerciseTypes.size,
-			exerciseTypes.count {
-				it.equipmentClass == EquipmentClass.Machine && !it.isUsingUserWeight
-			}
+			exerciseTypes.count { it.equipmentClass == EquipmentClass.Machine }
 		)
 		assertFalse(exerciseTypes.isEmpty())
 	}
 
 	private fun TestScope.createRepository(): InMemoryExerciseTypeRepository =
 		InMemoryExerciseTypeRepository(
-			scope = backgroundScope,
 			exerciseTypeFactory = exerciseTypeFactory,
 		)
+
+	private fun createTypeModel(
+		id: Uuid = Uuid.random(),
+		name: String,
+		equipmentClass: EquipmentClass,
+	): ExerciseTypeModel = ExerciseTypeModel(
+		id = id,
+		name = name,
+		equipmentClass = equipmentClass,
+	)
 
 	companion object {
 		private const val INITIAL_TYPE_COUNT = 5
 		private const val SEEDED_TYPE_NAME_PREFIX = "Type "
 		private const val MISSING_NAME = "Missing"
 		private const val PULL_UP_NAME = "Pull Up"
-		private val PULL_UP_EQUIPMENT_CLASS = EquipmentClass.UsesUserWeight
-		private const val PULL_UP_IS_USING_USER_WEIGHT = true
+		private val PULL_UP_EQUIPMENT_CLASS = EquipmentClass.UserWeightMachine
 		private const val BENCH_PRESS_NAME = "Bench Press"
 		private val BENCH_PRESS_EQUIPMENT_CLASS = EquipmentClass.FreeWeight
-		private const val BENCH_PRESS_IS_USING_USER_WEIGHT = false
 	}
 }

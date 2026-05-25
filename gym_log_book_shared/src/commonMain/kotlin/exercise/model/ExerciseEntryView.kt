@@ -2,13 +2,18 @@
 
 package net.michael_bailey.gym_log_book.shared.exercise.model
 
+import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.Serializable
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
 @Serializable
-data class ExerciseType(
+data class ExerciseEntryView(
 	override val id: Uuid,
-	val name: String,
-	val equipmentClass: EquipmentClass,
+	val date: LocalDateTime,
+	val exerciseTypeId: Uuid,
+	val exerciseTypeName: String,
+	val setNumber: Int,
+	val weight: Double,
+	val reps: Int,
 ) : Identifiable()

@@ -67,7 +67,6 @@ class ExerciseTypeTabViewModel(
 		ExerciseTypeViewData(
 			name = it.name,
 			equipmentClass = it.equipmentClass.toString(),
-			isUsingUserWeight = it.isUsingUserWeight
 		)
 	}
 }

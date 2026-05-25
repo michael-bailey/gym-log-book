@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import net.michael_bailey.gym_log_book.client.exercise.service.ExerciseTypeService
 import net.michael_bailey.gym_log_book.client.util.scopedInject
+import net.michael_bailey.gym_log_book.shared.exercise.command.NewExerciseTypeCommand
 import net.michael_bailey.gym_log_book.shared.exercise.controller.ExerciseTypeController
 import net.michael_bailey.gym_log_book.shared.exercise.model.EquipmentClass
 import net.michael_bailey.gym_log_book.shared.exercise.model.ExerciseType
@@ -224,7 +225,6 @@ fun DevExerciseTypeTabPage_Preview() {
 								id = Uuid.random(),
 								name = "Random Type",
 								equipmentClass = EquipmentClass.None,
-								isUsingUserWeight = false,
 							)
 						}
 					)
@@ -235,6 +235,10 @@ fun DevExerciseTypeTabPage_Preview() {
 					name: String,
 					equipmentClass: EquipmentClass
 				): ExerciseType {
+					TODO("Not yet implemented")
+				}
+
+				override suspend fun newType(command: NewExerciseTypeCommand): ExerciseType {
 					TODO("Not yet implemented")
 				}
 

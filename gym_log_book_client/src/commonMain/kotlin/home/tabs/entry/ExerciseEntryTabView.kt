@@ -20,9 +20,9 @@ import net.michael_bailey.gym_log_book.client.config.Strings
 import net.michael_bailey.gym_log_book.client.exercise.state.ExerciseEntryCreateFormState
 import net.michael_bailey.gym_log_book.client.exercise.view.ExerciseEntryCard
 import net.michael_bailey.gym_log_book.client.exercise.view.ExerciseEntryCreateFormDialogue
-import net.michael_bailey.gym_log_book.client.home.tabs.entry.IExerciseEntryTabViewModel.ExerciseEntryViewData
 import net.michael_bailey.gym_log_book.client.theme.ClientTheme
 import net.michael_bailey.gym_log_book.client.util.scopedInject
+import net.michael_bailey.gym_log_book.shared.exercise.model.ExerciseEntryView
 import kotlin.time.Clock
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
@@ -66,7 +66,7 @@ fun ExerciseEntryTabView(
 @Composable
 fun ExerciseEntryTabView(
 	modifier: Modifier,
-	exerciseEntries: List<ExerciseEntryViewData>,
+	exerciseEntries: List<ExerciseEntryView>,
 	onShowCreateEntryDialogue: () -> Unit
 ) {
 	Box(
@@ -135,9 +135,10 @@ fun ExerciseEntryTabView_Preview() {
 
 	val entries = (0 until 10).map {
 		val id = Uuid.random()
-		ExerciseEntryViewData(
+		ExerciseEntryView(
 			id = id,
 			date = Clock.System.now().toLocalDateTime(UTC),
+			exerciseTypeId = Uuid.random(),
 			exerciseTypeName = "Type Name",
 			setNumber = it,
 			weight = 100.toDouble(),
