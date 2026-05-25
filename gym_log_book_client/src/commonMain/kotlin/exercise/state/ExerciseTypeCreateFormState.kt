@@ -13,16 +13,14 @@ class ExerciseTypeCreateFormState(
 	val typeNameFieldState = TextFieldState(initialText = initialName)
 	val typeClassFieldState = mutableStateOf<EquipmentClass>(EquipmentClass.None)
 
-	private val exerciseClassOptions = listOf(
+	private val exerciseClassOptions: List<EquipmentClass> = listOf(
 		EquipmentClass.Machine,
 		EquipmentClass.FreeWeight,
 		EquipmentClass.UserWeightMachine,
 		EquipmentClass.Calisthenics,
 	)
 
-	val exerciseClassOptionsMap = exerciseClassOptions.map {
-		it to getEquipmentClassString(it)
-	}.toMap()
+	val exerciseClassOptionsMap = exerciseClassOptions.associateWith { getEquipmentClassString(it) }
 
 	val canSubmit = derivedStateOf {
 		typeClassFieldState.value != EquipmentClass.None

@@ -47,7 +47,7 @@ fun EquipmentClassDropDown_Preview() {
 
 	val equipmentClassState = mutableStateOf<EquipmentClass>(EquipmentClass.None)
 
-	val classes = listOf(
+	val classes: Map<EquipmentClass, String> = listOf(
 		EquipmentClass.None,
 		EquipmentClass.FreeWeight,
 		EquipmentClass.Machine,
