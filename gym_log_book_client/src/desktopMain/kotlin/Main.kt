@@ -2,6 +2,7 @@ package net.michael_bailey.gym_log_book.client
 
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.window.application
 import androidx.lifecycle.ViewModelStore
@@ -12,10 +13,12 @@ import net.michael_bailey.gym_log_book.client.counter.counterClientModule
 import net.michael_bailey.gym_log_book.client.exercise.exerciseClientModule
 import net.michael_bailey.gym_log_book.client.platform.platformModule
 import net.michael_bailey.gym_log_book.client.window.developer.DeveloperToolWindow
+import net.michael_bailey.gym_log_book.client.window.home.ExerciseLoginWindow
+import org.koin.compose.koinInject
 import org.koin.core.context.startKoin
 
 fun main() = application {
-	val koin = startKoin {
+	startKoin {
 		modules(
 			platformModule,
 			applicationModule,
@@ -24,12 +27,6 @@ fun main() = application {
 			exerciseClientModule,
 		)
 	}.koin
-
-//	val viewModel: ApplicationViewModel = koinViewModel()
-//
-//	val counterClientService = koin.get<CounterClientService> {
-//		parametersOf(CIO.create())
-//	}
 
 	val viewModelStoreOwner = remember {
 		object : ViewModelStoreOwner {
@@ -46,6 +43,15 @@ fun main() = application {
 	}
 
 	CompositionLocalProvider(LocalViewModelStoreOwner provides viewModelStoreOwner) {
+
+		val applicationViewModel = koinInject<ApplicationViewModel>()
+
+		val isLoginWindowShown by applicationViewModel.isLoginWindowShown
+
+		if (isLoginWindowShown)
+			ExerciseLoginWindow()
+
+
 		DeveloperToolWindow()
 	}
 }
