@@ -21,7 +21,6 @@ fun ExerciseTypeCard(
 		ExerciseTypeContent(
 			name = exerciseType.name,
 			equipmentClass = exerciseType.equipmentClass,
-			isUsingUserWeight = exerciseType.isUsingUserWeight
 		)
 	}
 }
@@ -32,7 +31,6 @@ fun ExerciseTypeCard_Preview() {
 	val exerciseEntry = ExerciseTypeViewData(
 		name = "Type",
 		equipmentClass = "class",
-		isUsingUserWeight = false
 	)
 
 	ExerciseTypeCard(

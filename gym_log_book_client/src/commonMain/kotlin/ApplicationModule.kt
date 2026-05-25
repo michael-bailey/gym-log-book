@@ -14,6 +14,7 @@ import net.michael_bailey.gym_log_book.client.config.ClientConfig
 import org.koin.core.qualifier.named
 import org.koin.dsl.bind
 import org.koin.dsl.module
+import kotlin.time.Clock
 
 const val APP_SCOPE_QUALIFIER = "app-scope"
 
@@ -21,6 +22,7 @@ val applicationModule = module {
 
 	single { ClientConfig() }
 	single(named(APP_SCOPE_QUALIFIER)) { CoroutineScope(SupervisorJob() + Dispatchers.Default) }
+	single { Clock.System } bind Clock::class
 
 	single {
 		println("Creating application level http Client")

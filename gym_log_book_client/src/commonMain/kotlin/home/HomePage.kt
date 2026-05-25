@@ -30,10 +30,13 @@ import net.michael_bailey.gym_log_book.client.home.tabs.type.ExerciseTypeTabView
 import net.michael_bailey.gym_log_book.client.home.tabs.type.IExerciseTypeTabViewModel
 import net.michael_bailey.gym_log_book.client.theme.ClientTheme
 import net.michael_bailey.gym_log_book.client.util.KoinScope
+import net.michael_bailey.gym_log_book.shared.exercise.command.NewExerciseEntryCommand
+import net.michael_bailey.gym_log_book.shared.exercise.command.NewExerciseTypeCommand
 import net.michael_bailey.gym_log_book.shared.exercise.controller.ExerciseEntryController
 import net.michael_bailey.gym_log_book.shared.exercise.controller.ExerciseTypeController
 import net.michael_bailey.gym_log_book.shared.exercise.model.EquipmentClass
 import net.michael_bailey.gym_log_book.shared.exercise.model.ExerciseEntry
+import net.michael_bailey.gym_log_book.shared.exercise.model.ExerciseEntryView
 import net.michael_bailey.gym_log_book.shared.exercise.model.ExerciseType
 import org.koin.core.context.startKoin
 import org.koin.core.module.dsl.scopedOf
@@ -121,7 +124,6 @@ fun HomePage_Preview() {
 									id = typeId,
 									name = "Text Type",
 									equipmentClass = EquipmentClass.Machine,
-									isUsingUserWeight = false
 								)
 							)
 						)
@@ -133,7 +135,12 @@ fun HomePage_Preview() {
 							id = typeId,
 							name = name,
 							equipmentClass = equipmentClass,
-							isUsingUserWeight = equipmentClass == EquipmentClass.UsesUserWeight
+						)
+
+						override suspend fun newType(command: NewExerciseTypeCommand): ExerciseType = ExerciseType(
+							id = typeId,
+							name = command.name,
+							equipmentClass = command.equipmentClass,
 						)
 
 						override suspend fun deleteExerciseTypes(ids: Collection<Uuid>) = Unit
@@ -142,9 +149,9 @@ fun HomePage_Preview() {
 
 				single<ExerciseEntryController> {
 					object : ExerciseEntryController {
-						override fun getExerciseEntries(): Flow<Collection<ExerciseEntry>> = flowOf(
+						override fun getExerciseEntries(): Flow<Collection<ExerciseEntryView>> = flowOf(
 							listOf(
-								ExerciseEntry(
+								ExerciseEntryView(
 									id = Uuid.random(),
 									date = Clock.System.now().toLocalDateTime(UTC),
 									exerciseTypeId = typeId,
@@ -162,6 +169,10 @@ fun HomePage_Preview() {
 							entryWeight: Double,
 							entryReps: Int
 						): ExerciseEntry {
+							TODO("Not yet implemented")
+						}
+
+						override suspend fun newEntry(command: NewExerciseEntryCommand): ExerciseEntry {
 							TODO("Not yet implemented")
 						}
 					}

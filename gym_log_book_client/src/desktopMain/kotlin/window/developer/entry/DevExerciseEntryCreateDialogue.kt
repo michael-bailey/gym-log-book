@@ -11,7 +11,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import net.michael_bailey.gym_log_book.client.component.ExerciseTypeDropdownSelector
+import net.michael_bailey.gym_log_book.client.component.form.ExerciseTypeDropdownSelector
 import net.michael_bailey.gym_log_book.client.util.scopedInject
 import kotlin.uuid.ExperimentalUuidApi
 

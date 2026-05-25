@@ -17,7 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
-import net.michael_bailey.gym_log_book.shared.exercise.model.ExerciseEntry
+import net.michael_bailey.gym_log_book.shared.exercise.model.ExerciseEntryView
 import kotlin.time.Clock
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
@@ -25,7 +25,7 @@ import kotlin.uuid.Uuid
 @Composable
 fun DevExerciseEntryListCard(
 	modifier: Modifier = Modifier,
-	exerciseEntry: ExerciseEntry,
+	exerciseEntry: ExerciseEntryView,
 	// todo: Move this into separate functionality, maybe make a state container for it?
 	showCheckBox: Boolean = false,
 	isChecked: Boolean = false,
@@ -87,7 +87,7 @@ fun DevExerciseEntryListCard(
 @Composable
 fun DevExerciseEntryListCard_Preview() {
 	DevExerciseEntryListCard(
-		exerciseEntry = ExerciseEntry(
+		exerciseEntry = ExerciseEntryView(
 			id = Uuid.random(),
 			date = Clock.System.now().toLocalDateTime(TimeZone.UTC),
 			exerciseTypeId = Uuid.random(),

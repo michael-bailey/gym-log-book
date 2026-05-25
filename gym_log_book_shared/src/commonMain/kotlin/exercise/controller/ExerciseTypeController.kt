@@ -4,6 +4,7 @@ package net.michael_bailey.gym_log_book.shared.exercise.controller
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.rpc.annotations.Rpc
+import net.michael_bailey.gym_log_book.shared.exercise.command.NewExerciseTypeCommand
 import net.michael_bailey.gym_log_book.shared.exercise.model.EquipmentClass
 import net.michael_bailey.gym_log_book.shared.exercise.model.ExerciseType
 import kotlin.uuid.ExperimentalUuidApi
@@ -14,10 +15,13 @@ interface ExerciseTypeController {
 
 	fun exerciseTypes(): Flow<Collection<ExerciseType>>
 
+	@Deprecated("Use `newType`")
 	suspend fun createExerciseType(
 		name: String,
 		equipmentClass: EquipmentClass,
 	): ExerciseType
+
+	suspend fun newType(command: NewExerciseTypeCommand): ExerciseType
 
 	suspend fun deleteExerciseTypes(ids: Collection<Uuid>)
 

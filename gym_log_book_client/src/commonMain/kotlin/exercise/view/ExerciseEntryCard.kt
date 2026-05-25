@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
-import net.michael_bailey.gym_log_book.client.home.tabs.entry.IExerciseEntryTabViewModel
+import net.michael_bailey.gym_log_book.shared.exercise.model.ExerciseEntryView
 import kotlin.time.Clock
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
@@ -17,7 +17,7 @@ import kotlin.uuid.Uuid
 @Composable
 fun ExerciseEntryCard(
 	modifier: Modifier,
-	exerciseEntry: IExerciseEntryTabViewModel.ExerciseEntryViewData
+	exerciseEntry: ExerciseEntryView
 ) {
 	Card(
 		modifier = modifier
@@ -37,13 +37,14 @@ fun ExerciseEntryCard(
 @Composable
 fun ExerciseEntryCard_Preview() {
 	val now = Clock.System.now().toLocalDateTime(TimeZone.UTC)
-	val exerciseEntry = IExerciseEntryTabViewModel.ExerciseEntryViewData(
+	val exerciseEntry = ExerciseEntryView(
 		id = Uuid.random(),
+		date = now,
+		exerciseTypeId = Uuid.random(),
 		exerciseTypeName = "Test Type",
 		setNumber = 3,
 		weight = 12.25,
 		reps = 8,
-		date = now,
 	)
 	ExerciseEntryCard(
 		modifier = Modifier.fillMaxWidth(),

@@ -17,7 +17,6 @@ fun ExerciseTypeContent(
 	modifier: Modifier = Modifier,
 	name: String,
 	equipmentClass: String,
-	isUsingUserWeight: Boolean
 ) {
 	Column(
 		modifier = modifier
@@ -39,7 +38,6 @@ fun ExerciseTypeContent(
 					fontSize = 18.sp
 				)
 				Text(text = "$equipmentClass class")
-				Text(text = "Uses user weight: $isUsingUserWeight")
 			}
 		}
 	}
@@ -52,6 +50,5 @@ fun ExerciseTypeContent_Preview() {
 		modifier = Modifier.fillMaxWidth(),
 		name = "Type",
 		equipmentClass = "Free weight",
-		isUsingUserWeight = false
 	)
 }

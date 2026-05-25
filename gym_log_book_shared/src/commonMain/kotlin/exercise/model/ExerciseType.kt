@@ -11,5 +11,4 @@ data class ExerciseType(
 	override val id: Uuid,
 	val name: String,
 	val equipmentClass: EquipmentClass,
-	val isUsingUserWeight: Boolean,
 ) : Identifiable()

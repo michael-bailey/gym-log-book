@@ -2,12 +2,12 @@
 
 package exercise.factory
 
+import net.michael_bailey.gym_log_book.server.exercise.domain.NewExerciseTypeModel
 import net.michael_bailey.gym_log_book.server.exercise.factory.InMemoryExerciseTypeFactory
 import net.michael_bailey.gym_log_book.shared.exercise.model.EquipmentClass
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
-import kotlin.test.assertTrue
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
@@ -16,23 +16,24 @@ class InMemoryExerciseTypeFactoryTest {
 	private val factory = InMemoryExerciseTypeFactory()
 
 	@Test
-	fun `create sets user weight flag for UsesUserWeight equipment`() {
-		val exerciseType = factory.create(PULL_UP_NAME, EquipmentClass.UsesUserWeight)
+	fun `create maps model fields`() {
+		val newExerciseType = NewExerciseTypeModel(PULL_UP_NAME, EquipmentClass.UserWeightMachine)
+
+		val exerciseType = factory.create(newExerciseType)
 
 		assertEquals(PULL_UP_NAME, exerciseType.name)
-		assertEquals(EquipmentClass.UsesUserWeight, exerciseType.equipmentClass)
-		assertTrue(exerciseType.isUsingUserWeight)
+		assertEquals(EquipmentClass.UserWeightMachine, exerciseType.equipmentClass)
 		assertNotEquals(Uuid.NIL, exerciseType.id)
 	}
 
 	@Test
-	fun `create leaves user weight flag false for non user weight equipment`() {
-		val exerciseType = factory.create(BENCH_PRESS_NAME, EquipmentClass.FreeWeight)
+	fun `create generates a new id for each entry`() {
+		val newExerciseType = NewExerciseTypeModel(BENCH_PRESS_NAME, EquipmentClass.FreeWeight)
 
-		assertEquals(BENCH_PRESS_NAME, exerciseType.name)
-		assertEquals(EquipmentClass.FreeWeight, exerciseType.equipmentClass)
-		assertEquals(false, exerciseType.isUsingUserWeight)
-		assertNotEquals(Uuid.NIL, exerciseType.id)
+		val firstType = factory.create(newExerciseType)
+		val secondType = factory.create(newExerciseType)
+
+		assertNotEquals(firstType.id, secondType.id)
 	}
 
 	companion object {
