@@ -18,6 +18,7 @@ dependencies {
 	implementation(project(":gym_log_book_shared"))
 	implementation(libs.bundles.ktor.server)
 	implementation(libs.kotlinx.coroutines.core)
+	implementation(libs.bundles.database)
 
 	testImplementation(libs.kotlin.test.junit)
 	testImplementation(libs.kotlin.testCoroutines)
