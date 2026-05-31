@@ -8,12 +8,15 @@ import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.job
 import kotlinx.rpc.krpc.ktor.server.Krpc
 import kotlinx.rpc.krpc.ktor.server.KrpcRoute
 import kotlinx.rpc.krpc.ktor.server.rpc
 import kotlinx.rpc.krpc.serialization.json.json
 import net.michael_bailey.gym_log_book.server.authentication.scope.ViewerScope
+import net.michael_bailey.gym_log_book.server.database.setupDatabase
 import net.michael_bailey.gym_log_book.shared.authentication.controller.AuthenticationController
 import net.michael_bailey.gym_log_book.shared.authentication.controller.ViewerContextDebuggerController
 import net.michael_bailey.gym_log_book.shared.counter.controller.CounterController
@@ -35,17 +38,19 @@ class ApplicationContainer
 fun Application.module() {
 	println("Starting application module")
 
-	val applicationScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+	install(Koin) {
+		withConfiguration<ApplicationContainer>()
+	}
+
+	val applicationScope: CoroutineScope = koin().get()
 
 	monitor.subscribe(ApplicationStopped) {
 		applicationScope.cancel()
 	}
 
-	install(Koin) {
-		withConfiguration<ApplicationContainer>()
-	}
-
 	val verifier: JWTVerifier = this.koin().get()
+
+	setupDatabase()
 
 	install(Authentication) {
 		jwt {
