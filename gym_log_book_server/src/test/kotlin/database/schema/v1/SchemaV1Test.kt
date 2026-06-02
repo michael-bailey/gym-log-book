@@ -1,6 +1,6 @@
 package database.schema.v1
 
-import database.DatabaseUnitTest
+import DatabaseUnitTest
 import net.michael_bailey.gym_log_book.server.database.schema.v1.ExerciseEntryTable
 import net.michael_bailey.gym_log_book.server.database.schema.v1.ExerciseTypeTable
 import net.michael_bailey.gym_log_book.server.database.schema.v1.SchemaV1

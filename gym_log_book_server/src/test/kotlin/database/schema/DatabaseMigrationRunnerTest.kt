@@ -1,6 +1,6 @@
 package database.schema
 
-import database.DatabaseUnitTest
+import DatabaseUnitTest
 import io.mockk.*
 import net.michael_bailey.gym_log_book.server.database.schema.DatabaseMigrationRunner
 import net.michael_bailey.gym_log_book.server.database.schema.DatabaseSchema
