@@ -10,6 +10,6 @@ object ExerciseEntryTable : UuidTable(name = "exercise_entry") {
 	val exerciseTypeId = this.uuid("exercise_type_id").references(ExerciseTypeTable.id)
 	val createTime = this.timestamp("created_time")
 	val setNumber = this.integer("set_number")
-	val weight = this.integer("weight")
+	val weight = this.double("weight")
 	val reps = this.integer("reps")
 }

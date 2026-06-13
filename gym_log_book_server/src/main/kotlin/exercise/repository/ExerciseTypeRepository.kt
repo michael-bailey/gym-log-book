@@ -19,7 +19,7 @@ import org.koin.core.annotation.Single
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
-@Single
+@Single(binds = [IMutableExerciseTypeRepository::class, IExerciseTypeRepository::class])
 class ExerciseTypeRepository(
 	private val database: Database,
 ) : IMutableExerciseTypeRepository {
@@ -56,12 +56,12 @@ class ExerciseTypeRepository(
 	}
 
 	override suspend fun createType(newExerciseType: NewExerciseTypeModel): ExerciseTypeModel = transaction {
-		val result = ExerciseTypeTable.insertReturning {
+		ExerciseTypeTable.insertReturning {
 			it[this.name] = newExerciseType.name
 			it[this.equipmentClass] = newExerciseType.equipmentClass.toString()
-		}.first()
-
-		result.toExerciseTypeDomain()
+		}.first().toExerciseTypeDomain().also {
+			_allExerciseTypes.value += listOf(it)
+		}
 	}
 
 	override suspend fun deleteTypes(ids: Collection<Uuid>) {

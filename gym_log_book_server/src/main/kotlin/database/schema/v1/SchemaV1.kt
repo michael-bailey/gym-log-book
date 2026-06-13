@@ -7,7 +7,7 @@ import org.jetbrains.exposed.v1.migration.jdbc.MigrationUtils
 import org.koin.core.annotation.Single
 
 @Single
-object SchemaV1 : DatabaseSchema {
+class SchemaV1 : DatabaseSchema {
 	override val version: Double
 		get() = 1.0
 	override val description: String

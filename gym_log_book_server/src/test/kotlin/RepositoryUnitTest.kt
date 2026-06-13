@@ -10,7 +10,6 @@ abstract class RepositoryUnitTest : DatabaseUnitTest() {
 
 	override fun withDatabase(block: JdbcTransaction.() -> Unit) {
 		super.withDatabase {
-
 			val statements = MigrationUtils.statementsRequiredForDatabaseMigration(*tables)
 			statements.forEach { exec(it) }
 

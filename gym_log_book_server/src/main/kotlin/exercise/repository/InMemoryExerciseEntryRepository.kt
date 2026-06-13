@@ -5,9 +5,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import net.michael_bailey.gym_log_book.server.exercise.domain.ExerciseEntryModel
 import net.michael_bailey.gym_log_book.server.exercise.domain.NewExerciseEntryModel
 import net.michael_bailey.gym_log_book.server.exercise.factory.InMemoryExerciseEntryFactory
-import org.koin.core.annotation.Single
 
-@Single(binds = [IExerciseEntryRepository::class])
+//@Single(binds = [IExerciseEntryRepository::class])
 class InMemoryExerciseEntryRepository(
 	private val exerciseEntryFactory: InMemoryExerciseEntryFactory,
 ) : IExerciseEntryRepository {
