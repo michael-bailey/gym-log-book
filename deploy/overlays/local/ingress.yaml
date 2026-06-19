@@ -8,14 +8,14 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: gym.127.0.0.1.sslip.io
+    - host: gym.localhost
       http:
         paths:
           - path: /rpc
             pathType: Prefix
             backend:
               service:
-                name: gym-log-book-server-stable
+                name: gym-log-book-server
                 port:
                   number: 8080
           - path: /
@@ -23,5 +23,22 @@ spec:
             backend:
               service:
                 name: gym-log-book-web-stable
+                port:
+                  number: 80
+    - host: canary.gym.localhost
+      http:
+        paths:
+          - path: /rpc
+            pathType: Prefix
+            backend:
+              service:
+                name: gym-log-book-server
+                port:
+                  number: 8080
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: gym-log-book-web-preview
                 port:
                   number: 80

@@ -10,11 +10,10 @@ import net.michael_bailey.gym_log_book.server.exercise.domain.ExerciseTypeModel
 import net.michael_bailey.gym_log_book.server.exercise.domain.NewExerciseTypeModel
 import net.michael_bailey.gym_log_book.server.exercise.factory.IExerciseTypeFactory
 import net.michael_bailey.gym_log_book.shared.exercise.model.EquipmentClass
-import org.koin.core.annotation.Singleton
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
-@Singleton(binds = [IMutableExerciseTypeRepository::class, IExerciseTypeRepository::class])
+//@Singleton
 class InMemoryExerciseTypeRepository(
 	private val exerciseTypeFactory: IExerciseTypeFactory
 ) : IMutableExerciseTypeRepository {

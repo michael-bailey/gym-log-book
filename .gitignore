@@ -11,3 +11,4 @@ local.properties
 **/.idea/
 **/build/
 deploy/base/secrets.yaml
+/*.sqlite

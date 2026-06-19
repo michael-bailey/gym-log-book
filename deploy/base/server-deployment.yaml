@@ -1,15 +1,27 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Rollout
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: gym-log-book-server
 spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: gym-log-book-server
   template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: gym-log-book-server
     spec:
       containers:
         - name: server
           image: ghcr.io/michael-bailey/gym-log-book/server:master
           imagePullPolicy: Always
           env:
+            - name: DATABASE_URL
+              value: jdbc:sqlite:/data/db/database.sqlite
             - name: USERNAME
               valueFrom:
                 secretKeyRef:
@@ -40,30 +52,10 @@ spec:
               port: http
             initialDelaySeconds: 10
             periodSeconds: 20
----
-apiVersion: argoproj.io/v1alpha1
-kind: Rollout
-metadata:
-  name: gym-log-book-web
-spec:
-  template:
-    spec:
-      containers:
-        - name: web
-          image: ghcr.io/michael-bailey/gym-log-book/web:master
-          imagePullPolicy: Always
-          ports:
-            - name: http
-              containerPort: 80
-          readinessProbe:
-            httpGet:
-              path: /
-              port: http
-            initialDelaySeconds: 5
-            periodSeconds: 10
-          livenessProbe:
-            httpGet:
-              path: /
-              port: http
-            initialDelaySeconds: 10
-            periodSeconds: 20
+          volumeMounts:
+            - name: db-storage
+              mountPath: /data/db
+      volumes:
+        - name: db-storage
+          persistentVolumeClaim:
+            claimName: gym-log-book-db
