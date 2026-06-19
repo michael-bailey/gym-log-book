@@ -13,8 +13,9 @@ spec:
       kind: Rule
       priority: 120
       services:
-        - name: gym-log-book-server-traffic
-          kind: TraefikService
+        - name: gym-log-book-server
+          kind: Service
+          port: 8080
     - match: Host("gym.british-information-technologies.org") && PathPrefix("/")
       kind: Rule
       priority: 110

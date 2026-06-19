@@ -7,6 +7,37 @@ resources:
   - ../../base
   - ingress.yaml
 
+secretGenerator:
+  - name: environment-secrets
+    literals:
+      - USERNAME=lol
+      - PASSWORD=password
+      - JWT_SECRET=This is a secret shhh...
+
+generatorOptions:
+  disableNameSuffixHash: true
+
 patches:
   - path: rollout-patches.yaml
-  - path: image-patches.yaml
+  - target:
+      kind: Deployment
+      name: gym-log-book-server
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/image
+        value: ghcr.io/michael-bailey/gym-log-book/server:dev
+      - op: replace
+        path: /spec/template/spec/containers/0/imagePullPolicy
+        value: IfNotPresent
+  - target:
+      group: argoproj.io
+      version: v1alpha1
+      kind: Rollout
+      name: gym-log-book-web
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/image
+        value: ghcr.io/michael-bailey/gym-log-book/web:dev
+      - op: replace
+        path: /spec/template/spec/containers/0/imagePullPolicy
+        value: IfNotPresent

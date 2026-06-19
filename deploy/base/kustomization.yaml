@@ -10,7 +10,8 @@ labels:
 
 resources:
   - namespace.yaml
-  - server-rollout.yaml
+  - server-deployment.yaml
   - server-services.yaml
   - web-rollout.yaml
   - web-services.yaml
+  - sqlite-pvc.yaml
