@@ -20,6 +20,9 @@ class DatabaseModule {
 	fun schemaTable(clock: Clock): SchemaVersionTable = SchemaVersionTable(clock)
 
 	@Single
-	fun database(): Database = Database.connect("jdbc:sqlite:./database.sqlite", "org.sqlite.JDBC")
+	fun database(): Database = Database.connect(
+		System.getenv("DATABASE_URL")?.takeUnless { it.isBlank() } ?: "jdbc:sqlite:./database.sqlite",
+		"org.sqlite.JDBC"
+	)
 		.also { TransactionManager.manager.defaultIsolationLevel = Connection.TRANSACTION_SERIALIZABLE }
 }
