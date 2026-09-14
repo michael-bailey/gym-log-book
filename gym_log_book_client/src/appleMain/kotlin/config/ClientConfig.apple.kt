@@ -32,9 +32,8 @@ actual class ClientConfig {
 	private fun createUrl(
 		vararg path: String
 	): Url = buildUrl {
-		protocol = URLProtocol.WS
-		host = "localhost"
-		port = 8080
+		protocol = URLProtocol.WSS
+		host = "gym.british-information-technologies.org"
 		path(*path)
 	}
 
@@ -43,3 +42,6 @@ actual class ClientConfig {
 		const val AUTHENTICATED_ENV_KEY = "GYM_LOG_BOOK_AUTHENTICATED_RPC_URL"
 	}
 }
+
+// GYM_LOG_BOOK_AUTHENTICATED_RPC_URL=wss://gym.british-information-technologies.org/rpc/authenticated;
+// GYM_LOG_BOOK_PUBLIC_RPC_URL=wss://gym.british-information-technologies.org/rpc
