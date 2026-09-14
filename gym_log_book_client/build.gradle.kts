@@ -78,6 +78,10 @@ kotlin {
 			implementation(libs.bundles.desktop)
 		}
 
+		appleMain.dependencies {
+			implementation(libs.bundles.ktor.client.apple)
+		}
+
 		wasmJsMain.dependencies {
 			implementation(libs.bundles.ktor.client.wasm)
 		}
