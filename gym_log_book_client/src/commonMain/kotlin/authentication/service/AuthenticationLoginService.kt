@@ -14,14 +14,33 @@ class AuthenticationLoginService(
 		username: String,
 		password: String
 	) {
-		val token = withTimeout(1.seconds) {
-			runCatching {
+
+		println("Attempting login")
+		val token_res = runCatching {
+			val token = withTimeout(10.seconds) {
+				println("in timeout")
+
+
+				println("controller: $authenticationController, repo: $authenticationRepository")
+				println("username: $username, password: $password")
+
 				authenticationController.getAuthenticationTokenPair(
 					username = username,
 					password = password
 				)
 			}
+			println("Out timeout")
+
+			token
 		}
-		authenticationRepository.setToken(token.getOrNull()!!)
+		println("Out catching, result: $token_res")
+
+		if (token_res.isFailure) {
+			println("message ${token_res.exceptionOrNull()?.message}")
+			return
+		}
+
+		println("setting token")
+		authenticationRepository.setToken(token_res.getOrNull()!!)
 	}
 }
