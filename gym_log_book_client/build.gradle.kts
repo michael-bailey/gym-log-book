@@ -21,6 +21,16 @@ kotlin {
 		}
 	}
 
+	listOf(
+		iosArm64(),
+		iosSimulatorArm64()
+	).forEach { iosTarget ->
+		iosTarget.binaries.framework {
+			baseName = "gym_client_kt"
+			isStatic = true
+		}
+	}
+
 	@OptIn(ExperimentalWasmDsl::class)
 	wasmJs {
 		outputModuleName = "gymClient"
@@ -127,3 +137,6 @@ val desktopFatJar by tasks.registering(Jar::class) {
 		}
 	})
 }
+
+tasks.matching { it.name == "syncComposeResourcesForIos" }
+	.configureEach { enabled = false }
