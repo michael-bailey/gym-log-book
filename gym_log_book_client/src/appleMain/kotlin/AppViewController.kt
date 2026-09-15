@@ -46,8 +46,6 @@ fun create() = ComposeUIViewController {
 	}
 
 	CompositionLocalProvider(LocalViewModelStoreOwner provides viewModelStoreOwner) {
-
-
 		val applicationViewModel = koinInject<ApplicationViewModel>()
 
 		val isLoginWindowShown by applicationViewModel.isLoginWindowShown
