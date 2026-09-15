@@ -21,6 +21,16 @@ kotlin {
 		}
 	}
 
+	listOf(
+		iosArm64(),
+		iosSimulatorArm64()
+	).forEach { iosTarget ->
+		iosTarget.binaries.framework {
+			baseName = "gym_client_kt"
+			isStatic = true
+		}
+	}
+
 	@OptIn(ExperimentalWasmDsl::class)
 	wasmJs {
 		outputModuleName = "gymClient"
@@ -66,6 +76,10 @@ kotlin {
 			implementation(compose.desktop.currentOs)
 			implementation(libs.bundles.ktor.client.jvm)
 			implementation(libs.bundles.desktop)
+		}
+
+		appleMain.dependencies {
+			implementation(libs.bundles.ktor.client.apple)
 		}
 
 		wasmJsMain.dependencies {
@@ -127,3 +141,6 @@ val desktopFatJar by tasks.registering(Jar::class) {
 		}
 	})
 }
+
+tasks.matching { it.name == "syncComposeResourcesForIos" }
+	.configureEach { enabled = false }
