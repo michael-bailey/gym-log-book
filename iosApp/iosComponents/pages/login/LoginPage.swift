@@ -30,7 +30,6 @@ public struct LoginPage<VM>: View where VM: ViewModel & Observable {
                 }
             }
         }
-        .padding()
     }
 
     public init(
