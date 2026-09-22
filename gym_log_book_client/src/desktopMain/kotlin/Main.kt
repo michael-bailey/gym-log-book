@@ -1,9 +1,6 @@
 package net.michael_bailey.gym_log_book.client
 
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.window.application
 import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.ViewModelStoreOwner
@@ -47,7 +44,7 @@ fun main() = application {
 
 		val applicationViewModel = koinInject<ApplicationViewModel>()
 
-		val isLoginWindowShown by applicationViewModel.isLoginWindowShown
+		val isLoginWindowShown by applicationViewModel.isLoginWindowShown.collectAsState(false)
 
 		if (isLoginWindowShown)
 			ExerciseLoginWindow()
