@@ -12,3 +12,4 @@ local.properties
 **/build/
 deploy/base/secrets.yaml
 /*.sqlite
+/iosApp/Frameworks/gym_client_kt.framework
