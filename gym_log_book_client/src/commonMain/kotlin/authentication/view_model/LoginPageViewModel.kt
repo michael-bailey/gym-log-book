@@ -8,27 +8,27 @@ import net.michael_bailey.gym_log_book.client.authentication.service.Authenticat
 
 class LoginPageViewModel(
 	private val authenticationLoginService: AuthenticationLoginService
-) : ViewModel() {
+) : ViewModel(), ILoginPageViewModel {
 
-	private val usernameFlow = MutableStateFlow("")
-	private val passwordFlow = MutableStateFlow("")
+	override val usernameFlow = MutableStateFlow("")
+	override val passwordFlow = MutableStateFlow("")
 
-	fun onUsernameChanged(text: CharSequence) = viewModelScope.launch {
+	override fun onUsernameChanged(text: CharSequence) = viewModelScope.launch {
 		usernameFlow.emit(text.toString())
 	}
 
-	fun onPasswordChanged(text: CharSequence) = viewModelScope.launch {
+	override fun onPasswordChanged(text: CharSequence) = viewModelScope.launch {
 		passwordFlow.emit(text.toString())
 	}
 
-	fun submit() = viewModelScope.launch {
+	override fun submit() = viewModelScope.launch {
 		authenticationLoginService.login(
 			username = usernameFlow.value,
 			password = passwordFlow.value
 		)
 	}
 
-	fun cancel() = viewModelScope.launch {
+	override fun cancel() = viewModelScope.launch {
 
 	}
 

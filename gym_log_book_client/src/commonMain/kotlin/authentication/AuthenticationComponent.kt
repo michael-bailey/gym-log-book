@@ -4,9 +4,8 @@ import net.michael_bailey.gym_log_book.client.authentication.view_model.LoginPag
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 
-object AuthenticationComponent : KoinComponent {
+object AuthenticationComponent : KoinComponent, IAuthenticationComponent {
 
-	fun createLoginPageViewModel() = get<LoginPageViewModel>()
-
+	override fun createLoginPageViewModel() = get<LoginPageViewModel>()
 
 }
