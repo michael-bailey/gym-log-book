@@ -9,6 +9,7 @@ plugins {
 	alias(libs.plugins.krpc)
 	alias(libs.plugins.composeMultiplatform)
 	alias(libs.plugins.composeCompiler)
+	alias(libs.plugins.skie)
 }
 
 kotlin {
@@ -23,11 +24,13 @@ kotlin {
 
 	listOf(
 		iosArm64(),
-		iosSimulatorArm64()
+		iosSimulatorArm64(),
+		macosArm64()
 	).forEach { iosTarget ->
 		iosTarget.binaries.framework {
 			baseName = "gym_client_kt"
 			isStatic = true
+			this.outputDirectory = project.rootDir.resolve("iosApp/Frameworks")
 		}
 	}
 
