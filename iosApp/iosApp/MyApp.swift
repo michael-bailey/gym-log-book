@@ -4,6 +4,22 @@ import Observation
 import iosComponents
 import gym_client_kt
 
+struct HomePageViewControllerRepresentable: UIViewControllerRepresentable {
+    typealias UIViewControllerType = UIViewController
+
+    func makeUIViewController(context: Context) -> UIViewController {
+        HomeViewControllerKt.create()
+    }
+
+    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
+
+    }
+}
+
+#Preview {
+    HomePageViewControllerRepresentable()
+}
+
 @main struct MyApp: App {
 
     let viewModel: ViewModel
@@ -12,7 +28,7 @@ import gym_client_kt
         WindowGroup {
             switch (viewModel.displayedPage) {
             case .Home:
-                ContentView()
+                HomePageViewControllerRepresentable()
             case .Login:
                 LoginPage(viewModel: LoginObservableModel())
             }
