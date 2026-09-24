@@ -8,15 +8,16 @@
 
 import SwiftUI
 import Observation
+import gym_client_kt
 
-public struct LoginPage<VM>: View where VM: ViewModel & Observable {
+public struct LoginPage: View {
 
-    @Bindable var viewModel: VM
+	@Bindable var viewModel: ViewModel
 
     public var body: some View {
         Form {
-            TextField("Username", text: $viewModel.username)
-            TextField("Password", text: $viewModel.password)
+			TextField("Username", text: $viewModel.username).textInputAutocapitalization(.never)
+			SecureField("Password", text: $viewModel.password).textInputAutocapitalization(.never)
             HStack {
                 Button {
                     onClick()
@@ -26,60 +27,54 @@ public struct LoginPage<VM>: View where VM: ViewModel & Observable {
                     } icon: {
                         Image(systemName: "person.badge.key")
                     }
-
                 }
             }
         }
     }
 
     public init(
-        viewModel: VM,
-        ) {
+		viewModel: ViewModel,
+		) {
         self.viewModel = viewModel
     }
 
     private func onClick() {
         viewModel.submit()
     }
-}
 
-public protocol ViewModel: Observable, AnyObject {
-    var errorText: String? { get }
+	@Observable
+		///# Login View Model
+		///A view model for mapping gym view model to swift UI
+	open class ViewModel: Observable, AnyObject {
+		internal let viewModel: ILoginPageViewModel
 
-    var username: String { get set }
-    var password: String { get set }
+		public var username: String {
+			didSet {
+				viewModel.onUsernameChanged(text: username)
+			}
+		}
 
-    func submit()
-}
+		public var password: String {
+			didSet {
+				viewModel.onPasswordChanged(text: password)
+			}
+		}
 
-@Observable
-public class TestViewModel: ViewModel {
+		public var errorText: String?
 
-    public var username: String {
-        didSet {
-            print(username)
-        }
-    }
-    public var password: String {
-        didSet {
-            print(password)
-        }
-    }
+		public init(
+			viewModel: ILoginPageViewModel,
+			username: String = "",
+			password: String = ""
+		) {
+			self.viewModel = viewModel
+			self.errorText = ""
+			self.username = username
+			self.password = password
+		}
 
-    public let errorText: String? = nil
-
-    public init(username: String = "", password: String = "") {
-        self.username = username
-        self.password = password
-    }
-
-    public func submit() {
-        print("Logging in")
-    }
-}
-
-
-#Preview {
-    let viewModel = TestViewModel()
-    LoginPage(viewModel: viewModel)
+		public func submit() {
+			viewModel.submit()
+		}
+	}
 }

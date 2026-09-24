@@ -4,22 +4,6 @@ import Observation
 import iosComponents
 import gym_client_kt
 
-struct HomePageViewControllerRepresentable: UIViewControllerRepresentable {
-    typealias UIViewControllerType = UIViewController
-
-    func makeUIViewController(context: Context) -> UIViewController {
-        HomeViewControllerKt.create()
-    }
-
-    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
-
-    }
-}
-
-#Preview {
-    HomePageViewControllerRepresentable()
-}
-
 @main struct MyApp: App {
 
     let viewModel: ViewModel
@@ -28,9 +12,9 @@ struct HomePageViewControllerRepresentable: UIViewControllerRepresentable {
         WindowGroup {
             switch (viewModel.displayedPage) {
             case .Home:
-                HomePageViewControllerRepresentable()
+                HomePage()
             case .Login:
-                LoginPage(viewModel: LoginObservableModel())
+                LoginPage(viewModel: createLoginViewModel())
             }
         }
     }
@@ -38,6 +22,12 @@ struct HomePageViewControllerRepresentable: UIViewControllerRepresentable {
     init() {
         MainKt.doInitKoin()
         viewModel = ViewModel()
+    }
+
+    private func createLoginViewModel() -> LoginPage.ViewModel {
+        let authComponenet: AuthenticationComponent = .shared
+        let loginViewModel = authComponenet.createLoginPageViewModel()
+        return .init(viewModel: loginViewModel)
     }
 
     @Observable
