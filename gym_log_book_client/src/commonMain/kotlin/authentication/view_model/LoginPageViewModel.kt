@@ -13,23 +13,30 @@ class LoginPageViewModel(
 	override val usernameFlow = MutableStateFlow("")
 	override val passwordFlow = MutableStateFlow("")
 
-	override fun onUsernameChanged(text: CharSequence) = viewModelScope.launch {
-		usernameFlow.emit(text.toString())
+	override fun onUsernameChanged(text: CharSequence) {
+		viewModelScope.launch {
+			usernameFlow.emit(text.toString())
+		}
 	}
 
-	override fun onPasswordChanged(text: CharSequence) = viewModelScope.launch {
-		passwordFlow.emit(text.toString())
+	override fun onPasswordChanged(text: CharSequence) {
+		viewModelScope.launch {
+			passwordFlow.emit(text.toString())
+		}
 	}
 
-	override fun submit() = viewModelScope.launch {
-		authenticationLoginService.login(
-			username = usernameFlow.value,
-			password = passwordFlow.value
-		)
+	override fun submit() {
+		viewModelScope.launch {
+			authenticationLoginService.login(
+				username = usernameFlow.value,
+				password = passwordFlow.value
+			)
+		}
 	}
 
-	override fun cancel() = viewModelScope.launch {
+	override fun cancel() {
+		viewModelScope.launch {
 
+		}
 	}
-
 }
