@@ -27,7 +27,6 @@ public struct ContentView: View {
                     .environment(\.exerciseListViewModelFactory, exerciseViewModelFactory)
             case .Login:
                 LoginPage(viewModel: loginViewModelFactory.create())
-                    .padding()
             }
         }
     }
