@@ -6,39 +6,88 @@
 //
 
 import SwiftUI
-import gym_client_kt
-
-struct HomePageViewControllerRepresentable: UIViewControllerRepresentable {
-    typealias UIViewControllerType = UIViewController
-
-    func makeUIViewController(context: Context) -> UIViewController {
-        HomeViewControllerKt.create()
-    }
-
-    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
-
-    }
-}
-
 
 public struct HomePage: View {
+
+    @Environment(\.exerciseListViewModelFactory) private var exerciseFactory: ExerciseListViewModelFactory
+
+    @State public var viewModel: ViewModel
+
     public var body: some View {
-        HomePageViewControllerRepresentable()
+        TabView(selection: $viewModel.selectedTab) {
+            ExerciseListView(viewModel: exerciseFactory.create()).tabItem {
+                Label("Entries", systemImage: "star")
+            }
+            .tag(ViewModel.Tab.Exercises)
+            Text("Types should be here.").tabItem {
+                Label("Types", systemImage: "plus")
+            }
+            .tag(ViewModel.Tab.Types)
+            Text("Testing.").tabItem {
+                Label("Testing", systemImage: "scalemass")
+            }
+            .tag(ViewModel.Tab.Test)
+        }
+        .toolbarVisibility(.visible, for: .automatic)
+        .toolbar() {
+            AddMenu()
+        }
+        .sheet(isPresented: $viewModel.isAddEntryShown) {
+            AddExerciseEntryFormView(viewModel: .init(date: Date.now, selectables: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]))
+        }
     }
 
-    public init() {
+    public init(viewModel: ViewModel = .init()) {
+        self.viewModel = viewModel
+    }
+
+    @ViewBuilder
+    private func AddMenu() -> some View {
+        Menu {
+        } label: {
+            Label("Add Entry", systemImage: "plus")
+        } primaryAction: {
+            viewModel.isAddEntryShown = true
+        }
+    }
+
+    @Observable
+    public class ViewModel {
+        var isAddEntryShown: Bool = false
+
+        var selectedTab: Tab = .Exercises
+
+        public init() {
+        }
+
+        enum Tab {
+            case Exercises
+            case Types
+            case Test
+        }
+
+        public protocol Delegate {
+        }
     }
 }
 
-public protocol ViewModel: Observable, AnyObject {
-    var errorText: String? { get }
+public protocol HomePageViewModelFactory {
+    func create() -> HomePage.ViewModel
+}
 
-    var username: String { get set }
-    var password: String { get set }
+internal class PreviewHomePageViewModelFactory: HomePageViewModelFactory {
+    func create() -> HomePage.ViewModel {
+        .init()
+    }
+}
 
-    func submit()
+public extension EnvironmentValues {
+    @Entry var homePageViewModelFactory: any HomePageViewModelFactory = PreviewHomePageViewModelFactory()
 }
 
 #Preview {
-    HomePage()
+    @Previewable @State var viewModel = PreviewHomePageViewModelFactory().create()
+
+
+    HomePage(viewModel: viewModel).padding()
 }

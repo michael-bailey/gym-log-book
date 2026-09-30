@@ -13,6 +13,10 @@ class LoginPageViewModel(
 	override val usernameFlow = MutableStateFlow("")
 	override val passwordFlow = MutableStateFlow("")
 
+	init {
+		println("$this: init")
+	}
+
 	override fun onUsernameChanged(text: CharSequence) {
 		viewModelScope.launch {
 			usernameFlow.emit(text.toString())

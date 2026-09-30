@@ -13,3 +13,4 @@ local.properties
 deploy/base/secrets.yaml
 /*.sqlite
 **/iosApp/Frameworks/gym_client_kt.framework
+**/iosApp/Frameworks/

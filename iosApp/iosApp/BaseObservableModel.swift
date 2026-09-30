@@ -17,7 +17,7 @@ open class BaseObservableModel {
     public init() {
     }
 
-    deinit {
+    isolated deinit {
         taskBag.cancelAll()
     }
 

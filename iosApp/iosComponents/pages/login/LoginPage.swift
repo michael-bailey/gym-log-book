@@ -8,19 +8,26 @@
 
 import SwiftUI
 import Observation
-import gym_client_kt
 
 public struct LoginPage: View {
 
-	@Bindable var viewModel: ViewModel
+    @Environment(\.scenePhase) private var scenePhase
+
+    @State var viewModel: LoginPage.ViewModel
 
     public var body: some View {
         Form {
-			TextField("Username", text: $viewModel.username).textInputAutocapitalization(.never)
-			SecureField("Password", text: $viewModel.password).textInputAutocapitalization(.never)
+            TextField("Username", text: $viewModel.username)
+                #if os(iOS)
+                .textInputAutocapitalization(.never)
+                #endif
+            SecureField("Password", text: $viewModel.password)
+                #if os(iOS)
+                .textInputAutocapitalization(.never)
+                #endif
             HStack {
                 Button {
-                    onClick()
+                    viewModel.onClick()
                 } label: {
                     Label {
                         Text(verbatim: "Login")
@@ -32,49 +39,67 @@ public struct LoginPage: View {
         }
     }
 
-    public init(
-		viewModel: ViewModel,
-		) {
+    public init(viewModel: LoginPage.ViewModel) {
         self.viewModel = viewModel
     }
-
-    private func onClick() {
-        viewModel.submit()
-    }
-
+	
 	@Observable
-		///# Login View Model
-		///A view model for mapping gym view model to swift UI
-	open class ViewModel: Observable, AnyObject {
-		internal let viewModel: ILoginPageViewModel
+    public class ViewModel {
 
+        public var delegate: Delegate? = nil
+		
 		public var username: String {
-			didSet {
-				viewModel.onUsernameChanged(text: username)
-			}
+            didSet {
+                delegate?.didSetUsername(text: username)
+            }
 		}
 
-		public var password: String {
-			didSet {
-				viewModel.onPasswordChanged(text: password)
-			}
+        public var password: String {
+            didSet {
+                delegate?.didSetPassword(text: password)
+            }
+        }
+
+        public init() {
+            self.username = ""
+            self.password = ""
+
+            print("VM init: \(self) @ \(Unmanaged.passUnretained(self).toOpaque())")
 		}
 
-		public var errorText: String?
+        deinit {
+            print("VM deinit:  \(Unmanaged.passUnretained(self).toOpaque())")
+        }
 
-		public init(
-			viewModel: ILoginPageViewModel,
-			username: String = "",
-			password: String = ""
-		) {
-			self.viewModel = viewModel
-			self.errorText = ""
-			self.username = username
-			self.password = password
+        open func onClick() {
+            print("Login Page click")
+            delegate?.onClick()
 		}
 
-		public func submit() {
-			viewModel.submit()
+        public protocol Delegate {
+            func didSetUsername(text: String)
+            func didSetPassword(text: String)
+
+            func onClick()
 		}
 	}
+}
+
+public protocol LoginViewModelFactory {
+    func create() -> LoginPage.ViewModel
+}
+
+internal class PreviewLoginViewModelFactory: LoginViewModelFactory {
+    func create() -> LoginPage.ViewModel {
+        .init()
+    }
+}
+
+public extension EnvironmentValues {
+    @Entry var loginViewModelFactory: any LoginViewModelFactory = PreviewLoginViewModelFactory()
+}
+
+#Preview {
+    @Previewable @State var viewModel = PreviewLoginViewModelFactory().create()
+    LoginPage(viewModel: viewModel).padding()
 }
