@@ -14,3 +14,5 @@ deploy/base/secrets.yaml
 /*.sqlite
 **/iosApp/Frameworks/gym_client_kt.framework
 **/iosApp/Frameworks/
+iosApp/iosApp.xcodeproj/project.xcworkspace/xcuserdata/
+iosApp/iosApp.xcodeproj/xcuserdata/
