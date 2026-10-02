@@ -1,75 +1,163 @@
-//
-//  AddExerciseEntryFormView.swift
-//  iosComponents
-//
-//  Created by michael bailey on 26/09/2026.
-//
+	//
+	//  AddExerciseEntryFormView.swift
+	//  iosComponents
+	//
+	//  Created by michael bailey on 26/09/2026.
+	//
 
 import SwiftUI
 import Observation
+import Swinject
 
 public struct AddExerciseEntryFormView: View {
+	
+	@Environment(\.dismiss) var dismiss: DismissAction
+	
+	@State var viewModel: ViewModel
+	
+	public var body: some View {
+		Form {
+			Section {
+				Picker(selection: $viewModel.selection, label: Text("Exercise Type")) {
+					ForEach(viewModel.selectables, id: \.id) { it in
+						Text("\(it.name)").tag(it.id)
+					}
+					Text("No Selection").tag(UUID.NIL)
+				}
+			}
+			FormFields()
+			Section {
+				Button("Submit") {
+					self.submit()
+					dismiss()
+				}.disabled(!viewModel.isValid)
+			}
+		}
+		.formStyle(.grouped)
+	}
+	
+	public init(viewModel: ViewModel) {
+		self.viewModel = viewModel
+	}
+	
+	private func submit() {
+		print("Submitting form")
+		self.viewModel.submit()
+	}
+	
+	@ViewBuilder
+	func FormFields() -> some View {
+		
+#if os(macOS)
+		Section {
+			TextField("Set Number", value: $viewModel.setNumber,
+								format: .number.precision(
+									.fractionLength(0)).sign(strategy: .never)
+			)
+			TextField("Weight", value: $viewModel.weight,
+								format: .number.precision(
+									.fractionLength(2)).sign(strategy: .never)
+			)
+			TextField("Repetitions", value: $viewModel.reps,
+								format: .number.precision(
+									.fractionLength(0)).sign(strategy: .never)
+			)
+		}
+#else
+		Section {
+			TextField("Set Number", value: $viewModel.setNumber,
+								format: .number.precision(
+									.fractionLength(0)).sign(strategy: .never)
+			).keyboardType(.decimalPad)
+			TextField("Weight", value: $viewModel.weight,
+								format: .number.precision(
+									.fractionLength(2)).sign(strategy: .never)
+			).keyboardType(.decimalPad)
+			TextField("Repetitions", value: $viewModel.reps,
+								format: .number.precision(
+									.fractionLength(0)).sign(strategy: .never)
+			).keyboardType(.decimalPad)
+		}
+#endif
+	}
+	
+	@Observable
+	public class ViewModel {
+		
+		public var date: Date
+		public var selection: UUID
+		public var selectables: [Selectable]
+		
+		public var setNumber: Int32? = nil
+		public var weight: Double? = nil
+		public var reps: Int32? = nil
+		
+		public var isValid: Bool {
+			get { setNumber != nil && weight != nil && reps != nil && selection != UUID.NIL }
+		}
+		
+		public var delegate: Delegate? = nil
+		
+		public init(
+			date: Date,
+			selection: UUID = UUID.NIL,
+			selectables: [Selectable]
+		) {
+			self.date = date
+			self.selection = selection
+			self.selectables = selectables
+		}
+		
+		func submit() {
+			delegate?.submit(
+				exerciseType: self.selection,
+				setNumber: self.setNumber!,
+				weight: self.weight!,
+				reps: self.reps!,
+			)
+		}
+		
+		public protocol Delegate {
+			func submit(
+				exerciseType: UUID,
+				setNumber: Int32,
+				weight: Double,
+				reps: Int32
+			)
+		}
+	}
+}
 
-    @State var viewModel: ViewModel
-
-    public var body: some View {
-        Form {
-            Section {
-                Picker(selection: $viewModel.selection, label: Text("Picker")) {
-                    ForEach(viewModel.selectables, id: \.self) { it in
-                        Text("\(it)").tag(it)
-                    }
-                    Text("No Selection").tag(0)
-                }
-                DatePicker("Date", selection: $viewModel.date)
-            }
-            Section {
-                TextField("Set", value: $viewModel.setNumber, formatter: NumberFormatter())
-                HStack {
-                    TextField("Weight", value: $viewModel.weight, formatter: NumberFormatter())
-                    Text("kg")
-                }
-                TextField("Reps", value: $viewModel.reps, formatter: NumberFormatter())
-            }
-        }
-        .formStyle(.grouped)
-    }
-
-    public init(viewModel: ViewModel) {
-        self.viewModel = viewModel
-    }
-
-    @Observable
-    public class ViewModel {
-
-        public var date: Date
-        public var selection: Int = 0
-        public var selectables: [Int]
-
-        public var setNumber: Int = 0
-        public var weight: Float = 0
-        public var reps: Int = 0
-
-
-        public init(
-            date: Date,
-            selection: Int = 0,
-            selectables: [Int]
-        ) {
-            self.date = date
-            self.selection = selection
-            self.selectables = selectables
-        }
-    }
+public struct Selectable {
+	let id: UUID
+	let name: String
+	
+	public init(id: UUID, name: String) {
+		self.id = id
+		self.name = name
+	}
 }
 
 #Preview {
-
-    @Previewable @State var viewModel: AddExerciseEntryFormView.ViewModel = .init(
-        date: Date.now,
-        selection: 0,
-        selectables: [1, 2, 3, 4, 5, 6]
-    )
-
-    AddExerciseEntryFormView(viewModel: viewModel).padding()
+	
+	@Previewable @State var container = Container() { container in
+		
+	}
+	
+	@Previewable @State var viewModel: AddExerciseEntryFormView.ViewModel = .init(
+		date: Date.now,
+		selection: UUID.NIL,
+		selectables: [
+			Selectable(id: UUID(), name: "Test Type 1"),
+			Selectable(id: UUID(), name: "Test Type 2"),
+			Selectable(id: UUID(), name: "Test Type 3"),
+			Selectable(id: UUID(), name: "Test Type 4"),
+			Selectable(id: UUID(), name: "Test Type 5"),
+		]
+	)
+	
+	AddExerciseEntryFormView(viewModel: viewModel)
+#if os(macOS)
+		.padding()
+#endif
 }
