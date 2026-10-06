@@ -10,6 +10,6 @@ import SwiftUI
 import Swinject
 
 public extension EnvironmentValues {
-    @Entry var container: Container? = nil
+    @Entry var container: Container = Container()
 }
 
