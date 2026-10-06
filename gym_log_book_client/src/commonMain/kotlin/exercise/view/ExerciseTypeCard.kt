@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import net.michael_bailey.gym_log_book.client.home.tabs.type.IExerciseTypeTabViewModel.ExerciseTypeViewData
 import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
 @Composable
 fun ExerciseTypeCard(
@@ -29,6 +30,7 @@ fun ExerciseTypeCard(
 @Composable
 fun ExerciseTypeCard_Preview() {
 	val exerciseEntry = ExerciseTypeViewData(
+		id = Uuid.generateV4(),
 		name = "Type",
 		equipmentClass = "class",
 	)
