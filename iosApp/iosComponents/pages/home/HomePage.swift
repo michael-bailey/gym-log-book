@@ -10,21 +10,32 @@ import Swinject
 
 public struct HomePage: View {
 	
-	@Environment(\.container) private var container: Container!
+	@Environment(\.container) private var container: Container
 	
 	@State public var viewModel: ViewModel
 	
 	public var body: some View {
 		TabView(selection: $viewModel.selectedTab) {
 			ExerciseListView(
-				viewModel: container.resolve(ExerciseListView.ViewModel.self)!
+				viewModel: container
+					.resolve(
+						ExerciseListView.ViewModel.self
+					) ?? ExerciseListView.ViewModel()
 			).tabItem {
 				Label("Entries", systemImage: "star")
-			}.tag(ViewModel.Tab.Exercises)
-			Text("Types should be here.").tabItem {
+			}.tag(
+				ViewModel.Tab.Exercises
+			).navigationTitle("Entries")
+			ExerciseTypeListView(
+				viewModel: container
+					.resolve(
+						ExerciseTypeListView.ViewModel.self
+					) ?? ExerciseTypeListView.ViewModel()
+			).tabItem {
 				Label("Types", systemImage: "plus")
-			}
-			.tag(ViewModel.Tab.Types)
+			}.tag(
+				ViewModel.Tab.Types
+			).navigationTitle("Types")
 			Text("Testing.").tabItem {
 				Label("Testing", systemImage: "scalemass")
 			}
@@ -36,7 +47,9 @@ public struct HomePage: View {
 		}
 		.sheet(isPresented: $viewModel.isAddEntryShown) {
 			AddExerciseEntryFormView(
-				viewModel: container.resolve(AddExerciseEntryFormView.ViewModel.self)!
+				viewModel: container.resolve(
+					AddExerciseEntryFormView.ViewModel.self
+				) ?? AddExerciseEntryFormView.ViewModel(date: Date.now, selectables: [])
 			)
 		}
 	}
@@ -48,10 +61,18 @@ public struct HomePage: View {
 	@ViewBuilder
 	private func AddMenu() -> some View {
 		Menu {
+			Button {
+				viewModel.isAddEntryShown = true
+			} label: {
+				Label("Add Entry", systemImage: "figure.walk")
+			}
+			Button {
+				viewModel.isAddEntryShown = true
+			} label: {
+				Label("Add Type", systemImage: "figure.walk.circle")
+			}
 		} label: {
-			Label("Add Entry", systemImage: "plus")
-		} primaryAction: {
-			viewModel.isAddEntryShown = true
+			Image(systemName: "plus")
 		}
 	}
 	

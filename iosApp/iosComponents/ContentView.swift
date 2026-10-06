@@ -10,7 +10,7 @@ import Swinject
 
 public struct ContentView: View {
 	
-	@Environment(\.container) var container: Container!
+	@Environment(\.container) var container: Container
 	
 	@Environment(\.loginViewModelFactory)
 	var loginViewModelFactory: LoginViewModelFactory
@@ -30,7 +30,10 @@ public struct ContentView: View {
 					HomePage()
 						.environment(\.exerciseListViewModelFactory, exerciseViewModelFactory)
 				case .Login:
-					LoginPage(viewModel: container.resolve(LoginPage.ViewModel.self)!)
+					LoginPage(
+						viewModel: container
+							.resolve(LoginPage.ViewModel.self) ?? LoginPage.ViewModel()
+					)
 			}
 		}
 	}
@@ -91,6 +94,4 @@ struct PreviewContentViewModelFactory: ContentViewModelFactory {
 			Text(verbatim: "Swap Page")
 		}
 	}
-	.padding()
-	
 }
