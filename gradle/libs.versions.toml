@@ -70,6 +70,9 @@ mockitoCoreVersion = "5.23.0"
 jbcryptVersion = "0.4"
 gson_version = "2.9.0"
 
+room3 = "3.1.0-alpha01"
+room-sqlite = "2.7.1"
+
 # --- Shared / Testing ---------------------------------------------------------
 mockk = "1.14.9"
 
@@ -131,6 +134,10 @@ hilt-navigation = { module = "androidx.hilt:hilt-navigation-compose", version.re
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room_version" }
 room-ktx = { module = "androidx.room:room-ktx", version.ref = "room_version" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "room_version" }
+
+room-sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "room-sqlite" }
+room3-runtime = { module = "androidx.room3:room3-runtime", version.ref = "room3" }
+room3-compiler = { module = "androidx.room3:room3-compiler", version.ref = "room3" }
 
 # --- Android: Work Manager ----------------------------------------------------
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
@@ -245,6 +252,9 @@ lifecycle = ["lifecycle-ktx", "androidx-livedata", "livedata-ktx"]
 material-design = ["material", "compose-material", "compose-material3", "compose-material-icons-extended"]
 navigation = ["navigation-compose", "navigation-runtime"]
 room = ["room-runtime", "room-ktx"]
+room3 = [
+    "room3-runtime",
+]
 shared-contract = [
     "datetime",
     "serialization-json",
@@ -340,6 +350,7 @@ kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref =
 composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }
 composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 skie = { id = "co.touchlab.skie", version.ref = "skie" }
+androidx-room3 = { id = "androidx.room3", version.ref = "room3" }
 
 # --- Server (Ktor) ------------------------------------------------------------
 kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }

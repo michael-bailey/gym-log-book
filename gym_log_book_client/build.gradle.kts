@@ -10,6 +10,8 @@ plugins {
 	alias(libs.plugins.composeMultiplatform)
 	alias(libs.plugins.composeCompiler)
 	alias(libs.plugins.skie)
+	alias(libs.plugins.ksp)
+	alias(libs.plugins.androidx.room3)
 	id("dev.mokkery") version "3.3.0"
 }
 
@@ -67,6 +69,9 @@ kotlin {
 //			implementation(libs.jetbrains.navigation3.ui)
 			implementation(compose.material3AdaptiveNavigationSuite)
 			implementation(libs.bundles.composeMultiplatform)
+
+			implementation(libs.bundles.room3)
+//			ksp(libs.room.compiler)
 		}
 
 		commonTest.dependencies {
@@ -78,16 +83,19 @@ kotlin {
 
 		androidMain.dependencies {
 			implementation(libs.bundles.ktor.client.jvm)
+			implementation(libs.room.sqlite.bundled)
 		}
 
 		desktopMain.dependencies {
 			implementation(compose.desktop.currentOs)
 			implementation(libs.bundles.ktor.client.jvm)
 			implementation(libs.bundles.desktop)
+			implementation(libs.room.sqlite.bundled)
 		}
 
 		appleMain.dependencies {
 			implementation(libs.bundles.ktor.client.apple)
+			implementation(libs.room.sqlite.bundled)
 		}
 
 		wasmJsMain.dependencies {
@@ -121,6 +129,10 @@ compose.desktop {
 	application {
 		mainClass = "net.michael_bailey.gym_log_book.client.MainKt"
 	}
+}
+
+room3 {
+	schemaDirectory("${project.path}/schemas")
 }
 
 dependencies {
