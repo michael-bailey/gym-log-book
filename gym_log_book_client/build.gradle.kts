@@ -71,7 +71,6 @@ kotlin {
 			implementation(libs.bundles.composeMultiplatform)
 
 			implementation(libs.bundles.room3)
-//			ksp(libs.room.compiler)
 		}
 
 		commonTest.dependencies {
@@ -132,12 +131,16 @@ compose.desktop {
 }
 
 room3 {
-	schemaDirectory("${project.path}/schemas")
+	schemaDirectory("schemas")
 }
 
 dependencies {
 	implementation("io.ktor:ktor-client-android:3.4.2")
 	debugImplementation(libs.compose.multiplatform.ui.tooling)
+	add("kspAndroid", libs.room3.compiler)
+	add("kspIosSimulatorArm64", libs.room3.compiler)
+	add("kspDesktop", libs.room3.compiler)
+	add("kspIosArm64", libs.room3.compiler)
 }
 
 val desktopFatJar by tasks.registering(Jar::class) {
