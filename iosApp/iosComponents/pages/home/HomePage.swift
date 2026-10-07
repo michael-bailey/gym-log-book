@@ -23,9 +23,7 @@ public struct HomePage: View {
 					) ?? ExerciseListView.ViewModel()
 			).tabItem {
 				Label("Entries", systemImage: "star")
-			}.tag(
-				ViewModel.Tab.Exercises
-			).navigationTitle("Entries")
+			}.tag(ViewModel.Tab.Exercises)
 			ExerciseTypeListView(
 				viewModel: container
 					.resolve(
@@ -40,18 +38,9 @@ public struct HomePage: View {
 				Label("Testing", systemImage: "scalemass")
 			}
 			.tag(ViewModel.Tab.Test)
-		}
-		.toolbarVisibility(.visible, for: .automatic)
-		.toolbar() {
-			AddMenu()
-		}
-		.sheet(isPresented: $viewModel.isAddEntryShown) {
-			AddExerciseEntryFormView(
-				viewModel: container.resolve(
-					AddExerciseEntryFormView.ViewModel.self
-				) ?? AddExerciseEntryFormView.ViewModel(date: Date.now, selectables: [])
-			)
-		}
+		}.tabViewStyle(.sidebarAdaptable)
+		
+		
 	}
 	
 	public init(viewModel: ViewModel = .init()) {

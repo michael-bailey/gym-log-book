@@ -56,5 +56,18 @@ class HomeAssembly: Assembly {
 			
 			return observable
 		}
+		
+		container.register(AddExerciseTypeForm.ViewModel.self) { container in
+			let authComponent = container.resolve(AuthenticatedScope.self)!
+			let viewModel = authComponent.exerciseTypeTabViewModel
+			
+			let observable = AddExerciseTypeForm.ViewModel()
+			
+			let _ = AddExerciseTypeFormAdapter(
+				viewModel: viewModel, observable: observable
+			)
+			
+			return observable
+		}
 	}
 }

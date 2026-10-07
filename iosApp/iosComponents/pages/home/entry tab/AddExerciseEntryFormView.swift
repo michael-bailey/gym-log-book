@@ -16,24 +16,25 @@ public struct AddExerciseEntryFormView: View {
 	@State var viewModel: ViewModel
 	
 	public var body: some View {
-		Form {
-			Section {
-				Picker(selection: $viewModel.selection, label: Text("Exercise Type")) {
-					ForEach(viewModel.selectables, id: \.id) { it in
-						Text("\(it.name)").tag(it.id)
+		NavigationStack {
+			Form {
+				Section {
+					Picker(selection: $viewModel.selection, label: Text("Exercise Type")) {
+						ForEach(viewModel.selectables, id: \.id) { it in
+							Text("\(it.name)").tag(it.id)
+						}
+						Text("No Selection").tag(UUID.NIL)
 					}
-					Text("No Selection").tag(UUID.NIL)
 				}
-			}
-			FormFields()
-			Section {
-				Button("Submit") {
-					self.submit()
-					dismiss()
-				}.disabled(!viewModel.isValid)
-			}
+				FormFields()
+				Section {
+					Button("Submit") {
+						self.submit()
+						dismiss()
+					}.disabled(!viewModel.isValid)
+				}
+			}.formStyle(.grouped).navigationTitle("Add Entry")
 		}
-		.formStyle(.grouped)
 	}
 	
 	public init(viewModel: ViewModel) {
@@ -99,13 +100,21 @@ public struct AddExerciseEntryFormView: View {
 		public var delegate: Delegate? = nil
 		
 		public init(
-			date: Date,
+			date: Date = Date.now,
 			selection: UUID = UUID.NIL,
 			selectables: [Selectable]
 		) {
 			self.date = date
 			self.selection = selection
 			self.selectables = selectables
+		}
+		
+		public convenience init() {
+			self.init(
+				date: Date.now,
+				selection: UUID.NIL,
+				selectables: []
+			)
 		}
 		
 		func submit() {
