@@ -15,6 +15,7 @@ import net.michael_bailey.gym_log_book.client.exercise.service.ExerciseTypeServi
 import net.michael_bailey.gym_log_book.client.exercise.state.ExerciseTypeCreateFormState
 import net.michael_bailey.gym_log_book.client.home.tabs.type.IExerciseTypeTabViewModel
 import net.michael_bailey.gym_log_book.client.home.tabs.type.IExerciseTypeTabViewModel.ExerciseTypeViewData
+import net.michael_bailey.gym_log_book.shared.exercise.model.EquipmentClass
 import net.michael_bailey.gym_log_book.shared.exercise.model.ExerciseType
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
@@ -51,6 +52,17 @@ class ExerciseTypeTabViewModel(
 			exerciseTypeService.createNewType(
 				_createFormState.typeNameFieldState.text.toString(), _createFormState.typeClassFieldState.value
 			)
+			_isCreateTypeDialogueShown.value = false
+			_createFormState.reset()
+		}
+	}
+
+	override fun submitCreateTypeForm(
+		equipmentClass: EquipmentClass,
+		name: String
+	) {
+		viewModelScope.launch {
+			exerciseTypeService.createNewType(name, equipmentClass)
 			_isCreateTypeDialogueShown.value = false
 			_createFormState.reset()
 		}

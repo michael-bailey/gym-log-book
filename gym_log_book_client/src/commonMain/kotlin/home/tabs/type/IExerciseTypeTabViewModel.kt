@@ -5,6 +5,7 @@ package net.michael_bailey.gym_log_book.client.home.tabs.type
 import androidx.compose.runtime.State
 import kotlinx.coroutines.flow.StateFlow
 import net.michael_bailey.gym_log_book.client.exercise.state.ExerciseTypeCreateFormState
+import net.michael_bailey.gym_log_book.shared.exercise.model.EquipmentClass
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
@@ -19,6 +20,12 @@ interface IExerciseTypeTabViewModel {
 	val typeList: StateFlow<List<ExerciseTypeViewData>>
 
 	fun submitCreateTypeForm()
+
+	fun submitCreateTypeForm(
+		equipmentClass: EquipmentClass,
+		name: String,
+	)
+
 	fun showCreateTypeDialogue()
 	fun hideCreateTypeDialogue()
 
