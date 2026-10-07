@@ -6,14 +6,25 @@
 	//
 
 import SwiftUI
+import Swinject
 
 public struct ExerciseTypeListView: View {
+	
+	@Environment(\.container) var container: Container
 	
 	@State var viewModel: ViewModel
 	
 	public var body: some View {
-		List(viewModel.exerciseTypeList) { data in
-			ExerciseTypeListTypeView(data: data)
+		NavigationStack {
+			List(viewModel.exerciseTypeList) { data in
+				ExerciseTypeListTypeView(data: data)
+			}.toolbar {
+				addMenu()
+			}.navigationTitle(
+				"Exercise Types"
+			).sheet(isPresented: $viewModel.isAddExerciseTypeFormShown) {
+				AddExerciseTypeForm(viewModel: container.resolve(AddExerciseTypeForm.ViewModel.self) ?? .init())
+			}
 		}
 	}
 	
@@ -21,11 +32,24 @@ public struct ExerciseTypeListView: View {
 		self.viewModel = viewModel
 	}
 	
+	@ViewBuilder
+	func addMenu() -> some View {
+		Menu {
+		} label: {
+			Image(systemName: "plus.circle")
+		} primaryAction: {
+			print("showing sheet")
+			viewModel.isAddExerciseTypeFormShown = true
+		}
+	}
+	
+	@Observable
 	public class ViewModel {
 		
+		public var exerciseTypeList: [ExerciseTypeViewData]
 		public var delegate: Delegate? = nil
 		
-		public var exerciseTypeList: [ExerciseTypeViewData]
+		var isAddExerciseTypeFormShown: Bool = false
 		
 		public init(
 			exerciseTypeList: [ExerciseTypeViewData] = []

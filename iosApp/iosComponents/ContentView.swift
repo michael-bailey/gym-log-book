@@ -21,8 +21,7 @@ public struct ContentView: View {
 	@State var viewModel: ContentView.ViewModel
 	
 	public var body: some View {
-		let _ = Self._printChanges()
-		NavigationStack {
+		Group {
 			switch (viewModel.displayedPage) {
 				case .Home:
 					let factory = authenticatedScopeWrapperFactory.create()

@@ -8,7 +8,7 @@
 import Foundation
 import gym_client_kt
 
-public struct ExerciseEntryViewData: Identifiable {
+public struct ExerciseEntryViewData: Identifiable, Hashable, Equatable, Codable {
 
     public let id: UUID
     public let exerciseTypeName: String
