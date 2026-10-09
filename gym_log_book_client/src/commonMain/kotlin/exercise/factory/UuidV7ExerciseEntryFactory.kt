@@ -22,6 +22,5 @@ class UuidV7ExerciseEntryFactory(
 		setNumber = setNumber,
 		weight = weight,
 		reps = reps,
-		oldId = null
 	)
 }
