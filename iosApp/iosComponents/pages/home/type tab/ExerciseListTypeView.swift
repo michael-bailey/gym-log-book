@@ -6,13 +6,16 @@ public struct ExerciseTypeListTypeView: View {
 	let data: ExerciseTypeViewData
 	
 	public var body: some View {
-		VStack {
-			Text(verbatim: "\(data.id)")
-				.frame(alignment: .leading)
-			 
-			Text("name: \(data.exerciseTypeName)").frame(alignment: .leading)
-			Text("class: \(data.exerciseClass)").frame(alignment: .leading)
-			
+		HStack {
+			Image(systemName: "figure.run.circle")
+				.resizable()
+				.scaledToFit()
+				.frame(width: 40, height: 40)
+			VStack(alignment: .leading) {
+				Text(verbatim: "ID: \(data.id)").font(.default.scaled(by: 0.75))
+				Text("name: \(data.exerciseTypeName)")
+				Text("class: \(data.exerciseClass)")
+			}
 		}
 	}
 }
