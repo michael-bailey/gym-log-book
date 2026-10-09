@@ -5,20 +5,18 @@ package net.michael_bailey.gym_log_book.client.exercise.entity
 import androidx.room3.Entity
 import androidx.room3.Index
 import androidx.room3.PrimaryKey
-import kotlinx.datetime.LocalDate
-import kotlinx.datetime.LocalTime
+import kotlin.time.Instant
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
 @Entity(
 	"exercise_items",
-	indices = [Index(value = ["createdDate", "createdTime"])]
+	indices = [Index(value = ["date", "exerciseTypeId"])]
 )
 data class ExerciseEntryEntity(
-	@PrimaryKey val id: Uuid = Uuid.generateV7(),
+	@PrimaryKey val id: Uuid,
 
-	val createdDate: LocalDate,
-	val createdTime: LocalTime,
+	val date: Instant,
 
 	var exerciseTypeId: Uuid,
 	var setNumber: Int,
