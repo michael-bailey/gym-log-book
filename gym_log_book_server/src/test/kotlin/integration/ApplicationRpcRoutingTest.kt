@@ -15,7 +15,7 @@ import kotlinx.rpc.krpc.serialization.json.json
 import kotlinx.rpc.withService
 import net.michael_bailey.gym_log_book.server.authentication.AuthenticationModule
 import net.michael_bailey.gym_log_book.server.module
-import net.michael_bailey.gym_log_book.shared.authentication.controller.AuthenticationController
+import net.michael_bailey.gym_log_book.shared.authentication.controller.OldAuthenticationController
 import net.michael_bailey.gym_log_book.shared.counter.controller.CounterController
 import net.michael_bailey.gym_log_book.shared.exercise.controller.ExerciseTypeController
 import kotlin.test.*
@@ -36,7 +36,7 @@ class ApplicationRpcRoutingTest {
 		val client = createRpcClient()
 		val publicRpc = client.publicRpc()
 
-		val authController = publicRpc.withService<AuthenticationController>()
+		val authController = publicRpc.withService<OldAuthenticationController>()
 		val counterController = publicRpc.withService<CounterController>()
 
 		val tokenPair = authController.getAuthenticationTokenPair(USERNAME, PASSWORD)
@@ -59,7 +59,7 @@ class ApplicationRpcRoutingTest {
 		}
 
 		assertFails {
-			client.oldAuthenticationRpc().withService<AuthenticationController>()
+			client.oldAuthenticationRpc().withService<OldAuthenticationController>()
 				.getAuthenticationTokenPair(USERNAME, PASSWORD)
 		}
 	}
@@ -71,7 +71,7 @@ class ApplicationRpcRoutingTest {
 
 		val publicClient = createRpcClient()
 		val tokenPair = publicClient.publicRpc()
-			.withService<AuthenticationController>()
+			.withService<OldAuthenticationController>()
 			.getAuthenticationTokenPair(USERNAME, PASSWORD)
 
 		val authenticatedClient = createRpcClient(

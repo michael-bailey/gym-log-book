@@ -17,7 +17,7 @@ import kotlinx.rpc.krpc.ktor.server.rpc
 import kotlinx.rpc.krpc.serialization.json.json
 import net.michael_bailey.gym_log_book.server.authentication.scope.ViewerScope
 import net.michael_bailey.gym_log_book.server.database.setupDatabase
-import net.michael_bailey.gym_log_book.shared.authentication.controller.AuthenticationController
+import net.michael_bailey.gym_log_book.shared.authentication.controller.OldAuthenticationController
 import net.michael_bailey.gym_log_book.shared.authentication.controller.ViewerContextDebuggerController
 import net.michael_bailey.gym_log_book.shared.counter.controller.CounterController
 import net.michael_bailey.gym_log_book.shared.exercise.controller.ExerciseEntryController
@@ -82,7 +82,7 @@ fun Application.module() {
 			rpcConfig { serialization { json() } }
 			val scope = createScope()
 
-			registerService<AuthenticationController> {
+			registerService<OldAuthenticationController> {
 				scope.get()
 			}
 

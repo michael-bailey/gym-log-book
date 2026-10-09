@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import net.michael_bailey.gym_log_book.client.authentication.repository.AuthenticationRepository
 import net.michael_bailey.gym_log_book.client.authentication.service.AuthenticationService
-import net.michael_bailey.gym_log_book.shared.authentication.controller.AuthenticationController
+import net.michael_bailey.gym_log_book.shared.authentication.controller.OldAuthenticationController
 import net.michael_bailey.gym_log_book.shared.authentication.model.AuthenticationTokenPair
 import kotlin.test.*
 
@@ -16,7 +16,7 @@ class AuthenticationServiceTest {
 	fun `isAuthenticated is false when repository has no token`() = runTest {
 		val service = AuthenticationService(
 			authenticationRepository = AuthenticationRepository(),
-			authenticationController = FakeAuthenticationController(),
+			oldAuthenticationController = FakeOldAuthenticationController(),
 		)
 
 		assertFalse(service.isAuthenticated.first())
@@ -27,7 +27,7 @@ class AuthenticationServiceTest {
 		val repository = AuthenticationRepository()
 		val service = AuthenticationService(
 			authenticationRepository = repository,
-			authenticationController = FakeAuthenticationController(),
+			oldAuthenticationController = FakeOldAuthenticationController(),
 		)
 
 		repository.setToken(TOKEN_PAIR)
@@ -42,7 +42,7 @@ class AuthenticationServiceTest {
 
 		val service = AuthenticationService(
 			authenticationRepository = repository,
-			authenticationController = FakeAuthenticationController(),
+			oldAuthenticationController = FakeOldAuthenticationController(),
 		)
 
 		service.logout()
@@ -53,12 +53,12 @@ class AuthenticationServiceTest {
 
 	@Test
 	fun `refreshTokens returns null when no token exists`() = runTest {
-		val controller = FakeAuthenticationController(
+		val controller = FakeOldAuthenticationController(
 			refreshedTokenPair = REFRESHED_TOKEN_PAIR,
 		)
 		val service = AuthenticationService(
 			authenticationRepository = AuthenticationRepository(),
-			authenticationController = controller,
+			oldAuthenticationController = controller,
 		)
 
 		val actual = service.refreshTokens()
@@ -71,12 +71,12 @@ class AuthenticationServiceTest {
 	fun `refreshTokens calls controller and persists refreshed token`() = runTest {
 		val repository = AuthenticationRepository()
 		repository.setToken(TOKEN_PAIR)
-		val controller = FakeAuthenticationController(
+		val controller = FakeOldAuthenticationController(
 			refreshedTokenPair = REFRESHED_TOKEN_PAIR,
 		)
 		val service = AuthenticationService(
 			authenticationRepository = repository,
-			authenticationController = controller,
+			oldAuthenticationController = controller,
 		)
 
 		val actual = service.refreshTokens()
@@ -86,9 +86,9 @@ class AuthenticationServiceTest {
 		assertEquals(REFRESHED_TOKEN_PAIR, repository.token.first())
 	}
 
-	private class FakeAuthenticationController(
+	private class FakeOldAuthenticationController(
 		private val refreshedTokenPair: AuthenticationTokenPair? = null,
-	) : AuthenticationController {
+	) : OldAuthenticationController {
 		var lastRefreshRequest: AuthenticationTokenPair? = null
 
 		override suspend fun getAuthenticationTokenPair(

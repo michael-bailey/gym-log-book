@@ -5,7 +5,7 @@ package net.michael_bailey.gym_log_book.server.authentication.controller
 import net.michael_bailey.gym_log_book.server.authentication.model.ViewerContext
 import net.michael_bailey.gym_log_book.server.authentication.scope.ViewerScope
 import net.michael_bailey.gym_log_book.server.authentication.service.AuthenticationService
-import net.michael_bailey.gym_log_book.shared.authentication.controller.AuthenticationController
+import net.michael_bailey.gym_log_book.shared.authentication.controller.OldAuthenticationController
 import net.michael_bailey.gym_log_book.shared.authentication.exception.AuthenticationException
 import net.michael_bailey.gym_log_book.shared.authentication.model.AuthenticationTokenPair
 import org.koin.core.annotation.Scope
@@ -15,10 +15,10 @@ import kotlin.uuid.Uuid
 
 @Scoped
 @Scope(ViewerScope::class)
-class AuthenticationControllerImpl(
+class OldAuthenticationControllerImpl(
 	private val viewerContext: ViewerContext,
 	private val authenticationService: AuthenticationService,
-) : AuthenticationController {
+) : OldAuthenticationController {
 
 	override suspend fun getAuthenticationTokenPair(
 		username: String,

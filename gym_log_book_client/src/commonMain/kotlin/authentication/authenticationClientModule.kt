@@ -18,7 +18,7 @@ import net.michael_bailey.gym_log_book.client.authentication.view_model.LoginPag
 import net.michael_bailey.gym_log_book.client.config.ClientConfig
 import net.michael_bailey.gym_log_book.client.di.scopes.AuthenticatedScope
 import net.michael_bailey.gym_log_book.client.di.scopes.LoginScope
-import net.michael_bailey.gym_log_book.shared.authentication.controller.AuthenticationController
+import net.michael_bailey.gym_log_book.shared.authentication.controller.OldAuthenticationController
 import org.koin.core.module.dsl.scopedOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
@@ -33,8 +33,8 @@ val authenticationClientModule = module {
 
 	single {
 		println("creating exercise RCP")
-		get<RpcClient>().withService<AuthenticationController>()
-	} bind AuthenticationController::class
+		get<RpcClient>().withService<OldAuthenticationController>()
+	} bind OldAuthenticationController::class
 
 	scope<LoginScope> {
 		scopedOf(::AuthenticationLoginService)

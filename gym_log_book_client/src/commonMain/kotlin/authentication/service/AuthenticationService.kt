@@ -4,12 +4,12 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import net.michael_bailey.gym_log_book.client.authentication.repository.AuthenticationRepository
-import net.michael_bailey.gym_log_book.shared.authentication.controller.AuthenticationController
+import net.michael_bailey.gym_log_book.shared.authentication.controller.OldAuthenticationController
 import net.michael_bailey.gym_log_book.shared.authentication.model.AuthenticationTokenPair
 
 class AuthenticationService(
 	private val authenticationRepository: AuthenticationRepository,
-	private val authenticationController: AuthenticationController
+	private val oldAuthenticationController: OldAuthenticationController
 ) {
 
 	val token: Flow<AuthenticationTokenPair?> = authenticationRepository.token
@@ -19,7 +19,7 @@ class AuthenticationService(
 
 	suspend fun refreshTokens(): AuthenticationTokenPair? {
 		val tokens = token.first() ?: return null
-		val refreshedTokens = authenticationController.refreshAuthenticationTokenPair(tokens)
+		val refreshedTokens = oldAuthenticationController.refreshAuthenticationTokenPair(tokens)
 		authenticationRepository.setToken(refreshedTokens)
 		return refreshedTokens
 	}

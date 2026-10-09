@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import net.michael_bailey.gym_log_book.client.authentication.repository.AuthenticationRepository
 import net.michael_bailey.gym_log_book.client.authentication.service.AuthenticationLoginService
-import net.michael_bailey.gym_log_book.shared.authentication.controller.AuthenticationController
+import net.michael_bailey.gym_log_book.shared.authentication.controller.OldAuthenticationController
 import net.michael_bailey.gym_log_book.shared.authentication.model.AuthenticationTokenPair
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -16,9 +16,9 @@ class AuthenticationLoginServiceTest {
 	@Test
 	fun `login requests token pair and stores it`() = runTest {
 		val repository = AuthenticationRepository()
-		val controller = FakeAuthenticationController(TOKEN_PAIR)
+		val controller = FakeOldAuthenticationController(TOKEN_PAIR)
 		val service = AuthenticationLoginService(
-			authenticationController = controller,
+			oldAuthenticationController = controller,
 			authenticationRepository = repository,
 		)
 
@@ -29,9 +29,9 @@ class AuthenticationLoginServiceTest {
 		assertEquals(TOKEN_PAIR, repository.token.first())
 	}
 
-	private class FakeAuthenticationController(
+	private class FakeOldAuthenticationController(
 		private val tokenPair: AuthenticationTokenPair,
-	) : AuthenticationController {
+	) : OldAuthenticationController {
 		var lastUsername: String? = null
 		var lastPassword: String? = null
 
