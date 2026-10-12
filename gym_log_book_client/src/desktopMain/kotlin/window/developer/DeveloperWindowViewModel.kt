@@ -22,6 +22,8 @@ class DeveloperWindowViewModel(
 	) {
 		Counter(icon = Icons.Rounded.Numbers, label = "Counter"),
 		Login(icon = Icons.Rounded.LockPerson, label = "Login"),
+		NewLogin(icon = Icons.Rounded.LockPerson, label = "Login"),
+
 		Type(icon = Icons.Rounded.Category, label = "Types"),
 		Entry(icon = Icons.Rounded.FilterList, label = "Exercises")
 	}
@@ -34,7 +36,7 @@ class DeveloperWindowViewModel(
 
 	private fun mapFilterDestinations(
 		isLoggedIn: Boolean
-	): List<DevTab> = listOf(DevTab.Counter, DevTab.Login) + if (isLoggedIn) {
+	): List<DevTab> = listOf(DevTab.Counter, DevTab.Login, DevTab.NewLogin) + if (isLoggedIn) {
 		listOf(DevTab.Type, DevTab.Entry)
 	} else {
 		emptyList()
