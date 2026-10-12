@@ -18,6 +18,7 @@ import net.michael_bailey.gym_log_book.client.authentication.view_model.LoginPag
 import net.michael_bailey.gym_log_book.client.config.ClientConfig
 import net.michael_bailey.gym_log_book.client.di.scopes.AuthenticatedScope
 import net.michael_bailey.gym_log_book.client.di.scopes.LoginScope
+import net.michael_bailey.gym_log_book.shared.authentication.controller.LoginTokenController
 import net.michael_bailey.gym_log_book.shared.authentication.controller.OldAuthenticationController
 import org.koin.core.module.dsl.scopedOf
 import org.koin.core.module.dsl.singleOf
@@ -38,6 +39,11 @@ val authenticationClientModule = module {
 
 	scope<LoginScope> {
 		scopedOf(::AuthenticationLoginService)
+	}
+
+	single {
+		println("creating LoginTokenController RCP")
+		get<RpcClient>().withService<LoginTokenController>()
 	}
 
 	viewModelOf(::LoginPageViewModel)
