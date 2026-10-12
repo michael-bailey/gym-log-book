@@ -6,9 +6,9 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import net.michael_bailey.gym_log_book.server.authentication.model.TokenPayload
-import net.michael_bailey.gym_log_book.server.authentication.service.AuthenticationService
 import net.michael_bailey.gym_log_book.server.authentication.service.ITokenService
 import net.michael_bailey.gym_log_book.server.authentication.service.IUsernamePasswordService
+import net.michael_bailey.gym_log_book.server.authentication.service.OldAuthenticationService
 import net.michael_bailey.gym_log_book.shared.authentication.model.AuthenticationTokenPair
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -16,12 +16,12 @@ import kotlin.test.assertNull
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
-class AuthenticationServiceTest {
+class OldAuthenticationServiceTest {
 
 	private val tokenService: ITokenService = mockk()
 	private val usernamePasswordService: IUsernamePasswordService = mockk()
 
-	private val service = AuthenticationService(
+	private val service = OldAuthenticationService(
 		tokenService = tokenService,
 		usernamePasswordService = usernamePasswordService,
 	)

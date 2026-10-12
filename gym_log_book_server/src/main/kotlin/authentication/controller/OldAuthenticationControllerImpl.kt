@@ -4,7 +4,7 @@ package net.michael_bailey.gym_log_book.server.authentication.controller
 
 import net.michael_bailey.gym_log_book.server.authentication.model.ViewerContext
 import net.michael_bailey.gym_log_book.server.authentication.scope.ViewerScope
-import net.michael_bailey.gym_log_book.server.authentication.service.AuthenticationService
+import net.michael_bailey.gym_log_book.server.authentication.service.OldAuthenticationService
 import net.michael_bailey.gym_log_book.shared.authentication.controller.OldAuthenticationController
 import net.michael_bailey.gym_log_book.shared.authentication.exception.AuthenticationException
 import net.michael_bailey.gym_log_book.shared.authentication.model.AuthenticationTokenPair
@@ -17,7 +17,7 @@ import kotlin.uuid.Uuid
 @Scope(ViewerScope::class)
 class OldAuthenticationControllerImpl(
 	private val viewerContext: ViewerContext,
-	private val authenticationService: AuthenticationService,
+	private val oldAuthenticationService: OldAuthenticationService,
 ) : OldAuthenticationController {
 
 	override suspend fun getAuthenticationTokenPair(
@@ -28,14 +28,15 @@ class OldAuthenticationControllerImpl(
 		if (viewerContext.userId != Uuid.NIL)
 			throw AuthenticationException.AlreadyAuthenticated()
 
-		val token = authenticationService.createTokenPair(username, password)
+		val token = oldAuthenticationService.createTokenPair(username, password)
 
 		return token ?: throw AuthenticationException.InvalidCredentials()
 
 	}
 
 	override suspend fun refreshAuthenticationTokenPair(authenticationTokenPair: AuthenticationTokenPair): AuthenticationTokenPair {
-		return authenticationService.refresh(authenticationTokenPair) ?: throw AuthenticationException.InvalidRefreshToken()
+		return oldAuthenticationService.refresh(authenticationTokenPair)
+			?: throw AuthenticationException.InvalidRefreshToken()
 	}
 
 }

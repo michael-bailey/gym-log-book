@@ -8,7 +8,7 @@ import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
 @Single
-class AuthenticationService(
+class OldAuthenticationService(
 	private val tokenService: ITokenService,
 	private val usernamePasswordService: IUsernamePasswordService,
 ) {
