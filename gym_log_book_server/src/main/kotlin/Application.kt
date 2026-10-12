@@ -17,14 +17,18 @@ import kotlinx.rpc.krpc.ktor.server.rpc
 import kotlinx.rpc.krpc.serialization.json.json
 import net.michael_bailey.gym_log_book.server.authentication.scope.ViewerScope
 import net.michael_bailey.gym_log_book.server.database.setupDatabase
+import net.michael_bailey.gym_log_book.server.di.RpcScope
+import net.michael_bailey.gym_log_book.shared.authentication.controller.LoginTokenController
 import net.michael_bailey.gym_log_book.shared.authentication.controller.OldAuthenticationController
 import net.michael_bailey.gym_log_book.shared.authentication.controller.ViewerContextDebuggerController
 import net.michael_bailey.gym_log_book.shared.counter.controller.CounterController
 import net.michael_bailey.gym_log_book.shared.exercise.controller.ExerciseEntryController
 import net.michael_bailey.gym_log_book.shared.exercise.controller.ExerciseTypeController
 import org.koin.core.annotation.KoinApplication
+import org.koin.core.component.KoinScopeComponent
+import org.koin.core.component.get
+import org.koin.core.parameter.parametersOf
 import org.koin.core.qualifier.named
-import org.koin.core.scope.Scope
 import org.koin.ktor.plugin.Koin
 import org.koin.ktor.plugin.koin
 import org.koin.mp.KoinPlatform.getKoin
@@ -89,6 +93,8 @@ fun Application.module() {
 			registerService<CounterController> {
 				scope.get()
 			}
+
+			registerService<LoginTokenController> { scope.get() }
 		}
 
 		authenticate {
@@ -97,11 +103,18 @@ fun Application.module() {
 
 				val scope = createScope()
 
+				val vmScope = getKoin().createScope(
+					scopeId = "connection-${Uuid.generateV4()}",
+					qualifier = named<ViewerScope>(),
+				)
+
+				vmScope.linkTo(scope.scope)
+
 				registerService<ExerciseTypeController> {
-					scope.get()
+					vmScope.get()
 				}
 				registerService<ExerciseEntryController> {
-					scope.get()
+					vmScope.get()
 				}
 				registerService<ViewerContextDebuggerController> {
 					scope.get()
@@ -113,11 +126,16 @@ fun Application.module() {
 	println("Started application module")
 }
 
-fun KrpcRoute.createScope(): Scope {
-	val scope = getKoin().createScope(
-		scopeId = "connection-${Uuid.generateV4()}",
-		qualifier = named<ViewerScope>(),
-	)
+fun KrpcRoute.createScope(): KoinScopeComponent {
+//	val scope = getKoin().createScope(
+//		scopeId = "connection-${Uuid.generateV4()}",
+//		qualifier = named<ViewerScope>(),
+//	)
+
+	val scope = getKoin().get<RpcScope> {
+		parametersOf(Uuid.generateV7())
+	}
+
 	scope.declare<ApplicationCall>(call)
 
 	this.coroutineContext.job.invokeOnCompletion {
