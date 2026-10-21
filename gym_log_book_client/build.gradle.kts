@@ -15,6 +15,8 @@ plugins {
 kotlin {
 	androidTarget()
 
+	jvmToolchain(21)
+
 	@OptIn(ExperimentalKotlinGradlePluginApi::class)
 	jvm("desktop") {
 		mainRun {
@@ -69,6 +71,8 @@ kotlin {
 		commonTest.dependencies {
 			implementation(libs.kotlin.test)
 			implementation(libs.kotlin.testCoroutines)
+			implementation(libs.turbine)
+
 		}
 
 		androidMain.dependencies {

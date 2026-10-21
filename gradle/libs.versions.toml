@@ -24,6 +24,7 @@ composeBomVersion = "2026.03.01"
 composeMaterialVersion = "1.6.1"
 materialIconsExtendedVersion = "1.7.8"
 material_version = "1.13.0"
+turbine = "1.2.1"
 uiTestJunit4Version = "1.10.6"
 uiTestManifestVersion = "1.10.6"
 uiToolingVersion = "1.10.6"
@@ -130,6 +131,7 @@ room-ktx = { module = "androidx.room:room-ktx", version.ref = "room_version" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "room_version" }
 
 # --- Android: Work Manager ----------------------------------------------------
+turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 work-manager = { module = "androidx.work:work-runtime", version.ref = "workRuntimeVersion" }
 
 # --- Android: Security --------------------------------------------------------
