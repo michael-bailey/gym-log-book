@@ -4,17 +4,17 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import net.michael_bailey.gym_log_book.client.authentication.repository.AuthenticationRepository
-import net.michael_bailey.gym_log_book.client.authentication.service.AuthenticationService
+import net.michael_bailey.gym_log_book.client.authentication.service.OldAuthenticationService
 import net.michael_bailey.gym_log_book.shared.authentication.controller.OldAuthenticationController
 import net.michael_bailey.gym_log_book.shared.authentication.model.AuthenticationTokenPair
 import kotlin.test.*
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class AuthenticationServiceTest {
+class OldAuthenticationServiceTest {
 
 	@Test
 	fun `isAuthenticated is false when repository has no token`() = runTest {
-		val service = AuthenticationService(
+		val service = OldAuthenticationService(
 			authenticationRepository = AuthenticationRepository(),
 			oldAuthenticationController = FakeOldAuthenticationController(),
 		)
@@ -25,7 +25,7 @@ class AuthenticationServiceTest {
 	@Test
 	fun `isAuthenticated becomes true after token is stored`() = runTest {
 		val repository = AuthenticationRepository()
-		val service = AuthenticationService(
+		val service = OldAuthenticationService(
 			authenticationRepository = repository,
 			oldAuthenticationController = FakeOldAuthenticationController(),
 		)
@@ -40,7 +40,7 @@ class AuthenticationServiceTest {
 		val repository = AuthenticationRepository()
 		repository.setToken(TOKEN_PAIR)
 
-		val service = AuthenticationService(
+		val service = OldAuthenticationService(
 			authenticationRepository = repository,
 			oldAuthenticationController = FakeOldAuthenticationController(),
 		)
@@ -56,7 +56,7 @@ class AuthenticationServiceTest {
 		val controller = FakeOldAuthenticationController(
 			refreshedTokenPair = REFRESHED_TOKEN_PAIR,
 		)
-		val service = AuthenticationService(
+		val service = OldAuthenticationService(
 			authenticationRepository = AuthenticationRepository(),
 			oldAuthenticationController = controller,
 		)
@@ -74,7 +74,7 @@ class AuthenticationServiceTest {
 		val controller = FakeOldAuthenticationController(
 			refreshedTokenPair = REFRESHED_TOKEN_PAIR,
 		)
-		val service = AuthenticationService(
+		val service = OldAuthenticationService(
 			authenticationRepository = repository,
 			oldAuthenticationController = controller,
 		)

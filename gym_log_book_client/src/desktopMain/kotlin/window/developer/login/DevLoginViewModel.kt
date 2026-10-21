@@ -7,18 +7,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import net.michael_bailey.gym_log_book.client.authentication.service.AuthenticationLoginService
-import net.michael_bailey.gym_log_book.client.authentication.service.AuthenticationService
+import net.michael_bailey.gym_log_book.client.authentication.service.OldAuthenticationService
 import kotlin.uuid.ExperimentalUuidApi
 
 class DevLoginViewModel(
-	private val authenticationService: AuthenticationService,
+	private val oldAuthenticationService: OldAuthenticationService,
 	private val loginService: AuthenticationLoginService,
 ) : ViewModel() {
 
 	val username: TextFieldState = TextFieldState("")
 	val password: TextFieldState = TextFieldState("")
 
-	val isAuthenticated = authenticationService.isAuthenticated
+	val isAuthenticated = oldAuthenticationService.isAuthenticated
 
 //	suspend fun viewerUserId(): String = viewerContextDebuggerController.getUserId().toString()
 //	suspend fun viewerUsername(): String = viewerContextDebuggerController.getUserName()
@@ -28,6 +28,6 @@ class DevLoginViewModel(
 	}
 
 	fun logout() = viewModelScope.launch {
-		authenticationService.logout()
+		oldAuthenticationService.logout()
 	}
 }

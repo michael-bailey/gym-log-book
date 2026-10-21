@@ -9,11 +9,11 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import net.michael_bailey.gym_log_book.client.authentication.service.AuthenticationService
+import net.michael_bailey.gym_log_book.client.authentication.service.OldAuthenticationService
 import net.michael_bailey.gym_log_book.client.component.navigation.GymNavItem
 
 class DeveloperWindowViewModel(
-	private val authenticator: AuthenticationService
+	private val authenticator: OldAuthenticationService,
 ) : ViewModel() {
 
 	enum class DevTab(

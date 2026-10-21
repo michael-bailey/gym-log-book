@@ -14,6 +14,7 @@ import kotlinx.rpc.withService
 import net.michael_bailey.gym_log_book.client.authentication.repository.AuthenticationRepository
 import net.michael_bailey.gym_log_book.client.authentication.service.AuthenticationLoginService
 import net.michael_bailey.gym_log_book.client.authentication.service.AuthenticationService
+import net.michael_bailey.gym_log_book.client.authentication.service.OldAuthenticationService
 import net.michael_bailey.gym_log_book.client.authentication.view_model.LoginPageViewModel
 import net.michael_bailey.gym_log_book.client.config.ClientConfig
 import net.michael_bailey.gym_log_book.client.di.scopes.AuthenticatedScope
@@ -28,7 +29,7 @@ import org.koin.dsl.module
 
 val authenticationClientModule = module {
 
-	singleOf(::AuthenticationService)
+	singleOf(::OldAuthenticationService)
 	singleOf(::AuthenticationLoginService)
 	singleOf(::AuthenticationRepository)
 
@@ -53,16 +54,16 @@ val authenticationClientModule = module {
 			println("Creating application level http Client")
 			HttpClient(get<HttpClientEngine>()) {
 
-				val authenticationService = get<AuthenticationService>()
+				val oldAuthenticationService = get<OldAuthenticationService>()
 
 				install(Auth) {
 					bearer {
 						loadTokens {
-							val token = authenticationService.token.first() ?: return@loadTokens null
+							val token = oldAuthenticationService.token.first() ?: return@loadTokens null
 							BearerTokens(token.accessToken, token.refreshToken)
 						}
 						refreshTokens {
-							val tokens = authenticationService.refreshTokens()
+							val tokens = oldAuthenticationService.refreshTokens()
 							tokens?.let { BearerTokens(it.accessToken, it.refreshToken) }
 						}
 					}

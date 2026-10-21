@@ -7,9 +7,9 @@ import net.michael_bailey.gym_log_book.client.authentication.repository.Authenti
 import net.michael_bailey.gym_log_book.shared.authentication.controller.OldAuthenticationController
 import net.michael_bailey.gym_log_book.shared.authentication.model.AuthenticationTokenPair
 
-class AuthenticationService(
+class OldAuthenticationService(
 	private val authenticationRepository: AuthenticationRepository,
-	private val oldAuthenticationController: OldAuthenticationController
+	private val oldAuthenticationController: OldAuthenticationController,
 ) {
 
 	val token: Flow<AuthenticationTokenPair?> = authenticationRepository.token
