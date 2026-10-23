@@ -46,6 +46,20 @@ class TokenService(
 		.withExpiresAt(Date(System.currentTimeMillis() + authenticationConfiguration.refreshExpiry))
 		.sign(Algorithm.HMAC256(authenticationConfiguration.jwtSecret))
 
+
+	override fun verifyAccessToken(accessToken: String): TokenPayload {
+		val decoded = verifier.verify(accessToken)
+		val type = decoded.getClaim(TYPE_CLAIM_KEY).asString()
+
+		if (TokenType.valueOf(type) != TokenType.Access) throw TokenException
+		else TokenPayload(
+			subject = Uuid.parse(decoded.subject),
+			// if this is throws, creation logic is wrong, as null should not happen
+			username = decoded.claims[USERNAME_CLAIM_KEY]!!.asString()
+		)
+	}
+
+
 	override fun verifyRefreshToken(token: String): TokenPayload? = try {
 		val decoded = verifier.verify(token)
 		val type = decoded.getClaim(TYPE_CLAIM_KEY)
