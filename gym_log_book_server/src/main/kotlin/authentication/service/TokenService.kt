@@ -9,6 +9,7 @@ import com.auth0.jwt.exceptions.JWTVerificationException
 import net.michael_bailey.gym_log_book.server.authentication.config.IJWTConfiguration
 import net.michael_bailey.gym_log_book.server.authentication.config.JWTClaimNames.TYPE_CLAIM_KEY
 import net.michael_bailey.gym_log_book.server.authentication.config.JWTClaimNames.USERNAME_CLAIM_KEY
+import net.michael_bailey.gym_log_book.server.authentication.exception.TokenServiceException.TokenTypeException
 import net.michael_bailey.gym_log_book.server.authentication.model.TokenPayload
 import net.michael_bailey.gym_log_book.server.authentication.model.TokenType
 import org.koin.core.annotation.Single
@@ -51,8 +52,8 @@ class TokenService(
 		val decoded = verifier.verify(accessToken)
 		val type = decoded.getClaim(TYPE_CLAIM_KEY).asString()
 
-		if (TokenType.valueOf(type) != TokenType.Access) throw TokenException
-		else TokenPayload(
+		if (TokenType.valueOf(type) != TokenType.Access) throw TokenTypeException()
+		else return TokenPayload(
 			subject = Uuid.parse(decoded.subject),
 			// if this is throws, creation logic is wrong, as null should not happen
 			username = decoded.claims[USERNAME_CLAIM_KEY]!!.asString()
