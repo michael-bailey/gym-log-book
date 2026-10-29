@@ -9,7 +9,7 @@ import net.michael_bailey.gym_log_book.client.authentication.AuthenticatedSessio
 import net.michael_bailey.gym_log_book.client.authentication.repository.AuthenticationRepository
 import net.michael_bailey.gym_log_book.client.authentication.service.OldAuthenticationService
 import net.michael_bailey.gym_log_book.client.di.scopes.AuthenticatedScope
-import net.michael_bailey.gym_log_book.shared.authentication.controller.OldAuthenticationController
+import net.michael_bailey.gym_log_book.shared.authentication.controller.AuthenticationController
 import net.michael_bailey.gym_log_book.shared.authentication.model.AuthenticationTokenPair
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
@@ -28,7 +28,7 @@ class AuthenticatedSessionScopeManagerTest {
 	fun `creates scope when auth state becomes authenticated and reuses it for repeated authenticated emissions`() =
 		runTest {
 			val repository = AuthenticationRepository()
-			val service = OldAuthenticationService(repository, FakeOldAuthenticationController())
+			val service = OldAuthenticationService(repository, FakeAuthenticationController())
 			val manager = createManager(
 				oldAuthenticationService = service,
 				testScope = CoroutineScope(StandardTestDispatcher(testScheduler)),
@@ -52,7 +52,7 @@ class AuthenticatedSessionScopeManagerTest {
 	@Test
 	fun `closes and clears scope when auth state becomes unauthenticated`() = runTest {
 		val repository = AuthenticationRepository()
-		val service = OldAuthenticationService(repository, FakeOldAuthenticationController())
+		val service = OldAuthenticationService(repository, FakeAuthenticationController())
 		val manager = createManager(
 			oldAuthenticationService = service,
 			testScope = CoroutineScope(StandardTestDispatcher(testScheduler)),
@@ -92,7 +92,7 @@ class AuthenticatedSessionScopeManagerTest {
 		)
 	}
 
-	private class FakeOldAuthenticationController : OldAuthenticationController {
+	private class FakeAuthenticationController : AuthenticationController {
 		override suspend fun getAuthenticationTokenPair(
 			username: String,
 			password: String,

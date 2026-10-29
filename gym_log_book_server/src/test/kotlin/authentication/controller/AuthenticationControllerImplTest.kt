@@ -3,9 +3,8 @@
 package authentication.controller
 
 import io.mockk.*
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
-import net.michael_bailey.gym_log_book.server.authentication.controller.OldAuthenticationControllerImpl
+import net.michael_bailey.gym_log_book.server.authentication.controller.AuthenticationControllerImpl
 import net.michael_bailey.gym_log_book.server.authentication.model.ViewerContext
 import net.michael_bailey.gym_log_book.server.authentication.service.OldAuthenticationService
 import net.michael_bailey.gym_log_book.shared.authentication.exception.AuthenticationException
@@ -16,8 +15,7 @@ import kotlin.test.assertFailsWith
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
-@OptIn(ExperimentalCoroutinesApi::class)
-class OldAuthenticationControllerImplTest {
+class AuthenticationControllerImplTest {
 
 	private val oldAuthenticationService: OldAuthenticationService = mockk()
 
@@ -126,9 +124,8 @@ class OldAuthenticationControllerImplTest {
 		viewerContext: ViewerContext = ViewerContext(
 			userId = Uuid.NIL,
 			username = "",
-		)
-	): OldAuthenticationControllerImpl = OldAuthenticationControllerImpl(
-		viewerContext = viewerContext,
+		),
+	): AuthenticationControllerImpl = AuthenticationControllerImpl(
 		oldAuthenticationService = oldAuthenticationService,
 	)
 

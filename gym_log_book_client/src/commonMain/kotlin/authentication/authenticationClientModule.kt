@@ -31,12 +31,12 @@ val authenticationClientModule = module {
 
 	singleOf(::OldAuthenticationService)
 	singleOf(::AuthenticationLoginService)
-	singleOf(::AuthenticationRepository)
+	singleOf(::AuthenticationRepository) bind IAuthenticationRepository::class
 
 	single {
 		println("creating exercise RCP")
-		get<RpcClient>().withService<OldAuthenticationController>()
-	} bind OldAuthenticationController::class
+		get<RpcClient>().withService<AuthenticationController>()
+	} bind AuthenticationController::class
 
 	scope<LoginScope> {
 		scopedOf(::AuthenticationLoginService)

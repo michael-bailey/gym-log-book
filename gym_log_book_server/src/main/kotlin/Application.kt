@@ -86,7 +86,13 @@ fun Application.module() {
 			rpcConfig { serialization { json() } }
 			val scope = createScope()
 
-			registerService<OldAuthenticationController> {
+			registerService<AuthenticationController> {
+				print("Creating OldAuthenticationController")
+				scope.get()
+			}
+
+			registerService<DebuggingController> {
+				println("getting debugging service")
 				scope.get()
 			}
 

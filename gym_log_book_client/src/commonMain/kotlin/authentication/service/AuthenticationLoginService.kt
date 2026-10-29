@@ -2,11 +2,11 @@ package net.michael_bailey.gym_log_book.client.authentication.service
 
 import kotlinx.coroutines.withTimeout
 import net.michael_bailey.gym_log_book.client.authentication.repository.AuthenticationRepository
-import net.michael_bailey.gym_log_book.shared.authentication.controller.OldAuthenticationController
+import net.michael_bailey.gym_log_book.shared.authentication.controller.AuthenticationController
 import kotlin.time.Duration.Companion.seconds
 
 class AuthenticationLoginService(
-	private val oldAuthenticationController: OldAuthenticationController,
+	private val authenticationController: AuthenticationController,
 	private val authenticationRepository: AuthenticationRepository,
 ) {
 
@@ -21,10 +21,10 @@ class AuthenticationLoginService(
 				println("in timeout")
 
 
-				println("controller: $oldAuthenticationController, repo: $authenticationRepository")
+				println("controller: $authenticationController, repo: $authenticationRepository")
 				println("username: $username, password: $password")
 
-				oldAuthenticationController.getAuthenticationTokenPair(
+				authenticationController.getAuthenticationTokenPair(
 					username = username,
 					password = password
 				)
