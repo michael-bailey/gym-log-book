@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.Flow
 import net.michael_bailey.gym_log_book.server.authentication.service.AuthenticationService
 import net.michael_bailey.gym_log_book.server.authentication.service.ITokenService
 import net.michael_bailey.gym_log_book.server.di.RpcScope
-import net.michael_bailey.gym_log_book.shared.authentication.controller.AuthenticationController
+import net.michael_bailey.gym_log_book.shared.authentication.controller.NewAuthenticationController
 import net.michael_bailey.gym_log_book.shared.authentication.exception.AuthenticationException
 import net.michael_bailey.gym_log_book.shared.authentication.exception.AuthenticationResult
 import net.michael_bailey.gym_log_book.shared.authentication.model.AuthenticationTokenPair
@@ -16,10 +16,10 @@ import org.koin.core.annotation.Scoped
 @Scope(
 	RpcScope::class
 )
-class AuthenticationControllerImpl(
+class NewAuthenticationControllerImpl(
 	val authenticationService: AuthenticationService,
 	val tokenService: ITokenService,
-) : AuthenticationController {
+) : NewAuthenticationController {
 
 	override fun isAuthenticated(): Flow<Boolean> = authenticationService.isAuthenticated
 

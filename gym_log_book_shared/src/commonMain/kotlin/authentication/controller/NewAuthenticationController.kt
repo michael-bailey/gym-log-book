@@ -6,7 +6,7 @@ import net.michael_bailey.gym_log_book.shared.authentication.exception.Authentic
 import net.michael_bailey.gym_log_book.shared.authentication.model.AuthenticationTokenPair
 
 @Rpc
-interface AuthenticationController {
+interface NewAuthenticationController {
 
 	fun isAuthenticated(): Flow<Boolean>
 

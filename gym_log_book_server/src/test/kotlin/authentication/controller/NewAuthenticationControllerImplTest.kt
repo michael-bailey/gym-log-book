@@ -8,7 +8,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
-import net.michael_bailey.gym_log_book.server.authentication.controller.AuthenticationControllerImpl
+import net.michael_bailey.gym_log_book.server.authentication.controller.NewAuthenticationControllerImpl
 import net.michael_bailey.gym_log_book.server.authentication.model.TokenPayload
 import net.michael_bailey.gym_log_book.server.authentication.service.AuthenticationService
 import net.michael_bailey.gym_log_book.server.authentication.service.ITokenService
@@ -24,7 +24,7 @@ import kotlin.test.assertSame
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
-class AuthenticationControllerImplTest {
+class NewAuthenticationControllerImplTest {
 
 	private val authenticationService: AuthenticationService = mockk()
 	private val tokenService: ITokenService = mockk()
@@ -56,7 +56,7 @@ class AuthenticationControllerImplTest {
 		coVerify(exactly = 1) { authenticationService.authenticate(payload) }
 	}
 
-	private fun createController() = AuthenticationControllerImpl(
+	private fun createController() = NewAuthenticationControllerImpl(
 		authenticationService = authenticationService,
 		tokenService = tokenService,
 	)
@@ -72,7 +72,7 @@ class AuthenticationControllerImplTest {
 		val authenticationService: AuthenticationService = mockk()
 		val tokenService: ITokenService = mockk()
 		val payload = TokenPayload(subject = Uuid.NIL, username = USERNAME)
-		val controller = AuthenticationControllerImpl(
+		val controller = NewAuthenticationControllerImpl(
 			authenticationService = authenticationService,
 			tokenService = tokenService,
 		)
