@@ -24,8 +24,10 @@ class DeveloperWindowViewModel(
 		Login(icon = Icons.Rounded.LockPerson, label = "Login"),
 		NewLogin(icon = Icons.Rounded.LockPerson, label = "Login"),
 
+		Network(icon = Icons.Rounded.NetworkPing, "Network"),
+
 		Type(icon = Icons.Rounded.Category, label = "Types"),
-		Entry(icon = Icons.Rounded.FilterList, label = "Exercises")
+		Entry(icon = Icons.Rounded.FilterList, label = "Exercises"),
 	}
 
 	private val _activeTabs = authenticator.isAuthenticated
