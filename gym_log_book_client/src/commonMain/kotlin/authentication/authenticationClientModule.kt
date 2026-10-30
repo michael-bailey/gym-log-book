@@ -11,7 +11,9 @@ import kotlinx.rpc.krpc.ktor.client.rpc
 import kotlinx.rpc.krpc.ktor.client.rpcConfig
 import kotlinx.rpc.krpc.serialization.json.json
 import kotlinx.rpc.withService
+import net.michael_bailey.gym_log_book.client.application.NetworkManager
 import net.michael_bailey.gym_log_book.client.authentication.repository.AuthenticationStorageRepository
+import net.michael_bailey.gym_log_book.client.authentication.repository.NewAuthenticationRepository
 import net.michael_bailey.gym_log_book.client.authentication.service.AuthenticationLoginService
 import net.michael_bailey.gym_log_book.client.authentication.service.AuthenticationService
 import net.michael_bailey.gym_log_book.client.authentication.service.OldAuthenticationService
@@ -19,8 +21,10 @@ import net.michael_bailey.gym_log_book.client.authentication.view_model.LoginPag
 import net.michael_bailey.gym_log_book.client.config.ClientConfig
 import net.michael_bailey.gym_log_book.client.di.scopes.AuthenticatedScope
 import net.michael_bailey.gym_log_book.client.di.scopes.LoginScope
+import net.michael_bailey.gym_log_book.client.net.michael_bailey.gym_log_book.client.authentication.repository.IAuthenticationRepository
+import net.michael_bailey.gym_log_book.shared.authentication.controller.AuthenticationController
 import net.michael_bailey.gym_log_book.shared.authentication.controller.LoginTokenController
-import net.michael_bailey.gym_log_book.shared.authentication.controller.OldAuthenticationController
+import net.michael_bailey.gym_log_book.shared.authentication.controller.NewAuthenticationController
 import org.koin.core.module.dsl.scopedOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
@@ -32,6 +36,14 @@ val authenticationClientModule = module {
 	singleOf(::OldAuthenticationService)
 	singleOf(::AuthenticationLoginService)
 	singleOf(::AuthenticationStorageRepository) bind IAuthenticationRepository::class
+	single {
+		val networkManager = get<NetworkManager>()
+		NewAuthenticationRepository(
+			controller = networkManager.getService(),
+			coroutineScope = get()
+		)
+	}
+	singleOf(::AuthenticationService)
 
 	single {
 		println("creating exercise RCP")
@@ -45,6 +57,11 @@ val authenticationClientModule = module {
 	single {
 		println("creating LoginTokenController RCP")
 		get<RpcClient>().withService<LoginTokenController>()
+	}
+
+	single {
+		println("creating LoginTokenController RCP")
+		get<RpcClient>().withService<NewAuthenticationController>()
 	}
 
 	viewModelOf(::LoginPageViewModel)
