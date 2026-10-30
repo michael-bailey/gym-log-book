@@ -3,7 +3,7 @@ package authentication.service
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
-import net.michael_bailey.gym_log_book.client.authentication.repository.AuthenticationRepository
+import net.michael_bailey.gym_log_book.client.authentication.repository.AuthenticationStorageRepository
 import net.michael_bailey.gym_log_book.client.authentication.service.AuthenticationLoginService
 import net.michael_bailey.gym_log_book.shared.authentication.controller.AuthenticationController
 import net.michael_bailey.gym_log_book.shared.authentication.model.AuthenticationTokenPair
@@ -15,11 +15,11 @@ class AuthenticationLoginServiceTest {
 
 	@Test
 	fun `login requests token pair and stores it`() = runTest {
-		val repository = AuthenticationRepository()
+		val repository = AuthenticationStorageRepository()
 		val controller = FakeAuthenticationController(TOKEN_PAIR)
 		val service = AuthenticationLoginService(
 			authenticationController = controller,
-			authenticationRepository = repository,
+			authenticationStorageRepository = repository,
 		)
 
 		service.login(USERNAME, PASSWORD)

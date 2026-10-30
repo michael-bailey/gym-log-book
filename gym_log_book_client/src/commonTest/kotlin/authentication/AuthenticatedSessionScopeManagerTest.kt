@@ -6,7 +6,7 @@ import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import net.michael_bailey.gym_log_book.client.authentication.AuthenticatedSessionScopeManager
-import net.michael_bailey.gym_log_book.client.authentication.repository.AuthenticationRepository
+import net.michael_bailey.gym_log_book.client.authentication.repository.AuthenticationStorageRepository
 import net.michael_bailey.gym_log_book.client.authentication.service.OldAuthenticationService
 import net.michael_bailey.gym_log_book.client.di.scopes.AuthenticatedScope
 import net.michael_bailey.gym_log_book.shared.authentication.controller.AuthenticationController
@@ -27,7 +27,7 @@ class AuthenticatedSessionScopeManagerTest {
 	@Test
 	fun `creates scope when auth state becomes authenticated and reuses it for repeated authenticated emissions`() =
 		runTest {
-			val repository = AuthenticationRepository()
+			val repository = AuthenticationStorageRepository()
 			val service = OldAuthenticationService(repository, FakeAuthenticationController())
 			val manager = createManager(
 				oldAuthenticationService = service,
@@ -51,7 +51,7 @@ class AuthenticatedSessionScopeManagerTest {
 
 	@Test
 	fun `closes and clears scope when auth state becomes unauthenticated`() = runTest {
-		val repository = AuthenticationRepository()
+		val repository = AuthenticationStorageRepository()
 		val service = OldAuthenticationService(repository, FakeAuthenticationController())
 		val manager = createManager(
 			oldAuthenticationService = service,
