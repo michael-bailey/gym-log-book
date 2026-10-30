@@ -2,6 +2,9 @@ package net.michael_bailey.gym_log_book.client.platform
 
 import androidx.compose.material3.CalendarLocale
 import io.ktor.client.engine.cio.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.rpc.RpcClient
 import kotlinx.rpc.withService
 import net.michael_bailey.gym_log_book.client.ApplicationViewModel
@@ -13,6 +16,7 @@ import net.michael_bailey.gym_log_book.client.window.developer.entry.DevExercise
 import net.michael_bailey.gym_log_book.client.window.developer.entry.DevExerciseEntryTabPageViewModel
 import net.michael_bailey.gym_log_book.client.window.developer.login.DevLoginViewModel
 import net.michael_bailey.gym_log_book.client.window.developer.login_controller.LoginControllerPageViewModel
+import net.michael_bailey.gym_log_book.client.window.developer.network.NetworkPageViewModel
 import net.michael_bailey.gym_log_book.client.window.developer.type.DevExerciseTypeTabPageViewModel
 import net.michael_bailey.gym_log_book.client.window.home.ExerciseHomeWindowViewModel
 import net.michael_bailey.gym_log_book.shared.authentication.controller.ViewerContextDebuggerController
@@ -26,6 +30,7 @@ import java.util.*
 actual val platformModule: Module = module {
 	single { CIO.create() }
 	single { Locale.getDefault() } bind CalendarLocale::class
+	single { CoroutineScope(SupervisorJob() + Dispatchers.IO) } bind CoroutineScope::class
 
 	viewModelOf(::ExerciseHomeWindowViewModel)
 	viewModelOf(::ApplicationViewModel)
@@ -33,6 +38,7 @@ actual val platformModule: Module = module {
 
 	viewModelOf(::DevCounterTabPageViewModel)
 	viewModelOf(::LoginControllerPageViewModel)
+	viewModelOf(::NetworkPageViewModel)
 
 	scope<AuthenticatedScope> {
 		scopedOf(::DevExerciseTypeTabPageViewModel)
