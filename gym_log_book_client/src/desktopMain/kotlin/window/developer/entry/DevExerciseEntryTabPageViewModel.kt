@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import net.michael_bailey.gym_log_book.client.exercise.service.ExerciseEntryService
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
@@ -14,7 +15,8 @@ class DevExerciseEntryTabPageViewModel(
 	private val exerciseEntryService: ExerciseEntryService,
 ) : ViewModel() {
 
-	val exerciseEntriesList = exerciseEntryService.allEntries.map { it.toList() }
+	val exerciseEntriesList = exerciseEntryService.allEntries
+		.onEach { println("got entries $it") }.map { it.toList() }
 
 	var isSelectionModeShown = mutableStateOf(false)
 	val selectedEntryIds = mutableStateListOf<Uuid>()

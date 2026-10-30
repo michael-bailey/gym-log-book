@@ -16,25 +16,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
-import net.michael_bailey.gym_log_book.client.exercise.service.ExerciseEntryService
-import net.michael_bailey.gym_log_book.client.util.scopedInject
-import net.michael_bailey.gym_log_book.shared.exercise.command.NewExerciseEntryCommand
-import net.michael_bailey.gym_log_book.shared.exercise.controller.ExerciseEntryController
-import net.michael_bailey.gym_log_book.shared.exercise.model.ExerciseEntry
-import net.michael_bailey.gym_log_book.shared.exercise.model.ExerciseEntryView
-import kotlin.time.Clock
+import org.koin.compose.koinInject
 import kotlin.uuid.ExperimentalUuidApi
-import kotlin.uuid.Uuid
 
 @Composable
 fun DevExerciseEntryTabPage(
-	viewModel: DevExerciseEntryTabPageViewModel = scopedInject()
+	viewModel: DevExerciseEntryTabPageViewModel = koinInject(),
 ) {
 
 	val entryList by viewModel.exerciseEntriesList.collectAsState(emptyList())
@@ -122,57 +110,4 @@ private fun SelectionBar(
 			}
 		}
 	}
-}
-
-@Preview
-@Composable
-fun DevExerciseEntryTabPage_Preview() {
-	val viewModel = DevExerciseEntryTabPageViewModel(
-		exerciseEntryService = ExerciseEntryService(
-			exerciseEntryController = object : ExerciseEntryController {
-				override fun getExerciseEntries(): Flow<Collection<ExerciseEntryView>> {
-					return flow {
-						emit(
-							(0..10).map {
-								ExerciseEntryView(
-									id = Uuid.random(),
-									date = Clock.System.now().toLocalDateTime(TimeZone.UTC),
-									exerciseTypeId = Uuid.random(),
-									exerciseTypeName = "Random Type",
-									setNumber = 3,
-									weight = 27.25,
-									reps = 12
-								)
-							}
-						)
-					}
-				}
-
-				override suspend fun createEntry(
-					exerciseTypeId: Uuid,
-					entrySetNumber: Int,
-					entryWeight: Double,
-					entryReps: Int
-				): ExerciseEntry {
-					return ExerciseEntry(
-						id = Uuid.random(),
-						date = Clock.System.now().toLocalDateTime(TimeZone.UTC),
-						exerciseTypeId = Uuid.random(),
-						setNumber = 3,
-						weight = 27.25,
-						reps = 12
-					)
-				}
-
-				override suspend fun newEntry(command: NewExerciseEntryCommand): ExerciseEntry = createEntry(
-					exerciseTypeId = command.exerciseTypeId,
-					entrySetNumber = command.setNumber,
-					entryWeight = command.weight,
-					entryReps = command.reps,
-				)
-			}
-		)
-	)
-
-	DevExerciseEntryTabPage(viewModel)
 }

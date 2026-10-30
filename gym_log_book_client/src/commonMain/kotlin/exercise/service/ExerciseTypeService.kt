@@ -4,16 +4,18 @@ package net.michael_bailey.gym_log_book.client.exercise.service
 
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
-import net.michael_bailey.gym_log_book.shared.exercise.controller.ExerciseTypeController
+import kotlinx.coroutines.flow.onEach
+import net.michael_bailey.gym_log_book.client.exercise.repository.ExerciseTypeRepository
 import net.michael_bailey.gym_log_book.shared.exercise.model.EquipmentClass
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
 class ExerciseTypeService(
-	private val exerciseTypeController: ExerciseTypeController
+	private val typeRepository: ExerciseTypeRepository,
 ) {
 
-	val exerciseTypes = exerciseTypeController.exerciseTypes()
+	val exerciseTypes = typeRepository.allExerciseTypes
+		.onEach { println("got types $it") }
 
 	val exerciseNamesMap = exerciseTypes.map { coll -> coll.associate { it.id to it.name } }
 
@@ -23,13 +25,13 @@ class ExerciseTypeService(
 		name: String,
 		equipmentClass: EquipmentClass,
 	) {
-		exerciseTypeController.createExerciseType(
+		typeRepository.createNewExerciseType(
 			name = name,
 			equipmentClass = equipmentClass,
 		)
 	}
 
 	suspend fun deleteTypes(ids: Collection<Uuid>) {
-		exerciseTypeController.deleteExerciseTypes(ids)
+		typeRepository.deleteExerciseTypes(ids)
 	}
 }

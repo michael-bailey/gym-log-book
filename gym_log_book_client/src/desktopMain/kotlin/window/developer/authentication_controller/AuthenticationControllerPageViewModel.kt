@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import net.michael_bailey.gym_log_book.client.authentication.service.AuthenticationService
@@ -14,7 +15,9 @@ class AuthenticationControllerPageViewModel(
 ) : ViewModel() {
 
 	private val _currentToken = MutableStateFlow<AuthenticationTokenPair?>(null)
-	private val _currentExceptionMessage = MutableStateFlow<String?>(null)
+	private val _currentExceptionMessage = authenticationService.recentErrors.map {
+		it.toString()
+	}
 
 	val isAuthenticated = authenticationService.isAuthenticated
 	val currentExceptionMessage: Flow<String?> = _currentExceptionMessage.onEach {
@@ -44,6 +47,5 @@ class AuthenticationControllerPageViewModel(
 
 	private suspend fun resetOutputs() {
 		_currentToken.emit(null)
-		_currentExceptionMessage.emit(null)
 	}
 }

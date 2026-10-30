@@ -47,8 +47,11 @@ class NetworkManager(
 		}
 	}
 
-	inline fun <@Rpc reified T : Any> getService(): Flow<T> =
+	inline fun <@Rpc reified T : Any> getService(): Flow<T?> =
 		rpcClient.map { it.withService<T>() }
+			.catch<T?> {
+				emit(null)
+			}
 
 	private fun createRpc(): RpcClient = httpClient.rpc(configuration.publicUrl.toString()) {
 		rpcConfig {
