@@ -1,29 +1,23 @@
 package net.michael_bailey.gym_log_book.client.counter
 
-import kotlinx.rpc.RpcClient
-import kotlinx.rpc.withService
+import net.michael_bailey.gym_log_book.client.application.NetworkManager
+import net.michael_bailey.gym_log_book.client.counter.repository.CounterRepository
 import net.michael_bailey.gym_log_book.client.counter.service.CounterClientService
 import net.michael_bailey.gym_log_book.client.counter.viewmodel.CounterViewModel
-import net.michael_bailey.gym_log_book.shared.counter.controller.CounterController
+import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
-import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val counterClientModule = module {
 
-single {
-		println("creating counter RCP")
-		get<RpcClient>().withService<CounterController>()
-	} bind CounterController::class
-
 	single {
-
-		val controller = get<CounterController>()
-
-		CounterClientService(
-			counterController = controller
+		val nm = get<NetworkManager>()
+		CounterRepository(
+			controller = nm.getService()
 		)
 	}
+
+	singleOf(::CounterClientService)
 
 	viewModelOf(::CounterViewModel)
 }
