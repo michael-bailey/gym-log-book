@@ -13,6 +13,7 @@ import net.michael_bailey.gym_log_book.client.component.navigation.GymNavScope
 import net.michael_bailey.gym_log_book.client.di.util.AuthenticatedViewScope
 import net.michael_bailey.gym_log_book.client.di.util.LoginViewScope
 import net.michael_bailey.gym_log_book.client.window.developer.DeveloperWindowViewModel.DevTab
+import net.michael_bailey.gym_log_book.client.window.developer.authentication_controller.AuthenticationControllerPage
 import net.michael_bailey.gym_log_book.client.window.developer.counter.DevCounterTabPage
 import net.michael_bailey.gym_log_book.client.window.developer.login_controller.LoginControllerPage
 import net.michael_bailey.gym_log_book.client.window.developer.network.NetworkPage
@@ -58,6 +59,7 @@ fun DeveloperToolWindow(
 					DevTab.Login -> LoginViewScope(currentTab)
 					DevTab.Type, DevTab.Entry -> AuthenticatedViewScope(currentTab)
 					DevTab.NewLogin -> LoginControllerPage()
+					DevTab.NewAuth -> AuthenticationControllerPage()
 					DevTab.Network -> NetworkPage()
 				}
 			}

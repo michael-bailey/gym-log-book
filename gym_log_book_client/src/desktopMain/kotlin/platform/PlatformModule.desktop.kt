@@ -11,6 +11,7 @@ import net.michael_bailey.gym_log_book.client.ApplicationViewModel
 import net.michael_bailey.gym_log_book.client.di.scopes.AuthenticatedScope
 import net.michael_bailey.gym_log_book.client.di.scopes.LoginScope
 import net.michael_bailey.gym_log_book.client.window.developer.DeveloperWindowViewModel
+import net.michael_bailey.gym_log_book.client.window.developer.authentication_controller.AuthenticationControllerPageViewModel
 import net.michael_bailey.gym_log_book.client.window.developer.counter.DevCounterTabPageViewModel
 import net.michael_bailey.gym_log_book.client.window.developer.entry.DevExerciseEntryCreateDialogueViewModel
 import net.michael_bailey.gym_log_book.client.window.developer.entry.DevExerciseEntryTabPageViewModel
@@ -38,6 +39,7 @@ actual val platformModule: Module = module {
 
 	viewModelOf(::DevCounterTabPageViewModel)
 	viewModelOf(::LoginControllerPageViewModel)
+	viewModelOf(::AuthenticationControllerPageViewModel)
 	viewModelOf(::NetworkPageViewModel)
 
 	scope<AuthenticatedScope> {
