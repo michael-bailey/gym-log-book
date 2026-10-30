@@ -4,8 +4,6 @@ package net.michael_bailey.gym_log_book.server
 
 import com.auth0.jwt.JWTVerifier
 import io.ktor.server.application.*
-import io.ktor.server.auth.*
-import io.ktor.server.auth.jwt.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.coroutines.CoroutineScope
@@ -18,8 +16,10 @@ import kotlinx.rpc.krpc.serialization.json.json
 import net.michael_bailey.gym_log_book.server.authentication.scope.ViewerScope
 import net.michael_bailey.gym_log_book.server.database.setupDatabase
 import net.michael_bailey.gym_log_book.server.di.RpcScope
+import net.michael_bailey.gym_log_book.shared.application.HeartbeatController
+import net.michael_bailey.gym_log_book.shared.authentication.controller.AuthenticationController
 import net.michael_bailey.gym_log_book.shared.authentication.controller.LoginTokenController
-import net.michael_bailey.gym_log_book.shared.authentication.controller.OldAuthenticationController
+import net.michael_bailey.gym_log_book.shared.authentication.controller.NewAuthenticationController
 import net.michael_bailey.gym_log_book.shared.authentication.controller.ViewerContextDebuggerController
 import net.michael_bailey.gym_log_book.shared.counter.controller.CounterController
 import net.michael_bailey.gym_log_book.shared.exercise.controller.ExerciseEntryController
@@ -56,20 +56,6 @@ fun Application.module() {
 
 	setupDatabase()
 
-	install(Authentication) {
-		jwt {
-			realm = "Gym Log Book"
-			verifier(verifier)
-			validate { credential ->
-				// Ensure the token has a valid subject (userId)
-				if (credential.payload.subject != null) {
-					JWTPrincipal(credential.payload)
-				} else {
-					null
-				}
-			}
-		}
-	}
 
 	install(Krpc) {
 		serialization {
@@ -83,6 +69,9 @@ fun Application.module() {
 		}
 
 		rpc("/rpc") {
+
+			println("Got new rpc session")
+
 			rpcConfig { serialization { json() } }
 			val scope = createScope()
 
@@ -91,40 +80,38 @@ fun Application.module() {
 				scope.get()
 			}
 
-			registerService<DebuggingController> {
-				println("getting debugging service")
-				scope.get()
-			}
-
 			registerService<CounterController> {
 				scope.get()
 			}
 
 			registerService<LoginTokenController> { scope.get() }
+			registerService<HeartbeatController> { scope.get() }
+
+			registerService<NewAuthenticationController> {
+				scope.get()
+			}
 		}
 
-		authenticate {
-			rpc("/rpc/authenticated") {
-				rpcConfig { serialization { json() } }
+		rpc("/rpc/authenticated") {
+			rpcConfig { serialization { json() } }
 
-				val scope = createScope()
+			val scope = createScope()
 
-				val vmScope = getKoin().createScope(
-					scopeId = "connection-${Uuid.generateV4()}",
-					qualifier = named<ViewerScope>(),
-				)
+			val vmScope = getKoin().createScope(
+				scopeId = "connection-${Uuid.generateV4()}",
+				qualifier = named<ViewerScope>(),
+			)
 
-				vmScope.linkTo(scope.scope)
+			vmScope.linkTo(scope.scope)
 
-				registerService<ExerciseTypeController> {
-					vmScope.get()
-				}
-				registerService<ExerciseEntryController> {
-					vmScope.get()
-				}
-				registerService<ViewerContextDebuggerController> {
-					scope.get()
-				}
+			registerService<ExerciseTypeController> {
+				vmScope.get()
+			}
+			registerService<ExerciseEntryController> {
+				vmScope.get()
+			}
+			registerService<ViewerContextDebuggerController> {
+				scope.get()
 			}
 		}
 	}
