@@ -1,13 +1,13 @@
 package net.michael_bailey.gym_log_book.client.authentication.service
 
 import kotlinx.coroutines.withTimeout
-import net.michael_bailey.gym_log_book.client.authentication.repository.AuthenticationRepository
+import net.michael_bailey.gym_log_book.client.authentication.repository.AuthenticationStorageRepository
 import net.michael_bailey.gym_log_book.shared.authentication.controller.AuthenticationController
 import kotlin.time.Duration.Companion.seconds
 
 class AuthenticationLoginService(
 	private val authenticationController: AuthenticationController,
-	private val authenticationRepository: AuthenticationRepository,
+	private val authenticationStorageRepository: AuthenticationStorageRepository,
 ) {
 
 	suspend fun login(
@@ -21,7 +21,7 @@ class AuthenticationLoginService(
 				println("in timeout")
 
 
-				println("controller: $authenticationController, repo: $authenticationRepository")
+				println("controller: $authenticationController, repo: $authenticationStorageRepository")
 				println("username: $username, password: $password")
 
 				authenticationController.getAuthenticationTokenPair(
@@ -41,6 +41,6 @@ class AuthenticationLoginService(
 		}
 
 		println("setting token")
-		authenticationRepository.setToken(token_res.getOrNull()!!)
+		authenticationStorageRepository.setToken(token_res.getOrNull()!!)
 	}
 }

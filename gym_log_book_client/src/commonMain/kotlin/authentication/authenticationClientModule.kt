@@ -11,7 +11,7 @@ import kotlinx.rpc.krpc.ktor.client.rpc
 import kotlinx.rpc.krpc.ktor.client.rpcConfig
 import kotlinx.rpc.krpc.serialization.json.json
 import kotlinx.rpc.withService
-import net.michael_bailey.gym_log_book.client.authentication.repository.AuthenticationRepository
+import net.michael_bailey.gym_log_book.client.authentication.repository.AuthenticationStorageRepository
 import net.michael_bailey.gym_log_book.client.authentication.service.AuthenticationLoginService
 import net.michael_bailey.gym_log_book.client.authentication.service.AuthenticationService
 import net.michael_bailey.gym_log_book.client.authentication.service.OldAuthenticationService
@@ -31,7 +31,7 @@ val authenticationClientModule = module {
 
 	singleOf(::OldAuthenticationService)
 	singleOf(::AuthenticationLoginService)
-	singleOf(::AuthenticationRepository) bind IAuthenticationRepository::class
+	singleOf(::AuthenticationStorageRepository) bind IAuthenticationRepository::class
 
 	single {
 		println("creating exercise RCP")
