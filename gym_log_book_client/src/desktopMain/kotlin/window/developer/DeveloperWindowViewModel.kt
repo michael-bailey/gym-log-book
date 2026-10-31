@@ -39,9 +39,9 @@ class DeveloperWindowViewModel(
 	private fun mapFilterDestinations(
 		isOldLoggedIn: Boolean,
 	): List<DevTab> = listOf(
+		DevTab.Network,
 		DevTab.Counter,
 		DevTab.Login,
-		DevTab.Network,
 		DevTab.NewLogin,
 		DevTab.NewAuth,
 	) + if (isOldLoggedIn) {
