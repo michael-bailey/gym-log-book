@@ -2,24 +2,41 @@ package net.michael_bailey.gym_log_book.client.authentication.view_model
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import net.michael_bailey.gym_log_book.client.authentication.service.AuthenticationLoginService
-import net.michael_bailey.gym_log_book.client.authentication.state.LoginViewState
 
 class LoginPageViewModel(
 	private val authenticationLoginService: AuthenticationLoginService
-) : ViewModel() {
-	val loginFormState = LoginViewState()
+) : ViewModel(), ILoginPageViewModel {
 
-	fun submit() = viewModelScope.launch {
-		authenticationLoginService.login(
-			username = loginFormState.usernameFieldState.text.toString(),
-			password = loginFormState.passwordFieldState.text.toString()
-		)
+	override val usernameFlow = MutableStateFlow("")
+	override val passwordFlow = MutableStateFlow("")
+
+	override fun onUsernameChanged(text: CharSequence) {
+		viewModelScope.launch {
+			usernameFlow.emit(text.toString())
+		}
 	}
 
-	fun cancel() = viewModelScope.launch {
-
+	override fun onPasswordChanged(text: CharSequence) {
+		viewModelScope.launch {
+			passwordFlow.emit(text.toString())
+		}
 	}
 
+	override fun submit() {
+		viewModelScope.launch {
+			authenticationLoginService.login(
+				username = usernameFlow.value,
+				password = passwordFlow.value
+			)
+		}
+	}
+
+	override fun cancel() {
+		viewModelScope.launch {
+
+		}
+	}
 }

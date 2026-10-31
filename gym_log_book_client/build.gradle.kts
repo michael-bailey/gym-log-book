@@ -9,6 +9,7 @@ plugins {
 	alias(libs.plugins.krpc)
 	alias(libs.plugins.composeMultiplatform)
 	alias(libs.plugins.composeCompiler)
+	alias(libs.plugins.skie)
 }
 
 kotlin {
@@ -18,6 +19,18 @@ kotlin {
 	jvm("desktop") {
 		mainRun {
 			mainClass.set("net.michael_bailey.gym_log_book.client.MainKt")
+		}
+	}
+
+	listOf(
+		iosArm64(),
+		iosSimulatorArm64(),
+		macosArm64()
+	).forEach { iosTarget ->
+		iosTarget.binaries.framework {
+			baseName = "gym_client_kt"
+			isStatic = true
+			this.outputDirectory = project.rootDir.resolve("iosApp/Frameworks")
 		}
 	}
 
@@ -66,6 +79,10 @@ kotlin {
 			implementation(compose.desktop.currentOs)
 			implementation(libs.bundles.ktor.client.jvm)
 			implementation(libs.bundles.desktop)
+		}
+
+		appleMain.dependencies {
+			implementation(libs.bundles.ktor.client.apple)
 		}
 
 		wasmJsMain.dependencies {
@@ -127,3 +144,6 @@ val desktopFatJar by tasks.registering(Jar::class) {
 		}
 	})
 }
+
+tasks.matching { it.name == "syncComposeResourcesForIos" }
+	.configureEach { enabled = false }

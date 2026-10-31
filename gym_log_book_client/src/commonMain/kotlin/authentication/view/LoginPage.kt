@@ -4,7 +4,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -17,8 +19,20 @@ import org.koin.compose.koinInject
 fun LoginPage(
 	viewModel: LoginPageViewModel = koinInject()
 ) {
+	val loginFormState = remember { LoginViewState() }
+
+	LaunchedEffect(Unit) {
+		snapshotFlow { loginFormState.usernameFieldState.text.toString() }
+			.collect { viewModel.onUsernameChanged(it) }
+	}
+
+	LaunchedEffect(Unit) {
+		snapshotFlow { loginFormState.passwordFieldState.text.toString() }
+			.collect { viewModel.onPasswordChanged(it) }
+	}
+
 	LoginPage(
-		loginViewState = viewModel.loginFormState,
+		loginViewState = loginFormState,
 		onSubmit = viewModel::submit,
 		onCancel = viewModel::cancel
 	)

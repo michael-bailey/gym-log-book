@@ -11,6 +11,18 @@ kotlin {
 	androidTarget()
 	jvm()
 
+	listOf(
+		iosArm64(),
+		iosSimulatorArm64(),
+		macosArm64()
+	).forEach { iosTarget ->
+		iosTarget.binaries.framework {
+			baseName = "gym_shared_kt"
+			isStatic = true
+			this.outputDirectory = project.rootDir.resolve("iosApp/Frameworks")
+		}
+	}
+
 	@OptIn(ExperimentalWasmDsl::class)
 	wasmJs {
 		browser()
