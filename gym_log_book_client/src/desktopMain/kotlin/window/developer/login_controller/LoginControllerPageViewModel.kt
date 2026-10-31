@@ -7,12 +7,12 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import net.michael_bailey.gym_log_book.shared.authentication.controller.LoginTokenController
+import net.michael_bailey.gym_log_book.client.authentication.repository.LoginRepository
 import net.michael_bailey.gym_log_book.shared.authentication.exception.LoginTokenResult
 import net.michael_bailey.gym_log_book.shared.authentication.model.AuthenticationTokenPair
 
 class LoginControllerPageViewModel(
-	private val loginController: LoginTokenController
+	private val loginController: LoginRepository,
 ) : ViewModel() {
 
 	private val _currentToken = MutableStateFlow<AuthenticationTokenPair?>(null)
@@ -33,7 +33,7 @@ class LoginControllerPageViewModel(
 
 		when (
 			val result = loginController
-				.getAuthenticationTokenPair(username, password)
+				.getAuthenticationTokenPair(username, password).await()
 		) {
 			is LoginTokenResult.Ok -> handleSuccess(result.value)
 			is LoginTokenResult.Err -> handleResult(result.reason)

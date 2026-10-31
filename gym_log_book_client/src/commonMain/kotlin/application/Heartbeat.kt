@@ -8,7 +8,7 @@ import net.michael_bailey.gym_log_book.shared.application.HeartbeatController
 import kotlin.time.Duration.Companion.seconds
 
 class Heartbeat(
-	private val heartbeatController: Flow<HeartbeatController>,
+	private val heartbeatController: Flow<HeartbeatController?>,
 	private val coroutineScope: CoroutineScope,
 ) {
 
@@ -24,10 +24,10 @@ class Heartbeat(
 	private suspend fun runHeartbeat() {
 		heartbeatController
 			.flatMapLatest { controller ->
-				getHeartbeat(controller).onStart {
+				controller?.let { getHeartbeat(it) }?.onStart {
 					println("[Heartbeat] new controller, resetting to Restarting")
 					emit(Status.Restarting)
-				}
+				} ?: flowOf(Status.Dead)
 			}
 			.collect { _status.value = it }
 	}

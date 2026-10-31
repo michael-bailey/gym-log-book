@@ -21,7 +21,8 @@ class ExerciseEntryRepository(
 		.stateIn(coroutineScope, SharingStarted.Eagerly, initialValue = null)
 
 	val allExerciseEntries = controller
-		.flatMapLatest { it?.getExerciseEntries() ?: emptyFlow() }
+		.flatMapLatest { it?.getExerciseEntries() ?: flowOf(emptyList()) }
+		.catch { emit(emptyList()) }
 
 	suspend fun createNewExerciseEntry(
 		exerciseTypeId: Uuid,

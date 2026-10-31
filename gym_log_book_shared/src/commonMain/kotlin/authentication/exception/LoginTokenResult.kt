@@ -21,7 +21,8 @@ sealed class LoginTokenResult {
 		val message: String
 	) {
 		InvalidCredential("Invalid username or password"),
-		RefreshTokenExpired("Refresh token has expired, use username and password")
+		RefreshTokenExpired("Refresh token has expired, use username and password"),
+		ServiceUnavailable("Another error occured")
 	}
 }
 

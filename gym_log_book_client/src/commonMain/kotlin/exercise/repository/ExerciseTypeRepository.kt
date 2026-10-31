@@ -17,12 +17,11 @@ class ExerciseTypeRepository(
 ) {
 
 	private val _exerciseTypeController = controller
-		.onEach { println(it) }
 		.stateIn(coroutineScope, SharingStarted.Eagerly, initialValue = null)
 
 	val allExerciseTypes = controller
-		.flatMapLatest { it?.exerciseTypes() ?: emptyFlow() }
-		.onEach { println("Got types: $it") }
+		.flatMapLatest { it?.exerciseTypes() ?: flowOf(emptyList()) }
+		.catch { emit(emptyList()) }
 
 	suspend fun createNewExerciseType(
 		name: String,

@@ -19,7 +19,7 @@ class NewAuthenticationRepository(
 	private val _controllerState = controller.stateIn(coroutineScope, SharingStarted.Eagerly, null)
 
 	val isAuthenticated: Flow<Boolean> = controller
-		.flatMapLatest { it?.isAuthenticated() ?: emptyFlow() }
+		.flatMapLatest { it?.isAuthenticated() ?: emptyFlow() }.catch { emit(false) }
 
 	fun authenticate(tokenPair: AuthenticationTokenPair): Deferred<AuthenticationResult> = coroutineScope.async {
 		val res = _controllerState.value?.authenticate(tokenPair) ?: return@async AuthenticationResult.Err(

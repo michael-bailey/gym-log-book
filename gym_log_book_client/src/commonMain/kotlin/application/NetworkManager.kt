@@ -50,6 +50,7 @@ class NetworkManager(
 	inline fun <@Rpc reified T : Any> getService(): Flow<T?> =
 		rpcClient.map { it.withService<T>() }
 			.catch<T?> {
+				print("[NetworkManager::getService] got exception for ${T::class.simpleName} exception: $it")
 				emit(null)
 			}
 
