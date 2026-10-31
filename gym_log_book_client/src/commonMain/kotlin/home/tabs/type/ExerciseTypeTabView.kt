@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalUuidApi::class)
+
 package net.michael_bailey.gym_log_book.client.home.tabs.type
 
 import androidx.compose.foundation.layout.*
@@ -20,6 +22,7 @@ import net.michael_bailey.gym_log_book.client.home.tabs.type.IExerciseTypeTabVie
 import net.michael_bailey.gym_log_book.client.theme.ClientTheme
 import net.michael_bailey.gym_log_book.client.util.scopedInject
 import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
 @OptIn(ExperimentalUuidApi::class)
 @Composable
@@ -28,7 +31,7 @@ fun ExerciseTypeTabView(
 	vm: IExerciseTypeTabViewModel = scopedInject(),
 ) {
 
-	val list by vm.typeList
+	val list by vm.typeListState
 	val isCreateDialogueShown by vm.isCreateTypeDialogueShown
 
 	ExerciseTypeTabView(
@@ -111,6 +114,7 @@ fun ExerciseTypeOverviewList_Preview() {
 		repeat(5) {
 			add(
 				ExerciseTypeViewData(
+					id = Uuid.generateV4(),
 					name = "Type $it",
 					equipmentClass = "Class",
 				)

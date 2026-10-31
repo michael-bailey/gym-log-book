@@ -17,6 +17,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "EA733662305E7A1600169CC1"
                BuildableName = "iosPreviewApp.app"
+               BlueprintName = "iosPreviewApp"
                ReferencedContainer = "container:iosApp.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -46,6 +47,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "EA733662305E7A1600169CC1"
             BuildableName = "iosPreviewApp.app"
+            BlueprintName = "iosPreviewApp"
             ReferencedContainer = "container:iosApp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -62,6 +64,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "EA733662305E7A1600169CC1"
             BuildableName = "iosPreviewApp.app"
+            BlueprintName = "iosPreviewApp"
             ReferencedContainer = "container:iosApp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

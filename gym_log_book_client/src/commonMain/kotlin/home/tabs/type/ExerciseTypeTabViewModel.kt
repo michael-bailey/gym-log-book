@@ -6,12 +6,16 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import net.michael_bailey.gym_log_book.client.exercise.service.ExerciseTypeService
 import net.michael_bailey.gym_log_book.client.exercise.state.ExerciseTypeCreateFormState
 import net.michael_bailey.gym_log_book.client.home.tabs.type.IExerciseTypeTabViewModel
 import net.michael_bailey.gym_log_book.client.home.tabs.type.IExerciseTypeTabViewModel.ExerciseTypeViewData
+import net.michael_bailey.gym_log_book.shared.exercise.model.EquipmentClass
 import net.michael_bailey.gym_log_book.shared.exercise.model.ExerciseType
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
@@ -26,8 +30,14 @@ class ExerciseTypeTabViewModel(
 	private val _isCreateTypeDialogueShown = mutableStateOf(false)
 	private val _createFormState = ExerciseTypeCreateFormState()
 
-	override val typeMap: State<Map<Uuid, ExerciseTypeViewData>> = _typeMap
-	override val typeList: State<List<ExerciseTypeViewData>> = _typeList
+	override val typeMapState: State<Map<Uuid, ExerciseTypeViewData>> = _typeMap
+	override val typeListState: State<List<ExerciseTypeViewData>> = _typeList
+
+	override val typeMap: StateFlow<Map<Uuid, String>> = exerciseTypeService.exerciseNamesMap.stateIn(
+		scope = viewModelScope, started = SharingStarted.Eagerly, initialValue = emptyMap()
+	)
+	override val typeList: StateFlow<List<ExerciseTypeViewData>> = exerciseTypeService.exerciseTypes.map(::mapToViewData)
+		.stateIn(scope = viewModelScope, started = SharingStarted.Eagerly, initialValue = emptyList())
 
 	override val isCreateTypeDialogueShown: State<Boolean> = _isCreateTypeDialogueShown
 
@@ -40,9 +50,19 @@ class ExerciseTypeTabViewModel(
 	override fun submitCreateTypeForm() {
 		viewModelScope.launch {
 			exerciseTypeService.createNewType(
-				_createFormState.typeNameFieldState.text.toString(),
-				_createFormState.typeClassFieldState.value
+				_createFormState.typeNameFieldState.text.toString(), _createFormState.typeClassFieldState.value
 			)
+			_isCreateTypeDialogueShown.value = false
+			_createFormState.reset()
+		}
+	}
+
+	override fun submitCreateTypeForm(
+		equipmentClass: EquipmentClass,
+		name: String
+	) {
+		viewModelScope.launch {
+			exerciseTypeService.createNewType(name, equipmentClass)
 			_isCreateTypeDialogueShown.value = false
 			_createFormState.reset()
 		}
@@ -57,14 +77,12 @@ class ExerciseTypeTabViewModel(
 	}
 
 	private suspend fun collectTypes() {
-		exerciseTypeService.exerciseTypes
-			.map(::mapToViewData)
-			.map { it.toList() }
-			.collect { _typeList.value = it }
+		exerciseTypeService.exerciseTypes.map(::mapToViewData).map { it.toList() }.collect { _typeList.value = it }
 	}
 
 	private fun mapToViewData(coll: Collection<ExerciseType>): List<ExerciseTypeViewData> = coll.map {
 		ExerciseTypeViewData(
+			id = it.id,
 			name = it.name,
 			equipmentClass = it.equipmentClass.toString(),
 		)

@@ -30,7 +30,7 @@ kotlin {
 		iosTarget.binaries.framework {
 			baseName = "gym_client_kt"
 			isStatic = true
-			this.outputDirectory = project.rootDir.resolve("iosApp/Frameworks")
+			this.outputDirectory = project.rootDir.resolve("iosApp/Frameworks/${iosTarget.targetName}")
 		}
 	}
 

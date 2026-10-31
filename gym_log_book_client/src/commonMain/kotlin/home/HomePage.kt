@@ -57,11 +57,11 @@ fun HomePage() {
 @Composable
 fun NewHomePage() {
 
-	var currentTabs by remember { mutableStateOf(HomeTab.Exercises) }
+	var currentTab by remember { mutableStateOf(HomeTab.Exercises) }
 
 	GymAdaptiveScaffold(
-		currentRoute = currentTabs,
-		onNavigate = { currentTabs = it },
+		currentRoute = currentTab,
+		onNavigate = { currentTab = it },
 		fab = FabDefinition(
 			icon = Icons.Rounded.Add,
 			onClick = { println("Not implemented") }
@@ -78,7 +78,7 @@ fun NewHomePage() {
 	) {
 		HomeContentSurface(
 			modifier = Modifier.padding(it),
-			currentTabs = currentTabs,
+			currentTab = currentTab,
 		)
 	}
 }
@@ -86,14 +86,14 @@ fun NewHomePage() {
 @Composable
 private fun HomeContentSurface(
 	modifier: Modifier = Modifier,
-	currentTabs: HomeTab,
+	currentTab: HomeTab,
 ) {
 	Box(
 		modifier = modifier,
 	) {
 		AnimatedContent(
 			modifier = Modifier.fillMaxSize(),
-			targetState = currentTabs,
+			targetState = currentTab,
 		) { destination ->
 			when (destination) {
 				HomeTab.Exercises -> ExerciseEntryTabView(

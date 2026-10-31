@@ -14,3 +14,9 @@ fun create() = ComposeUIViewController {
 		HomePage()
 	}
 }
+
+fun create(scope: AuthenticatedScope) = ComposeUIViewController {
+	KoinScope(scope = scope.scope) {
+		HomePage()
+	}
+}
