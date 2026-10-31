@@ -3,11 +3,10 @@
 package authentication.controller
 
 import io.mockk.*
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import net.michael_bailey.gym_log_book.server.authentication.controller.AuthenticationControllerImpl
 import net.michael_bailey.gym_log_book.server.authentication.model.ViewerContext
-import net.michael_bailey.gym_log_book.server.authentication.service.AuthenticationService
+import net.michael_bailey.gym_log_book.server.authentication.service.OldAuthenticationService
 import net.michael_bailey.gym_log_book.shared.authentication.exception.AuthenticationException
 import net.michael_bailey.gym_log_book.shared.authentication.model.AuthenticationTokenPair
 import kotlin.test.Test
@@ -16,10 +15,9 @@ import kotlin.test.assertFailsWith
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class AuthenticationControllerImplTest {
 
-	private val authenticationService: AuthenticationService = mockk()
+	private val oldAuthenticationService: OldAuthenticationService = mockk()
 
 	@Test
 	fun `getAuthenticationTokenPair throws when viewer is already authenticated`() = runTest {
@@ -38,14 +36,14 @@ class AuthenticationControllerImplTest {
 		}
 
 		coVerify(exactly = 0) {
-			authenticationService.createTokenPair(any(), any())
+			oldAuthenticationService.createTokenPair(any(), any())
 		}
 	}
 
 	@Test
 	fun `getAuthenticationTokenPair throws when service returns null`() = runTest {
 		coEvery {
-			authenticationService.createTokenPair(USERNAME, PASSWORD)
+			oldAuthenticationService.createTokenPair(USERNAME, PASSWORD)
 		} returns null
 
 		val controller = createController()
@@ -58,7 +56,7 @@ class AuthenticationControllerImplTest {
 		}
 
 		coVerify(exactly = 1) {
-			authenticationService.createTokenPair(USERNAME, PASSWORD)
+			oldAuthenticationService.createTokenPair(USERNAME, PASSWORD)
 		}
 	}
 
@@ -69,7 +67,7 @@ class AuthenticationControllerImplTest {
 			refreshToken = REFRESH_TOKEN,
 		)
 		coEvery {
-			authenticationService.createTokenPair(USERNAME, PASSWORD)
+			oldAuthenticationService.createTokenPair(USERNAME, PASSWORD)
 		} returns expected
 
 		val controller = createController()
@@ -81,7 +79,7 @@ class AuthenticationControllerImplTest {
 
 		assertEquals(expected, actual)
 		coVerify(exactly = 1) {
-			authenticationService.createTokenPair(USERNAME, PASSWORD)
+			oldAuthenticationService.createTokenPair(USERNAME, PASSWORD)
 		}
 	}
 
@@ -91,7 +89,7 @@ class AuthenticationControllerImplTest {
 			accessToken = ACCESS_TOKEN,
 			refreshToken = REFRESH_TOKEN,
 		)
-		every { authenticationService.refresh(tokenPair) } returns null
+		every { oldAuthenticationService.refresh(tokenPair) } returns null
 
 		val controller = createController()
 
@@ -99,7 +97,7 @@ class AuthenticationControllerImplTest {
 			controller.refreshAuthenticationTokenPair(tokenPair)
 		}
 
-		verify(exactly = 1) { authenticationService.refresh(tokenPair) }
+		verify(exactly = 1) { oldAuthenticationService.refresh(tokenPair) }
 	}
 
 	@Test
@@ -112,24 +110,23 @@ class AuthenticationControllerImplTest {
 			accessToken = NEW_ACCESS_TOKEN,
 			refreshToken = NEW_REFRESH_TOKEN,
 		)
-		every { authenticationService.refresh(tokenPair) } returns newTokenPair
+		every { oldAuthenticationService.refresh(tokenPair) } returns newTokenPair
 
 		val controller = createController()
 
 		val actual = controller.refreshAuthenticationTokenPair(tokenPair)
 
 		assertEquals(newTokenPair, actual)
-		verify(exactly = 1) { authenticationService.refresh(tokenPair) }
+		verify(exactly = 1) { oldAuthenticationService.refresh(tokenPair) }
 	}
 
 	private fun createController(
 		viewerContext: ViewerContext = ViewerContext(
 			userId = Uuid.NIL,
 			username = "",
-		)
+		),
 	): AuthenticationControllerImpl = AuthenticationControllerImpl(
-		viewerContext = viewerContext,
-		authenticationService = authenticationService,
+		oldAuthenticationService = oldAuthenticationService,
 	)
 
 	private companion object {

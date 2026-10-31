@@ -1,10 +1,10 @@
 package net.michael_bailey.gym_log_book.client.counter.service
 
 import kotlinx.coroutines.flow.Flow
-import net.michael_bailey.gym_log_book.shared.counter.controller.CounterController
+import net.michael_bailey.gym_log_book.client.counter.repository.CounterRepository
 
 class CounterClientService(
-	private val counterController: CounterController,
+	private val counterRepository: CounterRepository,
 ) {
-	fun observeCounter(): Flow<Int> = counterController.observeCounter()
+	val count: Flow<Int> = counterRepository.count
 }

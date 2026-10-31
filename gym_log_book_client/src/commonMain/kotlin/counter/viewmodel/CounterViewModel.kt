@@ -16,7 +16,7 @@ class CounterViewModel(
 
 	init {
 		scope.launch {
-			counterClientService.observeCounter().collect { count ->
+			counterClientService.count.collect { count ->
 				counterText.update { count.toString() }
 			}
 		}

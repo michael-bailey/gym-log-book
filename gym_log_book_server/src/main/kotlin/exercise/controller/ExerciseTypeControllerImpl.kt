@@ -3,6 +3,7 @@
 package net.michael_bailey.gym_log_book.server.exercise.controller
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.onEach
 import net.michael_bailey.gym_log_book.server.exercise.service.IMutableExerciseTypeService
 import net.michael_bailey.gym_log_book.shared.exercise.command.NewExerciseTypeCommand
 import net.michael_bailey.gym_log_book.shared.exercise.controller.ExerciseTypeController
@@ -18,6 +19,7 @@ class ExerciseTypeControllerImpl(
 ) : ExerciseTypeController {
 
 	override fun exerciseTypes(): Flow<Collection<ExerciseType>> = exerciseTypeService.exerciseTypes
+		.onEach { println(it) }
 
 	@Deprecated("Use `newType`.")
 	override suspend fun createExerciseType(

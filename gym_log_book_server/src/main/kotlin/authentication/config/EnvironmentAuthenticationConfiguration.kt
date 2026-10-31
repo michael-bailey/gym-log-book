@@ -4,7 +4,7 @@ import org.koin.core.annotation.Qualifier
 import org.koin.core.annotation.Single
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.days
-import kotlin.time.Duration.Companion.seconds
+import kotlin.time.Duration.Companion.minutes
 
 @Single(
 	binds = [IJWTConfiguration::class, IUsernamePasswordConfiguration::class]
@@ -13,8 +13,8 @@ class EnvironmentAuthenticationConfiguration(
 	@Qualifier(Map::class, "environment") private val environmentMap: Map<String, String>,
 ) : IJWTConfiguration, IUsernamePasswordConfiguration {
 
-	override val accessExpiry: Int = defaultAccessExpiry.inWholeSeconds.toInt()
-	override val refreshExpiry: Int = defaultRefreshExpiry.inWholeSeconds.toInt()
+	override val accessExpiry: Int = defaultAccessExpiry.inWholeMilliseconds.toInt()
+	override val refreshExpiry: Int = defaultRefreshExpiry.inWholeMilliseconds.toInt()
 
 	override val jwtSecret: String = environmentMap[JWT_SECRET_KEY]!!
 
@@ -29,7 +29,7 @@ class EnvironmentAuthenticationConfiguration(
 		const val USERNAME_KEY = "USERNAME"
 		const val PASSWORD_KEY = "PASSWORD"
 
-		val defaultAccessExpiry: Duration = 3600.seconds
+		val defaultAccessExpiry: Duration = 15.minutes
 		val defaultRefreshExpiry: Duration = 30.days
 	}
 }

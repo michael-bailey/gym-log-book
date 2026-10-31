@@ -6,8 +6,8 @@ import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import net.michael_bailey.gym_log_book.client.authentication.AuthenticatedSessionScopeManager
-import net.michael_bailey.gym_log_book.client.authentication.repository.AuthenticationRepository
-import net.michael_bailey.gym_log_book.client.authentication.service.AuthenticationService
+import net.michael_bailey.gym_log_book.client.authentication.repository.AuthenticationStorageRepository
+import net.michael_bailey.gym_log_book.client.authentication.service.OldAuthenticationService
 import net.michael_bailey.gym_log_book.client.di.scopes.AuthenticatedScope
 import net.michael_bailey.gym_log_book.shared.authentication.controller.AuthenticationController
 import net.michael_bailey.gym_log_book.shared.authentication.model.AuthenticationTokenPair
@@ -27,10 +27,10 @@ class AuthenticatedSessionScopeManagerTest {
 	@Test
 	fun `creates scope when auth state becomes authenticated and reuses it for repeated authenticated emissions`() =
 		runTest {
-			val repository = AuthenticationRepository()
-			val service = AuthenticationService(repository, FakeAuthenticationController())
+			val repository = AuthenticationStorageRepository()
+			val service = OldAuthenticationService(repository, FakeAuthenticationController())
 			val manager = createManager(
-				authenticationService = service,
+				oldAuthenticationService = service,
 				testScope = CoroutineScope(StandardTestDispatcher(testScheduler)),
 			)
 			advanceUntilIdle()
@@ -51,10 +51,10 @@ class AuthenticatedSessionScopeManagerTest {
 
 	@Test
 	fun `closes and clears scope when auth state becomes unauthenticated`() = runTest {
-		val repository = AuthenticationRepository()
-		val service = AuthenticationService(repository, FakeAuthenticationController())
+		val repository = AuthenticationStorageRepository()
+		val service = OldAuthenticationService(repository, FakeAuthenticationController())
 		val manager = createManager(
-			authenticationService = service,
+			oldAuthenticationService = service,
 			testScope = CoroutineScope(StandardTestDispatcher(testScheduler)),
 		)
 		advanceUntilIdle()
@@ -72,7 +72,7 @@ class AuthenticatedSessionScopeManagerTest {
 	}
 
 	private fun createManager(
-		authenticationService: AuthenticationService,
+		oldAuthenticationService: OldAuthenticationService,
 		testScope: CoroutineScope,
 	): AuthenticatedSessionScopeManager {
 		val app = startKoin {
@@ -86,7 +86,7 @@ class AuthenticatedSessionScopeManagerTest {
 		}
 
 		return AuthenticatedSessionScopeManager(
-			authenticationService = authenticationService,
+			oldAuthenticationService = oldAuthenticationService,
 			appScope = testScope,
 			koin = app.koin,
 		)

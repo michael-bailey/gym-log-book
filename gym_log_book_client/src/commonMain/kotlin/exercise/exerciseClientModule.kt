@@ -1,37 +1,38 @@
 package net.michael_bailey.gym_log_book.client.exercise
 
 import home.tabs.type.ExerciseTypeTabViewModel
-import kotlinx.rpc.RpcClient
-import kotlinx.rpc.withService
-import net.michael_bailey.gym_log_book.client.di.scopes.AuthenticatedScope
+import net.michael_bailey.gym_log_book.client.application.NetworkManager
+import net.michael_bailey.gym_log_book.client.exercise.repository.ExerciseEntryRepository
+import net.michael_bailey.gym_log_book.client.exercise.repository.ExerciseTypeRepository
 import net.michael_bailey.gym_log_book.client.exercise.service.ExerciseEntryService
 import net.michael_bailey.gym_log_book.client.exercise.service.ExerciseTypeService
 import net.michael_bailey.gym_log_book.client.home.tabs.entry.ExerciseEntryTabViewModel
 import net.michael_bailey.gym_log_book.client.home.tabs.entry.IExerciseEntryTabViewModel
 import net.michael_bailey.gym_log_book.client.home.tabs.type.IExerciseTypeTabViewModel
-import net.michael_bailey.gym_log_book.shared.exercise.controller.ExerciseEntryController
-import net.michael_bailey.gym_log_book.shared.exercise.controller.ExerciseTypeController
-import org.koin.core.module.dsl.scopedOf
+import org.koin.core.module.dsl.singleOf
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val exerciseClientModule = module {
 
-	scope<AuthenticatedScope> {
-		scoped {
-			println("creating exercise RCP")
-			get<RpcClient>().withService<ExerciseTypeController>()
-		} bind ExerciseTypeController::class
-
-		scoped {
-			println("creating exercise RCP")
-			get<RpcClient>().withService<ExerciseEntryController>()
-		} bind ExerciseEntryController::class
-
-		scopedOf(::ExerciseEntryService)
-		scopedOf(::ExerciseTypeService)
-
-		scopedOf(::ExerciseTypeTabViewModel) bind IExerciseTypeTabViewModel::class
-		scopedOf(::ExerciseEntryTabViewModel) bind IExerciseEntryTabViewModel::class
+	single {
+		val nm = get<NetworkManager>()
+		ExerciseEntryRepository(
+			nm.getService(), get(), get()
+		)
 	}
+
+	single {
+		val nm = get<NetworkManager>()
+		ExerciseTypeRepository(
+			nm.getService(), get()
+		)
+	}
+
+	singleOf(::ExerciseEntryService)
+	singleOf(::ExerciseTypeService)
+
+	viewModelOf(::ExerciseEntryTabViewModel) bind IExerciseEntryTabViewModel::class
+	viewModelOf(::ExerciseTypeTabViewModel) bind IExerciseTypeTabViewModel::class
 }

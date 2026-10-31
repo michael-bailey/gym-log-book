@@ -3,6 +3,7 @@ package net.michael_bailey.gym_log_book.client.window.developer
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -10,10 +11,13 @@ import androidx.compose.ui.window.Window
 import net.michael_bailey.gym_log_book.client.component.navigation.GymAdaptiveScaffold
 import net.michael_bailey.gym_log_book.client.component.navigation.GymNavItem
 import net.michael_bailey.gym_log_book.client.component.navigation.GymNavScope
-import net.michael_bailey.gym_log_book.client.di.util.AuthenticatedViewScope
-import net.michael_bailey.gym_log_book.client.di.util.LoginViewScope
 import net.michael_bailey.gym_log_book.client.window.developer.DeveloperWindowViewModel.DevTab
+import net.michael_bailey.gym_log_book.client.window.developer.authentication_controller.AuthenticationControllerPage
 import net.michael_bailey.gym_log_book.client.window.developer.counter.DevCounterTabPage
+import net.michael_bailey.gym_log_book.client.window.developer.entry.DevExerciseEntryTabPage
+import net.michael_bailey.gym_log_book.client.window.developer.login_controller.LoginControllerPage
+import net.michael_bailey.gym_log_book.client.window.developer.network.NetworkPage
+import net.michael_bailey.gym_log_book.client.window.developer.type.DevExerciseTypeTabPage
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
@@ -52,9 +56,16 @@ fun DeveloperToolWindow(
 				contentAlignment = Alignment.Center
 			) {
 				when (currentTab) {
+
+					DevTab.Network -> NetworkPage()
 					DevTab.Counter -> DevCounterTabPage()
-					DevTab.Login -> LoginViewScope(currentTab)
-					DevTab.Type, DevTab.Entry -> AuthenticatedViewScope(currentTab)
+					DevTab.NewLogin -> LoginControllerPage()
+					DevTab.NewAuth -> AuthenticationControllerPage()
+
+					DevTab.Entry -> DevExerciseEntryTabPage()
+					DevTab.Type -> DevExerciseTypeTabPage()
+
+					else -> Text("Disabled")
 				}
 			}
 		}

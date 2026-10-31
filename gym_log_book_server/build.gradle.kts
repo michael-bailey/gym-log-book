@@ -26,4 +26,14 @@ dependencies {
 	testImplementation(libs.ktor.server.test.host)
 	testImplementation(libs.bundles.ktor.client.jvm)
 	testImplementation(libs.bundles.ktor.client.common)
+	testImplementation(libs.turbine)
+	testImplementation(libs.org.junit.jupiter.junit.jupiter.api)
+	testImplementation(libs.org.junit.jupiter.junit.jupiter.params)
+	testRuntimeOnly(libs.org.junit.jupiter.junit.jupiter.engine)
+	testRuntimeOnly(libs.org.junit.platform.junit.platform.launcher)
+
+}
+
+tasks.test {
+	useJUnitPlatform()
 }

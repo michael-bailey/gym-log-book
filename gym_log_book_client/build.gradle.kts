@@ -10,10 +10,13 @@ plugins {
 	alias(libs.plugins.composeMultiplatform)
 	alias(libs.plugins.composeCompiler)
 	alias(libs.plugins.skie)
+	id("dev.mokkery") version "3.3.0"
 }
 
 kotlin {
 	androidTarget()
+
+	jvmToolchain(21)
 
 	@OptIn(ExperimentalKotlinGradlePluginApi::class)
 	jvm("desktop") {
@@ -69,6 +72,8 @@ kotlin {
 		commonTest.dependencies {
 			implementation(libs.kotlin.test)
 			implementation(libs.kotlin.testCoroutines)
+			implementation(libs.turbine)
+//			implementation("dev.mokkery:mokkery-gradle:3.3.0")
 		}
 
 		androidMain.dependencies {
@@ -119,6 +124,7 @@ compose.desktop {
 }
 
 dependencies {
+	implementation("io.ktor:ktor-client-android:3.4.2")
 	debugImplementation(libs.compose.multiplatform.ui.tooling)
 }
 

@@ -1,31 +1,42 @@
 package net.michael_bailey.gym_log_book.client.authentication.service
 
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
-import net.michael_bailey.gym_log_book.client.authentication.repository.AuthenticationRepository
-import net.michael_bailey.gym_log_book.shared.authentication.controller.AuthenticationController
+import kotlinx.coroutines.flow.MutableStateFlow
+import net.michael_bailey.gym_log_book.client.authentication.repository.NewAuthenticationRepository
+import net.michael_bailey.gym_log_book.client.net.michael_bailey.gym_log_book.client.authentication.repository.IAuthenticationRepository
+import net.michael_bailey.gym_log_book.shared.authentication.exception.AuthenticationResult
 import net.michael_bailey.gym_log_book.shared.authentication.model.AuthenticationTokenPair
 
 class AuthenticationService(
-	private val authenticationRepository: AuthenticationRepository,
-	private val authenticationController: AuthenticationController
+	private val newAuthenticationRepository: NewAuthenticationRepository,
+	private val authenticationRepository: IAuthenticationRepository,
+	private val coroutineScope: CoroutineScope,
 ) {
+	private val _recentErrors = MutableStateFlow<AuthenticationResult.Reason?>(null)
 
-	val token: Flow<AuthenticationTokenPair?> = authenticationRepository.token
+	val isAuthenticated: Flow<Boolean> = newAuthenticationRepository.isAuthenticated
 
-	private val _isAuthenticated = token.map { it != null }
-	val isAuthenticated: Flow<Boolean> = _isAuthenticated
+	val recentErrors: Flow<AuthenticationResult.Reason?> = _recentErrors
 
-	suspend fun refreshTokens(): AuthenticationTokenPair? {
-		val tokens = token.first() ?: return null
-		val refreshedTokens = authenticationController.refreshAuthenticationTokenPair(tokens)
-		authenticationRepository.setToken(refreshedTokens)
-		return refreshedTokens
+	suspend fun authenticate(token: AuthenticationTokenPair) {
+		when (val authResult = newAuthenticationRepository.authenticate(token).await()) {
+			is AuthenticationResult.Ok -> handleAuthenticationSuccess(token)
+			is AuthenticationResult.Err -> handleAuthenticationError(authResult)
+		}
 	}
 
-	suspend fun logout() {
+	private suspend fun handleAuthenticationSuccess(token: AuthenticationTokenPair) {
+		_recentErrors.emit(null)
+		authenticationRepository.setToken(token)
+	}
+
+	private suspend fun handleAuthenticationError(
+		authResult: AuthenticationResult.Err,
+	) {
 		authenticationRepository.clearToken()
+		_recentErrors.emit(authResult.reason)
 	}
+
 
 }

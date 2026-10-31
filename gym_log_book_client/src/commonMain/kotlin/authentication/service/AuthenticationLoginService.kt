@@ -1,13 +1,16 @@
 package net.michael_bailey.gym_log_book.client.authentication.service
 
 import kotlinx.coroutines.withTimeout
-import net.michael_bailey.gym_log_book.client.authentication.repository.AuthenticationRepository
-import net.michael_bailey.gym_log_book.shared.authentication.controller.AuthenticationController
+import net.michael_bailey.gym_log_book.client.authentication.repository.AuthenticationStorageRepository
+import net.michael_bailey.gym_log_book.client.authentication.repository.LoginRepository
+import net.michael_bailey.gym_log_book.client.authentication.repository.NewAuthenticationRepository
+import net.michael_bailey.gym_log_book.shared.authentication.exception.LoginTokenResult
 import kotlin.time.Duration.Companion.seconds
 
 class AuthenticationLoginService(
-	private val authenticationController: AuthenticationController,
-	private val authenticationRepository: AuthenticationRepository,
+	private val loginRepository: LoginRepository,
+	private val authenticationController: NewAuthenticationRepository,
+	private val authenticationStorageRepository: AuthenticationStorageRepository,
 ) {
 
 	suspend fun login(
@@ -16,31 +19,41 @@ class AuthenticationLoginService(
 	) {
 
 		println("Attempting login")
-		val token_res = runCatching {
+		val tokenRes = runCatching {
 			val token = withTimeout(10.seconds) {
 				println("in timeout")
 
 
-				println("controller: $authenticationController, repo: $authenticationRepository")
+				println("controller: $loginRepository, repo: $authenticationStorageRepository")
 				println("username: $username, password: $password")
 
-				authenticationController.getAuthenticationTokenPair(
+				loginRepository.getAuthenticationTokenPair(
 					username = username,
 					password = password
 				)
 			}
 			println("Out timeout")
 
-			token
+			token.await()
 		}
-		println("Out catching, result: $token_res")
+		println("Out catching, result: $tokenRes")
 
-		if (token_res.isFailure) {
-			println("message ${token_res.exceptionOrNull()?.message}")
+		if (tokenRes.isFailure) {
+			println("message ${tokenRes.exceptionOrNull()?.message}")
 			return
 		}
 
 		println("setting token")
-		authenticationRepository.setToken(token_res.getOrNull()!!)
+		when (val token = tokenRes.getOrThrow()) {
+			is LoginTokenResult.Ok -> {
+				// todo: replace this with better error handling
+				authenticationController.authenticate(token.value).await()
+				authenticationStorageRepository.setToken(token.value)
+			}
+
+			is LoginTokenResult.Err -> TODO()
+		}
+
+
 	}
 }

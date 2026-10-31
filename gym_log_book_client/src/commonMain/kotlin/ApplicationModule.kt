@@ -10,7 +10,11 @@ import kotlinx.rpc.krpc.ktor.client.installKrpc
 import kotlinx.rpc.krpc.ktor.client.rpc
 import kotlinx.rpc.krpc.ktor.client.rpcConfig
 import kotlinx.rpc.krpc.serialization.json.json
+import net.michael_bailey.gym_log_book.client.application.Heartbeat
+import net.michael_bailey.gym_log_book.client.application.NetworkManager
+import net.michael_bailey.gym_log_book.client.application.NetworkService
 import net.michael_bailey.gym_log_book.client.config.ClientConfig
+import org.koin.core.module.dsl.singleOf
 import org.koin.core.qualifier.named
 import org.koin.dsl.bind
 import org.koin.dsl.module
@@ -20,9 +24,11 @@ const val APP_SCOPE_QUALIFIER = "app-scope"
 
 val applicationModule = module {
 
-	single { ClientConfig() }
-	single(named(APP_SCOPE_QUALIFIER)) { CoroutineScope(SupervisorJob() + Dispatchers.Default) }
 	single { Clock.System } bind Clock::class
+
+	single(named(APP_SCOPE_QUALIFIER)) { CoroutineScope(SupervisorJob() + Dispatchers.Default) }
+
+	single { ClientConfig() }
 
 	single {
 		println("Creating application level http Client")
@@ -41,4 +47,8 @@ val applicationModule = module {
 		}
 		rpc
 	} bind RpcClient::class
+
+	singleOf(::Heartbeat)
+	singleOf(::NetworkManager)
+	singleOf(::NetworkService)
 }

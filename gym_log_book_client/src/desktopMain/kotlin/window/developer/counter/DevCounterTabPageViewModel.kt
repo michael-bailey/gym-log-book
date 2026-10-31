@@ -8,6 +8,6 @@ class DevCounterTabPageViewModel(
 	private val counterService: CounterClientService,
 ) : ViewModel() {
 
-	val counterValue = counterService.observeCounter().map { it.toString() }
+	val counterValue = counterService.count.map { it.toString() }
 
 }

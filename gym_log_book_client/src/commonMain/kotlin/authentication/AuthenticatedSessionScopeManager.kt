@@ -8,14 +8,14 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
-import net.michael_bailey.gym_log_book.client.authentication.service.AuthenticationService
+import net.michael_bailey.gym_log_book.client.authentication.service.OldAuthenticationService
 import net.michael_bailey.gym_log_book.client.di.scopes.AuthenticatedScope
 import org.koin.core.Koin
 import org.koin.core.scope.Scope
 import kotlin.uuid.Uuid
 
 class AuthenticatedSessionScopeManager(
-	private val authenticationService: AuthenticationService,
+	private val oldAuthenticationService: OldAuthenticationService,
 	private val appScope: CoroutineScope,
 	private val koin: Koin,
 ) {
@@ -24,7 +24,7 @@ class AuthenticatedSessionScopeManager(
 
 	init {
 		appScope.launch {
-			authenticationService.isAuthenticated
+			oldAuthenticationService.isAuthenticated
 				.distinctUntilChanged()
 				.collect(::updateScopeForAuthenticationState)
 		}
