@@ -3,6 +3,7 @@
 package net.michael_bailey.gym_log_book.client.exercise.factory
 
 import net.michael_bailey.gym_log_book.client.exercise.entity.ExerciseTypeEntity
+import net.michael_bailey.gym_log_book.client.sync.SyncStatus
 import net.michael_bailey.gym_log_book.shared.exercise.model.EquipmentClass
 import kotlin.time.Clock
 import kotlin.uuid.ExperimentalUuidApi
@@ -19,5 +20,7 @@ class UuidV7ExerciseTypeFactory(
 		name = name,
 		usesUserWeight = false,
 		equipmentClass = equipmentClass,
+		isAlive = true,
+		syncStatus = SyncStatus.SavePending,
 	)
 }
