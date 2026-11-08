@@ -2,9 +2,11 @@
 
 package net.michael_bailey.gym_log_book.client.exercise.entity
 
+import androidx.room3.ColumnInfo
 import androidx.room3.Entity
 import androidx.room3.Index
 import androidx.room3.PrimaryKey
+import net.michael_bailey.gym_log_book.client.sync.SyncStatus
 import kotlin.time.Instant
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
@@ -22,4 +24,11 @@ data class ExerciseEntryEntity(
 	var setNumber: Int,
 	var weight: Double,
 	var reps: Int,
+
+	@ColumnInfo(defaultValue = "true")
+	var isAlive: Boolean,
+	@ColumnInfo(
+		defaultValue = "SavePending"
+	)
+	var syncStatus: SyncStatus,
 )

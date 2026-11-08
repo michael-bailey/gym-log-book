@@ -6,6 +6,7 @@ import androidx.room3.ColumnInfo
 import androidx.room3.Entity
 import androidx.room3.Index
 import androidx.room3.PrimaryKey
+import net.michael_bailey.gym_log_book.client.sync.SyncStatus
 import net.michael_bailey.gym_log_book.shared.exercise.model.EquipmentClass
 import kotlin.time.Instant
 import kotlin.uuid.ExperimentalUuidApi
@@ -26,4 +27,10 @@ data class ExerciseTypeEntity(
 	@ColumnInfo(name = "equipment", defaultValue = "none")
 	val equipmentClass: EquipmentClass,
 
+	@ColumnInfo(defaultValue = "true")
+	var isAlive: Boolean,
+	@ColumnInfo(
+		defaultValue = "Unsynchronised"
 	)
+	var syncStatus: SyncStatus,
+)
