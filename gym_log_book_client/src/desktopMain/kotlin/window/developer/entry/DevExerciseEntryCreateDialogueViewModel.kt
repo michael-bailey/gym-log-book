@@ -16,8 +16,8 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.number
 import kotlinx.datetime.toJavaLocalDate
 import kotlinx.datetime.toLocalDateTime
-import net.michael_bailey.gym_log_book.client.exercise.service.ExerciseEntryService
 import net.michael_bailey.gym_log_book.client.exercise.service.ExerciseTypeService
+import net.michael_bailey.gym_log_book.client.exercise.service.INetworkExerciseEntryService
 import net.michael_bailey.gym_log_book.shared.exercise.model.ExerciseType
 import java.util.*
 import kotlin.time.Clock
@@ -27,7 +27,7 @@ import kotlin.uuid.Uuid
 
 class DevExerciseEntryCreateDialogueViewModel(
 	private val exerciseTypeService: ExerciseTypeService,
-	private val exerciseEntryService: ExerciseEntryService,
+	private val exerciseEntryService: INetworkExerciseEntryService,
 ) : ViewModel() {
 	val exerciseTypes: Flow<List<ExerciseType>> = exerciseTypeService
 		.exerciseTypes.map { it.toList() }

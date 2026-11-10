@@ -7,12 +7,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
-import net.michael_bailey.gym_log_book.client.exercise.service.ExerciseEntryService
+import net.michael_bailey.gym_log_book.client.exercise.service.INetworkExerciseEntryService
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
 class DevExerciseEntryTabPageViewModel(
-	private val exerciseEntryService: ExerciseEntryService,
+	private val exerciseEntryService: INetworkExerciseEntryService,
 ) : ViewModel() {
 
 	val exerciseEntriesList = exerciseEntryService.allEntries
