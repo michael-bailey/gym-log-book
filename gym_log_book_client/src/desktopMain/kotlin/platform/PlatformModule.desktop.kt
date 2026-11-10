@@ -1,6 +1,8 @@
 package net.michael_bailey.gym_log_book.client.platform
 
 import androidx.compose.material3.CalendarLocale
+import androidx.room3.Room
+import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import io.ktor.client.engine.cio.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -11,6 +13,8 @@ import net.michael_bailey.gym_log_book.client.window.developer.authentication_co
 import net.michael_bailey.gym_log_book.client.window.developer.counter.DevCounterTabPageViewModel
 import net.michael_bailey.gym_log_book.client.window.developer.entry.DevExerciseEntryCreateDialogueViewModel
 import net.michael_bailey.gym_log_book.client.window.developer.entry.DevExerciseEntryTabPageViewModel
+import net.michael_bailey.gym_log_book.client.window.developer.lcoal_entry.DevLocalExerciseEntryCreateDialogueViewModel
+import net.michael_bailey.gym_log_book.client.window.developer.local_entry.DevLocalExerciseEntryTabPageViewModel
 import net.michael_bailey.gym_log_book.client.window.developer.login.DevLoginViewModel
 import net.michael_bailey.gym_log_book.client.window.developer.login_controller.LoginControllerPageViewModel
 import net.michael_bailey.gym_log_book.client.window.developer.network.NetworkPageViewModel
@@ -27,6 +31,24 @@ actual val platformModule: Module = module {
 	single { Locale.getDefault() } bind CalendarLocale::class
 	single { CoroutineScope(SupervisorJob() + Dispatchers.IO) } bind CoroutineScope::class
 
+	single {
+
+		val isDebug = System.getenv("BUILD") == "debug"
+
+		if (isDebug) {
+			Room.databaseBuilder<AppDatabase>("DebugAppDatabase.sqlite")
+				.setDriver(BundledSQLiteDriver())
+				.setQueryCoroutineContext(Dispatchers.IO)
+				.fallbackToDestructiveMigration()
+				.build()
+		} else {
+			Room.databaseBuilder<AppDatabase>("AppDatabase.sqlite")
+				.setDriver(BundledSQLiteDriver())
+				.setQueryCoroutineContext(Dispatchers.IO)
+				.build()
+		}
+	}
+
 	viewModelOf(::ExerciseHomeWindowViewModel)
 	viewModelOf(::ApplicationViewModel)
 	viewModelOf(::DeveloperWindowViewModel)
@@ -40,4 +62,7 @@ actual val platformModule: Module = module {
 	viewModelOf(::DevExerciseEntryTabPageViewModel)
 	viewModelOf(::DevExerciseEntryCreateDialogueViewModel)
 	viewModelOf(::DevLoginViewModel)
+
+	viewModelOf(::DevLocalExerciseEntryTabPageViewModel)
+	viewModelOf(::DevLocalExerciseEntryCreateDialogueViewModel)
 }

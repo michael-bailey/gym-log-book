@@ -15,6 +15,7 @@ import net.michael_bailey.gym_log_book.client.window.developer.DeveloperWindowVi
 import net.michael_bailey.gym_log_book.client.window.developer.authentication_controller.AuthenticationControllerPage
 import net.michael_bailey.gym_log_book.client.window.developer.counter.DevCounterTabPage
 import net.michael_bailey.gym_log_book.client.window.developer.entry.DevExerciseEntryTabPage
+import net.michael_bailey.gym_log_book.client.window.developer.lcoal_entry.DevLocalExerciseEntryTabPage
 import net.michael_bailey.gym_log_book.client.window.developer.login_controller.LoginControllerPage
 import net.michael_bailey.gym_log_book.client.window.developer.network.NetworkPage
 import net.michael_bailey.gym_log_book.client.window.developer.type.DevExerciseTypeTabPage
@@ -63,6 +64,7 @@ fun DeveloperToolWindow(
 					DevTab.NewAuth -> AuthenticationControllerPage()
 
 					DevTab.Entry -> DevExerciseEntryTabPage()
+					DevTab.LocalEntry -> DevLocalExerciseEntryTabPage()
 					DevTab.Type -> DevExerciseTypeTabPage()
 
 					else -> Text("Disabled")

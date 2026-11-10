@@ -26,8 +26,9 @@ class DeveloperWindowViewModel(
 		NewLogin(icon = Icons.Rounded.Password, label = "Login"),
 		NewAuth(icon = Icons.Rounded.LockPerson, label = "Auth"),
 
+		Entry(icon = Icons.Rounded.FilterList, label = "Exercises (N)"),
+		LocalEntry(icon = Icons.Rounded.FilterList, label = "Exercises (L)"),
 		Type(icon = Icons.Rounded.Category, label = "Types"),
-		Entry(icon = Icons.Rounded.FilterList, label = "Exercises"),
 	}
 
 	private val _activeTabs = authenticator.isAuthenticated
@@ -44,6 +45,7 @@ class DeveloperWindowViewModel(
 		DevTab.Login,
 		DevTab.NewLogin,
 		DevTab.NewAuth,
+		DevTab.LocalEntry
 	) + if (isOldLoggedIn) {
 		listOf(DevTab.Type, DevTab.Entry)
 	} else {
