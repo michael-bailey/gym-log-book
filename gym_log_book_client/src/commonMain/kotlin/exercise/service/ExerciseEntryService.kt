@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import net.michael_bailey.gym_log_book.client.exercise.entity.ExerciseEntryEntity
 import net.michael_bailey.gym_log_book.client.exercise.repository.ExerciseEntryDatabaseRepository
 import net.michael_bailey.gym_log_book.client.exercise.repository.ExerciseEntryRepository
 import net.michael_bailey.gym_log_book.client.exercise.repository.ExerciseTypeRepository
@@ -34,6 +35,8 @@ class ExerciseEntryService(
 	override val allLocalEntryIds: Flow<Collection<Uuid>> =
 		entryDatabaseRepository.allExerciseEntryIds
 
+	override suspend fun getLocalEntry(id: Uuid): ExerciseEntryEntity =
+		entryDatabaseRepository.getEntry(id).await()
 
 	override suspend fun createNewExerciseEntry(
 		exerciseTypeId: Uuid,

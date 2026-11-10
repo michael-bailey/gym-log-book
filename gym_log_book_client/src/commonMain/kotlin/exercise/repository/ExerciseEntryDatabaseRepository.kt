@@ -3,6 +3,8 @@
 package net.michael_bailey.gym_log_book.client.exercise.repository
 
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
 import net.michael_bailey.gym_log_book.client.exercise.entity.ExerciseEntryEntity
 import net.michael_bailey.gym_log_book.client.exercise.factory.IExerciseEntryEntityFactory
@@ -38,6 +40,10 @@ class ExerciseEntryDatabaseRepository(
 		)
 
 		dao.createExerciseEntry(entry)
+	}
+
+	fun getEntry(id: Uuid): Deferred<ExerciseEntryEntity> = coroutineScope.async {
+		dao.exerciseEntry(id)
 	}
 
 

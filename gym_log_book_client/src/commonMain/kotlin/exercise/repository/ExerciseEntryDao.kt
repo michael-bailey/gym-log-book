@@ -26,6 +26,15 @@ interface ExerciseEntryDao {
 	)
 	fun exerciseEntryFlow(id: Uuid): Flow<ExerciseEntryEntity>
 
+	@Query(
+		"""
+			SELECT * FROM exercise_items
+			WHERE id = :id
+			LIMIT 1
+		"""
+	)
+	suspend fun exerciseEntry(id: Uuid): ExerciseEntryEntity
+
 	@Insert
 	suspend fun createExerciseEntry(entity: ExerciseEntryEntity)
 
