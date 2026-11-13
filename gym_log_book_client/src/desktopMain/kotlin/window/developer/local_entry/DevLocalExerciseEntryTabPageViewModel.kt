@@ -11,14 +11,14 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
-import net.michael_bailey.gym_log_book.client.exercise.service.ExerciseTypeService
 import net.michael_bailey.gym_log_book.client.exercise.service.ILocalExerciseEntryService
+import net.michael_bailey.gym_log_book.client.exercise.service.ILocalExerciseTypeService
 import net.michael_bailey.gym_log_book.client.sync.SyncStatus
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
 class DevLocalExerciseEntryTabPageViewModel(
-	private val exerciseTypeService: ExerciseTypeService,
+	private val exerciseTypeService: ILocalExerciseTypeService,
 	private val exerciseEntryService: ILocalExerciseEntryService,
 ) : ViewModel() {
 
@@ -69,7 +69,7 @@ class DevLocalExerciseEntryTabPageViewModel(
 				id = id,
 				date = date.toLocalDateTime(TimeZone.UTC),
 				exerciseTypeId = exerciseTypeId,
-				exerciseTypeName = exerciseTypeId.let { exerciseTypeService.getExerciseName(it) ?: "Unknown" },
+				exerciseTypeName = exerciseTypeId.let { exerciseTypeService.getLocalExerciseName(it) ?: "Unknown" },
 				setNumber = setNumber,
 				weight = weight,
 				reps = reps,

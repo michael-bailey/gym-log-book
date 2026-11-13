@@ -13,4 +13,14 @@ interface ILocalExerciseEntryService : IExerciseEntryService {
 
 	suspend fun getLocalEntry(id: Uuid): ExerciseEntryEntity
 
+	suspend fun createNewLocalEntry(
+		exerciseTypeId: Uuid,
+		entrySetNumber: Int,
+		entryWeight: Double,
+		entryReps: Int,
+	)
+
+	suspend fun updateLocalEntry()
+	suspend fun deleteLocalEntry()
+
 }

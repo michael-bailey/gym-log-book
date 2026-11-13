@@ -26,7 +26,7 @@ class ExerciseEntryTabViewModel(
 	}
 
 	override val combinedViewData = allEntries
-	override val exerciseTypesMap: Flow<Map<Uuid, String>> = exerciseTypeService.exerciseNamesMap
+	override val exerciseTypesMap: Flow<Map<Uuid, String>> = exerciseTypeService.networkExerciseNamesMap
 
 	override fun submitCreateEntryForm(
 		exerciseType: Uuid,

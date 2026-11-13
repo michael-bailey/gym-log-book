@@ -10,6 +10,7 @@ import net.michael_bailey.gym_log_book.client.exercise.entity.ExerciseEntryEntit
 import net.michael_bailey.gym_log_book.client.exercise.repository.ExerciseEntryDatabaseRepository
 import net.michael_bailey.gym_log_book.client.exercise.repository.ExerciseEntryRepository
 import net.michael_bailey.gym_log_book.client.exercise.repository.ExerciseTypeRepository
+import net.michael_bailey.gym_log_book.client.exercise.repository.ILocalExerciseTypeRepository
 import net.michael_bailey.gym_log_book.shared.exercise.model.ExerciseEntryView
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
@@ -26,6 +27,7 @@ import kotlin.uuid.Uuid
  */
 class ExerciseEntryService(
 	private val typeRepository: ExerciseTypeRepository,
+	private val typeDatabaseRepository: ILocalExerciseTypeRepository,
 	private val entryRepository: ExerciseEntryRepository,
 	private val entryDatabaseRepository: ExerciseEntryDatabaseRepository,
 ) : INetworkExerciseEntryService, ILocalExerciseEntryService {
@@ -50,12 +52,31 @@ class ExerciseEntryService(
 			entryWeight = entryWeight,
 			entryReps = entryReps,
 		)
+
+	}
+
+	//mark: - Local methods
+
+	override suspend fun createNewLocalEntry(
+		exerciseTypeId: Uuid,
+		entrySetNumber: Int,
+		entryWeight: Double,
+		entryReps: Int,
+	) {
 		entryDatabaseRepository.createNewExerciseEntry(
 			exerciseTypeId = exerciseTypeId,
 			entrySetNumber = entrySetNumber,
 			entryWeight = entryWeight,
 			entryReps = entryReps,
 		)
+	}
+
+	override suspend fun updateLocalEntry() {
+		TODO("Not yet implemented")
+	}
+
+	override suspend fun deleteLocalEntry() {
+		TODO("Not yet implemented")
 	}
 
 	/**
@@ -67,9 +88,9 @@ class ExerciseEntryService(
 	 * ## TODO
 	 * - make this use the local database for types as well
 	 */
-	fun getExerciseEntryFlow(id: Uuid): Flow<ExerciseEntryView> = combine(
+	fun getLocalExerciseEntryFlow(id: Uuid): Flow<ExerciseEntryView> = combine(
 		entryDatabaseRepository.getEntryFlow(id),
-		typeRepository.allExerciseTypesMap
+		typeRepository.allNetworkExerciseTypesMap
 	) { entry, types ->
 		ExerciseEntryView(
 			entry.id,

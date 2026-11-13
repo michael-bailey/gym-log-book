@@ -11,7 +11,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import net.michael_bailey.gym_log_book.client.component.form.ExerciseTypeDropdownSelector
+import net.michael_bailey.gym_log_book.client.component.form.LocalExerciseTypeDropdownSelector
 import org.koin.compose.koinInject
 import kotlin.uuid.ExperimentalUuidApi
 
@@ -45,7 +45,7 @@ fun DevLocalExerciseEntryCreateDialogue(
 				modifier = Modifier.padding(24.dp),
 				verticalArrangement = Arrangement.spacedBy(12.dp)
 			) {
-				ExerciseTypeDropdownSelector(
+				LocalExerciseTypeDropdownSelector(
 					modifier = Modifier.fillMaxWidth(),
 					exerciseTypes = exerciseTypes,
 					selectedType = selectedType,

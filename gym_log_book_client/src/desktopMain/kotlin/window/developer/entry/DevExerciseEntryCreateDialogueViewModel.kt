@@ -30,7 +30,7 @@ class DevExerciseEntryCreateDialogueViewModel(
 	private val exerciseEntryService: INetworkExerciseEntryService,
 ) : ViewModel() {
 	val exerciseTypes: Flow<List<ExerciseType>> = exerciseTypeService
-		.exerciseTypes.map { it.toList() }
+		.networkExerciseTypes.map { it.toList() }
 	val selectedExerciseType = mutableStateOf<Uuid?>(null)
 
 	val showDatePickerState = mutableStateOf(false)

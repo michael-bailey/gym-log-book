@@ -17,9 +17,9 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.number
 import kotlinx.datetime.toJavaLocalDate
 import kotlinx.datetime.toLocalDateTime
-import net.michael_bailey.gym_log_book.client.exercise.service.ExerciseTypeService
+import net.michael_bailey.gym_log_book.client.exercise.entity.ExerciseTypeEntity
 import net.michael_bailey.gym_log_book.client.exercise.service.ILocalExerciseEntryService
-import net.michael_bailey.gym_log_book.shared.exercise.model.ExerciseType
+import net.michael_bailey.gym_log_book.client.exercise.service.ILocalExerciseTypeService
 import java.util.*
 import kotlin.time.Clock
 import kotlin.time.Instant
@@ -27,11 +27,11 @@ import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
 class DevLocalExerciseEntryCreateDialogueViewModel(
-	private val exerciseTypeService: ExerciseTypeService,
+	private val exerciseTypeService: ILocalExerciseTypeService,
 	private val exerciseEntryService: ILocalExerciseEntryService,
 ) : ViewModel() {
-	val exerciseTypes: Flow<List<ExerciseType>> = exerciseTypeService
-		.exerciseTypes.map { it.toList() }
+	val exerciseTypes: Flow<List<ExerciseTypeEntity>> = exerciseTypeService
+		.localExerciseTypes.map { it.toList() }
 	val selectedExerciseType = mutableStateOf<Uuid?>(null)
 
 	val showDatePickerState = mutableStateOf(false)
