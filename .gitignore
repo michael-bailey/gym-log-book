@@ -6,6 +6,8 @@
 .cxx
 local.properties
 
+*.sqlite*
+
 .gradle
 .kotlin
 **/.idea/
