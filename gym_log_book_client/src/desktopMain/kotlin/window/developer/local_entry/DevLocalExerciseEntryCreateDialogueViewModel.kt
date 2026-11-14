@@ -55,7 +55,7 @@ class DevLocalExerciseEntryCreateDialogueViewModel(
 	val repsFieldState = TextFieldState()
 
 	fun submit() = viewModelScope.launch {
-		exerciseEntryService.createNewExerciseEntry(
+		exerciseEntryService.createNewLocalEntry(
 			exerciseTypeId = selectedExerciseType.value!!,
 			entryWeight = weightFieldState.text.toString().toDouble(),
 			entrySetNumber = setFieldState.text.toString().toInt(),
