@@ -17,7 +17,10 @@ import kotlin.time.Instant
 		ExerciseTypeEntity::class,
 		WeightEntryEntity::class,
 	],
-	version = 1
+	version = 2,
+	autoMigrations = [
+		AutoMigration(from = 1, to = 2)
+	]
 )
 @ConstructedBy(AppDatabaseConstructor::class)
 @ColumnTypeConverters(AppDatabase.Companion::class)
