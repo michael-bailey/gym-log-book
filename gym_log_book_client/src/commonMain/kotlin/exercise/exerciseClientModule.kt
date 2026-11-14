@@ -75,14 +75,20 @@ val exerciseClientModule = module {
 			get(),
 			get(),
 		)
-	}
+	} binds arrayOf(
+		INetworkExerciseTypeRepository::class,
+		ILocalExerciseTypeRepository::class,
+	)
 
 	singleOf(::ExerciseEntryService) binds arrayOf(
 		INetworkExerciseEntryService::class,
 		ILocalExerciseEntryService::class,
 		IExerciseEntryService::class
 	)
-	singleOf(::ExerciseTypeService)
+	singleOf(::ExerciseTypeService) binds arrayOf(
+		ILocalExerciseTypeService::class,
+		INetworkExerciseTypeService::class,
+	)
 
 	viewModelOf(::ExerciseEntryTabViewModel) bind IExerciseEntryTabViewModel::class
 	viewModelOf(::ExerciseTypeTabViewModel) bind IExerciseTypeTabViewModel::class
