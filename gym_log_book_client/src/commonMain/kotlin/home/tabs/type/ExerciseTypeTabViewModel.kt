@@ -33,10 +33,11 @@ class ExerciseTypeTabViewModel(
 	override val typeMapState: State<Map<Uuid, ExerciseTypeViewData>> = _typeMap
 	override val typeListState: State<List<ExerciseTypeViewData>> = _typeList
 
-	override val typeMap: StateFlow<Map<Uuid, String>> = exerciseTypeService.exerciseNamesMap.stateIn(
+	override val typeMap: StateFlow<Map<Uuid, String>> = exerciseTypeService.networkExerciseNamesMap.stateIn(
 		scope = viewModelScope, started = SharingStarted.Eagerly, initialValue = emptyMap()
 	)
-	override val typeList: StateFlow<List<ExerciseTypeViewData>> = exerciseTypeService.exerciseTypes.map(::mapToViewData)
+	override val typeList: StateFlow<List<ExerciseTypeViewData>> =
+		exerciseTypeService.networkExerciseTypes.map(::mapToViewData)
 		.stateIn(scope = viewModelScope, started = SharingStarted.Eagerly, initialValue = emptyList())
 
 	override val isCreateTypeDialogueShown: State<Boolean> = _isCreateTypeDialogueShown
@@ -77,7 +78,7 @@ class ExerciseTypeTabViewModel(
 	}
 
 	private suspend fun collectTypes() {
-		exerciseTypeService.exerciseTypes.map(::mapToViewData).map { it.toList() }.collect { _typeList.value = it }
+		exerciseTypeService.networkExerciseTypes.map(::mapToViewData).map { it.toList() }.collect { _typeList.value = it }
 	}
 
 	private fun mapToViewData(coll: Collection<ExerciseType>): List<ExerciseTypeViewData> = coll.map {
