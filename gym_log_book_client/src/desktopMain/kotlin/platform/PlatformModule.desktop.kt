@@ -15,6 +15,7 @@ import net.michael_bailey.gym_log_book.client.window.developer.entry.DevExercise
 import net.michael_bailey.gym_log_book.client.window.developer.entry.DevExerciseEntryTabPageViewModel
 import net.michael_bailey.gym_log_book.client.window.developer.lcoal_entry.DevLocalExerciseEntryCreateDialogueViewModel
 import net.michael_bailey.gym_log_book.client.window.developer.local_entry.DevLocalExerciseEntryTabPageViewModel
+import net.michael_bailey.gym_log_book.client.window.developer.local_type.DevLocalExerciseTypeTabPageViewModel
 import net.michael_bailey.gym_log_book.client.window.developer.login.DevLoginViewModel
 import net.michael_bailey.gym_log_book.client.window.developer.login_controller.LoginControllerPageViewModel
 import net.michael_bailey.gym_log_book.client.window.developer.network.NetworkPageViewModel
@@ -65,4 +66,6 @@ actual val platformModule: Module = module {
 
 	viewModelOf(::DevLocalExerciseEntryTabPageViewModel)
 	viewModelOf(::DevLocalExerciseEntryCreateDialogueViewModel)
+
+	viewModelOf(::DevLocalExerciseTypeTabPageViewModel)
 }
