@@ -10,16 +10,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import net.michael_bailey.gym_log_book.client.window.developer.local_entry.DevLocalExerciseEntryTabPageViewModel
 import org.koin.compose.koinInject
 import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
 @Composable
 fun DevLocalExerciseEntryTabPage(
@@ -28,16 +26,26 @@ fun DevLocalExerciseEntryTabPage(
 
 	val entryList by viewModel.exerciseEntriesList.collectAsState(emptyList())
 
-	var isSelectionModeShown by viewModel.isSelectionModeShown
-	val selectedEntryIds = viewModel.selectedEntryIds
-	val selectedCount = selectedEntryIds.size
+	var isSelectionModeShown by remember { mutableStateOf(false) }
+	var isNewEntryModalShown by remember { mutableStateOf(false) }
 
-	val isNewEntryModalShown by viewModel.isNewEntryModalShown
+	val selectedEntryIds = remember { mutableStateListOf<Uuid>() }
+	val selectedCount = selectedEntryIds.size
 
 	Column(
 		modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally
 	) {
-		SelectionBar(isSelectionModeShown, selectedCount, viewModel)
+		SelectionBar(
+			isSelectionModeShown,
+			selectedCount,
+			{ isSelectionModeShown = !isSelectionModeShown },
+			onCreate = { isNewEntryModalShown = true },
+			onDelete = {
+				viewModel.deleteExerciseEntries(selectedEntryIds.toList())
+				selectedEntryIds.clear()
+				isSelectionModeShown = false
+			}
+		)
 		LazyColumn(
 			modifier = Modifier.fillMaxSize(),
 			contentPadding = PaddingValues(8.dp),
@@ -52,21 +60,26 @@ fun DevLocalExerciseEntryTabPage(
 					exerciseEntry = entry,
 					showCheckBox = isSelectionModeShown,
 					isChecked = selectedEntryIds.contains(entry.id),
-					onCheckedChange = viewModel::toggleExerciseTypeSelection
+					onCheckedChange = {
+						if (selectedEntryIds.contains(it)) selectedEntryIds.remove(it)
+						else selectedEntryIds.add(it)
+					}
 				)
 			}
 		}
 	}
 
 	if (isNewEntryModalShown)
-		DevLocalExerciseEntryCreateDialogue(onDismiss = viewModel::closeCreateModal)
+		DevLocalExerciseEntryCreateDialogue(onDismiss = { isNewEntryModalShown = false })
 }
 
 @Composable
 private fun SelectionBar(
 	isSelectionModeShown: Boolean,
 	selectedCount: Int,
-	viewModel: DevLocalExerciseEntryTabPageViewModel,
+	toggleSelectionMode: () -> Unit,
+	onCreate: () -> Unit,
+	onDelete: () -> Unit,
 ) {
 	Surface(
 		modifier = Modifier.fillMaxWidth().padding(8.dp),
@@ -85,16 +98,16 @@ private fun SelectionBar(
 					"Entry page"
 				}
 			)
-			Button(onClick = viewModel::showCreateModal) {
+			Button(onClick = onCreate) {
 				Icon(Icons.Rounded.Add, contentDescription = null)
 				Text("Add Type")
 			}
 			if (isSelectionModeShown) {
-				OutlinedButton(onClick = viewModel::hideSelectionMode) {
+				OutlinedButton(onClick = toggleSelectionMode) {
 					Text("Cancel")
 				}
 				Button(
-					onClick = { TODO() },
+					onClick = onDelete,
 					enabled = selectedCount > 0,
 					colors = ButtonDefaults.buttonColors(
 						containerColor = MaterialTheme.colorScheme.error,
@@ -105,7 +118,7 @@ private fun SelectionBar(
 					Text("Delete")
 				}
 			} else {
-				OutlinedButton(onClick = viewModel::showSelectionMode) {
+				OutlinedButton(onClick = toggleSelectionMode) {
 					Text("Select")
 				}
 			}

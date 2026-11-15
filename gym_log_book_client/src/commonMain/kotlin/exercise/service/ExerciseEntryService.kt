@@ -75,8 +75,13 @@ class ExerciseEntryService(
 		TODO("Not yet implemented")
 	}
 
-	override suspend fun deleteLocalEntry() {
+	override suspend fun deleteLocalEntry(id: Uuid) {
 		TODO("Not yet implemented")
+	}
+
+	override suspend fun deleteLocalEntries(ids: List<Uuid>) {
+		val a = entryDatabaseRepository.deleteEntites(ids).await()
+		print(a)
 	}
 
 	/**

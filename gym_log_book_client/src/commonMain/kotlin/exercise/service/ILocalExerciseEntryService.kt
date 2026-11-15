@@ -21,6 +21,8 @@ interface ILocalExerciseEntryService : IExerciseEntryService {
 	)
 
 	suspend fun updateLocalEntry()
-	suspend fun deleteLocalEntry()
+	suspend fun deleteLocalEntry(id: Uuid)
+
+	suspend fun deleteLocalEntries(ids: List<Uuid>)
 
 }

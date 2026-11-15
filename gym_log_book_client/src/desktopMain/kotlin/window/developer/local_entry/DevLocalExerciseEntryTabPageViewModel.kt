@@ -5,9 +5,11 @@ package net.michael_bailey.gym_log_book.client.window.developer.local_entry
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
@@ -31,36 +33,6 @@ class DevLocalExerciseEntryTabPageViewModel(
 	var isSelectionModeShown = mutableStateOf(false)
 	val selectedEntryIds = mutableStateListOf<Uuid>()
 
-	val isNewEntryModalShown = mutableStateOf(false)
-
-	fun showSelectionMode() {
-		isSelectionModeShown.value = true
-	}
-
-	fun hideSelectionMode() {
-		isSelectionModeShown.value = false
-		selectedEntryIds.clear()
-	}
-
-	fun toggleExerciseTypeSelection(id: Uuid) {
-		if (id in selectedEntryIds) {
-			selectedEntryIds.remove(id)
-			return
-		}
-		selectedEntryIds.add(id)
-	}
-
-	fun showCreateModal() {
-		isNewEntryModalShown.value = true
-	}
-
-	fun closeCreateModal() {
-		isNewEntryModalShown.value = false
-	}
-
-	fun deleteExerciseEntry(id: Uuid) {
-
-	}
 
 	private suspend fun mapIdListToEntry(ids: List<Uuid>): List<LocalEntryView> = ids.map {
 		exerciseEntryService.getLocalEntry(it).run {
@@ -84,6 +56,14 @@ class DevLocalExerciseEntryTabPageViewModel(
 		SyncStatus.SavePending -> "Saving"
 		SyncStatus.DeletePending -> "Deleting"
 		SyncStatus.Synchronised -> "Synced"
+	}
+
+	fun deleteExerciseEntries(selectedEntryIds: List<Uuid>) {
+		viewModelScope.launch {
+			if (selectedEntryIds.isEmpty()) return@launch
+
+			exerciseEntryService.deleteLocalEntries(selectedEntryIds)
+		}
 	}
 
 	data class LocalEntryView(
