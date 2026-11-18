@@ -11,9 +11,11 @@ import kotlin.uuid.Uuid
 interface ILocalExerciseTypeService : IExerciseTypeService {
 	val localExerciseTypes: Flow<Collection<ExerciseTypeEntity>>
 	val localExerciseNamesMap: Flow<Map<Uuid, String>>
+	suspend fun getLocalExerciseName(id: Uuid): String?
 
 	suspend fun createNewLocalType(name: String, equipmentClass: EquipmentClass)
 	suspend fun updateLocalType()
-	suspend fun deleteLocalType()
-	suspend fun getLocalExerciseName(id: Uuid): String?
+
+	suspend fun deleteLocalType(id: Uuid, replacement: Uuid)
+	suspend fun deleteLocalTypes(ids: Uuid, replacementId: Uuid)
 }

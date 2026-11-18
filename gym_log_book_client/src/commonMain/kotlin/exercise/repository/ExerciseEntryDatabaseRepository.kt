@@ -47,6 +47,12 @@ class ExerciseEntryDatabaseRepository(
 		dao.exerciseEntry(id)
 	}
 
+	override fun updateEntity(entity: ExerciseEntryEntity): Deferred<Result<Unit>> = coroutineScope.async {
+		runCatching {
+			dao.updateExerciseEntry(entity)
+		}
+	}
+
 	fun deleteEntity(id: Uuid): Deferred<Result<Unit>> = coroutineScope.async {
 		dao.exerciseEntry(id)
 			.let { runCatching { dao.deleteExerciseEntry(it) } }
