@@ -2,14 +2,12 @@
 
 package net.michael_bailey.gym_log_book.client.window.developer.local_type
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Add
-import androidx.compose.material.icons.rounded.Delete
-import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,21 +26,16 @@ fun DevLocalExerciseTypeTabPage(
 	val typeList by viewModel.exerciseTypeList.collectAsState(initial = emptyList())
 
 	var shownModal by remember { mutableStateOf<ModalState>(ModalState.None) }
-	var isSelectionModeShown by remember { mutableStateOf(false) }
-	val selectedTypeIds = remember { mutableStateListOf<Uuid>() }
-	val selectedCount = selectedTypeIds.size
+	val selectionState = remember { DevLocalExerciseTypeSelectionState() }
 
 	Column(
 		modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally
 	) {
-		SelectionToolbar(
-			isSelectionModeShown,
-			selectedCount,
+		DevLocalTypeSelectionToolbar(
+			selectionState = selectionState,
 			showNewTypeDialogue = { shownModal = ModalState.NewExerciseType },
-			hideSelectionMode = { isSelectionModeShown = false },
-			onShowSelect = { isSelectionModeShown = true },
-			// here
-			onDelete = { shownModal = ModalState.DeleteExerciseType(selectedTypeIds.toList()) })
+			onDelete = { ids -> shownModal = ModalState.DeleteExerciseType(ids) }
+		)
 		LazyColumn(
 			modifier = Modifier.fillMaxSize(),
 			contentPadding = PaddingValues(8.dp),
@@ -58,24 +51,25 @@ fun DevLocalExerciseTypeTabPage(
 					typeClass = it.equipmentClass.displayName,
 					syncStatus = it.syncStatus,
 					isAlive = it.isAlive,
-					showCheckBox = isSelectionModeShown,
-					isChecked = it.id in selectedTypeIds,
+					showCheckBox = selectionState.isSelectionModeShown,
+					isChecked = it.id in selectionState.selectedTypeIds,
 					onCheckedChange = { id ->
-						if (selectedTypeIds.contains(id)) selectedTypeIds.remove(id)
-						else selectedTypeIds.add(id)
+						if (selectionState.selectedTypeIds.contains(id)) selectionState.selectedTypeIds.remove(id)
+						else selectionState.selectedTypeIds.add(id)
 					},
 				)
 			}
 		}
 	}
 
-	Modal(shownModal, typeList, viewModel) {
+	Modal(selectionState, shownModal, typeList, viewModel) {
 		shownModal = it
 	}
 }
 
 @Composable
 private fun Modal(
+	selectionState: DevLocalExerciseTypeSelectionState,
 	shownModal: ModalState,
 	typeList: List<ExerciseTypeEntity>,
 	viewModel: DevLocalExerciseTypeTabPageViewModel,
@@ -89,6 +83,7 @@ private fun Modal(
 				onDelete = {
 					viewModel.deleteSelectedExerciseTypes(shownModal.ids, it)
 					updateModalState(ModalState.None)
+					selectionState.disableSelection()
 				},
 				onDismiss = { updateModalState(ModalState.None) }
 			)
@@ -96,7 +91,11 @@ private fun Modal(
 
 		ModalState.NewExerciseType -> NewExerciseTypeDialog(
 			onDismissRequest = { updateModalState(ModalState.None) },
-			onSave = viewModel::addExerciseType,
+			onSave = { name, eClass ->
+				viewModel.addExerciseType(name, eClass)
+				updateModalState(ModalState.None)
+				selectionState.disableSelection()
+			},
 		)
 
 		ModalState.None -> {}
@@ -108,60 +107,6 @@ sealed interface ModalState {
 	data object None : ModalState
 	data object NewExerciseType : ModalState
 	data class DeleteExerciseType(val ids: List<Uuid>) : ModalState
-}
-
-@Composable
-private fun SelectionToolbar(
-	isSelectionModeShown: Boolean,
-	selectedCount: Int,
-	showNewTypeDialogue: () -> Unit,
-	hideSelectionMode: () -> Unit,
-	onShowSelect: () -> Unit,
-	onDelete: () -> Unit,
-) {
-	Surface(
-		modifier = Modifier.fillMaxWidth().padding(8.dp),
-		shape = RoundedCornerShape(16.dp),
-		color = MaterialTheme.colorScheme.surfaceDim,
-	) {
-		Row(
-			modifier = Modifier.fillMaxWidth(),
-			horizontalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterHorizontally),
-			verticalAlignment = Alignment.CenterVertically
-		) {
-			Text(
-				text = if (isSelectionModeShown) {
-					"$selectedCount selected"
-				} else {
-					"Entry page"
-				}
-			)
-			Button(onClick = showNewTypeDialogue) {
-				Icon(Icons.Rounded.Add, contentDescription = null)
-				Text("Add Type")
-			}
-			if (isSelectionModeShown) {
-				OutlinedButton(onClick = hideSelectionMode) {
-					Text("Cancel")
-				}
-				Button(
-					onClick = onDelete,
-					enabled = selectedCount > 0,
-					colors = ButtonDefaults.buttonColors(
-						containerColor = MaterialTheme.colorScheme.error,
-						contentColor = MaterialTheme.colorScheme.onError,
-					),
-				) {
-					Icon(Icons.Rounded.Delete, contentDescription = null)
-					Text("Delete")
-				}
-			} else {
-				OutlinedButton(onClick = onShowSelect) {
-					Text("Select")
-				}
-			}
-		}
-	}
 }
 
 
