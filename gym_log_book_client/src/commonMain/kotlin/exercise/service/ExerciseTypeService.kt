@@ -2,7 +2,9 @@
 
 package net.michael_bailey.gym_log_book.client.exercise.service
 
+import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -62,29 +64,44 @@ class ExerciseTypeService(
 		TODO("Not yet implemented")
 	}
 
-	override suspend fun deleteLocalType(id: Uuid, replacement: Uuid) {
+	override suspend fun deleteLocalType(id: Uuid, replacement: Uuid) = coroutineScope {
 		when {
-			id == replacement -> return
-			!isTypeUsed(id) -> localTypeRepository.deleteEntity(id).await()
+			id == replacement -> return@coroutineScope
+			!isTypeUsed(id) -> localTypeRepository.deleteLocalEntity(id).await()
 		}
 
+		// todo: Update this to a method call, not using this flow
 		exerciseEntryRepository.allExerciseEntryIds
 			.first()
-			.map(exerciseEntryRepository::getEntry)
+			.map { id -> async { deleteSingle(id, replacement) } }
 			.awaitAll()
-			.map(updateTypeId(replacement))
-			.map(exerciseEntryRepository::updateEntity)
-			.awaitAll()
+		val _a = localTypeRepository.deleteLocalEntity(id).await()
+	}
 
+	private suspend fun deleteSingle(id: Uuid, replacementId: Uuid) {
+		val entity = exerciseEntryRepository.getEntry(id).await()
+		if (entity.exerciseTypeId == id) return
+		val newEntity = updateTypeId(replacementId, entity)
+		exerciseEntryRepository.updateEntity(newEntity).await()
+
+
+	}
+
+	override suspend fun deleteLocalTypes(
+		ids: List<Uuid>,
+		replacementId: Uuid,
+	) {
+		coroutineScope {
+			ids.map { id -> async { deleteLocalType(id, replacementId) } }
+		}
 	}
 
 	private fun updateTypeId(
 		replacement: Uuid,
-	): (ExerciseEntryEntity) -> ExerciseEntryEntity = {
-		it.copy(
+		entity: ExerciseEntryEntity,
+	): ExerciseEntryEntity = entity.copy(
 			exerciseTypeId = replacement
 		)
-	}
 
 	private suspend fun isTypeUsed(id: Uuid): Boolean =
 		exerciseEntryRepository.allExerciseEntryIds
@@ -92,11 +109,6 @@ class ExerciseTypeService(
 			.map(exerciseEntryRepository::getEntry)
 			.awaitAll()
 			.any { it.exerciseTypeId == id }
-
-
-	override suspend fun deleteLocalTypes(ids: Uuid, replacementId: Uuid) {
-
-	}
 
 	private fun mapToName(map: Map<Uuid, ExerciseTypeEntity>): Map<Uuid, String> = map.mapValues { it.value.name }
 

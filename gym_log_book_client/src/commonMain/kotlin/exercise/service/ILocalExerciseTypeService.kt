@@ -17,5 +17,5 @@ interface ILocalExerciseTypeService : IExerciseTypeService {
 	suspend fun updateLocalType()
 
 	suspend fun deleteLocalType(id: Uuid, replacement: Uuid)
-	suspend fun deleteLocalTypes(ids: Uuid, replacementId: Uuid)
+	suspend fun deleteLocalTypes(ids: List<Uuid>, replacementId: Uuid)
 }
