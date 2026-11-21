@@ -2,8 +2,7 @@
 
 package net.michael_bailey.gym_log_book.client.exercise.repository
 
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import net.michael_bailey.gym_log_book.client.exercise.entity.ExerciseTypeEntity
 import net.michael_bailey.gym_log_book.client.exercise.factory.IExerciseTypeEntityFactory
@@ -65,6 +64,23 @@ class ExerciseTypeRepository(
 		_exerciseTypeController.value?.deleteExerciseTypes(
 			ids
 		)
+	}
+
+	override fun deleteLocalEntity(
+		id: Uuid,
+	): Deferred<Result<Unit>> = coroutineScope.async {
+		runCatching {
+			val entity = dao.getExerciseType(id)
+			dao.deleteExerciseType(entity)
+		}
+	}
+
+	override fun deleteLocalEntities(
+		ids: List<Uuid>,
+	): Deferred<List<Throwable>> = coroutineScope.async {
+		ids.map { id -> deleteLocalEntity(id) }
+			.awaitAll()
+			.mapNotNull { it.exceptionOrNull() }
 	}
 
 	private fun associateById(
