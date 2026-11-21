@@ -14,11 +14,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
+import net.michael_bailey.gym_log_book.client.exercise.entity.ExerciseTypeEntity
 import net.michael_bailey.gym_log_book.shared.exercise.model.EquipmentClass
 import org.koin.compose.koinInject
 import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
 @Composable
 fun DevLocalExerciseTypeTabPage(
@@ -27,15 +27,22 @@ fun DevLocalExerciseTypeTabPage(
 
 	val typeList by viewModel.exerciseTypeList.collectAsState(initial = emptyList())
 
-	var showNewTypeDialogue by viewModel.isNewTypeDialogueShown
-	var isSelectionModeShown by viewModel.isSelectionModeShown
-	val selectedTypeIds = viewModel.selectedTypeIds
+	var shownModal by remember { mutableStateOf<ModalState>(ModalState.None) }
+	var isSelectionModeShown by remember { mutableStateOf(false) }
+	val selectedTypeIds = remember { mutableStateListOf<Uuid>() }
 	val selectedCount = selectedTypeIds.size
 
 	Column(
 		modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally
 	) {
-		SelectionToolbar(isSelectionModeShown, selectedCount, viewModel)
+		SelectionToolbar(
+			isSelectionModeShown,
+			selectedCount,
+			showNewTypeDialogue = { shownModal = ModalState.NewExerciseType },
+			hideSelectionMode = { isSelectionModeShown = false },
+			onShowSelect = { isSelectionModeShown = true },
+			// here
+			onDelete = { shownModal = ModalState.DeleteExerciseType(selectedTypeIds.toList()) })
 		LazyColumn(
 			modifier = Modifier.fillMaxSize(),
 			contentPadding = PaddingValues(8.dp),
@@ -53,25 +60,64 @@ fun DevLocalExerciseTypeTabPage(
 					isAlive = it.isAlive,
 					showCheckBox = isSelectionModeShown,
 					isChecked = it.id in selectedTypeIds,
-					onCheckedChange = viewModel::toggleExerciseTypeSelection,
+					onCheckedChange = { id ->
+						if (selectedTypeIds.contains(id)) selectedTypeIds.remove(id)
+						else selectedTypeIds.add(id)
+					},
 				)
 			}
 		}
 	}
 
-	if (showNewTypeDialogue) {
-		NewExerciseTypeDialog(
-			onDismissRequest = viewModel::hideNewTypeDialogue,
+	Modal(shownModal, typeList, viewModel) {
+		shownModal = it
+	}
+}
+
+@Composable
+private fun Modal(
+	shownModal: ModalState,
+	typeList: List<ExerciseTypeEntity>,
+	viewModel: DevLocalExerciseTypeTabPageViewModel,
+	updateModalState: (ModalState) -> Unit,
+) {
+	when (shownModal) {
+		is ModalState.DeleteExerciseType -> {
+			DevLocalExerciseTypeDeleteDialogue(
+				removeTypes = shownModal.ids,
+				exerciseTypes = typeList,
+				onDelete = {
+					viewModel.deleteSelectedExerciseTypes(shownModal.ids, it)
+					updateModalState(ModalState.None)
+				},
+				onDismiss = { updateModalState(ModalState.None) }
+			)
+		}
+
+		ModalState.NewExerciseType -> NewExerciseTypeDialog(
+			onDismissRequest = { updateModalState(ModalState.None) },
 			onSave = viewModel::addExerciseType,
 		)
+
+		ModalState.None -> {}
 	}
+}
+
+
+sealed interface ModalState {
+	data object None : ModalState
+	data object NewExerciseType : ModalState
+	data class DeleteExerciseType(val ids: List<Uuid>) : ModalState
 }
 
 @Composable
 private fun SelectionToolbar(
 	isSelectionModeShown: Boolean,
 	selectedCount: Int,
-	viewModel: DevLocalExerciseTypeTabPageViewModel,
+	showNewTypeDialogue: () -> Unit,
+	hideSelectionMode: () -> Unit,
+	onShowSelect: () -> Unit,
+	onDelete: () -> Unit,
 ) {
 	Surface(
 		modifier = Modifier.fillMaxWidth().padding(8.dp),
@@ -90,16 +136,16 @@ private fun SelectionToolbar(
 					"Entry page"
 				}
 			)
-			Button(onClick = viewModel::showNewTypeDialogue) {
+			Button(onClick = showNewTypeDialogue) {
 				Icon(Icons.Rounded.Add, contentDescription = null)
 				Text("Add Type")
 			}
 			if (isSelectionModeShown) {
-				OutlinedButton(onClick = viewModel::hideSelectionMode) {
+				OutlinedButton(onClick = hideSelectionMode) {
 					Text("Cancel")
 				}
 				Button(
-					onClick = viewModel::deleteSelectedExerciseTypes,
+					onClick = onDelete,
 					enabled = selectedCount > 0,
 					colors = ButtonDefaults.buttonColors(
 						containerColor = MaterialTheme.colorScheme.error,
@@ -110,7 +156,7 @@ private fun SelectionToolbar(
 					Text("Delete")
 				}
 			} else {
-				OutlinedButton(onClick = viewModel::showSelectionMode) {
+				OutlinedButton(onClick = onShowSelect) {
 					Text("Select")
 				}
 			}
@@ -118,83 +164,6 @@ private fun SelectionToolbar(
 	}
 }
 
-@Composable
-private fun NewExerciseTypeDialog(
-	onDismissRequest: () -> Unit,
-	onSave: (String, EquipmentClass) -> Unit,
-) {
-	Dialog(
-		onDismissRequest = onDismissRequest,
-		properties = DialogProperties(),
-	) {
-		val (name, setName) = remember { mutableStateOf("") }
-		val (selectedEquipmentClass, setSelectedEquipmentClass) = remember {
-			mutableStateOf<EquipmentClass>(EquipmentClass.None)
-		}
-		val (isTypeClassDropdownOpen, setTypeClassDropdownOpen) = remember { mutableStateOf(false) }
-		val trimmedName = name.trim()
-
-		Card {
-			Column(
-				modifier = Modifier.padding(24.dp),
-				verticalArrangement = Arrangement.spacedBy(16.dp),
-			) {
-				Text(
-					text = "Create exercise type",
-					style = MaterialTheme.typography.headlineSmall,
-				)
-				OutlinedTextField(
-					value = name,
-					onValueChange = setName,
-					label = { Text("Name") },
-					singleLine = true,
-					modifier = Modifier.fillMaxWidth(),
-				)
-				Box {
-					OutlinedButton(
-						onClick = { setTypeClassDropdownOpen(true) }) {
-						Text("Equipment: ${selectedEquipmentClass.displayName}")
-					}
-					DropdownMenu(
-						expanded = isTypeClassDropdownOpen,
-						onDismissRequest = { setTypeClassDropdownOpen(false) },
-					) {
-						exerciseTypeEquipmentClasses.forEach { equipmentClass ->
-							DropdownMenuItem(text = { Text(equipmentClass.displayName) }, onClick = {
-								setSelectedEquipmentClass(equipmentClass)
-								setTypeClassDropdownOpen(false)
-							})
-						}
-					}
-				}
-				Row(
-					modifier = Modifier.fillMaxWidth(),
-					horizontalArrangement = Arrangement.End,
-				) {
-					TextButton(onClick = onDismissRequest) {
-						Text("Cancel")
-					}
-					Button(
-						onClick = {
-							onSave(trimmedName, selectedEquipmentClass)
-						},
-						enabled = trimmedName.isNotEmpty(),
-					) {
-						Text("Save")
-					}
-				}
-			}
-		}
-	}
-}
-
-private val exerciseTypeEquipmentClasses = listOf(
-	EquipmentClass.Machine,
-	EquipmentClass.UserWeightMachine,
-	EquipmentClass.Calisthenics,
-	EquipmentClass.FreeWeight,
-	EquipmentClass.None,
-)
 
 val EquipmentClass.displayName: String
 	get() = when (this) {
